@@ -7,6 +7,10 @@ class ButtonPanel;
 //#include "Toolbar.h"
 class MainFrame : public wxFrame
 {
+
+private:
+	wxButton* ButtonToEdit;
+	wxString fileName;
 public:
 	MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 	wxTextCtrl* MainEditBox;
@@ -20,14 +24,17 @@ public:
 	ButtonPanel* buttons3;
 	ButtonPanel* buttons4;
 	ButtonPanel* currentPanel;
+	bool Signed = false;
+	bool isSigned();
+	bool setSigned(bool Sign);
 
 
 	bool confirmIntent(wxString message);
-	void quit(wxCommandEvent& WXUNUSED(event));
+	void quit(wxCommandEvent& event);
 	void newFile(wxCommandEvent& event);
 	void openFile(wxCommandEvent& event);
 	void saveFile(wxCommandEvent& event);
-	void SaveFile();
+	//void SaveFile();
 	void saveFileAs(wxCommandEvent& event);
 	void closeFile(wxCommandEvent& event); 
 	void AddButton(wxCommandEvent& event);
@@ -36,6 +43,14 @@ public:
 	void Sign(wxCommandEvent& WXUNUSED(event));
 	void swapButtonPanels(wxCommandEvent& event);
 	void onRightClick(wxMouseEvent& event);
+	void onPopUpCLick(wxCommandEvent& event);
+	wxString getFilename();
+	
+	void setFilename(wxString name);
+	void appendFilename(wxString app);
+	wxButton* getButtonToEdit();
+	void setButtonToEditName(wxString Name);
+	void setButtonToEditText(wxString Text);
 		DECLARE_EVENT_TABLE()
 };
 
@@ -52,5 +67,7 @@ enum
 	BUTTON_Minus,
 	BUTTON_Sign,
 	BUTTON_Swap,
-	BUTTON_Write
+	BUTTON_Write,
+	MENU_EditButtonName,
+	MENU_EditButtonText
 };

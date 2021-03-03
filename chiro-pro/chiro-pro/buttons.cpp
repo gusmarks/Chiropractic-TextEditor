@@ -14,7 +14,7 @@ ButtonPanel::ButtonPanel(wxWindow* parent, wxString name, std::string layoutName
 	ButtonSizer = new wxFlexGridSizer(3, 17, 0, 0);
 	this->SetSizer(ButtonSizer);
     this->layoutName = layoutName;
-    //ButtonLayoutin.open ("test.txt", std::ifstream::in);
+    
 	
 }
 

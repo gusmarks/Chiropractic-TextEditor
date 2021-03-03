@@ -10,6 +10,8 @@
 #include <wx/wxprec.h>
 #include <fstream>
 #include <ctime>
+#include <time.h>
+#include <chrono>
 using namespace std;
 
 #ifndef WX_PRECOMP
@@ -19,7 +21,6 @@ using namespace std;
 ////////////////////////////////////event table////////////////////////////////////////////
 // this event table connects widget ids to functions.
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
-
 EVT_MENU(MENU_New, MainFrame::newFile)
 EVT_MENU(MENU_Open, MainFrame::openFile)
 EVT_MENU(MENU_Close, MainFrame::closeFile)
@@ -30,15 +31,18 @@ EVT_BUTTON(BUTTON_Add, MainFrame::AddButton)
 EVT_BUTTON(BUTTON_Write, MainFrame::ButtonWrite)
 EVT_BUTTON(BUTTON_Sign, MainFrame::Sign)
 EVT_BUTTON(BUTTON_Swap, MainFrame::swapButtonPanels)
+EVT_MENU(MENU_EditButtonName, MainFrame::onPopUpCLick)
+EVT_MENU(MENU_EditButtonText, MainFrame::onPopUpCLick)
+//EVT_RIGHT_DOWN( MainFrame::onRightClick)
 END_EVENT_TABLE()
 std::string getDateToSign();
+//time_t getDate();
 ////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////variables/////////////////////////////////////////
 // we add a fleg grid for the dynamicly added buttons, two strings that are for filenames one is hardcoded. 
 //2 streams for reading and writing files
 
 
-string fileName;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////main application///////////////////////////
@@ -56,6 +60,13 @@ bool MainApplication::OnInit()
 }
 /////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////main frame method/////////////////////////
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="title"></param>
+/// <param name="pos"></param>
+/// <param name="size"></param>
 MainFrame::MainFrame(const wxString& title,
     const wxPoint& pos, const wxSize& size)
     : wxFrame((wxFrame*)NULL, -1, title, pos, size)
@@ -116,12 +127,12 @@ MainFrame::MainFrame(const wxString& title,
 
 
     ///////////////////////////button layout//////////////////////////////
-    buttons1 = new ButtonPanel(this, "button-List", "layout.txt");
-    buttons2 = new ButtonPanel(this, "button-List2", "layout2.txt");
+    buttons1 = new ButtonPanel(this, "button-List", "layouts/layout.txt");
+    buttons2 = new ButtonPanel(this, "button-List2", "layouts/layout2.txt");
     buttons2->Hide();
-    buttons3 = new ButtonPanel(this, "button-List3", "layout3.txt");
+    buttons3 = new ButtonPanel(this, "button-List3", "layouts/layout3.txt");
     buttons3->Hide();
-    buttons4 = new ButtonPanel(this, "button-List4", "layout4.txt");
+    buttons4 = new ButtonPanel(this, "button-List4", "layouts/layout4.txt");
     buttons4->Hide();
     currentPanel = buttons1;
     ///////////////////////////////////////////////////////////////
@@ -148,9 +159,31 @@ MainFrame::MainFrame(const wxString& title,
 }
 /////////////////////////////////////////////////////////////////
 /////////////////////end Frame Constructor/////////////
-///////////////////////////////////////////////////////
 ////////////////////////methods////////////////////////
-
+wxString MainFrame::getFilename() {
+    return this->fileName;
+}
+void MainFrame::setFilename(wxString name) {
+    this->fileName = name;
+}
+void MainFrame::appendFilename(wxString app) {
+    this->fileName += app;
+}
+wxButton* MainFrame::getButtonToEdit() {
+    return ButtonToEdit;
+}
+void MainFrame::setButtonToEditName(wxString Name){
+    this->getButtonToEdit()->SetLabel(Name);
+}
+void MainFrame::setButtonToEditText(wxString Text) {
+    this->getButtonToEdit()->SetName(Text);
+}
+bool MainFrame::isSigned() {
+    return this->Signed;
+}
+bool MainFrame::setSigned(bool Sign) {
+    this->Signed = Sign;
+}
 
 /// <summary>
 /// //new file method, this method clears the texteditor and filename for saving.
@@ -159,9 +192,11 @@ MainFrame::MainFrame(const wxString& title,
 /// <param name="WXUNUSED"></param>
 void MainFrame::newFile(wxCommandEvent& WXUNUSED(event))
 {
+    if (confirmIntent("are you sure you want to open a new file?")) {
 
-    MainEditBox->Clear();
-    fileName = "";
+        MainEditBox->Clear();
+        MainFrame::setFilename("");
+    }
 }
 /// </summary>
 /// this method opens a dialog box that lets the user search thier file system 
@@ -204,7 +239,7 @@ void MainFrame::closeFile(wxCommandEvent& WXUNUSED(event))
     if (confirmIntent("are you sure you want to close the file?")) {
         MainEditBox->DiscardEdits();
         MainEditBox->Clear();
-        fileName = "";
+        MainFrame::setFilename("");
     }
 }
 
@@ -217,16 +252,16 @@ void MainFrame::saveFile(wxCommandEvent& WXUNUSED(event))
 {
     //SignAndSave();
     
-    if (fileName.empty()) {
-        fileName =
-            wxGetTextFromUser("Enter Name of File.do not include file extension", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-        fileName += getDateToSign();
-        fileName += ".doc";
+    if (MainFrame::getFilename().empty()) {
+        MainFrame::setFilename(
+            wxGetTextFromUser("Enter Name of File.do not include file extension", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true));
+
+        MainFrame::appendFilename(".doc");
      
-            MainEditBox->SaveFile(fileName);
+            MainEditBox->SaveFile(MainFrame::getFilename());
     }
     else {
-        MainEditBox->SaveFile(fileName);
+        MainEditBox->SaveFile(MainFrame::getFilename());
     }
     
 }
@@ -246,7 +281,7 @@ void MainFrame::saveFileAs(wxCommandEvent& WXUNUSED(event))
     // save the current contents in the file;
     // this can be done with e.g. wxWidgets output streams:
     wxFileOutputStream output_stream(saveFileDialog.GetPath());
-    fileName = saveFileDialog.GetFilename();
+    setFilename(saveFileDialog.GetFilename());
     if (!output_stream.IsOk())
     {
         wxLogError("Cannot save current contents in file '%s'.", saveFileDialog.GetPath());
@@ -258,13 +293,15 @@ void MainFrame::saveFileAs(wxCommandEvent& WXUNUSED(event))
 /// then closes the program
 /// </summary>
 /// <param name="WXUNUSED"></param>
-void MainFrame::quit(wxCommandEvent& WXUNUSED(event))
+void MainFrame::quit(wxCommandEvent& event)
 {
     buttons1->saveButtons();
     buttons2->saveButtons();
     buttons3->saveButtons();
     buttons4->saveButtons();
-
+    
+    event.Skip();
+    
     Close(TRUE); // Tells the OS to quit running this process
 }
 
@@ -283,7 +320,7 @@ void MainFrame::AddButton(wxCommandEvent& event)
     wxGetTextFromUser("Enter text for button to add", "", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
     // make button and add the button to array
     currentPanel->QlinkList[QLinkIndex] = new wxButton(currentPanel, BUTTON_Write, buttonName,wxDefaultPosition,wxSize(80.5,23),0,wxDefaultValidator,buttonText);
-    currentPanel->QlinkList[QLinkIndex]->Connect(wxEVT_RIGHT_DOWN, wxMouseEventHandler(MainFrame::onRightClick), NULL, this);
+    currentPanel->QlinkList[QLinkIndex]->Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick,this);
 
     //add the button to the button sizer
     currentPanel->ButtonSizer->Add(currentPanel->QlinkList[QLinkIndex],wxLeft);
@@ -325,29 +362,20 @@ bool MainFrame::confirmIntent(wxString message) {
     default:       wxLogError(wxT("Unexpected wxMessageDialog return code!")); }
     return false;
 }
-
+/// <summary>
+/// adds a Name, and date+time to the file, as a time stamp and signiture
+/// </summary>
+/// <param name="WXUNUSED"></param>
 void MainFrame::Sign(wxCommandEvent& WXUNUSED(event)) {
-    ofstream SignitureOut;
-        if (!SignitureOut.is_open()) {
-            SignitureOut.open(fileName, std::fstream::out);
-        }
-
-       // current date/time based on current system
-        time_t now = time(0);
-
-        // convert now to string form
-        char* dt = ctime(&now);
-
-        cout << "The local date and time is: " << dt << endl;
-
-        // convert now to tm struct for UTC
-        tm* gmtm = gmtime(&now);
-        dt = asctime(gmtm);
-        MainEditBox->WriteText( "\n" + (wxString)"G Marks" + "\n"+dt);
-
-
+    
+        MainEditBox->WriteText("\n" + (wxString)"G Marks" + "\n" + getDateToSign());
+    
 }
-
+/// <summary>
+/// there are 4 panels 3 of witch are always hidden, this function changes which ones are hidden
+/// this effectifly swaps the panels, allowing the user to have an alternitive set of buttons.
+/// </summary>
+/// <param name="event"></param>
 void MainFrame::swapButtonPanels(wxCommandEvent& event) {
     int x = 0;
     MainFrame::sizer->Detach(currentPanel);
@@ -410,16 +438,52 @@ void MainFrame::swapButtonPanels(wxCommandEvent& event) {
     }
     sizer->Layout();
 }
+/// <summary>
+/// this function returns the current date and time 
+/// </summary>
+/// <returns></returns>
 std::string getDateToSign() {
-    time_t now = time(0);
-
-    tm* ltm = localtime(&now);
-    std::string date;
-    // print various components of tm structure.
-    date=1900 + ltm->tm_year +"/" + ltm->tm_mon + ltm->tm_mday;
-    return date;
- 
+    time_t current;
+    time(&current);
+    
+    return  ctime(&current) ;
 }
+/// <summary>
+/// this function allows the user to make a right click on a button and offer them 2 choices edit lable or edit text
+/// </summary>
+/// <param name="event"></param>
 void MainFrame::onRightClick(wxMouseEvent& event) {
-    MainEditBox->WriteText("test");
+
+    ButtonToEdit = (wxButton*)event.GetEventObject();
+
+    wxMenu menu;
+    menu.Append(MENU_EditButtonName, "edit Label of Button");
+    menu.Append(MENU_EditButtonText, "edit text of Button");
+    PopupMenu(&menu);
+}
+/// <summary>
+/// this function interprites the command from onRightCLick, and processes it accoridingly 
+/// </summary>
+/// <param name="event"></param>
+void MainFrame::onPopUpCLick(wxCommandEvent& event) {
+    wxString buttonName;
+    wxString buttonText;
+    switch (event.GetId()) {
+        case MENU_EditButtonName:
+            buttonName =
+            
+            wxGetTextFromUser("Enter text for button name", " ", ButtonToEdit->GetLabel(), NULL, wxDefaultCoord, wxDefaultCoord, true);
+            if (!buttonName.IsEmpty()) {
+                MainFrame::setButtonToEditName(buttonName);
+            }
+            break;
+        case MENU_EditButtonText:
+            buttonText =
+            wxGetTextFromUser("Enter text for button Text", " ", ButtonToEdit->GetName(), NULL, wxDefaultCoord, wxDefaultCoord, true);
+            if (!buttonText.IsEmpty()) {
+                MainFrame::setButtonToEditText(buttonText);
+            }
+            break;
+
+    }
 }
