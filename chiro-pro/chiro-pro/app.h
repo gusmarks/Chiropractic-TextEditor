@@ -1,3 +1,4 @@
+#pragma once
 #ifndef __BASE_H
 #define __BASE_H
 #include <wx/frame.h>

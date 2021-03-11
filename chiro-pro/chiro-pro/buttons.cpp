@@ -1,27 +1,21 @@
+
 #include <wx/wx.h>
 #include <wx/panel.h>
 #include "Buttons.h"
+#include "Frame.h"
 #include <string>
 
 
 
-ButtonPanel::ButtonPanel(wxWindow* parent, wxString name, std::string layoutName) : wxPanel(parent, wxID_ANY, wxDefaultPosition,
+ButtonPanel::ButtonPanel(wxWindow* parent, wxString name, std::string layoutName, int ind) : wxPanel(parent, wxID_ANY, wxDefaultPosition,
 	wxDefaultSize, wxTAB_TRAVERSAL, name)
 {
-
-	QlinkList[51];
 	QLinkIndex = 0;
+    index = ind;
 	ButtonSizer = new wxFlexGridSizer(3, 17, 0, 0);
 	this->SetSizer(ButtonSizer);
     this->layoutName = layoutName;
-    
-	
 }
-
-
-
-	
-
 void ButtonPanel::LoadButtons()
 {
     //open the button layout file assuming it is closed already
@@ -72,3 +66,10 @@ void ButtonPanel::saveButtons() {
     this->ButtonLayoutout.close();
 
 }
+ButtonPanel* ButtonPanel::getPrev() {
+    return this->prev;
+}
+void ButtonPanel::setPrev(ButtonPanel* panel) {
+    this->prev = panel;
+}
+
