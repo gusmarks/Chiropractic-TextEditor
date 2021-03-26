@@ -1,4 +1,8 @@
 #include "DialogHelper.h"
+
+DialogHelper::DialogHelper() {
+
+}
 /// <summary>
 /// the function confirmIntent accepts a string with a question,
 /// and produces a popupbox to ask this question. then waits on a yes or no responce, and acts acordingly
@@ -59,4 +63,10 @@ bool DialogHelper::errorMessage(wxString str) {
         return true;
         break;
     }
+}
+void DialogHelper::openClipBoard() {
+    clipBoard =
+        new ClipboardDialog("", wxDefaultPosition,wxDefaultSize);
+    clipBoard->Show();
+
 }

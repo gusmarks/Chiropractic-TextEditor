@@ -3,15 +3,20 @@
 // app.h, Buttons.h  and frame.h are included files that define methods used in this file
 // fstream allow us to open and close certain files
 //ctime gives us date and time functions
-
+//DocumentIcon ICON "DocumentIcon.ico"
+//#include <wx/msw/wx.rc>
 #include "app.h"
-#include "Buttons.h"
+#include "ButtonPanel.h"
 #include "Frame.h"
+#include "clipboard.h"
+#include "FunctionHelper.h"
 #include <wx/wfstream.h>
 #include <wx/wxprec.h>
 #include <fstream>
 #include <ctime>
 #include <wx/msgdlg.h>
+#include <wx/url.h>
+#include <wx/icon.h>
 
 using namespace std;
 
@@ -28,28 +33,31 @@ EVT_MENU(MENU_Close, MainFrame::closeFile)
 EVT_MENU(MENU_Save, MainFrame::saveFile)
 EVT_MENU(MENU_SaveAs, MainFrame::saveFileAs)
 EVT_MENU(MENU_Quit, MainFrame::quit)
+EVT_MENU(MENU_EditButtonName, MainFrame::onPopUpCLick)
+EVT_MENU(MENU_EditButtonText, MainFrame::onPopUpCLick)
+EVT_MENU(MENU_SaveButtons, MainFrame::SavePanelsAndButtons)
 EVT_BUTTON(BUTTON_Add, MainFrame::AddButton)
 EVT_BUTTON(BUTTON_Write, MainFrame::ButtonWrite)
 EVT_BUTTON(BUTTON_Sign, MainFrame::Sign)
-EVT_BUTTON(BUTTON_Swap, MainFrame::swapButtonPanels)
-EVT_MENU(MENU_EditButtonName, MainFrame::onPopUpCLick)
-EVT_MENU(MENU_EditButtonText, MainFrame::onPopUpCLick)
-EVT_MENU(MENU_SaveButtons, MainFrame::SaveButtons)
 EVT_BUTTON(BUTTON_Panel, MainFrame::swapHelper)
-EVT_BUTTON(BUTTON_Back,MainFrame::swapToPreviousPanel)
+EVT_BUTTON(BUTTON_Back, MainFrame::swapToPreviousPanel)
+EVT_BUTTON(BUTTON_NewSet,MainFrame::newSet)
+EVT_CHOICE(CHOICE_SWAP_Set, MainFrame::SwapButtonSet)
 END_EVENT_TABLE()
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////main application///////////////////////////
 IMPLEMENT_APP(MainApplication) // Initializes the MainApplication class and tells our program
 // to run it
+
+
 bool MainApplication::OnInit()
 {
     //main frame constructor
     MainFrame* MainWin = new MainFrame(wxT("DocuMaster"), wxPoint(1, 1),
         wxSize(300, 200)); // Create an instance of our frame, or window
     MainWin->Show(TRUE); // show the window
-    MainWin->SetIcon((wxString)"DocumentIcon.png");
+    MainWin->SetIcon(wxIcon("DocumentIcon.ico"));
     SetTopWindow(MainWin);// and finally, set it as the main window
     
     return TRUE;
@@ -67,11 +75,11 @@ MainFrame::MainFrame(const wxString& title,
     const wxPoint& pos, const wxSize& size)
     : wxFrame((wxFrame*)NULL, -1, title, pos, size)
 {
-    
+
     //-----------menu-status start-----------
     //statusbar at the bottom of page has 2 cells
     //menu bar at the top ofthe page has 1 tab named File menu and visualy represented as File
-    //the File tab has 7 options: new file, open file,close file, save file, save file as, and quit.
+    //the File tab has 7 options: new file, open file,close file, save file, save file as, save button layout and quit.
     CreateStatusBar(2);
     MainMenu = new wxMenuBar();
     wxMenu* FileMenu = new wxMenu();
@@ -86,25 +94,29 @@ MainFrame::MainFrame(const wxString& title,
         wxT("Save the current document"));
     FileMenu->Append(MENU_SaveAs, wxT("Save &As"),
         wxT("Save the current document under a new file name"));
+    FileMenu->Append(MENU_SaveButtons, wxT(" &Save the button layout"),
+        wxT("Save the button layout"));
     FileMenu->Append(MENU_Quit, wxT(" &Quit"),
         wxT("Quit the editor"));
-    FileMenu->Append(MENU_SaveButtons, wxT(" &Save the button layout"),
-        wxT("Quit the editor"));
 
+    //attach the menu items to the frame
     MainMenu->Append(FileMenu, wxT("File"));
     SetMenuBar(MainMenu);
     ////////////////////////menu-status end////////////////////////
 
-    //make 6 buttons, one to add dynamic buttons, one to sign the document
-    // 4 buttons to swap panels of dynamic buttons
-   
+    //make 7 buttons, one to add dynamic buttons, one to sign the document
+    // 4 buttons to swap panels of dynamic buttons, and one to go to the previous panel.
+
     wxButton* AddButton = new wxButton(this, BUTTON_Add, "add", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "add");
     wxButton* SignButton = new wxButton(this, BUTTON_Sign, "Sign", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "Apply Signiture to document");
-    wxButton* swapToPanelOne = new wxButton(this, BUTTON_Swap, "subjective", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "1");
-    wxButton* swapToPanelTwo = new wxButton(this, BUTTON_Swap, "objective", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "2");
-    wxButton* swapToPanelThree = new wxButton(this, BUTTON_Swap, "assessment", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "3");
-    wxButton* swapToPanelFour = new wxButton(this, BUTTON_Swap, "Plan", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "4");
+    wxButton* swapToPanelOne = new wxButton(this, BUTTON_Panel, "subjective", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "1");
+    wxButton* swapToPanelTwo = new wxButton(this, BUTTON_Panel, "objective", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "2");
+    wxButton* swapToPanelThree = new wxButton(this, BUTTON_Panel, "assessment", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "3");
+    wxButton* swapToPanelFour = new wxButton(this, BUTTON_Panel, "Plan", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "4");
     wxButton* backButton = new wxButton(this, BUTTON_Back, "back", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "go back");
+
+
+
     //make a box sizer to add the buttons too
     ControlSizer = new wxBoxSizer(wxHORIZONTAL);
     //add the buttons to the box sizer
@@ -115,90 +127,58 @@ MainFrame::MainFrame(const wxString& title,
     ControlSizer->Add(swapToPanelTwo);
     ControlSizer->Add(swapToPanelThree);
     ControlSizer->Add(swapToPanelFour);
-    ///////////////////////////////////////////////////////////////
-    
+    //create a choice box so the user can select what set of buttons they want, and a button to create new button sets
+    userSelection = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 2, MainFrame::ButtonSetNames, 0, wxDefaultValidator, "userCHoice");
+    wxButton* newUser = new wxButton(this, BUTTON_NewSet, "New Set", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "New Set");
+    //new sizer for the wxCHoice and the new set button
+    ButtonSetSizer = new wxBoxSizer(wxHORIZONTAL);
+    ButtonSetSizer->Add(userSelection);
+    ButtonSetSizer->Add(newUser);
+    //set the selection and mind the setswaping function
+    userSelection->SetSelection(0);
+    userSelection->Bind(wxEVT_CHOICE, &MainFrame::SwapButtonSet, this);
+    //instanciate the first set
+    currentButtonSetName = ButtonSetNames[0];
+    ButtonSetList.push_back(new ButtonSet(this, currentButtonSetName, SetIndex, "panelLayout/panelLayout"));
+    currentButtonSet = ButtonSetList.at(0);
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////text editor/////////////////////////////////
     //add a wxtextctrl this is the main text editor
     MainEditBox = new wxTextCtrl(this, TEXT_Main,
         wxT(""), wxDefaultPosition, wxSize(600,1),
-        wxTE_MULTILINE | wxTE_RICH, wxDefaultValidator, wxTextCtrlNameStr);
+        wxTE_MULTILINE | wxTE_RICH| wxTE_AUTO_URL, wxDefaultValidator, wxTextCtrlNameStr);
     Maximize();
-
+    MainEditBox->Bind(wxEVT_LEFT_DCLICK, &MainFrame::clickURLinTextCtrl, this);
+    //an object to make and handel popups, error messages and questions
     popUpHandeler = new DialogHelper();
+    functionHelper = new FuncHelper();
     ///////////////////////////button layout//////////////////////////////
-    for (panelIndex; panelIndex < 4; panelIndex++) {
-        string index = std::to_string(panelIndex+1);
-        panelList.push_back(new ButtonPanel(this, "button-List", "layouts/layout"+index+".txt", panelIndex));
-        panelList[panelIndex]->Hide();
-        
+ 
+    //loades the panels and buttons for the first set
+    currentButtonSet->loadPanelsAndButtons(currentButtonSetName);
 
-    }
-    currentPanel = panelList[0];
-    currentPanel->Show();
+    // set the current panel object to be the first panel, and tell it to show.
+    //currentPanel = panelList[0];
+    currentButtonSet->getCurrentPanel()->Show();
    
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-    /////dynamic button loading. this reads the layout files and addes the content to the panels/////////
-   
-    panelList[0]->LoadButtons();
-    panelList[1]->LoadButtons();
-    panelList[2]->LoadButtons();
-    panelList[3]->LoadButtons();
     /////////////////////////////////////////////////////////////////
     ///////////////////////// arange sizers//////////////////////////
 
     sizer = new wxBoxSizer(wxVERTICAL);
+    sizer->Add(ButtonSetSizer,0, wxALIGN_CENTER);
     sizer->Add(ControlSizer, 0, wxALIGN_CENTER);
-    sizer->Add(currentPanel, 1, wxEXPAND);
+    sizer->Add(currentButtonSet->getCurrentPanel(), 2, wxEXPAND);
     sizer->Add(MainEditBox, 8, wxALIGN_CENTER,wxBORDER);
   
-    //set the mainsizer as the frame sizer to align content
-    //and center the layout
+    //set the sizer object "sizer" as the main sizer and update its layout, finaly centering the objects in the frame.
     sizer->Layout();
     SetSizer(sizer);
     Centre();
 }
-/////////////////////////////////////////////////////////////////
 /////////////////////end Frame Constructor/////////////
 ////////////////////////methods////////////////////////
-wxString MainFrame::getFilename() {
-    return this->fileName;
-}
-void MainFrame::setFilename(wxString name) {
-    this->fileName = name;
-}
-void MainFrame::appendFilename(wxString app) {
-    this->fileName += app;
-}
-wxButton* MainFrame::getButtonToEdit() {
-    return ButtonToEdit;
-}
-void MainFrame::setButtonToEditName(wxString Name){
-    this->getButtonToEdit()->SetLabel(Name);
-}
-void MainFrame::setButtonToEditText(wxString Text) {
-    this->getButtonToEdit()->SetName(Text);
-}
-bool MainFrame::isSigned() {
-    return this->Signed;
-}
-void MainFrame::setSigned(bool Sign) {
-    this->Signed = Sign;
-}
-/// <summary>
-/// //new file method, this method clears the texteditor and filename for saving.
-///allowing people to make and save new files
-/// </summary>
-/// <param name="WXUNUSED"></param>
-void MainFrame::newFile(wxCommandEvent& WXUNUSED(event))
-{
-    if (popUpHandeler->confirmIntent("are you sure you want to open a new file?")) {
 
-        MainEditBox->Clear();
-        MainFrame::setFilename("");
-    }
-}
+
 /// </summary>
 /// this method opens a dialog box that lets the user search thier file system 
 /// and open any.doc file
@@ -207,8 +187,6 @@ void MainFrame::newFile(wxCommandEvent& WXUNUSED(event))
 void MainFrame::openFile(wxCommandEvent& WXUNUSED(event))
 {
     if (popUpHandeler->confirmIntent("are you sure you want to open a new file and close this one?")) {
-
-
         wxFileDialog
             openFileDialog(this, _("Open Doc file"), "", "",
                 "Doc files (*.doc)|*.doc", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
@@ -263,6 +241,7 @@ void MainFrame::saveFile(wxCommandEvent& WXUNUSED(event))
     
 }
 /// <summary>
+///this method opens a dialog box that lets the user search thier file system and 
 /// save a file with a custom name regardless of if there is filename saved.
 /// </summary>
 /// <param name="WXUNUSED"></param>
@@ -284,68 +263,43 @@ void MainFrame::saveFileAs(wxCommandEvent& WXUNUSED(event))
         return;
     }
 }
-void MainFrame::SaveButtons(wxCommandEvent& event) {
-    for (int i = 0; i < panelIndex; i++) {
-        panelList[i]->saveButtons();
-       }
-}
 /// <summary>
-/// the quit function saves the button configuration to a file
-/// then closes the program
-/// </summary>
-/// <param name="WXUNUSED"></param>
-void MainFrame::quit(wxCommandEvent& event)
-{
-    event.Skip();  
-    Close(TRUE); // Tells the OS to quit running this process
-}
-/// <summary>
-/// the function adds a button to the topbar. these are called dynamic buttons
+/// the function adds a button to the buttonPanel. these are called dynamic buttons
 /// each button will need a lable and text, these are prompted from the user
 /// the button is added and the layout updated
 /// </summary>
 /// <param name="WXUNUSED"></param>
 void MainFrame::AddButton(wxCommandEvent& event)
 {
-    //promp user for name of button and button text
+    //ask user what type of button they want, text addes text to the document,link adds a link to a new panel
     if (popUpHandeler->confirmIntentAddButton()) {
+        //promp user for name and text of text button
         wxString buttonName =
             wxGetTextFromUser("Enter text for button name", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
         wxString buttonText =
             wxGetTextFromUser("Enter text for button to add", "", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-        // make button and add the button to array
-        currentPanel->QlinkList[currentPanel->QLinkIndex] = new wxButton(currentPanel, BUTTON_Write, buttonName, wxDefaultPosition, wxSize(80.5, 23), 0, wxDefaultValidator, buttonText);
-        currentPanel->QlinkList[currentPanel->QLinkIndex]->Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
-
-        //add the button to the button sizer
-        currentPanel->ButtonSizer->Add(currentPanel->QlinkList[currentPanel->QLinkIndex], wxLeft);
-        //update layout of page and button index
-
-        currentPanel->ButtonSizer->Layout();
-        currentPanel->Layout();
-        currentPanel->QLinkIndex++;
+        //adds the button
+            currentButtonSet->getCurrentPanel()->AddButton(buttonName, buttonText);
+      
     }
     else {
+        //propts user for the name of the new panel link, the text is the panel index for the current button set
         wxString buttonName =
             wxGetTextFromUser("Enter text for button name", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-        currentPanel->QlinkList[currentPanel->QLinkIndex] = new wxButton(currentPanel, BUTTON_Panel, buttonName, wxDefaultPosition, wxSize(80.5, 23), 0, wxDefaultValidator, ""+std::to_string(panelIndex));
-        currentPanel->QlinkList[currentPanel->QLinkIndex]->SetBackgroundColour(*wxCYAN);
-        
-        currentPanel->QlinkList[currentPanel->QLinkIndex]->Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
-        currentPanel->ButtonSizer->Add(currentPanel->QlinkList[currentPanel->QLinkIndex], wxLeft);
-        //update layout of page and button index
-
-        currentPanel->ButtonSizer->Layout();
-        currentPanel->Layout();
-        
-        string index = std::to_string(panelIndex + 1);
-        panelList.push_back( new ButtonPanel(this,"button-List5","layouts/layout" + index + ".txt",panelIndex));
-        panelList[panelIndex]->Hide();
-        panelList[panelIndex]->setPrev(currentPanel);
-        panelIndex++;
-        currentPanel->QLinkIndex++;
+       
+    //gets the panel index and adds the new button, also the new panel that the button will link to.
+        int panelIndex = currentButtonSet->getPanelIndex();
+        std::string panelIndexStr = std::to_string(panelIndex);
+        currentButtonSet->getCurrentPanel()->AddButton(buttonName, panelIndexStr);
+        currentButtonSet->addNewPanel(this, "Button-List" + panelIndex);
     }
-
+    //bind the editing function, and update the button index for the panel
+    int QIndex = currentButtonSet->getCurrentPanel()->getButtonIndex();
+    currentButtonSet->getCurrentPanel()->QlinkList->at(QIndex)->
+        Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
+    currentButtonSet->getCurrentPanel()->setButtonIndex(QIndex+1);
+        
+   
 }
 /// <summary>////////////////////////////////////////////////
 /// this function makes a button write its texr to the texteditor/
@@ -354,99 +308,18 @@ void MainFrame::AddButton(wxCommandEvent& event)
 void MainFrame::ButtonWrite(wxCommandEvent& event) {
     wxButton* temp = (wxButton*)event.GetEventObject();
  
-    MainEditBox->WriteText("\n" + temp->GetName() + "\n");
+    MainEditBox->WriteText(("\n" + temp->GetName() + "\n"));
 
 }/////////////////////////////end button write///////////////////
 /// <summary>
-/// this function returns the current date and time 
-/// </summary>
-/// <returns></returns>
-std::string getDateToSign() {
-    time_t current;
-    time(&current);
-
-    return  ctime(&current);
-}
-/// <summary>
-/// adds a Name, and date+time to the file, as a time stamp and signiture
+/// adds a Name, and date+time to the file, as a time stamp and signiture --fix function--
 /// </summary>
 /// <param name="WXUNUSED"></param>
 void MainFrame::Sign(wxCommandEvent& WXUNUSED(event)) {
     
-        MainEditBox->AppendText("\n" + (wxString)"G Marks" + "\n" + getDateToSign());
+        //MainEditBox->AppendText("\n" + (wxString)"G Marks" + "\n" + functionHelper->getDateToSign());
     
 }
-/// <summary>
-/// there are 4 panels 3 of witch are always hidden, this function changes which ones are hidden
-/// this effectifly swaps the panels, allowing the user to have an alternitive set of buttons.
-/// </summary>
-/// <param name="event"></param>
-void MainFrame::swapButtonPanels(wxCommandEvent& event) {
-   
-    
-    int x = 0;
-    MainFrame::sizer->Detach(currentPanel);
-    wxButton* temp = (wxButton*)event.GetEventObject();
-    wxString switchVariable = temp->GetName();
-    x = stoi((string)switchVariable);
-    switch (x) {
-    case 1:
-        MainFrame::sizer->Detach(ControlSizer);
-        currentPanel = panelList[0];
-
-        panelList[1]->Hide();
-        panelList[2]->Hide();
-        panelList[3]->Hide();
-
-        MainFrame::sizer->Prepend(currentPanel, 1, wxEXPAND);
-        MainFrame::sizer->Prepend(ControlSizer, 0, wxALIGN_CENTER);
-        currentPanel->Show();
-        break;
-
-    case 2:
-        MainFrame::sizer->Detach(ControlSizer);
-        currentPanel = panelList[1];
-
-        panelList[0]->Hide();
-        panelList[2]->Hide();
-        panelList[3]->Hide();
-
-        MainFrame::sizer->Prepend(currentPanel, 1, wxEXPAND);
-        MainFrame::sizer->Prepend(ControlSizer, 0, wxALIGN_CENTER);
-        currentPanel->Show();
-        break;
-
-    case 3:
-        MainFrame::sizer->Detach(ControlSizer);
-        currentPanel = panelList[2];
-
-        panelList[0]->Hide();
-        panelList[1]->Hide();
-        panelList[3]->Hide();
-
-        MainFrame::sizer->Prepend(currentPanel, 1, wxEXPAND);
-        MainFrame::sizer->Prepend(ControlSizer, 0, wxALIGN_CENTER);
-
-        currentPanel->Show();
-        break;
-    case 4:
-        MainFrame::sizer->Detach(ControlSizer);
-        currentPanel = panelList[3];
-
-        panelList[0]->Hide();
-        panelList[1]->Hide();
-        panelList[2]->Hide();
-
-        MainFrame::sizer->Prepend(currentPanel, 1, wxEXPAND);
-        MainFrame::sizer->Prepend(ControlSizer, 0, wxALIGN_CENTER);
-        currentPanel ->Show();
-        break;
-    }
-    
-    
-    sizer->Layout();
-}
-
 /// <summary>
 /// this function allows the user to make a right click on a button and offer them 2 choices edit lable or edit text
 /// </summary>
@@ -469,14 +342,17 @@ void MainFrame::onPopUpCLick(wxCommandEvent& event) {
     wxString buttonText;
     switch (event.GetId()) {
         case MENU_EditButtonName:
+            //if the edit name option was chocsen then prompt the user for a new name, as long as it was not empty
+            //the new name will replace the old one
             buttonName =
-            
             wxGetTextFromUser("Enter text for button name", " ", ButtonToEdit->GetLabel(), NULL, wxDefaultCoord, wxDefaultCoord, true);
             if (!buttonName.IsEmpty()) {
                 MainFrame::setButtonToEditName(buttonName);
             }
             break;
         case MENU_EditButtonText:
+            //if the edit text option was chosen then the user will be probpted to enter a new text
+            //the text will be replaced with the new text
             buttonText =
             wxGetTextFromUser("Enter text for button Text", " ", ButtonToEdit->GetName(), NULL, wxDefaultCoord, wxDefaultCoord, true);
             if (!buttonText.IsEmpty()) {
@@ -486,36 +362,153 @@ void MainFrame::onPopUpCLick(wxCommandEvent& event) {
             //make new case to remove button
     }
 }
+/// <summary>
+/// swapPanels takes in a ButtonPanel and makes it the active panel
+/// </summary>
+/// <param name="newPanel"></param>
 void MainFrame::swapPanels(ButtonPanel* newPanel) {
+    ButtonPanel* currentPanel = currentButtonSet->getCurrentPanel();
     sizer->Detach(ControlSizer);
     sizer->Detach(currentPanel);
+    sizer->Detach(ButtonSetSizer);
     currentPanel->Hide();
    
     currentPanel = newPanel;
     
-    
     currentPanel->Show();
-  
-    sizer->Prepend(currentPanel, 1, wxEXPAND);
+    
+    sizer->Prepend(currentPanel, 2, wxEXPAND);
     sizer->Prepend(ControlSizer, 0, wxALIGN_CENTER);
+    sizer->Prepend(ButtonSetSizer, 0, wxALIGN_CENTER);
     currentPanel->Show();
     sizer->Layout();
-    Update();
-    
-
-    
-    
-   
+    Update();  
 }
+/// <summary>
+/// swapHelper gets the index of the panel to swap to and passes the new panel to swapPanels
+/// </summary>
+/// <param name="event"></param>
 void MainFrame::swapHelper(wxCommandEvent& event){
-    wxButton* btton = (wxButton*)event.GetEventObject();   
-    swapPanels(panelList[atoi(btton->GetName())]);
+    wxButton* btton = (wxButton*)event.GetEventObject(); 
+    wxString ButtonName = btton->GetName();
+    int PanelIndexToSwapTo = wxAtoi(ButtonName.ToStdString());
+    ButtonPanel* panelToSwapTo= currentButtonSet->getPanelAtIndex(PanelIndexToSwapTo);
+    swapPanels(panelToSwapTo);
 }
+/// <summary>
+/// finds the prev element of the panel and passes it the swapPanels. 
+/// if there is no prev element set then an error message occurs.
+/// </summary>
+/// <param name="event"></param>
 void MainFrame::swapToPreviousPanel(wxCommandEvent& event) {
-    if (currentPanel->getPrev() != nullptr) {
-        swapPanels(currentPanel->getPrev());
+    if (currentButtonSet->getCurrentPanel()->getPrev() != nullptr) {
+        swapPanels(currentButtonSet->getCurrentPanel()->getPrev());
     }
     else {
         popUpHandeler->errorMessage("there is no panel to go back to");
     }
+}
+//double click on the end of a line of text, this opens a dialog and asks the user to select an option, 
+//it then replaces the double clicked line with the selected line. ----needs work---- 
+void MainFrame::clickURLinTextCtrl(wxMouseEvent& evt) {
+
+    wxString tempStr = MainEditBox->GetRange(0, MainEditBox->GetInsertionPoint());
+    std::string str = tempStr.ToStdString();
+    long lineNo = functionHelper->getLineNo(str, "\n");
+    long insP = MainEditBox->GetInsertionPoint();
+    wxString lineValue = MainEditBox->GetLineText(lineNo-1);
+   // wxString st = (wxString)(""+lineNo);
+    //MainEditBox->WriteText(st);
+   // if (!lineValue.IsEmpty()||lineValue!="\n") {
+        long lineLength = insP - lineValue.ToStdString().size();
+        //wxString TextToReplaceWith =
+            popUpHandeler->openClipBoard();
+        //MainEditBox->Replace(lineLength, insP,TextToReplaceWith);
+
+   // }
+}
+// using a wxChoice control, the user can change what button set they are using ----- needs work ----
+void MainFrame::SwapButtonSet(wxCommandEvent& evt)
+{
+    //get the new selection in the wxChoice field and uses it to get the index to use
+    wxChoice* choi = (wxChoice*)evt.GetEventObject();
+    int setIndex = choi->GetSelection();
+    // if the Buttonset in question's files exist and it is not the current buttonset then destroy the old panels set the new 
+    //current buttonset and load its panels and buttons
+    if (DoseUserExist(ButtonSetNames[setIndex])&& currentButtonSet != ButtonSetNames[setIndex]) {
+        destroyPanels(currentButtonSetName);
+        currentButtonSet = ButtonSetList.at(setIndex);
+        currentButtonSetName = ButtonSetNames[setIndex];
+        currentButtonSet->loadPanelsAndButtons(currentButtonSetName);
+    }
+    //detach several sizers and reattach them to update the layout properly
+    sizer->Detach(ButtonSetSizer);
+    sizer->Detach(ControlSizer);
+    sizer->Detach(currentButtonSet->getCurrentPanel());
+
+    sizer->Prepend(currentButtonSet->getCurrentPanel(), 2, wxEXPAND);
+    sizer->Prepend(ControlSizer, 0, wxALIGN_CENTER);
+    sizer->Prepend(ButtonSetSizer, 0, wxALIGN_CENTER);
+   
+    sizer->Layout();
+}
+void MainFrame::destroyPanels(wxString set) {
+    //systematicly destroy all panels and buttons for a given set. ---consider moving this to the buttonset class
+    for (size_t i = 0; i < currentButtonSet->getPanelListSize(); i++) {
+        sizer->Detach(currentButtonSet->getPanelAtIndex(i));
+        currentButtonSet->getPanelAtIndex(i)->~ButtonPanel();
+        //currentButtonSet->getPanelIndex()--;
+        sizer->Layout();
+        Update();
+    }
+}
+bool MainFrame::DoseUserExist(wxString usr) {
+    //confirm the existance of button set files with an ifstream, by opening it and chacking if it fails
+    ifstream setStream;
+    std::string user = usr.ToStdString();
+    std::string fileName = "panelLayout/panelLayout" + user + ".txt";
+    
+    setStream.open(fileName, std::fstream::in);
+    if (setStream.fail()) {
+        setStream.close();
+        return false;
+    }
+    else {
+        setStream.close();
+        return true;
+    }
+
+}
+void MainFrame::newSet(wxCommandEvent& event) {
+    //props the user for a name for the new button set, then adds the new set to the set list
+    //opens an ofstream and writes a new file for the button set
+    wxString setName=
+        wxGetTextFromUser("Please enter name of new set", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
+    ButtonSetNames[SetIndex] = setName;
+    ButtonSetList.push_back(new ButtonSet(this, setName, SetIndex, "panelLayout/panelLayout" + setName.ToStdString() + ".txt"));
+    ofstream newSetStream("panelLayout/panelLayout" + setName.ToStdString() + ".txt");
+
+    size_t size = sizeof(ButtonSetNames) / sizeof(ButtonSetNames[0]);
+    userSelection->Clear();
+    for (size_t i = 0; i < size; i++) {
+        if (ButtonSetNames[i] != wxT("")) {
+            userSelection->Append(ButtonSetNames[i]);
+        }
+    }
+    userSelection->SetSelection(0);
+    for (int i = 0; i < 4; i++) {
+        newSetStream << "button-List"+std::to_string(i+1);
+        newSetStream << "\n";
+        newSetStream << ("layouts/layout" + std::to_string(i+1) + ".txt");
+        newSetStream << "\n";
+    }
+    SetIndex++;
+
+}
+/// <summary>
+/// saves the panels and buttons for the current button set
+/// </summary>
+/// <param name="event"></param>
+void MainFrame::SavePanelsAndButtons(wxCommandEvent & event) {
+    currentButtonSet->SavePanelsAndButtonsNP();
 }
