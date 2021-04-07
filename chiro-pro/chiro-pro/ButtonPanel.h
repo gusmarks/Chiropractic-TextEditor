@@ -26,7 +26,7 @@ public:
 	
 	std::vector<wxButton*> QlinkList[51];
 	ButtonPanel* SubPanelList[5];
-	int QLinkIndex;
+	int QLinkCount;
 	int SubPanelIndex;
 	int thisPanelIndex;
 	wxFlexGridSizer* ButtonSizer;
@@ -47,10 +47,13 @@ public:
 		return layoutName;
 	}
 	int getButtonIndex() {
-		return QLinkIndex;
+		return QLinkCount;
 	}
 	void setButtonIndex(int newIND) {
-		QLinkIndex = newIND;
+		QLinkCount = newIND;
+	}
+	void clearQlinkList() {
+
 	}
 };
 #endif

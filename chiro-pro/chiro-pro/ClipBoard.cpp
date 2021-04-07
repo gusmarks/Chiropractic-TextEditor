@@ -5,7 +5,6 @@ BEGIN_EVENT_TABLE(ClipboardDialog, wxFrame)
 EVT_BUTTON(BUTTON_Okay, ClipboardDialog::Okay)
 EVT_BUTTON(BUTTON_Closedialog, ClipboardDialog::cancelDialog)
 EVT_BUTTON(BUTTON_Newline, ClipboardDialog::NewLine)
-
 END_EVENT_TABLE()
 
 

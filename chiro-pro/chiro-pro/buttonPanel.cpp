@@ -5,13 +5,10 @@
 #include "Frame.h"
 #include <string>
 
-
-
-
 ButtonPanel::ButtonPanel(wxWindow* parent, wxString name, std::string layoutName, int ind) : wxPanel(parent, wxID_ANY, wxDefaultPosition,
 	wxDefaultSize, wxTAB_TRAVERSAL, name)
 {
-	QLinkIndex = 0;
+    QLinkCount = 0;
     thisPanelIndex = ind;
 	ButtonSizer = new wxFlexGridSizer(3, 17, 0, 0);
 	this->SetSizer(ButtonSizer);
@@ -30,12 +27,12 @@ void ButtonPanel::LoadButtons()
     std::string name;
     std::string maintext;
   
-    QLinkIndex = 0;//give value to index
+    QLinkCount = 0;//give value to index
     //while there is still text in the layout file keep taking in two lines into out string variables
     // creating buttons from those strings and adding them to the array. 
     //lastly updating th layout of the page and closing the layout file
 
-    while (this->ButtonLayoutin.peek() != EOF) {
+    while (this->ButtonLayoutin.peek() !=EOF) {
         //get input
         getline(this->ButtonLayoutin, name);
         getline(this->ButtonLayoutin, maintext);
@@ -43,17 +40,17 @@ void ButtonPanel::LoadButtons()
         //make button
         if (functionHelper->isNumber(maintext)) {
             this->QlinkList->push_back( new wxButton(this, BUTTON_Panel, name, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, maintext));
-            this->QlinkList->at(QLinkIndex)->SetBackgroundColour(*wxCYAN);
+            this->QlinkList->back()->SetBackgroundColour(*wxCYAN);
         }
         else {
             this->QlinkList->push_back(new wxButton(this, BUTTON_Write, name, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, maintext));
         }
         //add button to array
-        this-> ButtonSizer->Add(QlinkList->at(QLinkIndex), wxLeft);
+        this-> ButtonSizer->Add(QlinkList->back(), wxLeft);
         //update layout
         ButtonSizer->Layout();
         //update index
-        QLinkIndex++;
+        QLinkCount++;
     }
     //close file
     this->ButtonLayoutin.close();
@@ -90,7 +87,7 @@ void ButtonPanel::AddButton(wxString ButtonName,wxString ButtonText)
         QlinkList->push_back(new wxButton(this
             , BUTTON_Write, ButtonName, wxDefaultPosition, wxSize(80.5, 23), 0, wxDefaultValidator, ButtonText));
         //add the button to the button sizer
-        ButtonSizer->Add(QlinkList->at(QLinkIndex), wxLeft);
+        ButtonSizer->Add(QlinkList->back(), wxLeft);
         //update layout of page and button index
         ButtonSizer->Layout();
         
@@ -100,8 +97,8 @@ void ButtonPanel::AddButton(wxString ButtonName,wxString ButtonText)
         wxButton* newButton = new wxButton(this,
             BUTTON_Panel, ButtonName, wxDefaultPosition, wxSize(80.5, 23), 0, wxDefaultValidator, ButtonText);
         QlinkList->push_back(newButton);
-        QlinkList->at(QLinkIndex)->SetBackgroundColour(*wxCYAN);
-        ButtonSizer->Add(QlinkList->at(QLinkIndex), wxLeft);
+        QlinkList->back()->SetBackgroundColour(*wxCYAN);
+        ButtonSizer->Add(QlinkList->back(), wxLeft);
         //update layout of page and button index
         ButtonSizer->Layout();
         

@@ -63,7 +63,12 @@ bool DialogHelper::errorMessage(wxString str) {
         return true;
         break;
     }
+    return false;
 }
+/// <summary>
+/// this fucntion opens a Dialog to allow the user to fill a list of text.
+///  from this lis tthey can replace anyline in the Main document
+/// </summary>
 void DialogHelper::openClipBoard() {
     clipBoard =
         new ClipboardDialog("", wxDefaultPosition,wxDefaultSize);

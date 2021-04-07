@@ -7,12 +7,12 @@ void ButtonSet::SaveButtons() {
 }
 void ButtonSet::LoadButtons() {
     
-    for (int i = 0; i < panelIndex; i++) {
+    for (int i = 0; i < panelCount; i++) {
         panelList.at(i)->LoadButtons();
     }
 }
 void ButtonSet::SaveAllPanels(wxString set) {
-    std::string user = set.ToStdString();
+    //std::string user = set.ToStdString();
     std::string PanelLayout = "panelLayout/panelLayout" + setName.ToStdString() + ".txt";
     if (!this->PanelLayoutout.is_open()) {
         PanelLayoutout.open(PanelLayout, std::fstream::out);//modify to swap users later
@@ -32,9 +32,10 @@ void ButtonSet::SaveAllPanels(wxString set) {
     this->PanelLayoutout.close();
 }
 void ButtonSet::loadAllPanels(wxString set) {
+    setName;
     std::ifstream PanelLayoutin;
     std::string setname = set.ToStdString();
-    std::string fileName = "panelLayout/panelLayout" + setname + ".txt";
+    std::string fileName = path + ".txt";
     //open the button layout file assuming it is closed already
     //if (!PanelLayoutin) {
 
@@ -47,16 +48,17 @@ void ButtonSet::loadAllPanels(wxString set) {
         //two strings name and lable holding the lable and text
         std::string name;
         std::string LayoutName;
-        this->setPanelIndex(0);
+        this->setPanelCount(0);
 
         while (PanelLayoutin.peek() != EOF) {
             //get input
             getline(PanelLayoutin, name);
             getline(PanelLayoutin, LayoutName);
-            std::string index = std::to_string(panelIndex + 1);
-            panelList.push_back(new ButtonPanel(parent, name, LayoutName, panelIndex));
-            panelList.at(panelIndex)->Hide();
-            panelIndex++;
+            //std::string index = std::to_string(panelCount + 1);
+            //LayoutName += ".txt";
+            panelList.push_back(new ButtonPanel(parent, name, LayoutName, panelCount));
+            panelList.back()->Hide();//at(panelCount)->Hide();
+            panelCount++;
         }
        
         currentPanel = panelList.at(0);
@@ -83,8 +85,10 @@ void ButtonSet::SavePanelsAndButtonsNP() {
 }
 void ButtonSet::addNewPanel(wxFrame* parent, wxString name) {
 
-    ButtonPanel* newPanel = new ButtonPanel(parent,name,dir,panelIndex);
+    std::string filename = path + ".txt";
+
+    ButtonPanel* newPanel = new ButtonPanel(parent,name, filename, panelCount);
     this->addToPanelList(newPanel);
-    panelList.at(panelIndex)->Hide();
-    panelIndex++;
+    panelList.at(panelCount)->Hide();
+    panelCount++;
 }

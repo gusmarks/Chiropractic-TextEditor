@@ -17,6 +17,7 @@
 #include <wx/msgdlg.h>
 #include <wx/url.h>
 #include <wx/icon.h>
+#include <filesystem>
 
 using namespace std;
 
@@ -41,10 +42,10 @@ EVT_BUTTON(BUTTON_Write, MainFrame::ButtonWrite)
 EVT_BUTTON(BUTTON_Sign, MainFrame::Sign)
 EVT_BUTTON(BUTTON_Panel, MainFrame::swapHelper)
 EVT_BUTTON(BUTTON_Back, MainFrame::swapToPreviousPanel)
-EVT_BUTTON(BUTTON_NewSet,MainFrame::newSet)
+EVT_BUTTON(BUTTON_NewSet, MainFrame::newSet)
 EVT_CHOICE(CHOICE_SWAP_Set, MainFrame::SwapButtonSet)
 END_EVENT_TABLE()
-
+void loadButtonSetInfo(std::string path);
 /////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////main application///////////////////////////
 IMPLEMENT_APP(MainApplication) // Initializes the MainApplication class and tells our program
@@ -75,7 +76,8 @@ MainFrame::MainFrame(const wxString& title,
     const wxPoint& pos, const wxSize& size)
     : wxFrame((wxFrame*)NULL, -1, title, pos, size)
 {
-
+    //loads the basic data for button sets
+    loadButtonSetInfo("SetInfoAll.txt");
     //-----------menu-status start-----------
     //statusbar at the bottom of page has 2 cells
     //menu bar at the top ofthe page has 1 tab named File menu and visualy represented as File
@@ -109,10 +111,10 @@ MainFrame::MainFrame(const wxString& title,
 
     wxButton* AddButton = new wxButton(this, BUTTON_Add, "add", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "add");
     wxButton* SignButton = new wxButton(this, BUTTON_Sign, "Sign", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "Apply Signiture to document");
-    wxButton* swapToPanelOne = new wxButton(this, BUTTON_Panel, "subjective", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "1");
-    wxButton* swapToPanelTwo = new wxButton(this, BUTTON_Panel, "objective", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "2");
-    wxButton* swapToPanelThree = new wxButton(this, BUTTON_Panel, "assessment", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "3");
-    wxButton* swapToPanelFour = new wxButton(this, BUTTON_Panel, "Plan", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "4");
+    wxButton* swapToPanelOne = new wxButton(this, BUTTON_Panel, "subjective", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "0");
+    wxButton* swapToPanelTwo = new wxButton(this, BUTTON_Panel, "objective", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "1");
+    wxButton* swapToPanelThree = new wxButton(this, BUTTON_Panel, "assessment", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "2");
+    wxButton* swapToPanelFour = new wxButton(this, BUTTON_Panel, "Plan", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "3");
     wxButton* backButton = new wxButton(this, BUTTON_Back, "back", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "go back");
 
 
@@ -138,8 +140,10 @@ MainFrame::MainFrame(const wxString& title,
     userSelection->SetSelection(0);
     userSelection->Bind(wxEVT_CHOICE, &MainFrame::SwapButtonSet, this);
     //instanciate the first set
-    currentButtonSetName = ButtonSetNames[0];
-    ButtonSetList.push_back(new ButtonSet(this, currentButtonSetName, SetIndex, "panelLayout/panelLayout"));
+    //currentButtonSetName = ButtonSetNames[0];
+
+    
+    //ButtonSetList.push_back(new ButtonSet(this, currentButtonSetName.ToStdString(), SetCount, "panelLayout/panelLayoutRob",8));
     currentButtonSet = ButtonSetList.at(0);
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////text editor/////////////////////////////////
@@ -155,7 +159,8 @@ MainFrame::MainFrame(const wxString& title,
     ///////////////////////////button layout//////////////////////////////
  
     //loades the panels and buttons for the first set
-    currentButtonSet->loadPanelsAndButtons(currentButtonSetName);
+    currentButtonSet->loadPanelsAndButtons(currentButtonSet->getSetName());
+
 
     // set the current panel object to be the first panel, and tell it to show.
     //currentPanel = panelList[0];
@@ -177,8 +182,6 @@ MainFrame::MainFrame(const wxString& title,
 }
 /////////////////////end Frame Constructor/////////////
 ////////////////////////methods////////////////////////
-
-
 /// </summary>
 /// this method opens a dialog box that lets the user search thier file system 
 /// and open any.doc file
@@ -230,15 +233,12 @@ void MainFrame::saveFile(wxCommandEvent& WXUNUSED(event))
     if (MainFrame::getFilename().empty()) {
         MainFrame::setFilename(
             wxGetTextFromUser("Enter Name of File.do not include file extension", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true));
-
         MainFrame::appendFilename(".doc");
-     
             MainEditBox->SaveFile(MainFrame::getFilename());
     }
     else {
         MainEditBox->SaveFile(MainFrame::getFilename());
-    }
-    
+    }   
 }
 /// <summary>
 ///this method opens a dialog box that lets the user search thier file system and 
@@ -286,20 +286,17 @@ void MainFrame::AddButton(wxCommandEvent& event)
         //propts user for the name of the new panel link, the text is the panel index for the current button set
         wxString buttonName =
             wxGetTextFromUser("Enter text for button name", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-       
     //gets the panel index and adds the new button, also the new panel that the button will link to.
-        int panelIndex = currentButtonSet->getPanelIndex();
-        std::string panelIndexStr = std::to_string(panelIndex);
-        currentButtonSet->getCurrentPanel()->AddButton(buttonName, panelIndexStr);
-        currentButtonSet->addNewPanel(this, "Button-List" + panelIndex);
+        int panelCount = currentButtonSet->getPanelCount();
+        std::string panelCountStr = std::to_string(panelCount);
+        currentButtonSet->getCurrentPanel()->AddButton(buttonName, panelCountStr);
+        currentButtonSet->addNewPanel(this, "Button-List" + panelCount);
     }
     //bind the editing function, and update the button index for the panel
     int QIndex = currentButtonSet->getCurrentPanel()->getButtonIndex();
     currentButtonSet->getCurrentPanel()->QlinkList->at(QIndex)->
         Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
     currentButtonSet->getCurrentPanel()->setButtonIndex(QIndex+1);
-        
-   
 }
 /// <summary>////////////////////////////////////////////////
 /// this function makes a button write its texr to the texteditor/
@@ -371,16 +368,14 @@ void MainFrame::swapPanels(ButtonPanel* newPanel) {
     sizer->Detach(ControlSizer);
     sizer->Detach(currentPanel);
     sizer->Detach(ButtonSetSizer);
-    currentPanel->Hide();
+    currentButtonSet->getCurrentPanel()->Hide();
    
-    currentPanel = newPanel;
-    
-    currentPanel->Show();
-    
-    sizer->Prepend(currentPanel, 2, wxEXPAND);
+    currentButtonSet->setCurrentPanel(newPanel);
+
+    sizer->Prepend(currentButtonSet->getCurrentPanel(), 2, wxEXPAND);
     sizer->Prepend(ControlSizer, 0, wxALIGN_CENTER);
     sizer->Prepend(ButtonSetSizer, 0, wxALIGN_CENTER);
-    currentPanel->Show();
+    currentButtonSet->getCurrentPanel()->Show();
     sizer->Layout();
     Update();  
 }
@@ -435,58 +430,60 @@ void MainFrame::SwapButtonSet(wxCommandEvent& evt)
     int setIndex = choi->GetSelection();
     // if the Buttonset in question's files exist and it is not the current buttonset then destroy the old panels set the new 
     //current buttonset and load its panels and buttons
-    if (DoseUserExist(ButtonSetNames[setIndex])&& currentButtonSet != ButtonSetNames[setIndex]) {
-        destroyPanels(currentButtonSetName);
+    if (functionHelper->DoseUserExist(ButtonSetNames[setIndex]) && currentButtonSet->getSetName() != ButtonSetNames[setIndex]) {
+        //remove the panels from the current set
+        destroyPanels(currentButtonSet->getSetName());
+        //chance the current set
         currentButtonSet = ButtonSetList.at(setIndex);
-        currentButtonSetName = ButtonSetNames[setIndex];
-        currentButtonSet->loadPanelsAndButtons(currentButtonSetName);
-    }
-    //detach several sizers and reattach them to update the layout properly
-    sizer->Detach(ButtonSetSizer);
-    sizer->Detach(ControlSizer);
-    sizer->Detach(currentButtonSet->getCurrentPanel());
+        //load panels for the new current set
+        currentButtonSet->loadPanelsAndButtons(currentButtonSet->getSetName());
 
-    sizer->Prepend(currentButtonSet->getCurrentPanel(), 2, wxEXPAND);
-    sizer->Prepend(ControlSizer, 0, wxALIGN_CENTER);
-    sizer->Prepend(ButtonSetSizer, 0, wxALIGN_CENTER);
-   
-    sizer->Layout();
+        //detach several sizers and reattach them to update the layout properly
+        sizer->Detach(ButtonSetSizer);
+        sizer->Detach(ControlSizer);
+        sizer->Detach(currentButtonSet->getCurrentPanel());
+
+        sizer->Prepend(currentButtonSet->getCurrentPanel(), 2, wxEXPAND);
+        sizer->Prepend(ControlSizer, 0, wxALIGN_CENTER);
+        sizer->Prepend(ButtonSetSizer, 0, wxALIGN_CENTER);
+
+        sizer->Layout();
+    }
+    else if(!functionHelper->DoseUserExist(ButtonSetNames[setIndex])){// if the set dose not exist or if we selected the same user
+        popUpHandeler->errorMessage("set dose not exist");
+    }
+    else if (currentButtonSet->getSetName() == ButtonSetNames[setIndex]) {
+        popUpHandeler->errorMessage("this is the same user");
+    }
 }
 void MainFrame::destroyPanels(wxString set) {
     //systematicly destroy all panels and buttons for a given set. ---consider moving this to the buttonset class
-    for (size_t i = 0; i < currentButtonSet->getPanelListSize(); i++) {
+    for (int i = 0; i < currentButtonSet->getPanelListSize(); i++) {
         sizer->Detach(currentButtonSet->getPanelAtIndex(i));
         currentButtonSet->getPanelAtIndex(i)->~ButtonPanel();
-        //currentButtonSet->getPanelIndex()--;
         sizer->Layout();
-        Update();
+        Update();   
     }
-}
-bool MainFrame::DoseUserExist(wxString usr) {
-    //confirm the existance of button set files with an ifstream, by opening it and chacking if it fails
-    ifstream setStream;
-    std::string user = usr.ToStdString();
-    std::string fileName = "panelLayout/panelLayout" + user + ".txt";
-    
-    setStream.open(fileName, std::fstream::in);
-    if (setStream.fail()) {
-        setStream.close();
-        return false;
-    }
-    else {
-        setStream.close();
-        return true;
-    }
-
+    currentButtonSet->clearPanelList();
 }
 void MainFrame::newSet(wxCommandEvent& event) {
     //props the user for a name for the new button set, then adds the new set to the set list
     //opens an ofstream and writes a new file for the button set
     wxString setName=
         wxGetTextFromUser("Please enter name of new set", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-    ButtonSetNames[SetIndex] = setName;
-    ButtonSetList.push_back(new ButtonSet(this, setName, SetIndex, "panelLayout/panelLayout" + setName.ToStdString() + ".txt"));
-    ofstream newSetStream("panelLayout/panelLayout" + setName.ToStdString() + ".txt");
+    ButtonSetNames[SetCount] = setName;
+    std::string filename = "panelLayout/panelLayout" + setName.ToStdString() + ".txt";
+    std::string pathname = "panelLayout/panelLayout" + setName.ToStdString();
+    //std::string setInfoPath = "SetInformation/SetInfo" + setName.ToStdString() + ".txt";
+
+    ButtonSetList.push_back(new ButtonSet(this, setName.ToStdString(), SetCount, pathname,4));
+
+    ofstream newSetStream(filename);
+    int check = mkdir(pathname.c_str());
+    for (int i = 0; i < 4; i++) {
+        std::string buttonfilename = pathname+"/layout" +(std::to_string(i+1))+ ".txt";
+        ofstream basicFileStream(buttonfilename);
+    }
 
     size_t size = sizeof(ButtonSetNames) / sizeof(ButtonSetNames[0]);
     userSelection->Clear();
@@ -499,11 +496,10 @@ void MainFrame::newSet(wxCommandEvent& event) {
     for (int i = 0; i < 4; i++) {
         newSetStream << "button-List"+std::to_string(i+1);
         newSetStream << "\n";
-        newSetStream << ("layouts/layout" + std::to_string(i+1) + ".txt");
+        newSetStream << (pathname+"/layout" + std::to_string(i+1) + ".txt");
         newSetStream << "\n";
     }
-    SetIndex++;
-
+    SetCount++;
 }
 /// <summary>
 /// saves the panels and buttons for the current button set
@@ -511,4 +507,46 @@ void MainFrame::newSet(wxCommandEvent& event) {
 /// <param name="event"></param>
 void MainFrame::SavePanelsAndButtons(wxCommandEvent & event) {
     currentButtonSet->SavePanelsAndButtonsNP();
+    //std::string setPathName = "SetInformation/SetInfo" + currentButtonSet->getSetName().ToStdString() + ".txt";
+    saveButtonSetInfo("SetInfoAll.txt");
+}
+void MainFrame::saveButtonSetInfo(std::string path) {
+
+    setInfoOut.open(path,std::ofstream::out|std::ofstream::trunc);
+    if (setInfoOut.good()) {
+
+    }
+    if (!setInfoOut.fail()) {
+        for (size_t i = 0; i < ButtonSetList.size(); i++) {
+            setInfoOut << ButtonSetList.at(i)->getSetName().ToStdString();
+            setInfoOut << "\n";
+            setInfoOut << ButtonSetList.at(i)->getPanelCount();
+            setInfoOut << "\n";
+            setInfoOut << ButtonSetList.at(i)->getPath();
+            setInfoOut << "\n";
+        }
+    }
+}
+void MainFrame::loadButtonSetInfo(std::string path) {
+
+    std::string filepath = path;
+    setInfoIn.open(filepath);
+    std::string panelNo;
+    std::string setName;
+    std::string setPath;
+    //int i = 0;
+    while (setInfoIn.peek() != EOF) {
+        getline(setInfoIn, setName);
+        getline(setInfoIn, panelNo);
+        getline(setInfoIn, setPath);
+
+        int PanelNo = std::stoi(panelNo);
+        ButtonSetNames[SetCount] = setName;
+        ButtonSetList.push_back(new ButtonSet(this, setName, SetCount, setPath, PanelNo));
+        SetCount++;
+
+    }
+    currentButtonSet = ButtonSetList.at(0);
+
+
 }

@@ -25,11 +25,11 @@ public:
 	// all public variable are referanced offten and for development purposes are in the public catigory 
 	wxTextCtrl* MainEditBox;
 	wxMenuBar* MainMenu;
-	wxString ButtonSetNames[10] = {"Rob"};
-	int SetIndex = 1;
+	wxString ButtonSetNames[10] = {};
+	int SetCount = 0;
 	wxChoice* userSelection;
 	std::vector<ButtonSet*> ButtonSetList;
-	wxString currentButtonSetName;
+	//wxString currentButtonSetName;
 	ButtonSet* currentButtonSet;
 	wxBoxSizer* ButtonSetSizer;
 	wxBoxSizer* sizer;
@@ -37,7 +37,10 @@ public:
 	DialogHelper* popUpHandeler;
 	FuncHelper* functionHelper;
 	bool Signed = false;
-	// function headers i try to keep only event functions, someof witch are only wrapper methods
+	std::ifstream setInfoIn;
+	std::ofstream setInfoOut;
+
+	// function headers for event functions.
 	MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 	void openFile(wxCommandEvent& event);
 	void saveFile(wxCommandEvent& event);
@@ -45,7 +48,7 @@ public:
 	void closeFile(wxCommandEvent& event); 
 	void AddButton(wxCommandEvent& event);
 	void ButtonWrite(wxCommandEvent& event);
-	void swapPanels(ButtonPanel* newPanel);
+	void swapPanels(ButtonPanel* newPanel);//this is used to swap panels and called by an event function
 	void swapHelper(wxCommandEvent& event);
 	void swapToPreviousPanel(wxCommandEvent& event);
 	void clickURLinTextCtrl(wxMouseEvent& evt);
@@ -53,8 +56,7 @@ public:
 	void Sign(wxCommandEvent& WXUNUSED(event));
 	void onRightClick(wxMouseEvent& event);
 	void onPopUpCLick(wxCommandEvent& event);
-	void destroyPanels(wxString usr);
-	bool DoseUserExist(wxString usr);
+	void destroyPanels(wxString usr);// move these functions
 	void newSet(wxCommandEvent& event);
 	void SavePanelsAndButtons(wxCommandEvent& event);
 	/// <summary>
@@ -111,6 +113,8 @@ public:
 		event.Skip();
 		Close(TRUE); // Tells the OS to quit running this process
 	}
+	void saveButtonSetInfo(std::string path);
+	void loadButtonSetInfo(std::string path);
 	
 		DECLARE_EVENT_TABLE()
 };

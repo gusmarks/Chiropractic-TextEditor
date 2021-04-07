@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <iostream>
+#include <fstream>
 class FuncHelper {
 
 public:
@@ -27,10 +29,27 @@ public:
 /// this function returns the current date and time 
 /// </summary>
 /// <returns></returns>
-   // std::string getDateToSign() {
+    std::string getDateToSign() {
      //   time_t current;
       //  time(&current);
 
        // return  ctime(&current);
-    //}
+    }
+    bool DoseUserExist(wxString usr) {
+        //confirm the existance of button set files with an ifstream, by opening it and chacking if it fails
+        std::ifstream setStream;
+        std::string user = usr.ToStdString();
+        std::string fileName = "panelLayout/panelLayout" + user + ".txt";
+
+        setStream.open(fileName, std::fstream::in);
+        if (setStream.fail()) {
+            setStream.close();
+            return false;
+        }
+        else {
+            setStream.close();
+            return true;
+        }
+
+    }
 };
