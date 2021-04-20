@@ -88,6 +88,7 @@ void ButtonSet::addNewPanel(wxFrame* parent, wxString name) {
     std::string filename = path + ".txt";
 
     ButtonPanel* newPanel = new ButtonPanel(parent,name, filename, panelCount);
+    newPanel->setPrev(currentPanel);
     this->addToPanelList(newPanel);
     panelList.at(panelCount)->Hide();
     panelCount++;

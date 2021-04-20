@@ -12,6 +12,8 @@
 #include "FunctionHelper.h"
 #include "ButtonSet.h"
 #include "buttonPanel.h"
+#include "NavLink.h"
+#include <wx/hyperlink.h>
 
 
 //MainFrame extends the wxFrame class to make a window
@@ -34,11 +36,14 @@ public:
 	wxBoxSizer* ButtonSetSizer;
 	wxBoxSizer* sizer;
 	wxBoxSizer* ControlSizer;
+	wxBoxSizer* LinkSizer;
 	DialogHelper* popUpHandeler;
 	FuncHelper* functionHelper;
 	bool Signed = false;
 	std::ifstream setInfoIn;
 	std::ofstream setInfoOut;
+	NavLink* Link1;
+	NavLink* link2;
 
 	// function headers for event functions.
 	MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
@@ -115,6 +120,8 @@ public:
 	}
 	void saveButtonSetInfo(std::string path);
 	void loadButtonSetInfo(std::string path);
+	void LinkNavigation(wxHyperlinkEvent& evt);
+	void BuildNavLinks(ButtonPanel* panelToWork);
 	
 		DECLARE_EVENT_TABLE()
 };
@@ -140,5 +147,6 @@ enum
 	MENU_EditButtonName,
 	MENU_EditButtonText,
 	MENU_SaveButtons,
+	LINK_NAVIGATE,
 };
 #endif

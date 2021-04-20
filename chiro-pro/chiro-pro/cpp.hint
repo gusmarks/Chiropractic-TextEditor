@@ -14,3 +14,4 @@
 #define EVT_LEFT_DCLICK(func) wx__DECLARE_EVT0(wxEVT_LEFT_DCLICK, wxMouseEventHandler(func))
 #define DECLARE_EVENT_TABLE() wxDECLARE_EVENT_TABLE();
 #define EVT_CHOICE(winid, func) wx__DECLARE_EVT1(wxEVT_CHOICE, winid, wxCommandEventHandler(func))
+#define EVT_HYPERLINK(id, fn) wx__DECLARE_EVT1(wxEVT_HYPERLINK, id, wxHyperlinkEventHandler(fn))

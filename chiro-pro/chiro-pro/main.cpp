@@ -18,6 +18,8 @@
 #include <wx/url.h>
 #include <wx/icon.h>
 #include <filesystem>
+#include "NavLink.h"
+
 
 using namespace std;
 
@@ -44,6 +46,7 @@ EVT_BUTTON(BUTTON_Panel, MainFrame::swapHelper)
 EVT_BUTTON(BUTTON_Back, MainFrame::swapToPreviousPanel)
 EVT_BUTTON(BUTTON_NewSet, MainFrame::newSet)
 EVT_CHOICE(CHOICE_SWAP_Set, MainFrame::SwapButtonSet)
+EVT_HYPERLINK(LINK_NAVIGATE, MainFrame::LinkNavigation)
 END_EVENT_TABLE()
 void loadButtonSetInfo(std::string path);
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -58,7 +61,8 @@ bool MainApplication::OnInit()
     MainFrame* MainWin = new MainFrame(wxT("DocuMaster"), wxPoint(1, 1),
         wxSize(300, 200)); // Create an instance of our frame, or window
     MainWin->Show(TRUE); // show the window
-    MainWin->SetIcon(wxIcon("DocumentIcon.ico"));
+    MainWin->SetIcon(wxIcon("SAMPLE"));
+   // MainWin->SetIcon(wxIcon());
     SetTopWindow(MainWin);// and finally, set it as the main window
     
     return TRUE;
@@ -117,8 +121,8 @@ MainFrame::MainFrame(const wxString& title,
     wxButton* swapToPanelFour = new wxButton(this, BUTTON_Panel, "Plan", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "3");
     wxButton* backButton = new wxButton(this, BUTTON_Back, "back", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "go back");
 
-
-
+    
+    
     //make a box sizer to add the buttons too
     ControlSizer = new wxBoxSizer(wxHORIZONTAL);
     //add the buttons to the box sizer
@@ -140,11 +144,8 @@ MainFrame::MainFrame(const wxString& title,
     userSelection->SetSelection(0);
     userSelection->Bind(wxEVT_CHOICE, &MainFrame::SwapButtonSet, this);
     //instanciate the first set
-    //currentButtonSetName = ButtonSetNames[0];
-
-    
-    //ButtonSetList.push_back(new ButtonSet(this, currentButtonSetName.ToStdString(), SetCount, "panelLayout/panelLayoutRob",8));
     currentButtonSet = ButtonSetList.at(0);
+
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////text editor/////////////////////////////////
     //add a wxtextctrl this is the main text editor
@@ -160,6 +161,11 @@ MainFrame::MainFrame(const wxString& title,
  
     //loades the panels and buttons for the first set
     currentButtonSet->loadPanelsAndButtons(currentButtonSet->getSetName());
+
+    Link1 = new NavLink(this, LINK_NAVIGATE, currentButtonSet->getCurrentPanel()->GetName(), currentButtonSet->getCurrentPanel());
+    LinkSizer = new wxBoxSizer(wxHORIZONTAL);
+    LinkSizer->Prepend(Link1);
+    ControlSizer->Prepend(LinkSizer);
 
 
     // set the current panel object to be the first panel, and tell it to show.
@@ -290,7 +296,7 @@ void MainFrame::AddButton(wxCommandEvent& event)
         int panelCount = currentButtonSet->getPanelCount();
         std::string panelCountStr = std::to_string(panelCount);
         currentButtonSet->getCurrentPanel()->AddButton(buttonName, panelCountStr);
-        currentButtonSet->addNewPanel(this, "Button-List" + panelCount);
+        currentButtonSet->addNewPanel(this, buttonName);
     }
     //bind the editing function, and update the button index for the panel
     int QIndex = currentButtonSet->getCurrentPanel()->getButtonIndex();
@@ -388,6 +394,7 @@ void MainFrame::swapHelper(wxCommandEvent& event){
     wxString ButtonName = btton->GetName();
     int PanelIndexToSwapTo = wxAtoi(ButtonName.ToStdString());
     ButtonPanel* panelToSwapTo= currentButtonSet->getPanelAtIndex(PanelIndexToSwapTo);
+    BuildNavLinks(panelToSwapTo);
     swapPanels(panelToSwapTo);
 }
 /// <summary>
@@ -549,4 +556,31 @@ void MainFrame::loadButtonSetInfo(std::string path) {
     currentButtonSet = ButtonSetList.at(0);
 
 
+}
+void MainFrame::LinkNavigation(wxHyperlinkEvent& evt) {
+    //MainEditBox->WriteText("testing123");
+    NavLink* tempLink = (NavLink*)evt.GetEventObject();
+    swapPanels(tempLink->getPanel());
+}
+void MainFrame::BuildNavLinks(ButtonPanel* panelToWork){
+   
+
+    if (panelToWork->hasPrev()) {
+        link2 = new NavLink(this, LINK_NAVIGATE, panelToWork->GetName(), panelToWork);
+        LinkSizer->Add(link2);
+        LinkSizer->Layout();
+    }
+    else {
+        
+        link2->Hide();
+        LinkSizer->Clear();
+        LinkSizer->Add(Link1);
+        LinkSizer->Layout();
+        Update();
+        //sizer->Layout();
+        Link1->setName(panelToWork->GetName());
+        Link1->setPanel(panelToWork);
+        
+    }
+    
 }

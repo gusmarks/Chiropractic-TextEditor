@@ -14,6 +14,7 @@ class ButtonPanel : public wxPanel
 {
 private:
 	ButtonPanel* prev;
+	int level;
 public:
 	ButtonPanel(wxWindow* parent,wxString name,std::string layoutName,int ind);
 	~ButtonPanel() {
@@ -54,6 +55,12 @@ public:
 	}
 	void clearQlinkList() {
 
+	}
+	bool hasPrev() {
+		if (this->prev != NULL) {
+			return true;
+		}
+		return false;
 	}
 };
 #endif
