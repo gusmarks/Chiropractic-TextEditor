@@ -20,7 +20,7 @@ public://an ofstream to save configurations
 	
 	//constructor sets most of the variable
 	ButtonSet(wxFrame* parent, std::string name,int setNo,std::string Directory,int panelNo) {
-		popUpHandeler = new DialogHelper();
+		popUpHandeler = new DialogHelper(parent);
 		this->parent = parent;
 		path = Directory;
 		setName = name;

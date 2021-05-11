@@ -1,0 +1,67 @@
+OTHER
+----
+Denies Hx of diabetes,cancer,hypertension
+progressive neuralogical disorders
+----
+no change in family health history
+N/A
+none reported
+----
+number of children -
+number of pregnancies -
+number of deliveries -
+cancer -
+congenital anomaly -
+extremity issues -
+fracture -
+hereditary disorder -
+hospitalization -
+neuromuscular issues -
+trama/injury - 
+----
+AIDS/HIV
+alcoholism
+alzheimer's
+anemia
+anorecia
+arthritis
+asthma
+bleeding disorders
+breast lump
+bronchitis
+bulimia
+chemical dependency
+depression
+diabetes
+emphysema
+epilepsy
+heart disease
+hepatitis
+hernia
+herniated disc
+high blood presure
+high cholesterol
+kidney disease
+liver disease
+migraine headaches
+miscarage 
+multiple sclerosis
+natural labor
+osteoarthritis
+osteoporosis
+pacemaker
+Parkinson's disease
+pinched nerve
+pneumonia
+polio
+previous chiropractic care
+prostate problems
+psychiatric care
+rheumatoid arthritis
+stroke
+suicide attempt
+thyroid problems
+tumor
+ulcers
+vaginal infection
+venereal disease

@@ -8,6 +8,8 @@ class MainApplication: public wxApp
 {
 public: 
 	virtual bool OnInit();
+	wxRichTextStyleSheet* GetStyleSheet() const { return m_styleSheet; }
+	wxRichTextStyleSheet* m_styleSheet;
 };
 
 

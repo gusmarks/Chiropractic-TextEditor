@@ -1,7 +1,10 @@
 #include "DialogHelper.h"
+#include <wx/choicdlg.h>
 
-DialogHelper::DialogHelper() {
+#include <fstream>
 
+DialogHelper::DialogHelper(wxWindow* parent) {
+    this->parent = parent;
 }
 /// <summary>
 /// the function confirmIntent accepts a string with a question,
@@ -31,22 +34,25 @@ bool DialogHelper::confirmIntent(wxString message) {
 /// to the current panel
 /// </summary>
 /// <returns></returns>
-bool DialogHelper::confirmIntentAddButton() {
-    wxMessageDialog dialog(NULL, wxT("would you like a text button, or a Linking Button?"), wxT("Question"),
-        wxNO_DEFAULT | wxYES_NO | wxICON_QUESTION);
-    dialog.SetYesNoLabels((wxMessageDialogBase::ButtonLabel)"text", (wxMessageDialogBase::ButtonLabel)"Link");
+wxString DialogHelper::confirmIntentAddButton(wxWindow* parent) {
+    wxArrayString options;
+    options.Add("text output.");
+    options.Add("new page.");
+    options.Add("popup.");
+    wxSingleChoiceDialog dialog(parent, wxT("would you like a text button, or a Linking Button?"), wxT("Question"), options);
+    //dialog.SetYesNoLabels((wxMessageDialogBase::ButtonLabel)"text", (wxMessageDialogBase::ButtonLabel)"Link");
     switch (dialog.ShowModal()) {
-    case wxID_YES:
-        wxLogStatus(wxT("You pressed \"Text\""));
-        return true;
+    case wxID_OK:
+        wxLogStatus(wxT("You pressed \"Ok\""));
+        return dialog.GetStringSelection();
         break;
-    case wxID_NO:
-        wxLogStatus(wxT("You pressed \"Link\""));
-        return false;
+    case wxID_CANCEL:
+        wxLogStatus(wxT("You pressed \"Cancel\""));
+        return "Cancel";
         break;
     default:       wxLogError(wxT("Unexpected wxMessageDialog return code!"));
     }
-    return false;
+    return "";
 }
 /// <summary>
 /// takes in a string with any message, and produces a popup error message
@@ -74,4 +80,82 @@ void DialogHelper::openClipBoard() {
         new ClipboardDialog("", wxDefaultPosition,wxDefaultSize);
     clipBoard->Show();
 
+}
+wxString DialogHelper::FreqOfPain() {
+    std::ifstream choiceIn;
+    choiceIn.open("DialogInformation/FreqOfPain.txt", std::fstream::in);
+    wxArrayString choices;
+    std::string choice;
+    while (choiceIn.peek() != EOF) {
+
+        getline(choiceIn, choice);
+        choices.Add(choice);
+    }
+    wxMultiChoiceDialog dialog(this->parent, wxT("Frequency of pain?"), wxT("Make a Selection"), choices);
+    if (dialog.ShowModal() == wxID_OK) {
+        wxArrayInt selections = dialog.GetSelections();
+        wxString msg;
+        msg.Printf(wxT("you selected %u items:\n"), selections.GetCount());
+        for (size_t n = 0; n < selections.GetCount(); n++) {
+            msg += wxString::Format(wxT("\t%d: %d (%s)\n"), n, selections[n], choices[selections[n]].c_str());
+        }
+        wxMessageBox(msg, wxT("got selections"));
+    }
+
+    return "";
+}
+wxString DialogHelper::MechOfInjury() {
+    std::ifstream choiceIn;
+    choiceIn.open("DialogInformation/Injury.txt", std::fstream::in);
+    wxArrayString choices;
+    std::string choice;
+    while (choiceIn.peek() != EOF) {
+        
+        getline(choiceIn, choice);
+        choices.Add(choice);
+    }
+    wxMultiChoiceDialog dialog(this->parent, wxT("Mechanism of injury or condition?"), wxT("Make a Selection"), choices);
+    if (dialog.ShowModal() == wxID_OK) {
+        wxArrayInt selections = dialog.GetSelections(); 
+        wxString msg;
+        msg.Printf(wxT("you selected %u items:\n"), selections.GetCount());
+        for (size_t n = 0; n < selections.GetCount(); n++) {
+            msg += wxString::Format(wxT("\t%d: %d (%s)\n"), n, selections[n], choices[selections[n]].c_str());
+        }
+        wxMessageBox(msg, wxT("got selections"));
+    }
+
+    return "";
+}
+wxString DialogHelper::Alergies_Sensitivities() {
+    std::ifstream choiceIn;
+    choiceIn.open("DialogInformation/Allergies.txt", std::fstream::in);
+    wxArrayString choices;
+    std::string choice;
+    while (choiceIn.peek() != EOF) {
+
+        getline(choiceIn, choice);
+        choices.Add(choice);
+    }
+    //choices.Add(wxT("one"));
+    //choices.Add(wxT("two"));
+    wxMultiChoiceDialog dialog(this->parent, wxT("Dose the patient have any known allergies, or sensitivities?"), wxT("Make a Selection"), choices);
+    if (dialog.ShowModal() == wxID_OK) {
+        wxArrayInt selections = dialog.GetSelections();
+        wxString msg;
+        msg.Printf(wxT("you selected %u items:\n"), selections.GetCount());
+        for (size_t n = 0; n < selections.GetCount(); n++) {
+            msg += wxString::Format(wxT("\t%d: %d (%s)\n"), n, selections[n], choices[selections[n]].c_str());
+        }
+        wxMessageBox(msg, wxT("got selections"));
+    }
+
+    return "";
+}
+wxString DialogHelper::Calender() {
+    cal = new CalenderDialog(parent, "Date of Accident");
+    cal->Show();
+    return "";
+}
+void DialogHelper::MaxLevel(){
 }

@@ -13,7 +13,7 @@ void ButtonSet::LoadButtons() {
 }
 void ButtonSet::SaveAllPanels(wxString set) {
     //std::string user = set.ToStdString();
-    std::string PanelLayout = "panelLayout/panelLayout" + setName.ToStdString() + ".txt";
+    std::string PanelLayout = this->path + ".txt";
     if (!this->PanelLayoutout.is_open()) {
         PanelLayoutout.open(PanelLayout, std::fstream::out);//modify to swap users later
     }
@@ -25,9 +25,11 @@ void ButtonSet::SaveAllPanels(wxString set) {
             this->PanelLayoutout << "\n";
             this->PanelLayoutout << this->panelList[i]->getLayoutName();
             this->PanelLayoutout << "\n";
+            //this->PanelLayoutout << this->panelList[i]->getPrev()->GetName();
 
         }
     }
+ 
     //clsoe file
     this->PanelLayoutout.close();
 }
@@ -57,7 +59,7 @@ void ButtonSet::loadAllPanels(wxString set) {
             //std::string index = std::to_string(panelCount + 1);
             //LayoutName += ".txt";
             panelList.push_back(new ButtonPanel(parent, name, LayoutName, panelCount));
-            panelList.back()->Hide();//at(panelCount)->Hide();
+            panelList.back()->Hide();
             panelCount++;
         }
        
@@ -83,13 +85,15 @@ void ButtonSet::SavePanelsAndButtonsNP() {
     SaveButtons();
 
 }
-void ButtonSet::addNewPanel(wxFrame* parent, wxString name) {
+/*void ButtonSet::addNewPanel(wxFrame* parent, wxString name) {
 
     std::string filename = path + ".txt";
 
     ButtonPanel* newPanel = new ButtonPanel(parent,name, filename, panelCount);
     newPanel->setPrev(currentPanel);
+    newPanel->makeLevel();
     this->addToPanelList(newPanel);
+    
     panelList.at(panelCount)->Hide();
     panelCount++;
-}
+}*/

@@ -30,10 +30,10 @@ public:
 /// </summary>
 /// <returns></returns>
     std::string getDateToSign() {
-     //   time_t current;
-      //  time(&current);
+        time_t current;
+        time(&current);
 
-       // return  ctime(&current);
+        return  ctime(&current);
     }
     bool DoseUserExist(wxString usr) {
         //confirm the existance of button set files with an ifstream, by opening it and chacking if it fails

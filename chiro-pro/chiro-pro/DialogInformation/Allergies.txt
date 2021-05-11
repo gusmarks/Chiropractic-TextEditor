@@ -1,0 +1,24 @@
+other
+-----
+No new allergies or sensitivites reported
+No known allergy
+---Enviromental---
+Animal Dander/fur
+Dairy
+Dust
+Latex
+Nuts
+Pollen
+Seafood
+Tape or Adhesive
+Therapeutic cold sensitivity
+Therapeutic heat sensitivity
+Wheat
+---Medicinal---
+Anti-Seizure medication
+Cephalosporins
+General anesthesia
+IV contrast dye
+NSAID
+Penicillin
+Sulfonamides

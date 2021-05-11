@@ -5,16 +5,18 @@
 #include "Frame.h"
 #include <string>
 
-ButtonPanel::ButtonPanel(wxWindow* parent, wxString name, std::string layoutName, int ind) : wxPanel(parent, wxID_ANY, wxDefaultPosition,
+ButtonPanel::ButtonPanel(wxWindow* parent, wxString name, std::string pathName, int ind) : wxPanel(parent, wxID_ANY, wxDefaultPosition,
 	wxDefaultSize, wxTAB_TRAVERSAL, name)
 {
     QLinkCount = 0;
-    thisPanelIndex = ind;
 	ButtonSizer = new wxFlexGridSizer(3, 17, 0, 0);
 	this->SetSizer(ButtonSizer);
-    this->layoutName = layoutName;
+    this->pathName = pathName;
+    this->layoutName = this->pathName + ".txt";
     functionHelper = new FuncHelper();
-    popUpHandeler = new DialogHelper();
+    popUpHandeler = new DialogHelper(parent);
+    this->makeLevel();
+    
 }
 
 void ButtonPanel::LoadButtons()
@@ -75,32 +77,66 @@ void ButtonPanel::saveButtons() {
     this->ButtonLayoutout.close();
 
 }
-ButtonPanel* ButtonPanel::getPrev() {
-    return this->prev;
-}
-void ButtonPanel::setPrev(ButtonPanel* panel) {
-    this->prev = panel;
-}
+
 void ButtonPanel::AddButton(wxString ButtonName,wxString ButtonText)
 {      
     if (!functionHelper->isNumber(ButtonText.ToStdString())) {
-        QlinkList->push_back(new wxButton(this
-            , BUTTON_Write, ButtonName, wxDefaultPosition, wxSize(80.5, 23), 0, wxDefaultValidator, ButtonText));
-        //add the button to the button sizer
-        ButtonSizer->Add(QlinkList->back(), wxLeft);
-        //update layout of page and button index
-        ButtonSizer->Layout();
+        std::string text = ButtonText.ToStdString();
+        std::string check = "Dialog-ID";
+        if (text.find(check)!=std::string::npos) {
+            QlinkList->push_back(new wxButton(this
+                , BUTTON_Dialog, ButtonName, wxDefaultPosition, wxSize(80.5, 23), 0, wxDefaultValidator, ButtonText));
+            QlinkList->back()->SetForegroundColour(wxColour(28,86,163));
+            //add the button to the button sizer
+            ButtonSizer->Add(QlinkList->back(), wxLeft);
+            //update layout of page and button index
+            ButtonSizer->Layout();
+        }
+        else {
+            QlinkList->push_back(new wxButton(this
+                , BUTTON_Write, ButtonName, wxDefaultPosition, wxSize(80.5, 23), 0, wxDefaultValidator, ButtonText));
+            //add the button to the button sizer
+            ButtonSizer->Add(QlinkList->back(), wxLeft);
+            //update layout of page and button index
+            ButtonSizer->Layout();
+        }
+
         
     }
     else {
-        //int QIndex = QLinkIndex;
         wxButton* newButton = new wxButton(this,
-            BUTTON_Panel, ButtonName, wxDefaultPosition, wxSize(80.5, 23), 0, wxDefaultValidator, ButtonText);
+            wxID_ANY, ButtonName, wxDefaultPosition, wxSize(80.5, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, ButtonText);
+        newButton->SetForegroundColour(*wxRED);
         QlinkList->push_back(newButton);
-        QlinkList->back()->SetBackgroundColour(*wxCYAN);
+        //newButton->Bind()
         ButtonSizer->Add(QlinkList->back(), wxLeft);
         //update layout of page and button index
         ButtonSizer->Layout();
+        Layout();
         
+    }
+}
+void ButtonPanel::addNewPanel(wxFrame* parent, wxString name,wxString filePath) {
+
+    std::string filename = filePath.ToStdString()+"layout" + std::to_string(subPanelCount) + ".txt";
+    
+
+    ButtonPanel* newPanel = new ButtonPanel(parent, name, filename, subPanelCount);
+    newPanel->setPrev(this);
+    this->setSubPanel(subPanelCount, newPanel);
+    newPanel->makeLevel();
+    newPanel->Hide();
+    subPanelCount++;
+}
+
+void ButtonPanel::saveSubPanels() {
+
+}
+
+ButtonPanel* ButtonPanel::getPanelAtIndex(int ind) {
+    if (ind < 8) {
+        if (SubPanelList[ind] != NULL) {
+            return SubPanelList[ind];
+        }
     }
 }

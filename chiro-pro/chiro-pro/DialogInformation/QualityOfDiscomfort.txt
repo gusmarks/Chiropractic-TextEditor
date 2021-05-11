@@ -1,0 +1,12 @@
+sharp
+dull
+aching
+burning
+numbness
+tingling
+stabbing
+shooting
+stiffness
+throbbing
+deep
+spasming
