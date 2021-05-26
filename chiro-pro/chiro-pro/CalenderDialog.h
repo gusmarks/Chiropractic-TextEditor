@@ -8,5 +8,9 @@ public:
 	wxCalendarCtrl* cal;
 	wxBoxSizer* vert;
 	wxBoxSizer* horz;
+
+	wxString getVal() {
+		return cal->GetDate().FormatDate();
+	}
 private:
 };

@@ -75,87 +75,58 @@ bool DialogHelper::errorMessage(wxString str) {
 /// this fucntion opens a Dialog to allow the user to fill a list of text.
 ///  from this lis tthey can replace anyline in the Main document
 /// </summary>
-void DialogHelper::openClipBoard() {
-    clipBoard =
-        new ClipboardDialog("", wxDefaultPosition,wxDefaultSize);
-    clipBoard->Show();
+/// 
 
-}
-wxString DialogHelper::FreqOfPain() {
-    std::ifstream choiceIn;
-    choiceIn.open("DialogInformation/FreqOfPain.txt", std::fstream::in);
-    wxArrayString choices;
-    std::string choice;
-    while (choiceIn.peek() != EOF) {
-
-        getline(choiceIn, choice);
-        choices.Add(choice);
-    }
-    wxMultiChoiceDialog dialog(this->parent, wxT("Frequency of pain?"), wxT("Make a Selection"), choices);
-    if (dialog.ShowModal() == wxID_OK) {
-        wxArrayInt selections = dialog.GetSelections();
-        wxString msg;
-        msg.Printf(wxT("you selected %u items:\n"), selections.GetCount());
-        for (size_t n = 0; n < selections.GetCount(); n++) {
-            msg += wxString::Format(wxT("\t%d: %d (%s)\n"), n, selections[n], choices[selections[n]].c_str());
-        }
-        wxMessageBox(msg, wxT("got selections"));
-    }
-
-    return "";
-}
-wxString DialogHelper::MechOfInjury() {
-    std::ifstream choiceIn;
-    choiceIn.open("DialogInformation/Injury.txt", std::fstream::in);
-    wxArrayString choices;
-    std::string choice;
-    while (choiceIn.peek() != EOF) {
-        
-        getline(choiceIn, choice);
-        choices.Add(choice);
-    }
-    wxMultiChoiceDialog dialog(this->parent, wxT("Mechanism of injury or condition?"), wxT("Make a Selection"), choices);
-    if (dialog.ShowModal() == wxID_OK) {
-        wxArrayInt selections = dialog.GetSelections(); 
-        wxString msg;
-        msg.Printf(wxT("you selected %u items:\n"), selections.GetCount());
-        for (size_t n = 0; n < selections.GetCount(); n++) {
-            msg += wxString::Format(wxT("\t%d: %d (%s)\n"), n, selections[n], choices[selections[n]].c_str());
-        }
-        wxMessageBox(msg, wxT("got selections"));
-    }
-
-    return "";
-}
-wxString DialogHelper::Alergies_Sensitivities() {
-    std::ifstream choiceIn;
-    choiceIn.open("DialogInformation/Allergies.txt", std::fstream::in);
-    wxArrayString choices;
-    std::string choice;
-    while (choiceIn.peek() != EOF) {
-
-        getline(choiceIn, choice);
-        choices.Add(choice);
-    }
-    //choices.Add(wxT("one"));
-    //choices.Add(wxT("two"));
-    wxMultiChoiceDialog dialog(this->parent, wxT("Dose the patient have any known allergies, or sensitivities?"), wxT("Make a Selection"), choices);
-    if (dialog.ShowModal() == wxID_OK) {
-        wxArrayInt selections = dialog.GetSelections();
-        wxString msg;
-        msg.Printf(wxT("you selected %u items:\n"), selections.GetCount());
-        for (size_t n = 0; n < selections.GetCount(); n++) {
-            msg += wxString::Format(wxT("\t%d: %d (%s)\n"), n, selections[n], choices[selections[n]].c_str());
-        }
-        wxMessageBox(msg, wxT("got selections"));
-    }
-
-    return "";
-}
 wxString DialogHelper::Calender() {
     cal = new CalenderDialog(parent, "Date of Accident");
-    cal->Show();
-    return "";
+    if (cal->ShowModal() == wxID_OK) {
+        wxString val = cal->getVal();
+        return cal->getVal();
+    }
+    return "OTHER";
 }
-void DialogHelper::MaxLevel(){
+
+//multichoice
+wxString DialogHelper::MultipleChoiceDialog(std::string path, std::string text) {
+    std::ifstream choiceIn;
+    choiceIn.open(path, std::fstream::in);
+    wxArrayString choices;
+    std::string choice;
+    while (choiceIn.peek() != EOF) {
+        getline(choiceIn, choice);
+        choices.Add(choice);
+    }
+    wxMultiChoiceDialog dialog(this->parent, text, wxT("Make a Selection"), choices);
+    if (dialog.ShowModal() == wxID_OK) {
+        wxArrayInt selections = dialog.GetSelections();
+        if (selections.IsEmpty()) {
+            return "OTHER";
+        }
+        wxString msg;
+        for (size_t n = 0; n < selections.GetCount(); n++) {
+            msg += wxString::Format(wxT(", %s"), choices[selections[n]].c_str());
+        }
+        return msg;
+    }
+    return "OTHER";
+}
+//single choice
+wxString DialogHelper::SingleChoiceDialog(std::string path, std::string text) {
+    std::ifstream choiceIn;
+    choiceIn.open(path, std::fstream::in);
+    wxArrayString choices;
+    std::string choice;
+    while (choiceIn.peek() != EOF) {
+        getline(choiceIn, choice);
+        choices.Add(choice);
+    }
+    wxSingleChoiceDialog dialog(this->parent, text, wxT("Make a Selection"), choices);
+    if (dialog.ShowModal() == wxID_OK) {
+        if (choices.IsEmpty()) {
+            return "OTHER";
+        }
+        int selection = dialog.GetSelection();
+        return choices[selection];
+    }
+    return "Other";
 }

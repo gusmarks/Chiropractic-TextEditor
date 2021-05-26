@@ -1,0 +1,49 @@
+left TMJ
+left scapula
+left shoulder
+left elbow
+left arm
+left wrist
+left hand
+left hip
+left knee
+left foot
+left ankle
+--------
+right TMJ
+right scapula
+right shoulder
+right elbow
+right arm
+right wrist
+right hand
+right hip
+right knee
+right foot
+right ankle
+---------
+left T1 rib
+left T2 rib
+left T3 rib
+left T4 rib
+left T5 rib
+left T6 rib
+left T7 rib
+left T8 rib
+left T9 rib
+left T10 rib
+left T11 rib
+left T12 rib
+-----------
+right T1 rib
+right T2 rib
+right T3 rib
+right T4 rib
+right T5 rib
+right T6 rib
+right T7 rib
+right T8 rib
+right T9 rib
+right T10 rib
+right T11 rib
+right T12 rib

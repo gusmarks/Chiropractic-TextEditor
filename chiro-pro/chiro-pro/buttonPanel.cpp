@@ -6,10 +6,10 @@
 #include <string>
 
 ButtonPanel::ButtonPanel(wxWindow* parent, wxString name, std::string pathName, int ind) : wxPanel(parent, wxID_ANY, wxDefaultPosition,
-	wxDefaultSize, wxTAB_TRAVERSAL, name)
+	wxSize(100,70), wxTAB_TRAVERSAL, name)
 {
     QLinkCount = 0;
-	ButtonSizer = new wxFlexGridSizer(3, 17, 0, 0);
+	ButtonSizer = new wxFlexGridSizer(3, 15, 0, 0);
 	this->SetSizer(ButtonSizer);
     this->pathName = pathName;
     this->layoutName = this->pathName + ".txt";
@@ -41,11 +41,11 @@ void ButtonPanel::LoadButtons()
        
         //make button
         if (functionHelper->isNumber(maintext)) {
-            this->QlinkList->push_back( new wxButton(this, BUTTON_Panel, name, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, maintext));
+            this->QlinkList->push_back( new wxButton(this, BUTTON_Panel, name, wxDefaultPosition, wxSize(80.5, 23), 0, wxDefaultValidator, maintext));
             this->QlinkList->back()->SetBackgroundColour(*wxCYAN);
         }
         else {
-            this->QlinkList->push_back(new wxButton(this, BUTTON_Write, name, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, maintext));
+            this->QlinkList->push_back(new wxButton(this, BUTTON_Write, name, wxDefaultPosition, wxSize(80.5, 23), 0, wxDefaultValidator, maintext));
         }
         //add button to array
         this-> ButtonSizer->Add(QlinkList->back(), wxLeft);

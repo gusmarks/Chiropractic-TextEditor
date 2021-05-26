@@ -208,32 +208,19 @@ MainFrame::MainFrame(const wxString& title,
 
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////text editor/////////////////////////////////
-    MainEditBox = new MyRichTextCtrl(this,TEXT_Main);
-    MainEditBox->SetEditable(true);
-    wxASSERT(!MainEditBox->GetBuffer().GetAttributes().HasFontPixelSize());
-    MainEditBox->SetFocus();
-    MainEditBox->SetFocusObject(NULL);
+    MainEditBox = new wxRichTextCtrl(this,TEXT_Main, "", wxDefaultPosition, wxSize(700, 600), 0, wxDefaultValidator, "");
+   
     MainEditBox->SetInsertionPoint(0);
-
+    wxFont font(wxFontInfo(12).Family(wxFONTFAMILY_ROMAN));
+    MainEditBox->SetFont(font);
+    MainEditBox->SetMargins(10, 10);
    
 
     wxRichTextBuffer::SetFloatingLayoutMode(false);
     wxRichTextBuffer::AddHandler(new wxRichTextXMLHandler);
     wxRichTextBuffer::AddHandler(new wxRichTextHTMLHandler);
 
-    wxRichTextFieldTypeStandard* s1 = new wxRichTextFieldTypeStandard("begin-section", "SECTION", wxRichTextFieldTypeStandard::wxRICHTEXT_FIELD_STYLE_START_TAG);
-    s1->SetBackgroundColour(*wxBLUE);
-    wxRichTextBuffer::AddFieldType(s1);
-
-    wxFont font(wxFontInfo(12).Family(wxFONTFAMILY_ROMAN));
-
-    MainEditBox->SetFont(font);
     
-
-    MainEditBox->SetMargins(10, 10);
-
-    MainEditBox->SetStyleSheet(wxGetApp().GetStyleSheet());
-   
     //MainEditBox->Bind(wxEVT_LEFT_DCLICK, &MainFrame::clickURLinTextCtrl, this);
     //an object to make and handel popups, error messages and questions
     popUpHandeler = new DialogHelper(this);
@@ -256,11 +243,12 @@ MainFrame::MainFrame(const wxString& title,
     ///////////////////////// arange sizers//////////////////////////
 
     Mainsizer = new wxBoxSizer(wxVERTICAL);
-    Mainsizer->Add(ButtonSetSizer,0, wxALIGN_CENTER);
-    Mainsizer->Add(ControlSizer, 0, wxALIGN_CENTER);
-    Mainsizer->Add(currentButtonSet->getCurrentPanel(), 2, wxEXPAND);
-    Mainsizer->Add(toolBar, 0, wxALIGN_LEFT);
-    Mainsizer->Add(MainEditBox, 8, wxALIGN_CENTER,wxBORDER);
+    Mainsizer->Add(ButtonSetSizer,1, wxALIGN_CENTER);
+    Mainsizer->Add(ControlSizer, 1, wxALIGN_CENTER);
+    Mainsizer->Add(currentButtonSet->getCurrentPanel(),5, wxEXPAND);
+    Mainsizer->Add(toolBar, 1, wxEXPAND);
+    Mainsizer->AddSpacer(10);
+    Mainsizer->Add(MainEditBox, 5,wxALIGN_CENTER);
 
     //set the sizer object "sizer" as the main sizer and update its layout, finaly centering the objects in the frame.
     Mainsizer->Layout();
@@ -280,8 +268,8 @@ void MainFrame::openFile(wxCommandEvent& WXUNUSED(event))
 {
     if (popUpHandeler->confirmIntent("are you sure you want to open a new file and close this one?")) {
         wxFileDialog
-            openFileDialog(this, _("Open Doc file"), "", "",
-                "Doc files (*.doc)|*.doc", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+            openFileDialog(this, _("Open Xml file"), "", "",
+                "Xml files (*.xml)|*.xml", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
         if (openFileDialog.ShowModal() == wxID_CANCEL)
             return;     // the user changed idea...
 
@@ -294,9 +282,10 @@ void MainFrame::openFile(wxCommandEvent& WXUNUSED(event))
             wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
             return;
         }
-        wxString file = openFileDialog.GetFilename();
+        wxString file = openFileDialog.GetPath();
 
         MainEditBox->LoadFile(file);
+        //"PatientFileLoad/test.xml"
     }
 }
 /// <summary>
@@ -323,12 +312,14 @@ void MainFrame::saveFile(wxCommandEvent& WXUNUSED(event))
         MainFrame::setFilename(
             wxGetTextFromUser("Enter Name of File.do not include file extension", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true));
         //MainFrame::appendFilename(".doc");
-            MainEditBox->SaveFile(MainFrame::getFilename()+".doc");
-            MainEditBox->SaveFile(MainFrame::getFilename() + ".xml");
+        wxString xmlName= MainFrame::getFilename() + ".xml", docName= MainFrame::getFilename() + ".doc";
+            MainEditBox->SaveFile("PatientFileParse/"+MainFrame::getFilename()+".txt");
+            MainEditBox->SaveFile("PatientFileLoad/"+MainFrame::getFilename() + ".xml");
+            MainEditBox->SaveFile("PatientFileView/"+MainFrame::getFilename() + ".html");
            
     }
     else {
-        MainEditBox->SaveFile(MainFrame::getFilename() + ".doc");
+        MainEditBox->SaveFile(MainFrame::getFilename() + ".txt");
         MainEditBox->SaveFile(MainFrame::getFilename() + ".xml");
     }   
 }
@@ -342,7 +333,7 @@ void MainFrame::saveFileAs(wxCommandEvent& WXUNUSED(event))
     //set up rich text buffer
     wxFileDialog
         saveFileDialog(this, _("Save Doc file"), "", "",
-            "Doc files (*.doc)|*.doc", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+            "xml files (*.xml)|*.xml", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if (saveFileDialog.ShowModal() == wxID_CANCEL)
         return;     // the user changed idea...
 
@@ -764,72 +755,247 @@ void MainFrame::BuildNavLinks(ButtonPanel* panelToWork){
     }
 }
 void MainFrame::OnBold(wxCommandEvent& WXUNUSED(event))
-{
-
-   
-
-    if (MainEditBox->isBold()) {
-        MainEditBox->setBold(false);
-        MainEditBox->EndBold();
-    }
-    else if (!MainEditBox->isBold()) {
-        MainEditBox->setBold(true);
-        MainEditBox->BeginBold();
-    }
+{   
+    MainEditBox->ApplyBoldToSelection();
 }
 void MainFrame::OnItalic(wxCommandEvent& WXUNUSED(event))
 {
-    if (MainEditBox->isItalic()) {
-        MainEditBox->setItalic(false);
-        MainEditBox->EndItalic();
-    }
-    else if (!MainEditBox->isItalic()) {
-        MainEditBox->setItalic(true);
-        MainEditBox->BeginItalic();
-    }
+    MainEditBox->ApplyItalicToSelection();
 }
-
 void MainFrame::OnUnderline(wxCommandEvent& WXUNUSED(event))
 {
-    if (MainEditBox->isUnderlined()) {
-        MainEditBox->setUnderlined(false);
-        MainEditBox->EndUnderline();
-    }
-    else if (!MainEditBox->isUnderlined()) {
-        MainEditBox->setUnderlined(true);
-        MainEditBox->BeginUnderline();
-    }
+    MainEditBox->ApplyUnderlineToSelection();
 }
-
 void MainFrame::OnAlignLeft(wxCommandEvent& WXUNUSED(event))
 {
     MainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_LEFT);
 }
-
 void MainFrame::OnAlignCentre(wxCommandEvent& WXUNUSED(event))
 {
     MainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_CENTRE);
 }
-
 void MainFrame::OnAlignRight(wxCommandEvent& WXUNUSED(event))
 {
     MainEditBox-> ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_RIGHT);
 }
-/*void MainFrame::OnStrikethrough(wxCommandEvent& WXUNUSED(event))
+void MainFrame::OnStrikethrough(wxCommandEvent& WXUNUSED(event))
 {
     MainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_STRIKETHROUGH);
 }
-
 void MainFrame::OnSuperscript(wxCommandEvent& WXUNUSED(event))
 {
     MainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUPERSCRIPT);
 }
-
 void MainFrame::OnSubscript(wxCommandEvent& WXUNUSED(event))
 {
     MainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUBSCRIPT);
-}*/
+}
 void MainFrame::DialogButton(wxCommandEvent& WXUNUSED(event)) {
-    popUpHandeler->FreqOfPain();
+    wxString allergies, surgeries, meds, illness, accidents, family,work,social,exercise,diet;
+    allergies = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt","patient allergies?");
+    surgeries = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "patient surgical history?");
+    meds = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "patient Medications?");
+    //illness = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "patient allergies?");
+    //accidents = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "patient allergies?");
+    family = popUpHandeler->MultipleChoiceDialog("DialogInformation/familyHistory.txt", "patient's Immediate Family History?");
+    work = popUpHandeler->MultipleChoiceDialog("DialogInformation/work.txt", "Work?");
+    social = popUpHandeler->MultipleChoiceDialog("DialogInformation/socialhabits.txt", "Social habits? ");
+    exercise = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise routine?");
+    diet = popUpHandeler->MultipleChoiceDialog("DialogInformation/DietNutrition.txt", "Diet and Nutrition?");
 
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("Past,Family and Social History:");
+    MainEditBox->WriteText("\n\t-Past Health History:");
+    MainEditBox->WriteText("\n\t\t-Allergies/Sensitivities:");
+    MainEditBox->EndBold();
+
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(allergies);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t\t-Surgery:");
+    MainEditBox->EndBold();
+
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(surgeries);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t\t-Medications:");
+    MainEditBox->EndBold();
+
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(meds);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t\t-Illnesses:");
+    MainEditBox->EndBold();
+
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t\t-Accidents:");
+    MainEditBox->EndBold();
+
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t-Family and Social History:");
+    MainEditBox->WriteText("\n\t\t-Family History:");
+    MainEditBox->EndBold();
+
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(family);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t\t-Work Habits:");
+    MainEditBox->EndBold();
+
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(work);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t\t-Social Habits:");
+    MainEditBox->EndBold();
+
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(social);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t\t-Exercise Habits:");
+    MainEditBox->EndBold();
+
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(exercise);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t\t-Diet and Nutrition Habits:");
+    MainEditBox->EndBold();
+
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(diet);
+    MainEditBox->EndTextColour();
+}
+void MainFrame::EandM(wxCommandEvent& WXUNUSED(event)) {
+    wxString area, date, injury, freq,quality,vas,Radiate,allergies,prevEpp,goals;
+    date = popUpHandeler->Calender();
+
+    injury = popUpHandeler->SingleChoiceDialog("DialogInformation/Injury.txt","Mechanism of injury or condition.");
+    freq = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Frequency of pain?");
+    quality = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "What are the quality of the pain?");
+    //radiates
+    vas = popUpHandeler->SingleChoiceDialog("DialogInformation/VAS.txt", "What is the VAS?");
+    //modifying factors
+    //previos episodes
+    //previos care
+    //recent tests
+    goals = popUpHandeler->MultipleChoiceDialog("DialogInformation/goals.txt", "Patient Goals?");
+ 
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("HISTORY: \n");
+    MainEditBox->WriteText("Chief Complaint: ");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+    MainEditBox->WriteText(" complaint since ");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(date);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n-Mechanism of injury: ");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(52,128,235));
+    MainEditBox->WriteText(injury);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n-Frequency/Quality: ");
+    MainEditBox->EndBold();
+    MainEditBox->WriteText("experiences pain and discomfort ");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(freq);
+    MainEditBox->EndTextColour();
+    MainEditBox->WriteText(" of the time and is discribed as");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(quality);
+    MainEditBox->EndTextColour();
+
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n-Radiation of symptoms: ");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n-Change in Complaint: ");
+    MainEditBox->EndBold();
+    MainEditBox->WriteText("Complaint has ");
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+    MainEditBox->WriteText("since the onset and the pain scale is currently rated at ");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(vas);
+    MainEditBox->EndTextColour();
+    MainEditBox->WriteText("(10/10 being the most severe)");
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n-Modifying Factors: ");
+    MainEditBox->EndBold();
+    MainEditBox->WriteText("Relived by ");
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+    MainEditBox->WriteText("and aggravated by ");
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n-Previous Episodes: ");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+    MainEditBox->WriteText("past episodes.");
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n-Previos Care: ");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n-Recent diagnostic tests: ");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n-Patient subjective goal(s): ");
+    MainEditBox->EndBold();
+    MainEditBox->WriteText("Explains personal goal for staring treatment");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(goals);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText("\n--------------------------------------");
+    MainEditBox->EndTextColour();
 }

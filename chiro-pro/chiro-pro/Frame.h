@@ -28,7 +28,7 @@ private:
 	//this file name saves the current document being worked on
 	wxString fileName;
 	//the text box on the main screen, currently cant be manualy edited
-	MyRichTextCtrl* MainEditBox;
+wxRichTextCtrl* MainEditBox;
 	// the menu bar with save, load, etc functions
 	wxMenuBar* MainMenu;
 	wxToolBar* toolBar;
@@ -106,6 +106,7 @@ public:
 	void OnAlignCentre(wxCommandEvent& WXUNUSED(event));
 
 	void DialogButton(wxCommandEvent& WXUNUSED(event));
+	void EandM(wxCommandEvent& WXUNUSED(event));
 
 /// //new file method, this method clears the texteditor and filename for saving.
 ///allowing people to make and save new files
@@ -166,7 +167,7 @@ public:
 };
 enum 
 {
-	TEXT_Main = wxID_HIGHEST + 1,
+	TEXT_Main,
 	MENU_New,
 	MENU_Open,
 	MENU_Close,

@@ -1,0 +1,42 @@
+Abdominals
+Adductors
+Bicep
+Coracobraachialis
+Deltoid
+Erector spinae
+gastrocneminus
+Glureus maximus
+Gluteus medialis
+Gracilis
+Iliacus
+Latissimus dorsi
+Levstor scapilae
+Mid trapezius
+Multifidus
+Paraspinal
+Pectoralis major
+Pectoralis minor
+Piriformis
+Popliteus
+Pronator teres 
+Psoas
+Pterygoid lateral
+Pterygoid medial
+Quadratus lumborum
+Quadriceps
+Rhomboid
+Sartorius
+Scalene anterior
+Scalene Posterior
+SCM
+Serratus anterior
+Soleus
+Subclavius
+Suboccipital
+Temporalis
+Teres major
+Teres minor
+TFL
+Tibialis
+Tricep
+Upper Trapezius

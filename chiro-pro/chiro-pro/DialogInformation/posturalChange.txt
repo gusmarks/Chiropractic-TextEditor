@@ -1,0 +1,27 @@
+short left leg (supine)
+short right leg (supine)
+short left leg (pelvic deficiency)
+short right leg(pelvic deficiency)
+Anterior Pelvic tilt
+--------
+anterior head carriage
+Decreased cervical curvature
+Right translated head
+Left translated head
+head rotation left
+head rotation right
+--------
+high left shoulder
+high right shoulder
+rib humping on the right
+rib humping on the left
+--------
+thoracic hypokyphosis
+thoracic hyperkyphosis
+--------
+increased lumbar lordosis
+decreased lumbar lordosis
+--------
+high left hip
+high right hip
+scoliosis

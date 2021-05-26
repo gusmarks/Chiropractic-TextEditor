@@ -14,11 +14,10 @@ public:
 	bool confirmIntent(wxString message);
 	wxString confirmIntentAddButton(wxWindow* parent);
 	bool errorMessage(wxString str);
-	wxString Alergies_Sensitivities();
-	wxString MechOfInjury();
-	wxString FreqOfPain();
+
+	wxString MultipleChoiceDialog(std::string path, std::string text);
+	wxString SingleChoiceDialog(std::string path, std::string text);
 	wxString Calender();
 	
-	void openClipBoard();
 
 };

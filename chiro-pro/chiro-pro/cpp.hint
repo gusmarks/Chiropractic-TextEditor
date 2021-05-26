@@ -15,3 +15,4 @@
 #define DECLARE_EVENT_TABLE() wxDECLARE_EVENT_TABLE();
 #define EVT_CHOICE(winid, func) wx__DECLARE_EVT1(wxEVT_CHOICE, winid, wxCommandEventHandler(func))
 #define EVT_HYPERLINK(id, fn) wx__DECLARE_EVT1(wxEVT_HYPERLINK, id, wxHyperlinkEventHandler(fn))
+#define EVT_UPDATE_UI(winid, func) wx__DECLARE_EVT1(wxEVT_UPDATE_UI, winid, wxUpdateUIEventHandler(func))
