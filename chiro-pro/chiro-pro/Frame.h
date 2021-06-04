@@ -78,7 +78,7 @@ public:
 	void swapPanels(ButtonPanel* newPanel);
 	void swapHelper(wxCommandEvent& event);
 
-	void clickURLinTextCtrl(wxMouseEvent& evt);
+	void clickURLinTextCtrl(wxTextUrlEvent& evt);
 
 	void SwapButtonSet(wxCommandEvent& evt);
 	void newSet(wxCommandEvent& event);

@@ -3,9 +3,11 @@
 #include "clipboard.h"
 #include <wx/choicdlg.h>
 #include "CalenderDialog.h"
+#include "BodyImageDialog.h"
 class DialogHelper {
 public:
-	ClipboardDialog* clipBoard;
+	myImageDialog* bodyDialogObj;
+	//ClipboardDialog* clipBoard;
 	CalenderDialog* cal;
 	wxWindow* parent;
 	DialogHelper(wxWindow* parent);
@@ -18,6 +20,7 @@ public:
 	wxString MultipleChoiceDialog(std::string path, std::string text);
 	wxString SingleChoiceDialog(std::string path, std::string text);
 	wxString Calender();
+	std::string bodyDialog();
 	
 
 };

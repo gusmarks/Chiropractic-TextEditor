@@ -80,12 +80,20 @@ bool DialogHelper::errorMessage(wxString str) {
 wxString DialogHelper::Calender() {
     cal = new CalenderDialog(parent, "Date of Accident");
     if (cal->ShowModal() == wxID_OK) {
-        wxString val = cal->getVal();
+        //wxString val = cal->getVal();
         return cal->getVal();
     }
     return "OTHER";
 }
 
+
+std::string DialogHelper::bodyDialog() {
+    bodyDialogObj = new myImageDialog(parent,wxID_ANY,"");
+    if (bodyDialogObj->ShowModal() == wxID_OK) {
+        return bodyDialogObj->getSelections();
+    }
+    return "OTHER";
+}
 //multichoice
 wxString DialogHelper::MultipleChoiceDialog(std::string path, std::string text) {
     std::ifstream choiceIn;

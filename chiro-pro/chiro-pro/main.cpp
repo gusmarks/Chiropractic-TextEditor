@@ -76,7 +76,8 @@ EVT_BUTTON(BUTTON_NewSet, MainFrame::newSet)
 EVT_CHOICE(CHOICE_SWAP_Set, MainFrame::SwapButtonSet)
 EVT_HYPERLINK(LINK_NAVIGATE, MainFrame::LinkNavigation)
 
-EVT_BUTTON(BUTTON_Dialog,MainFrame::DialogButton)
+EVT_BUTTON(BUTTON_Dialog,MainFrame::EandM)
+EVT_TEXT_URL(TEXT_Main,MainFrame::clickURLinTextCtrl)
 /*
 EVT_MENU(ID_FORMAT_STRIKETHROUGH, MainFrame::OnStrikethrough)
 EVT_MENU(ID_FORMAT_SUPERSCRIPT, MainFrame::OnSuperscript)
@@ -114,6 +115,7 @@ MainFrame::MainFrame(const wxString& title,
     const wxPoint& pos, const wxSize& size)
     : wxFrame((wxFrame*)NULL, -1, title, pos, size)
 {
+    wxInitAllImageHandlers();
     //loads the basic data for button sets
     loadButtonSetInfo("SetInfoAll.txt");
     //-----------menu-status start-----------
@@ -512,22 +514,15 @@ void MainFrame::swapHelper(wxCommandEvent& event){
 }
 //double click on the end of a line of text, this opens a dialog and asks the user to select an option, 
 //it then replaces the double clicked line with the selected line. ----needs work---- 
-/*void MainFrame::clickURLinTextCtrl(wxMouseEvent& evt) {
+void MainFrame::clickURLinTextCtrl(wxTextUrlEvent& evt) {
+    
+    int urlS =evt.GetURLStart();
+    int urlE = evt.GetURLEnd()+1;
+    MainEditBox->Remove(urlS,urlE);
+    MainEditBox->WriteText(evt.GetString());
+    //MainEditBox->WriteText(wxString::Format(wxT("%ld"),MainEditBox->GetInsertionPoint()));
 
-    wxString tempStr = MainEditBox->GetRange(0, MainEditBox->GetInsertionPoint());
-    std::string str = tempStr.ToStdString();
-    long lineNo = functionHelper->getLineNo(str, "\n");
-    long insP = MainEditBox->GetInsertionPoint();
-    wxString lineValue = MainEditBox->GetLineText(lineNo-1);
-  
-   // if (!lineValue.IsEmpty()||lineValue!="\n") {
-        long lineLength = insP - lineValue.ToStdString().size();
-        //wxString TextToReplaceWith =
-            popUpHandeler->openClipBoard();
-        //MainEditBox->Replace(lineLength, insP,TextToReplaceWith);
-
-   // }
-}*/
+}
 
 /// <summary>
 /// using a wxChoice control, the user can change what button set they are using ----- needs work ----
@@ -791,7 +786,7 @@ void MainFrame::OnSubscript(wxCommandEvent& WXUNUSED(event))
     MainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUBSCRIPT);
 }
 void MainFrame::DialogButton(wxCommandEvent& WXUNUSED(event)) {
-    wxString allergies, surgeries, meds, illness, accidents, family,work,social,exercise,diet;
+    wxString allergies, surgeries, meds, illness, accidents, family,work,social,exercise,diet,locations;
     allergies = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt","patient allergies?");
     surgeries = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "patient surgical history?");
     meds = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "patient Medications?");
@@ -802,6 +797,7 @@ void MainFrame::DialogButton(wxCommandEvent& WXUNUSED(event)) {
     social = popUpHandeler->MultipleChoiceDialog("DialogInformation/socialhabits.txt", "Social habits? ");
     exercise = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise routine?");
     diet = popUpHandeler->MultipleChoiceDialog("DialogInformation/DietNutrition.txt", "Diet and Nutrition?");
+    locations = popUpHandeler->bodyDialog();
 
     MainEditBox->BeginBold();
     MainEditBox->WriteText("Past,Family and Social History:");
@@ -809,9 +805,11 @@ void MainFrame::DialogButton(wxCommandEvent& WXUNUSED(event)) {
     MainEditBox->WriteText("\n\t\t-Allergies/Sensitivities:");
     MainEditBox->EndBold();
 
+    MainEditBox->BeginURL("Allergies", wxT("Blue"));
     MainEditBox->BeginTextColour(wxColour(52, 128, 235));
     MainEditBox->WriteText(allergies);
     MainEditBox->EndTextColour();
+    MainEditBox->EndURL();
 
     MainEditBox->BeginBold();
     MainEditBox->WriteText("\n\t\t-Surgery:");
@@ -887,7 +885,8 @@ void MainFrame::DialogButton(wxCommandEvent& WXUNUSED(event)) {
     MainEditBox->EndTextColour();
 }
 void MainFrame::EandM(wxCommandEvent& WXUNUSED(event)) {
-    wxString area, date, injury, freq,quality,vas,Radiate,allergies,prevEpp,goals;
+    wxString area, date, injury, freq,quality,vas,Radiate,allergies,prevEpp,goals,locations;
+    locations = popUpHandeler->bodyDialog();
     date = popUpHandeler->Calender();
 
     injury = popUpHandeler->SingleChoiceDialog("DialogInformation/Injury.txt","Mechanism of injury or condition.");
@@ -905,8 +904,8 @@ void MainFrame::EandM(wxCommandEvent& WXUNUSED(event)) {
     MainEditBox->WriteText("HISTORY: \n");
     MainEditBox->WriteText("Chief Complaint: ");
     MainEditBox->EndBold();
-    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    MainEditBox->WriteText("placeholder");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(locations);
     MainEditBox->EndTextColour();
     MainEditBox->WriteText(" complaint since ");
     MainEditBox->BeginTextColour(wxColour(52, 128, 235));

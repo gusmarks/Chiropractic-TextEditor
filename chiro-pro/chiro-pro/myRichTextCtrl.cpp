@@ -4,8 +4,8 @@
 
 
 MyRichTextCtrl::MyRichTextCtrl(wxWindow* parent, wxWindowID id) :
-    wxRichTextCtrl(parent, id, wxEmptyString, wxDefaultPosition, wxSize(600, 1),
-       wxVSCROLL|wxHSCROLL| wxTE_RICH2, wxDefaultValidator, wxTextCtrlNameStr)
+    wxRichTextCtrl(parent, id, "richtext", wxDefaultPosition, wxSize(600, 600),
+     0,   wxDefaultValidator, "")
 {
     isTextBold = false;
     isTextItalic = false;
