@@ -20,6 +20,7 @@
 #include "Frame.h"
 #include "clipboard.h"
 #include "FunctionHelper.h"
+#include "LinkPanel.h"
 //include general functionaly and wx specific functions
 #include <wx/wfstream.h>
 #include <wx/wxprec.h>
@@ -58,6 +59,7 @@ EVT_MENU(MENU_SaveAs, MainFrame::saveFileAs)
 EVT_MENU(MENU_Quit, MainFrame::quit)
 EVT_MENU(MENU_EditButtonName, MainFrame::onPopUpCLick)
 EVT_MENU(MENU_EditButtonText, MainFrame::onPopUpCLick)
+EVT_MENU(MENU_RemoveButton,MainFrame::onPopUpCLick)
 EVT_MENU(MENU_SaveButtons, MainFrame::SavePanelsAndButtons)
 
 EVT_MENU(ID_FORMAT_BOLD, MainFrame::OnBold)
@@ -68,15 +70,18 @@ EVT_MENU(ID_FORMAT_ALIGN_LEFT, MainFrame::OnAlignLeft)
 EVT_MENU(ID_FORMAT_ALIGN_CENTRE, MainFrame::OnAlignCentre)
 EVT_MENU(ID_FORMAT_ALIGN_RIGHT, MainFrame::OnAlignRight)
 
+//EVT_RIGHT_DOWN(BUTTON_Dialog,MainFrame::onRightClick)
+EVT_BUTTON(BUTTON_Panel,MainFrame::swapHelper)
 EVT_BUTTON(BUTTON_Add, MainFrame::AddButton)
 EVT_BUTTON(BUTTON_Write, MainFrame::ButtonWrite)
 EVT_BUTTON(BUTTON_Sign, MainFrame::Sign)
 EVT_BUTTON(BUTTON_NewSet, MainFrame::newSet)
 
+
 EVT_CHOICE(CHOICE_SWAP_Set, MainFrame::SwapButtonSet)
 EVT_HYPERLINK(LINK_NAVIGATE, MainFrame::LinkNavigation)
 
-EVT_BUTTON(BUTTON_Dialog,MainFrame::EandM)
+
 EVT_TEXT_URL(TEXT_Main,MainFrame::clickURLinTextCtrl)
 /*
 EVT_MENU(ID_FORMAT_STRIKETHROUGH, MainFrame::OnStrikethrough)
@@ -118,6 +123,7 @@ MainFrame::MainFrame(const wxString& title,
     wxInitAllImageHandlers();
     //loads the basic data for button sets
     loadButtonSetInfo("SetInfoAll.txt");
+   
     //-----------menu-status start-----------
     //statusbar at the bottom of page has 2 cells
     //menu bar at the top ofthe page has 1 tab named File menu and visualy represented as File
@@ -177,24 +183,32 @@ MainFrame::MainFrame(const wxString& title,
     //make 7 buttons, one to add dynamic buttons, one to sign the document
     // 4 buttons to swap panels of dynamic buttons, and one to go to the previous panel.
 
-    wxButton* AddButton = new wxButton(this, BUTTON_Add, "New Button", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "add");
-    wxButton* SignButton = new wxButton(this, BUTTON_Sign, "Sign", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "Apply Signiture to document");
-    wxButton* swapToPanelOne = new wxButton(this, BUTTON_Panel, "Subjective", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "0");
-    wxButton* swapToPanelTwo = new wxButton(this, BUTTON_Panel, "Objective", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "1");
-    wxButton* swapToPanelThree = new wxButton(this, BUTTON_Panel, "Assessment", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "2");
-    wxButton* swapToPanelFour = new wxButton(this, BUTTON_Panel, "Plan", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "3");
-  
+    Controls = new controlPanel(this, wxID_ANY, "Control Panel");
+    Links = new linkPanel(Controls, wxID_ANY, "Link Panel");
+
+    wxButton* AddButton = new wxButton(Controls, BUTTON_Add, "New Button", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "add");
+    wxButton* SignButton = new wxButton(Controls, BUTTON_Sign, "Sign", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "Apply Signiture to document");
+    wxButton* swapToPanelOne = new wxButton(Controls, Button_ControlPanel, "Subjective", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "0");
+    wxButton* swapToPanelTwo = new wxButton(Controls, Button_ControlPanel, "Objective", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "1");
+    wxButton* swapToPanelThree = new wxButton(Controls, Button_ControlPanel, "Assessment", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "2");
+    wxButton* swapToPanelFour = new wxButton(Controls, Button_ControlPanel, "Plan", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "3");
+    swapToPanelOne->Bind(wxEVT_BUTTON, &MainFrame::startSwapHelper, this);
+    swapToPanelTwo->Bind(wxEVT_BUTTON, &MainFrame::startSwapHelper, this);
+    swapToPanelThree->Bind(wxEVT_BUTTON, &MainFrame::startSwapHelper, this);
+    swapToPanelFour->Bind(wxEVT_BUTTON, &MainFrame::startSwapHelper, this);
 
     //make a box sizer to add the buttons too
-    ControlSizer = new wxBoxSizer(wxHORIZONTAL);
+    
     //add the buttons to the box sizer
- 
-    ControlSizer->Add(AddButton);
-    ControlSizer->Add(SignButton);
-    ControlSizer->Add(swapToPanelOne);
-    ControlSizer->Add(swapToPanelTwo);
-    ControlSizer->Add(swapToPanelThree);
-    ControlSizer->Add(swapToPanelFour);
+    Controls->addToControlSizer(Links, wxALIGN_CENTER);
+    Controls->addToControlSizer(AddButton);
+    Controls->addToControlSizer(SignButton);
+    Controls->addToControlSizer(swapToPanelOne);
+    Controls->addToControlSizer(swapToPanelTwo);
+    Controls->addToControlSizer(swapToPanelThree);
+    Controls->addToControlSizer(swapToPanelFour);
+    Controls->controlLayout();
+
     //create a choice box so the user can select what set of buttons they want, and a button to create new button sets
     userSelection = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 2, MainFrame::ButtonSetNames, 0, wxDefaultValidator, "userCHoice");
     wxButton* newUser = new wxButton(this, BUTTON_NewSet, "New Set", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "New Set");
@@ -216,6 +230,7 @@ MainFrame::MainFrame(const wxString& title,
     wxFont font(wxFontInfo(12).Family(wxFONTFAMILY_ROMAN));
     MainEditBox->SetFont(font);
     MainEditBox->SetMargins(10, 10);
+    
    
 
     wxRichTextBuffer::SetFloatingLayoutMode(false);
@@ -233,9 +248,9 @@ MainFrame::MainFrame(const wxString& title,
     currentButtonSet->loadPanelsAndButtons(currentButtonSet->getSetName());
 
     //builds the first navlink, this mostly shows were the user currently is. as clicking it would bring you to the same panel
-    LinkSizer = new wxBoxSizer(wxHORIZONTAL);
+ 
     BuildNavLinks(currentButtonSet->getCurrentPanel());
-    ControlSizer->Prepend(LinkSizer);
+  
 
 
     // set the current panel object to be the first panel, and tell it to show.
@@ -246,7 +261,7 @@ MainFrame::MainFrame(const wxString& title,
 
     Mainsizer = new wxBoxSizer(wxVERTICAL);
     Mainsizer->Add(ButtonSetSizer,1, wxALIGN_CENTER);
-    Mainsizer->Add(ControlSizer, 1, wxALIGN_CENTER);
+    Mainsizer->Add(Controls, 1, wxEXPAND);
     Mainsizer->Add(currentButtonSet->getCurrentPanel(),5, wxEXPAND);
     Mainsizer->Add(toolBar, 1, wxEXPAND);
     Mainsizer->AddSpacer(10);
@@ -257,7 +272,7 @@ MainFrame::MainFrame(const wxString& title,
     SetSizer(Mainsizer);
     Centre();
     Maximize();
-   
+    BindAllButtons();
 }
 /////////////////////end Frame Constructor/////////////
 ////////////////////////methods////////////////////////
@@ -286,8 +301,12 @@ void MainFrame::openFile(wxCommandEvent& WXUNUSED(event))
         }
         wxString file = openFileDialog.GetPath();
 
+        MainEditBox->Enable();
+        MainEditBox->SetBackgroundColour(wxColour(255,255,255));
+        MainEditBox->SetEditable(true);
+
         MainEditBox->LoadFile(file);
-        //"PatientFileLoad/test.xml"
+       
     }
 }
 /// <summary>
@@ -300,6 +319,9 @@ void MainFrame::closeFile(wxCommandEvent& WXUNUSED(event))
     if (popUpHandeler->confirmIntent("are you sure you want to close the file?")) {
         MainEditBox->DiscardEdits();
         MainEditBox->Clear();
+        MainEditBox->Disable();
+        MainEditBox->SetBackgroundColour(wxColour(211,211,211));
+        MainEditBox->SetEditable(false);
         MainFrame::setFilename("");
     }
 }
@@ -370,7 +392,13 @@ void MainFrame::AddButton(wxCommandEvent& event)
        //adds the button
        if (buttonName!=""||buttonText!="") {
            currentButtonSet->getCurrentPanel()->AddButton(buttonName, buttonText);
+           int QIndex = currentButtonSet->getCurrentPanel()->getButtonIndex();
+           currentButtonSet->getCurrentPanel()->setButtonIndex(QIndex + 1);
        }
+       int QIndex = currentButtonSet->getCurrentPanel()->getButtonIndex();
+       currentButtonSet->getCurrentPanel()->QlinkList.back()->
+           Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
+
    }
    else if (selection == "new page.") {
        if (currentButtonSet->getCurrentPanel()->getLevel() >= 2) {
@@ -389,10 +417,10 @@ void MainFrame::AddButton(wxCommandEvent& event)
 
            //bind the editing function, and update the button index for the panel
            int QIndex = currentButtonSet->getCurrentPanel()->getButtonIndex();
-           currentButtonSet->getCurrentPanel()->QlinkList->at(QIndex)->
+           currentButtonSet->getCurrentPanel()->QlinkList.at(QIndex)->
                Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
 
-           currentButtonSet->getCurrentPanel()->QlinkList->at(QIndex)->
+           currentButtonSet->getCurrentPanel()->QlinkList.at(QIndex)->
                Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
 
 
@@ -405,9 +433,11 @@ void MainFrame::AddButton(wxCommandEvent& event)
        
    }
    else if (selection == "popup.") {
-       wxString ButtonName =
-           wxGetTextFromUser("Enter text for button name", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-       currentButtonSet->getCurrentPanel()->AddButton(ButtonName, "Dialog-ID-pain");
+
+       DialogButtonHelper();
+       int QIndex = currentButtonSet->getCurrentPanel()->getButtonIndex();
+       currentButtonSet->getCurrentPanel()->setButtonIndex(QIndex + 1);
+
    }
        
 }
@@ -417,7 +447,7 @@ void MainFrame::AddButton(wxCommandEvent& event)
 /// <param name="event"></param>
 void MainFrame::ButtonWrite(wxCommandEvent& event) {
     wxButton* temp = (wxButton*)event.GetEventObject();
-    if(temp->GetName()!="")
+    if(temp->GetName()!=""&&MainEditBox->IsEditable())
         MainEditBox->WriteText(("\n" + temp->GetName() + "\n"));
 }/////////////////////////////end button write///////////////////
 /// <summary>
@@ -432,6 +462,7 @@ void MainFrame::Sign(wxCommandEvent& WXUNUSED(event)) {
     }
     
 }
+
 /// <summary>
 /// this function allows the user to make a right click on a button and offer them 2 choices edit lable or edit text
 /// </summary>
@@ -439,10 +470,11 @@ void MainFrame::Sign(wxCommandEvent& WXUNUSED(event)) {
 void MainFrame::onRightClick(wxMouseEvent& event) {
 
     ButtonToEdit = (wxButton*)event.GetEventObject();
-
+    
     wxMenu menu;
-    menu.Append(MENU_EditButtonName, "edit Label of Button");
-    menu.Append(MENU_EditButtonText, "edit text of Button");
+    menu.Append(MENU_EditButtonName, "edit Label of button");
+    menu.Append(MENU_EditButtonText, "edit text of button");
+    menu.Append(MENU_RemoveButton,"remove button");
     PopupMenu(&menu);
 }
 /// <summary>
@@ -472,6 +504,22 @@ void MainFrame::onPopUpCLick(wxCommandEvent& event) {
             }
             break;
             //make new case to remove button
+        case MENU_RemoveButton:
+            
+            for (size_t i = 0; i < currentButtonSet->getCurrentPanel()->QlinkList.size(); i++) {
+                if (currentButtonSet->getCurrentPanel()->QlinkList[i]->GetName() == ButtonToEdit->GetName()) {
+                    currentButtonSet->getCurrentPanel()->QlinkList.erase(
+                        currentButtonSet->getCurrentPanel()->QlinkList.begin()+i);
+                }
+            }
+            int QIndex = currentButtonSet->getCurrentPanel()->getButtonIndex();
+            currentButtonSet->getCurrentPanel()->setButtonIndex(QIndex - 1);
+            MainFrame::removeButtonToEdit();
+            currentButtonSet->getCurrentPanel()->ButtonSizer->Layout();
+            Update();
+           
+           // currentButtonSet->getCurrentPanel()->QlinkList
+            break;
     }
 }
 /// <summary>
@@ -483,7 +531,7 @@ void MainFrame::swapPanels(ButtonPanel* newPanel) {
         //chance the navlinks based on the panel being swaped to
         BuildNavLinks(newPanel);
         //detach old panel and several control sizers
-        Mainsizer->Detach(ControlSizer);
+        Mainsizer->Detach(Controls);
         Mainsizer->Detach(currentButtonSet->getCurrentPanel());
         Mainsizer->Detach(ButtonSetSizer);
         //hide the current panel
@@ -492,7 +540,7 @@ void MainFrame::swapPanels(ButtonPanel* newPanel) {
         currentButtonSet->setCurrentPanel(newPanel);
         // reattach all sizers and the new panel
         Mainsizer->Prepend(currentButtonSet->getCurrentPanel(), 2, wxEXPAND);
-        Mainsizer->Prepend(ControlSizer, 0, wxALIGN_CENTER);
+        Mainsizer->Prepend(Controls, 0, wxEXPAND);
         Mainsizer->Prepend(ButtonSetSizer, 0, wxALIGN_CENTER);
         currentButtonSet->getCurrentPanel()->Show();
         Mainsizer->Layout();
@@ -511,6 +559,15 @@ void MainFrame::swapHelper(wxCommandEvent& event){
     int PanelIndexToSwapTo = wxAtoi(ButtonName.ToStdString());
     // gets the panel and swaps to it
     swapPanels(currentButtonSet->getCurrentPanel()->getPanelAtIndex(PanelIndexToSwapTo));
+}
+void MainFrame::startSwapHelper(wxCommandEvent& event) {
+    //gets the current event object being a button, the button has an index relating the the assosidated panel 
+    wxButton* btton = (wxButton*)event.GetEventObject();
+    //get the index and turn it to an integer
+    wxString ButtonName = btton->GetName();
+    int PanelIndexToSwapTo = wxAtoi(ButtonName.ToStdString());
+    // gets the panel and swaps to it
+    swapPanels(currentButtonSet->getPanelAt(PanelIndexToSwapTo));
 }
 //double click on the end of a line of text, this opens a dialog and asks the user to select an option, 
 //it then replaces the double clicked line with the selected line. ----needs work---- 
@@ -545,11 +602,11 @@ void MainFrame::SwapButtonSet(wxCommandEvent& evt)
 
         //detach several sizers and reattach them to update the layout properly
         Mainsizer->Detach(ButtonSetSizer);
-        Mainsizer->Detach(ControlSizer);
+        Mainsizer->Detach(Controls);
         Mainsizer->Detach(currentButtonSet->getCurrentPanel());
 
         Mainsizer->Prepend(currentButtonSet->getCurrentPanel(), 2, wxEXPAND);
-        Mainsizer->Prepend(ControlSizer, 0, wxALIGN_CENTER);
+        Mainsizer->Prepend(Controls, 0, wxALIGN_CENTER);
         Mainsizer->Prepend(ButtonSetSizer, 0, wxALIGN_CENTER);
 
         Mainsizer->Layout();
@@ -682,7 +739,7 @@ void MainFrame::BuildNavLinks(ButtonPanel* panelToWork){
     switch (panelToWork->getLevel()) {
     case 0: 
         if (Link1 == nullptr) {
-            Link1 = new NavLink(this, LINK_NAVIGATE, panelToWork->GetName(), panelToWork);
+            Link1 = new NavLink(Links, LINK_NAVIGATE, panelToWork->GetName(), panelToWork);
         }
         else {
             Link1->setName(panelToWork->GetName());
@@ -696,203 +753,106 @@ void MainFrame::BuildNavLinks(ButtonPanel* panelToWork){
             Link3->Hide();
             Link3 = nullptr;
         }
-        
-        LinkSizer->Clear();
+
+        Links->clearLinkSizer();
+        //LinkSizer->Clear();
         Link1->Hide();
-        LinkSizer->Add(Link1);
+        Links->addToLinkSizer(Link1);
+        //LinkSizer->Add(Link1);
         Link1->Show();
-        LinkSizer->Layout();
+        Links->linkLayout();
+        //LinkSizer->Layout();
         Update();
         break;
     case 1:
         if (Link2 == nullptr) {
-            Link2 = new NavLink(this, LINK_NAVIGATE, panelToWork->GetName(), panelToWork);
+            Link2 = new NavLink(Links, LINK_NAVIGATE, panelToWork->GetName(), panelToWork);
         }
         else {
             Link2->setName(panelToWork->GetName());
             Link2->setPanel(panelToWork);
         }
 
-        LinkSizer->Clear();
+        Links->clearLinkSizer();
         Link1->Hide();
         Link2->Hide();
-        LinkSizer->Add(Link1);
-        LinkSizer->Add(10, 10);
-        LinkSizer->Add(Link2);
+        Links->addToLinkSizer(Link1);
+        Links->linklAddSpace(10, 10);
+        Links->addToLinkSizer(Link2);
         Link1->Show();
         Link2->Show();
-        LinkSizer->Layout();
+        Links->linkLayout();
         Update();
         break;
     case 2:
         if (Link3 == nullptr) {
-            Link3 = new NavLink(this, LINK_NAVIGATE, panelToWork->GetName(), panelToWork);
+            Link3 = new NavLink(Links, LINK_NAVIGATE, panelToWork->GetName(), panelToWork);
         }
         else {
             Link3->setName(panelToWork->GetName());
             Link3->setPanel(panelToWork);
         }
-        LinkSizer->Clear();
+        Links->clearLinkSizer();
         Link1->Hide();
         Link2->Hide();
         Link3->Hide();
-        LinkSizer->Add(Link1);
-        LinkSizer->Add(10, 10);
-        LinkSizer->Add(Link2);
-        LinkSizer->Add(10, 10);
-        LinkSizer->Add(Link3);
+        Links->addToLinkSizer(Link1);
+        Links->linklAddSpace(10, 10);
+        Links->addToLinkSizer(Link2);
+        Links->linklAddSpace(10, 10);
+        Links->addToLinkSizer(Link3);
         Link1->Show();
         Link2->Show();
         Link3->Show();
-        LinkSizer->Layout();
+        Links->linkLayout();
         Update();
         break;
     }
 }
-void MainFrame::OnBold(wxCommandEvent& WXUNUSED(event))
-{   
-    MainEditBox->ApplyBoldToSelection();
+
+void MainFrame::BindAllButtons(){
+    for (size_t k = 0; k < ButtonSetList.size(); k++) {
+
+        for (size_t j = 0; j < ButtonSetList.at(k)->getPanelList().size(); j++) {
+            ButtonPanel* tempPanel = ButtonSetList.at(k)->getPanelList().at(j);
+            for (size_t i = 0; i < tempPanel->QlinkList.size(); i++) {
+
+                tempPanel->QlinkList.at(i)->Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
+                if (tempPanel->QlinkList.at(i)->GetId() == BUTTON_Panel) {
+                    tempPanel->QlinkList.at(i)->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
+                }
+
+            }
+        }
+    }
 }
-void MainFrame::OnItalic(wxCommandEvent& WXUNUSED(event))
-{
-    MainEditBox->ApplyItalicToSelection();
+void MainFrame::DialogButtonHelper() {
+
+    wxString dialogChoice = popUpHandeler->SingleChoiceDialog("DialogInformation/DialogSelection.txt", "select a popup.");
+    if (dialogChoice == "Chief complaint E&M"){
+        currentButtonSet->getCurrentPanel()->AddButton("Chief E&M","Dialog-ID-ChiefEM");
+        currentButtonSet->getCurrentPanel()->QlinkList.back()->Bind(wxEVT_BUTTON, &MainFrame::ChiefEandM, this);
+    }
+    if (dialogChoice == "Next complaint E&M") {
+        currentButtonSet->getCurrentPanel()->AddButton("Next E&M", "Dialog-ID-NextEM");
+        currentButtonSet->getCurrentPanel()->QlinkList.back()->Bind(wxEVT_BUTTON, &MainFrame::NextEandM, this);
+    }
+    if (dialogChoice == "Past History") {
+        currentButtonSet->getCurrentPanel()->AddButton("Health History", "Dialog-ID-PastHistory");
+        currentButtonSet->getCurrentPanel()->QlinkList.back()->Bind(wxEVT_BUTTON, &MainFrame::pastHealthHistory, this);
+    }
+    
 }
-void MainFrame::OnUnderline(wxCommandEvent& WXUNUSED(event))
-{
-    MainEditBox->ApplyUnderlineToSelection();
-}
-void MainFrame::OnAlignLeft(wxCommandEvent& WXUNUSED(event))
-{
-    MainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_LEFT);
-}
-void MainFrame::OnAlignCentre(wxCommandEvent& WXUNUSED(event))
-{
-    MainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_CENTRE);
-}
-void MainFrame::OnAlignRight(wxCommandEvent& WXUNUSED(event))
-{
-    MainEditBox-> ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_RIGHT);
-}
-void MainFrame::OnStrikethrough(wxCommandEvent& WXUNUSED(event))
-{
-    MainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_STRIKETHROUGH);
-}
-void MainFrame::OnSuperscript(wxCommandEvent& WXUNUSED(event))
-{
-    MainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUPERSCRIPT);
-}
-void MainFrame::OnSubscript(wxCommandEvent& WXUNUSED(event))
-{
-    MainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUBSCRIPT);
-}
-void MainFrame::DialogButton(wxCommandEvent& WXUNUSED(event)) {
-    wxString allergies, surgeries, meds, illness, accidents, family,work,social,exercise,diet,locations;
-    allergies = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt","patient allergies?");
-    surgeries = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "patient surgical history?");
-    meds = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "patient Medications?");
-    //illness = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "patient allergies?");
-    //accidents = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "patient allergies?");
-    family = popUpHandeler->MultipleChoiceDialog("DialogInformation/familyHistory.txt", "patient's Immediate Family History?");
-    work = popUpHandeler->MultipleChoiceDialog("DialogInformation/work.txt", "Work?");
-    social = popUpHandeler->MultipleChoiceDialog("DialogInformation/socialhabits.txt", "Social habits? ");
-    exercise = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise routine?");
-    diet = popUpHandeler->MultipleChoiceDialog("DialogInformation/DietNutrition.txt", "Diet and Nutrition?");
-    locations = popUpHandeler->bodyDialog();
-
-    MainEditBox->BeginBold();
-    MainEditBox->WriteText("Past,Family and Social History:");
-    MainEditBox->WriteText("\n\t-Past Health History:");
-    MainEditBox->WriteText("\n\t\t-Allergies/Sensitivities:");
-    MainEditBox->EndBold();
-
-    MainEditBox->BeginURL("Allergies", wxT("Blue"));
-    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    MainEditBox->WriteText(allergies);
-    MainEditBox->EndTextColour();
-    MainEditBox->EndURL();
-
-    MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n\t\t-Surgery:");
-    MainEditBox->EndBold();
-
-    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    MainEditBox->WriteText(surgeries);
-    MainEditBox->EndTextColour();
-
-    MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n\t\t-Medications:");
-    MainEditBox->EndBold();
-
-    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    MainEditBox->WriteText(meds);
-    MainEditBox->EndTextColour();
-
-    MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n\t\t-Illnesses:");
-    MainEditBox->EndBold();
-
-    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    MainEditBox->WriteText("placeholder");
-    MainEditBox->EndTextColour();
-
-    MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n\t\t-Accidents:");
-    MainEditBox->EndBold();
-
-    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    MainEditBox->WriteText("placeholder");
-    MainEditBox->EndTextColour();
-
-    MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n\t-Family and Social History:");
-    MainEditBox->WriteText("\n\t\t-Family History:");
-    MainEditBox->EndBold();
-
-    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    MainEditBox->WriteText(family);
-    MainEditBox->EndTextColour();
-
-    MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n\t\t-Work Habits:");
-    MainEditBox->EndBold();
-
-    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    MainEditBox->WriteText(work);
-    MainEditBox->EndTextColour();
-
-    MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n\t\t-Social Habits:");
-    MainEditBox->EndBold();
-
-    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    MainEditBox->WriteText(social);
-    MainEditBox->EndTextColour();
-
-    MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n\t\t-Exercise Habits:");
-    MainEditBox->EndBold();
-
-    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    MainEditBox->WriteText(exercise);
-    MainEditBox->EndTextColour();
-
-    MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n\t\t-Diet and Nutrition Habits:");
-    MainEditBox->EndBold();
-
-    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    MainEditBox->WriteText(diet);
-    MainEditBox->EndTextColour();
-}
-void MainFrame::EandM(wxCommandEvent& WXUNUSED(event)) {
-    wxString area, date, injury, freq,quality,vas,Radiate,allergies,prevEpp,goals,locations;
-    locations = popUpHandeler->bodyDialog();
+void MainFrame::ChiefEandM(wxCommandEvent& WXUNUSED(event)) {
+    wxString area, date, injury, freq,quality,vas,radiate,allergies,prevEpp,goals,locations,change;
+    locations = popUpHandeler->bodyDialog("what is the cheif complaint?");
     date = popUpHandeler->Calender();
 
     injury = popUpHandeler->SingleChoiceDialog("DialogInformation/Injury.txt","Mechanism of injury or condition.");
     freq = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Frequency of pain?");
     quality = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "What are the quality of the pain?");
-    //radiates
+    radiate = popUpHandeler->bodyDialog("if the discomfort radiates, were dose it travle to?");
+    change = popUpHandeler->SingleChoiceDialog("DialogInformation/BetterorWorse.txt","how has the pain changed?");
     vas = popUpHandeler->SingleChoiceDialog("DialogInformation/VAS.txt", "What is the VAS?");
     //modifying factors
     //previos episodes
@@ -907,20 +867,20 @@ void MainFrame::EandM(wxCommandEvent& WXUNUSED(event)) {
     MainEditBox->BeginTextColour(wxColour(52, 128, 235));
     MainEditBox->WriteText(locations);
     MainEditBox->EndTextColour();
-    MainEditBox->WriteText(" complaint since ");
+    MainEditBox->WriteText("\tcomplaint since ");
     MainEditBox->BeginTextColour(wxColour(52, 128, 235));
     MainEditBox->WriteText(date);
     MainEditBox->EndTextColour();
 
     MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n-Mechanism of injury: ");
+    MainEditBox->WriteText("\n\t-Mechanism of injury: ");
     MainEditBox->EndBold();
     MainEditBox->BeginTextColour(wxColour(52,128,235));
     MainEditBox->WriteText(injury);
     MainEditBox->EndTextColour();
 
     MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n-Frequency/Quality: ");
+    MainEditBox->WriteText("\n\t-Frequency/Quality: ");
     MainEditBox->EndBold();
     MainEditBox->WriteText("experiences pain and discomfort ");
     MainEditBox->BeginTextColour(wxColour(52, 128, 235));
@@ -933,18 +893,18 @@ void MainFrame::EandM(wxCommandEvent& WXUNUSED(event)) {
 
 
     MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n-Radiation of symptoms: ");
+    MainEditBox->WriteText("\n\t-Radiation of symptoms: ");
     MainEditBox->EndBold();
-    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    MainEditBox->WriteText("placeholder");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(radiate);
     MainEditBox->EndTextColour();
 
     MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n-Change in Complaint: ");
+    MainEditBox->WriteText("\n\t-Change in Complaint: ");
     MainEditBox->EndBold();
     MainEditBox->WriteText("Complaint has ");
-    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    MainEditBox->WriteText("placeholder");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(change);
     MainEditBox->EndTextColour();
     MainEditBox->WriteText("since the onset and the pain scale is currently rated at ");
     MainEditBox->BeginTextColour(wxColour(52, 128, 235));
@@ -953,7 +913,7 @@ void MainFrame::EandM(wxCommandEvent& WXUNUSED(event)) {
     MainEditBox->WriteText("(10/10 being the most severe)");
 
     MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n-Modifying Factors: ");
+    MainEditBox->WriteText("\n-\tModifying Factors: ");
     MainEditBox->EndBold();
     MainEditBox->WriteText("Relived by ");
     MainEditBox->BeginTextColour(wxColour(239, 51, 10));
@@ -965,7 +925,7 @@ void MainFrame::EandM(wxCommandEvent& WXUNUSED(event)) {
     MainEditBox->EndTextColour();
 
     MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n-Previous Episodes: ");
+    MainEditBox->WriteText("\n\t-Previous Episodes: ");
     MainEditBox->EndBold();
     MainEditBox->BeginTextColour(wxColour(239, 51, 10));
     MainEditBox->WriteText("placeholder");
@@ -973,21 +933,21 @@ void MainFrame::EandM(wxCommandEvent& WXUNUSED(event)) {
     MainEditBox->WriteText("past episodes.");
 
     MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n-Previos Care: ");
+    MainEditBox->WriteText("\n\t-Previos Care: ");
     MainEditBox->EndBold();
     MainEditBox->BeginTextColour(wxColour(239, 51, 10));
     MainEditBox->WriteText("placeholder");
     MainEditBox->EndTextColour();
 
     MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n-Recent diagnostic tests: ");
+    MainEditBox->WriteText("\n\t-Recent diagnostic tests: ");
     MainEditBox->EndBold();
     MainEditBox->BeginTextColour(wxColour(239, 51, 10));
     MainEditBox->WriteText("placeholder");
     MainEditBox->EndTextColour();
 
     MainEditBox->BeginBold();
-    MainEditBox->WriteText("\n-Patient subjective goal(s): ");
+    MainEditBox->WriteText("\n\t-Patient subjective goal(s): ");
     MainEditBox->EndBold();
     MainEditBox->WriteText("Explains personal goal for staring treatment");
     MainEditBox->BeginTextColour(wxColour(52, 128, 235));
@@ -997,4 +957,122 @@ void MainFrame::EandM(wxCommandEvent& WXUNUSED(event)) {
     MainEditBox->BeginTextColour(wxColour(52, 128, 235));
     MainEditBox->WriteText("\n--------------------------------------");
     MainEditBox->EndTextColour();
+}
+void MainFrame::NextEandM(wxCommandEvent& WXUNUSED(event)) {
+    wxString injury, freq, quality, vas, radiate, change, locations,date;
+    locations = popUpHandeler->bodyDialog("what is the cheif complaint?");
+    date = popUpHandeler->Calender();
+    injury = popUpHandeler->SingleChoiceDialog("DialogInformation/Injury.txt", "Mechanism of injury or condition.");
+    freq = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Frequency of pain?");
+    quality = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "What are the quality of the pain?");
+    radiate = popUpHandeler->bodyDialog("if the discomfort radiates, were dose it travle to?");
+    change = popUpHandeler->SingleChoiceDialog("DialogInformation/BetterorWorse.txt", "how has the pain changed?");
+    vas = popUpHandeler->SingleChoiceDialog("DialogInformation/VAS.txt", "What is the VAS?");
+    //modifying factors
+    MainEditBox->WriteText("Patient also complains of: ");
+    
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(locations);
+    MainEditBox->EndTextColour();
+    MainEditBox->WriteText("\tcomplaint since ");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(date);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t-Mechanism of injury: ");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(injury);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t-Frequency/Quality: ");
+    MainEditBox->EndBold();
+    MainEditBox->WriteText("experiences pain and discomfort ");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(freq);
+    MainEditBox->EndTextColour();
+    MainEditBox->WriteText(" of the time and is discribed as");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(quality);
+    MainEditBox->EndTextColour();
+
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t-Radiation of symptoms: ");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(radiate);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t-Change in Complaint: ");
+    MainEditBox->EndBold();
+    MainEditBox->WriteText("Complaint has ");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(change);
+    MainEditBox->EndTextColour();
+    MainEditBox->WriteText("since the onset and the pain scale is currently rated at ");
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(vas);
+    MainEditBox->EndTextColour();
+    MainEditBox->WriteText("(10/10 being the most severe)");
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n-\tModifying Factors: ");
+    MainEditBox->EndBold();
+    MainEditBox->WriteText("Relived by ");
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+    MainEditBox->WriteText("and aggravated by ");
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+}
+void MainFrame::pastHealthHistory(wxCommandEvent& WXUNUSED(event)) {
+    wxString Allergies, Surgeries, Meds;
+    Allergies = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt","what allergies are present?");
+    Surgeries = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "what Surgeries have been done?");
+    Meds = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "what medications is the patient taking?");
+    //Illness = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "what allergies are present");
+    //Accidents
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("Past, Family and Social History");
+    MainEditBox->WriteText("\n\t-Past Health History:");
+    MainEditBox->WriteText("\n\t\t Allergies/Sensitivities:");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(Allergies);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t\t Surgeries:");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(Surgeries);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t\t Medications:");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(52, 128, 235));
+    MainEditBox->WriteText(Meds);
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t\t Illnesses:");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+
+    MainEditBox->BeginBold();
+    MainEditBox->WriteText("\n\t\t Accidents:");
+    MainEditBox->EndBold();
+    MainEditBox->BeginTextColour(wxColour(239, 51, 10));
+    MainEditBox->WriteText("placeholder");
+    MainEditBox->EndTextColour();
+
 }

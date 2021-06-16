@@ -87,8 +87,8 @@ wxString DialogHelper::Calender() {
 }
 
 
-std::string DialogHelper::bodyDialog() {
-    bodyDialogObj = new myImageDialog(parent,wxID_ANY,"");
+std::string DialogHelper::bodyDialog(wxString name) {
+    bodyDialogObj = new myImageDialog(parent,wxID_ANY,name);
     if (bodyDialogObj->ShowModal() == wxID_OK) {
         return bodyDialogObj->getSelections();
     }

@@ -60,6 +60,7 @@ void ButtonSet::loadAllPanels(wxString set) {
             //LayoutName += ".txt";
             panelList.push_back(new ButtonPanel(parent, name, LayoutName, panelCount));
             panelList.back()->Hide();
+            panelList.back()->makeLevel();
             panelCount++;
         }
        

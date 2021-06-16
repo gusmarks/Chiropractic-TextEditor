@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<richtext version="1.0.0.0" xmlns="http://www.wxwidgets.org">
+  <paragraphlayout textcolor="#000000" fontpointsize="12" fontfamily="72" fontstyle="90" fontweight="400" fontunderlined="0" fontface="Times New Roman" alignment="1" parspacingafter="10" parspacingbefore="0" linespacing="10" margin-left="10,4098" margin-right="10,4098" margin-top="10,4098" margin-bottom="10,4098">
+    <paragraph>
+      <text fontweight="700"></text>
+    </paragraph>
+    <paragraph>
+      <text fontweight="700">enter here</text>
+    </paragraph>
+    <paragraph>
+      <text>rich txt</text>
+    </paragraph>
+  </paragraphlayout>
+</richtext>

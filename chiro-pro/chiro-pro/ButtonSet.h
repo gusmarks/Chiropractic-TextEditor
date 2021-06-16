@@ -46,6 +46,9 @@ public://an ofstream to save configurations
 	int getPanelListSize() {
 		return (int)panelList.size();
 	}
+	std::vector<ButtonPanel*> getPanelList() {
+		return panelList;
+	}
 	//returns the current panel variable
 	ButtonPanel* getCurrentPanel() {
 		return currentPanel;
@@ -61,6 +64,10 @@ public://an ofstream to save configurations
 		return path;
 	}
 	
+	ButtonPanel* getPanelAt(int i) {
+		return panelList[i];
+	}
+
 // a set of panel manipulating functions defined in ButtonSet.cpp
 	void addNewPanel(wxFrame* parent,wxString name);
 	void SaveAllPanels(wxString set);

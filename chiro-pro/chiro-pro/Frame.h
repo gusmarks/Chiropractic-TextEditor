@@ -14,10 +14,10 @@
 #include "ButtonSet.h"
 #include "buttonPanel.h"
 #include "NavLink.h"
+#include "LinkPanel.h"
+#include "ControlPanel.h"
 #include <wx/hyperlink.h>
 #include "myRichTextCtrl.h"
-
-
 //MainFrame extends the wxFrame class to make a window
 class MainFrame : public wxFrame
 {
@@ -43,12 +43,10 @@ wxRichTextCtrl* MainEditBox;
 	wxChoice* userSelection;
 	// a set of sizers to orginize the page, ButtonSetSizer aranges the set changer and the new set button, MainSizer holds all other sizers
 	//and and the text box, finaly ControlSizer aranges the loose buttons 
-	wxBoxSizer* ButtonSetSizer;
-	wxBoxSizer* Mainsizer;
-	wxBoxSizer* ControlSizer;
-	wxBoxSizer* LinkSizer;
+	wxBoxSizer* ButtonSetSizer, *ControlSizer, *Mainsizer, *LinkSizer;
 
-	
+	controlPanel* Controls;
+	linkPanel* Links;
 	//the DialogHelper allows for popup use, while function handeler, deals with functions that dont quite fit in the main files 
 	DialogHelper* popUpHandeler;
 	FuncHelper* functionHelper;
@@ -58,9 +56,7 @@ wxRichTextCtrl* MainEditBox;
 	std::ifstream setInfoIn;
 	std::ofstream setInfoOut;
 	// navlinks are hyperlinks that swap to and from panels inside a set.
-	NavLink* Link1;
-	NavLink* Link2;
-	NavLink* Link3;
+	NavLink* Link1, *Link2, *Link3;
 public:
 	//Constuctor for the frame
 	MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
@@ -77,7 +73,7 @@ public:
 	void ButtonWrite(wxCommandEvent& event);
 	void swapPanels(ButtonPanel* newPanel);
 	void swapHelper(wxCommandEvent& event);
-
+	void startSwapHelper(wxCommandEvent& event);
 	void clickURLinTextCtrl(wxTextUrlEvent& evt);
 
 	void SwapButtonSet(wxCommandEvent& evt);
@@ -87,26 +83,58 @@ public:
 	void onRightClick(wxMouseEvent& event);
 	void onPopUpCLick(wxCommandEvent& event);
 
-	void OnBold(wxCommandEvent& event);
-	void OnUpdateBold(wxUpdateUIEvent& event);
-	void OnItalic(wxCommandEvent& event);
-	void OnUnderline(wxCommandEvent& event);
-	void OnStrikethrough(wxCommandEvent& event);
-	void OnSuperscript(wxCommandEvent& event);
-	void OnSubscript(wxCommandEvent& event);
 
 	
 	void LinkNavigation(wxHyperlinkEvent& evt);
 	void BuildNavLinks(ButtonPanel* panelToWork);
 
+	void destroyButton();
 	void destroyPanels(wxString usr);
 
-	void OnAlignRight(wxCommandEvent& WXUNUSED(event));
-	void OnAlignLeft(wxCommandEvent& WXUNUSED(event));
-	void OnAlignCentre(wxCommandEvent& WXUNUSED(event));
 
-	void DialogButton(wxCommandEvent& WXUNUSED(event));
-	void EandM(wxCommandEvent& WXUNUSED(event));
+	void OnBold(wxCommandEvent& WXUNUSED(event))
+	{
+		MainEditBox->ApplyBoldToSelection();
+	}
+	void OnItalic(wxCommandEvent& WXUNUSED(event))
+	{
+		MainEditBox->ApplyItalicToSelection();
+	}
+	void OnUnderline(wxCommandEvent& WXUNUSED(event))
+	{
+		MainEditBox->ApplyUnderlineToSelection();
+	}
+	void OnStrikethrough(wxCommandEvent& WXUNUSED(event))
+	{
+		MainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_STRIKETHROUGH);
+	}
+	void OnSuperscript(wxCommandEvent& WXUNUSED(event))
+	{
+		MainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUPERSCRIPT);
+	}
+	void OnSubscript(wxCommandEvent& WXUNUSED(event))
+	{
+		MainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUBSCRIPT);
+	}
+	void OnAlignLeft(wxCommandEvent& WXUNUSED(event))
+	{
+		MainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_LEFT);
+	}
+	void OnAlignCentre(wxCommandEvent& WXUNUSED(event))
+	{
+		MainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_CENTRE);
+	}
+	void OnAlignRight(wxCommandEvent& WXUNUSED(event))
+	{
+		MainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_RIGHT);
+	}
+
+
+	void BindAllButtons();
+	void DialogButtonHelper();
+	void ChiefEandM(wxCommandEvent& WXUNUSED(event));
+	void NextEandM(wxCommandEvent& WXUNUSED(event));
+	void pastHealthHistory(wxCommandEvent& WXUNUSED(event));
 
 /// //new file method, this method clears the texteditor and filename for saving.
 ///allowing people to make and save new files
@@ -117,6 +145,9 @@ public:
 		if (popUpHandeler->confirmIntent("are you sure you want to open a new file?")) {
 			MainEditBox->Clear();
 			MainFrame::setFilename("");
+			MainEditBox->Enable();
+			MainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
+			MainEditBox->SetEditable(true);
 		}
 	}
 	//getFilename is a getter method for the filename variable used for saving and loading textfiles
@@ -143,6 +174,9 @@ public:
 	void setButtonToEditText(wxString Text) {
 		this->getButtonToEdit()->SetName(Text);
 	}
+	void removeButtonToEdit() {
+		this->getButtonToEdit()->Destroy();
+	}
 	//checks if the file has already been signed
 	bool isSigned() {
 		return this->Signed;
@@ -161,7 +195,6 @@ public:
 		event.Skip();
 		Close(TRUE); // Tells the OS to quit running this process
 	}
-
 	
 		DECLARE_EVENT_TABLE()
 };
@@ -181,11 +214,13 @@ enum
 	BUTTON_Write,
 	BUTTON_Dialog,
 	BUTTON_Panel,
+	Button_ControlPanel,
 	BUTTON_Back,
 	BUTTON_NewSet,
 	CHOICE_SWAP_Set,
 	MENU_EditButtonName,
 	MENU_EditButtonText,
+	MENU_RemoveButton,
 	MENU_SaveButtons,
 	LINK_NAVIGATE,
 	ID_FORMAT_BOLD,

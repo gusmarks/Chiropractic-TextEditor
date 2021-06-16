@@ -5,7 +5,7 @@
 
 myImageDialog::myImageDialog() {}
 myImageDialog::myImageDialog(wxWindow* parent, wxWindowID id, wxString name) :
-    wxDialog(parent, id, "hi", wxDefaultPosition, wxSize(600, 650), wxDEFAULT_DIALOG_STYLE, name) {
+    wxDialog(parent, id, name, wxDefaultPosition, wxSize(600, 650), wxDEFAULT_DIALOG_STYLE, name) {
 
     mainPanel = new myImagePanel(this, wxT("PainLocations.png"), wxBITMAP_TYPE_PNG);
     Cancel = new wxButton(this, wxID_CANCEL, "Cancel", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
