@@ -69,15 +69,90 @@ public://an ofstream to save configurations
 	}
 
 // a set of panel manipulating functions defined in ButtonSet.cpp
-	void addNewPanel(wxFrame* parent,wxString name);
-	void SaveAllPanels(wxString set);
-	void loadAllPanels(wxString set);
-	void SaveButtons();
-	void LoadButtons();
-	void loadPanelsAndButtons(wxString set);
-	void SavePanelsAndButtons(wxCommandEvent& event);
-	void SavePanelsAndButtonsNP();
-	void destroyPanels(wxString set);
+//	void addNewPanel(wxFrame* parent,wxString name);
+	void saveAllPanels(wxString set) {
+		//std::string user = set.ToStdString();
+		std::string PanelLayout = this->path + ".txt";
+		if (!this->PanelLayoutout.is_open()) {
+			PanelLayoutout.open(PanelLayout, std::fstream::out);//modify to swap users later
+		}
+		int size = panelList.size();
+		for (int i = 0; i < size; i++) {
+			if (this->panelList[i] != nullptr) {
+
+				this->PanelLayoutout << this->panelList[i]->GetName();
+				this->PanelLayoutout << "\n";
+				this->PanelLayoutout << this->panelList[i]->getLayoutName();
+				this->PanelLayoutout << "\n";
+				//this->PanelLayoutout << this->panelList[i]->getPrev()->GetName();
+
+			}
+		}
+
+		//clsoe file
+		this->PanelLayoutout.close();
+	}
+	void loadAllPanels(wxString set) {
+		setName;
+		std::ifstream PanelLayoutin;
+		std::string setname = set.ToStdString();
+		std::string fileName = path + ".txt";
+		//open the button layout file assuming it is closed already
+		//if (!PanelLayoutin) {
+
+		PanelLayoutin.open(fileName, std::fstream::in);
+		//}
+		if (PanelLayoutin.fail()) {
+			popUpHandeler->errorMessage("fail to open file");
+		}
+		else {
+			//two strings name and lable holding the lable and text
+			std::string name;
+			std::string LayoutName;
+			this->setPanelCount(0);
+
+			while (PanelLayoutin.peek() != EOF) {
+				//get input
+				getline(PanelLayoutin, name);
+				getline(PanelLayoutin, LayoutName);
+
+				panelList.push_back(new ButtonPanel(parent, name, LayoutName, panelCount));
+				panelList.back()->Hide();
+				panelList.back()->makeLevel();
+				panelCount++;
+			}
+
+			currentPanel = panelList.at(0);
+			currentPanel->Show();
+
+			PanelLayoutin.close();
+		}
+	}
+	void saveButtons() {
+		for (size_t i = 0; i < panelList.size(); i++) {
+			panelList[i]->saveQLinks();
+		}
+	}
+	void loadButtons() {
+
+		for (int i = 0; i < panelCount; i++) {
+			panelList.at(i)->loadQLinks();
+		}
+	}
+	void loadPanelsAndButtons(wxString set) {
+		loadAllPanels(set);
+		loadButtons();
+	}
+	//saves the layout for the user, and will be loaded upon the next use of the program
+	void savePanelsAndButtons(wxCommandEvent& event) {
+		saveAllPanels(setName);
+		saveButtons();
+	}//same as last but with no event nessisary
+	void savePanelsAndButtonsNP() {
+		saveAllPanels(setName);
+		saveButtons();
+	}
+	//removes all panels from the set*
 	void clearPanelList() {
 		panelList.clear();
 	}

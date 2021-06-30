@@ -14,6 +14,9 @@ public:
 	bool isNumber(const std::string& str) {
 		return !str.empty() && std::find_if(str.begin(), str.end(), [](unsigned char c) {return !std::isdigit(c); }) == str.end();
 	}
+    bool isText(const std::string& str) {
+        return !(str.find("Dialog-ID") != std::string::npos)&&!str.empty();
+    }
     long getLineNo(std::string& str, std::string delim) {
 
         std::vector<std::string> stringsNoBlankLines;
@@ -37,6 +40,13 @@ public:
         time(&current);
 
         return  ctime(&current);
+    }
+    std::string getDateToSignNoTime() {
+        time_t current;
+        time(&current);
+        std::string time= ctime(&current);
+        time.erase(time.end() - 14, time.end() - 5);
+        return  time;
     }
     bool DoseUserExist(wxString usr) {
         //confirm the existance of button set files with an ifstream, by opening it and chacking if it fails
