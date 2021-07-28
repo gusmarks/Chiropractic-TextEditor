@@ -26,7 +26,7 @@ void myImagePanel::swapImages(wxCommandEvent& evt) {
         ClickCircles[ind]->SetBitmap(circle);
         ClickCircles[ind]->toggleSelected();
     }
-    myImageDialog* parent = (myImageDialog*)this->GetParent();
+    bodyImageDialog* parent = (bodyImageDialog*)this->GetParent();
     if (parent) {
         parent->updateDisplay();
     }

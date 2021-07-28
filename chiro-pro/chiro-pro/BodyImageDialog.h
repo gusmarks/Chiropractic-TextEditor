@@ -79,12 +79,12 @@ private:
 	wxBitmap circle;
 	wxBitmap redcircle;
 	ImageButton* ClickCircles[83];
-	DECLARE_EVENT_TABLE()
+	wxDECLARE_EVENT_TABLE();
 };
-class myImageDialog : public wxDialog {
+class bodyImageDialog : public wxDialog {
 public:
-	myImageDialog() {}
-	myImageDialog(wxWindow* parent, wxWindowID id, wxString name) :
+	bodyImageDialog() {}
+	bodyImageDialog(wxWindow* parent, wxWindowID id, wxString name) :
 		wxDialog(parent, id, name, wxDefaultPosition, wxSize(600, 650), wxDEFAULT_DIALOG_STYLE, name) {
 
 		mainPanel = new myImagePanel(this, wxT("PainLocations.png"), wxBITMAP_TYPE_PNG);

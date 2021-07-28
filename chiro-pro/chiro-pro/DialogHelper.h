@@ -6,11 +6,14 @@
 #include "CalenderDialog.h"
 #include "BodyImageDialog.h"
 #include <fstream>
+#include <string>
+#include <iostream>
+#include <filesystem>
 class DialogHelper {
 private:
 	//body image, calender and parent are all stored for later use,
 	//parent is used in various dialogs to ensure they are on the main frame
-	myImageDialog* bodyDialogObj;
+	bodyImageDialog* bodyDialogObj;
 	
 	CalenderDialog* cal;
 	wxWindow* parent;
@@ -51,7 +54,6 @@ public:
 		wxArrayString options;
 		options.Add("text output.");
 		options.Add("new page.");
-		options.Add("popup.");
 		wxSingleChoiceDialog dialog(parent, wxT("would you like a text button, or a Linking Button?"), wxT("Question"), options);
 		//dialog.SetYesNoLabels((wxMessageDialogBase::ButtonLabel)"text", (wxMessageDialogBase::ButtonLabel)"Link");
 		switch (dialog.ShowModal()) {
@@ -159,11 +161,54 @@ public:
 /// <param name="name">the name of the dialog</param>
 /// <returns>a string of all selected values</returns>
 	std::string bodyDialog(wxString name) {
-		bodyDialogObj = new myImageDialog(parent, wxID_ANY, name);
+		bodyDialogObj = new bodyImageDialog(parent, wxID_ANY, name);
 		if (bodyDialogObj->ShowModal() == wxID_OK) {
 			return bodyDialogObj->getSelections();
 		}
 		return "OTHER";
 	}
 
+
+void selectPremadeDialog() {
+	wxArrayString options;
+
+	std::string pathName = "Dialogs/0dialogList.txt";
+	std::fstream dialogList(pathName);
+	int i = 0;
+	if(!dialogList.eof()){
+		while (dialogList) {
+			if (i > 0) {
+				std::string startStr;
+				std::string endStr;
+				std::getline(dialogList, startStr);
+				for (size_t j = 0; j < startStr.size(); j++) {
+					if (startStr[j] == '\t')
+						break;
+					endStr+=(startStr[j]);
+				}
+				
+					options.Add(endStr);
+				
+			}
+			i++;
+		}
+		
+	}
+
+	options.Add("new Text.");
+	wxSingleChoiceDialog dialog(parent, wxT("what button would you like?"), wxT("Question"), options);
+	//dialog.SetYesNoLabels((wxMessageDialogBase::ButtonLabel)"text", (wxMessageDialogBase::ButtonLabel)"Link");
+	switch (dialog.ShowModal()) {
+	case wxID_OK:
+		wxLogStatus(wxT("You pressed \"Ok\""));
+		//return dialog.GetStringSelection();
+		break;
+	case wxID_CANCEL:
+		wxLogStatus(wxT("You pressed \"Cancel\""));
+		//return "Cancel";
+		break;
+	default:       wxLogError(wxT("Unexpected wxMessageDialog return code!"));
+	}
+	//return "";
+}
 };

@@ -1,6 +1,3 @@
-Chief complaint E&M
-Next complaint E&M
-Past History
 Allergies
 Body
 Cervical Adjustment
@@ -32,4 +29,3 @@ TautandTender
 Tone Intensity
 Work
 Vas
-

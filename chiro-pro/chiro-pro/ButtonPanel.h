@@ -115,6 +115,9 @@ public:
 	std::vector<wxButton*> getQLinkList() {
 		return qLinkList;
 	}
+	std::vector<ButtonPanel*> getSubPanelList() {
+		return subPanelList;
+	}
 	//getPanelAtIndex returns the subpanel at a given index
 	ButtonPanel* getPanelAtIndex(int ind) {
 		if (ind < 8) {
@@ -157,7 +160,7 @@ public:
 			std::string check = "Dialog-ID";
 			if (text.find(check) != std::string::npos) {
 				wxButton* newButton = new wxButton(this
-					, wxID_ANY, ButtonName, wxDefaultPosition, wxSize(85, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, ButtonText);
+					, wxID_ANY, ButtonName, wxDefaultPosition, wxSize(130, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, ButtonText);
 
 				newButton->SetForegroundColour(*wxBLUE);
 				qLinkList.push_back(newButton);
@@ -168,7 +171,7 @@ public:
 			}
 			else {
 				qLinkList.push_back(new wxButton(this
-					, wxID_ANY, ButtonName, wxDefaultPosition, wxSize(85, 23), 0, wxDefaultValidator, ButtonText));
+					, wxID_ANY, ButtonName, wxDefaultPosition, wxSize(130, 23), 0, wxDefaultValidator, ButtonText));
 				//add the button to the button sizer
 				buttonSizer->Add(qLinkList.back(), wxLeft);
 				//update layout of page and button index
@@ -179,7 +182,7 @@ public:
 		}
 		else {
 			wxButton* newButton = new wxButton(this,
-				wxID_ANY, ButtonName, wxDefaultPosition, wxSize(85, 23), 0, wxDefaultValidator, ButtonText);
+				wxID_ANY, ButtonName, wxDefaultPosition, wxSize(130, 23), 0, wxDefaultValidator, ButtonText);
 			newButton->SetForegroundColour(wxColor(255, 0, 0));
 			newButton->Refresh();
 			qLinkList.push_back(newButton);
@@ -264,7 +267,7 @@ public:
 
 				//make button
 				if (functionHelper->isNumber(maintext)) {
-					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(85, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, maintext));
+					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(130, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, maintext));
 					this->qLinkList.back()->SetForegroundColour(*wxRED);
 					std::string pathName;
 					getline(this->buttonLayoutin, pathName);
@@ -272,11 +275,11 @@ public:
 
 				}
 				else if (functionHelper->isPopup(maintext)) {
-					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(85, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, maintext));
+					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(130, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, maintext));
 					this->qLinkList.back()->SetForegroundColour(*wxBLUE);
 				}
 				else if (functionHelper->isText(maintext)) {
-					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(85, 23), 0, wxDefaultValidator, maintext));
+					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(130, 23), 0, wxDefaultValidator, maintext));
 				}
 				//add button to array
 				this->buttonSizer->Add(qLinkList.back(), wxLeft);

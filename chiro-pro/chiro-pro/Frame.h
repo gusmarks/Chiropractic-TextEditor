@@ -9,6 +9,7 @@
 #include <wx/listctrl.h>
 #include <wx/richtext/richtextctrl.h>
 #include "DialogHelper.h"
+#include "DialogCreator.h"
 #include "ButtonPanel.h"
 #include "FunctionHelper.h"
 #include "ButtonSet.h"
@@ -89,8 +90,10 @@ private:
 	//the DialogHelper allows for popup use, while function handeler, deals with functions that dont quite fit in the main files 
 	DialogHelper* popUpHandeler;
 	FuncHelper* functionHelper;
+	DialogCreator* DialogCreationHelper;
 	// check to see if the document has been signed or not
 	bool Signed = false;
+	bool isBold=false;
 	// input and output streams to read txt files that store information
 	std::ifstream setInfoIn;
 	std::ofstream setInfoOut;
@@ -122,20 +125,25 @@ public:
 	void onPopUpCLick(wxCommandEvent& event);
 
 	void linkNavigation(wxHyperlinkEvent& evt);
+	void openDialog();
+	void readDialogFile(wxCommandEvent& event);
+	void DialogWriter(std::vector<std::string>);
+
 	/// <summary>
 /// builds the navlinks based on the currentpanel and how many previous elements thier are
 /// </summary>
 /// <param name="panelToWork"></param>
 
 	void buildNavLinks(ButtonPanel* panelToWork) {
-
+		wxString name = panelToWork->GetName();
 		switch (panelToWork->getLevel()) {
 		case 0: {
 			if (link1 == nullptr) {
 				link1 = new NavLink(links, LINK_NAVIGATE, panelToWork->GetName(), panelToWork);
 			}
 			else {
-				link1->setName(panelToWork->GetName());
+				
+				link1->setName(name);
 				link1->setPanel(panelToWork);
 			}
 			if (link2 != nullptr) {
@@ -155,7 +163,7 @@ public:
 			link1->Show();
 			links->linkLayout();
 			//linksizer->Layout();
-			Update();
+			Layout();
 			break;
 		}
 		case 1: {
@@ -165,6 +173,11 @@ public:
 			else {
 				link2->setName(panelToWork->GetName());
 				link2->setPanel(panelToWork);
+			}
+
+			if (link3 != nullptr) {
+				link3->Hide();
+				link3 = nullptr;
 			}
 
 			links->clearLinkSizer();
@@ -211,7 +224,16 @@ public:
 
 	void onBold(wxCommandEvent& WXUNUSED(event))
 	{
-		mainEditBox->ApplyBoldToSelection();
+		if (isBold == false) {
+			mainEditBox->BeginBold();
+			isBold = true;
+		}
+		else if (isBold == true) {
+			mainEditBox->EndBold();
+			isBold = false;
+		}
+			
+		//mainEditBox->ApplyBoldToSelection();
 	}
 	void onItalic(wxCommandEvent& WXUNUSED(event))
 	{
@@ -250,6 +272,7 @@ public:
 	void bindAllButtons();
 	bool dialogButtonHelper();
 	void dialogURLHelper(wxTextUrlEvent& evt);
+	void popupButtonBind(std::string str, wxButton* btton);
 	void popupButtonRebind(std::string str,wxButton* btton);
 	void unbindPopupButton(wxString str, wxButton* btton);
 
@@ -258,6 +281,16 @@ public:
 	void nextEandM(wxCommandEvent& WXUNUSED(event));
 	void pastHealthHistory(wxCommandEvent& WXUNUSED(event));
 	void dailyObjective(wxCommandEvent& WXUNUSED(event));
+
+	int ManualgetDialogCount(std::string file) {
+		std::ifstream fileReader(file);
+		std::string fileCount;
+		getline(fileReader, fileCount);
+		if (fileCount != "") {
+			return std::stoi(fileCount);
+		}
+		return 0;
+	}
 
 	// all of these call a pop up and write a line of text respective to the name the user selected
 	void allergies(wxCommandEvent& WXUNUSED(event)) {
@@ -547,14 +580,22 @@ public:
 	void newFile(wxCommandEvent& WXUNUSED(event))
 	{
 		if (popUpHandeler->confirmIntent("are you sure you want to open a new file?")) {
-			wxString name=wxGetTextFromUser("Enter Patient name", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-			
+			wxString name=wxGetTextFromUser("Enter Patient name", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+			if (name == "") {
+				return;
+			}
 
 			mainEditBox->Clear();
 			MainFrame::setFilename(name);
 			mainEditBox->Enable();
+			mainEditBox->BeginBold();
+			mainEditBox->WriteText("Patient Name: ");
+			mainEditBox->EndBold();
 			mainEditBox->WriteText(name);
 			mainEditBox->WriteText("   ");
+			mainEditBox->BeginBold();
+			mainEditBox->WriteText("Date of First Visit: ");
+			mainEditBox->EndBold();
 			mainEditBox->WriteText(functionHelper->getDateToSignNoTime());
 			mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
 			mainEditBox->SetEditable(true);

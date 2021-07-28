@@ -1,12 +1,9 @@
-Chief complaint E&M
-Next complaint E&M
-Past History
 Allergies
 Body
 Cervical Adjustment
+Calender
 Compicating Factors
 Contraindiction
-Daily Objective
 Diet & Nutrition
 Dificulty Performing
 Drugs Medication
@@ -28,8 +25,6 @@ Social habits
 Specific Muscles
 Spine
 Surgical history
-TautandTender
 Tone Intensity
 Work
 Vas
-

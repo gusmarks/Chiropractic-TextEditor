@@ -92,7 +92,7 @@ public://an ofstream to save configurations
 		//clsoe file
 		this->PanelLayoutout.close();
 	}
-	void loadAllPanels(wxString set) {
+	void loadBasePanels(wxString set) {
 		setName;
 		std::ifstream PanelLayoutin;
 		std::string setname = set.ToStdString();
@@ -128,6 +128,7 @@ public://an ofstream to save configurations
 			PanelLayoutin.close();
 		}
 	}
+	void loadSubPanels() {}
 	void saveButtons() {
 		for (size_t i = 0; i < panelList.size(); i++) {
 			panelList[i]->saveQLinks();
@@ -140,8 +141,9 @@ public://an ofstream to save configurations
 		}
 	}
 	void loadPanelsAndButtons(wxString set) {
-		loadAllPanels(set);
+		loadBasePanels(set);
 		loadButtons();
+		
 	}
 	//saves the layout for the user, and will be loaded upon the next use of the program
 	void savePanelsAndButtons(wxCommandEvent& event) {

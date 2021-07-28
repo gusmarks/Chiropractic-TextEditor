@@ -20,6 +20,7 @@
 #include "Frame.h"
 #include "FunctionHelper.h"
 #include "LinkPanel.h"
+#include "DialogCreator.h"
 //include general functionaly and wx specific functions
 #include <wx/wfstream.h>
 #include <wx/wxprec.h>
@@ -73,7 +74,7 @@ EVT_BUTTON(BUTTON_Sign, MainFrame::sign)
 EVT_BUTTON(BUTTON_NewSet, MainFrame::newSet)
 
 
-EVT_CHOICE(CHOICE_SWAP_Set, MainFrame::swapButtonSet)
+//EVT_CHOICE(CHOICE_SWAP_Set, MainFrame::swapButtonSet)
 EVT_HYPERLINK(LINK_NAVIGATE, MainFrame::linkNavigation)
 EVT_TEXT_URL(TEXT_Main,MainFrame::dialogURLHelper)
 /*
@@ -121,7 +122,7 @@ MainFrame::MainFrame(const wxString& title,
     //statusbar at the bottom of page has 2 cells
     //menu bar at the top ofthe page has 1 tab named File menu and visualy represented as File
     //the File tab has 7 options: new file, open file,close file, save file, save file as, save button layout and quit.
-    CreateStatusBar(2);
+    //CreateStatusBar(2);
     mainMenu = new wxMenuBar();
     wxMenu* FileMenu = new wxMenu();
 
@@ -203,7 +204,7 @@ MainFrame::MainFrame(const wxString& title,
     controls->controlLayout();
 
     //create a choice box so the user can select what set of buttons they want, and a button to create new button sets
-    userSelection = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 2, MainFrame::buttonSetNames, 0, wxDefaultValidator, "userCHoice");
+    userSelection = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxSize(100,30), 2, MainFrame::buttonSetNames, 0, wxDefaultValidator, "userCHoice");
     wxButton* newUser = new wxButton(this, BUTTON_NewSet, "New Set", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "New Set");
     //new sizer for the wxCHoice and the new set button
     buttonSetSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -235,6 +236,8 @@ MainFrame::MainFrame(const wxString& title,
     //an object to make and handel popups, error messages and questions
     popUpHandeler = new DialogHelper(this);
     functionHelper = new FuncHelper();
+    int count =ManualgetDialogCount("Dialogs/0dialogCount.txt");
+    DialogCreationHelper = new DialogCreator(this,wxID_ANY,count);
     ///////////////////////////button layout//////////////////////////////
  
     //loades the panels and buttons for the first set
@@ -382,22 +385,36 @@ void MainFrame::addButton(wxCommandEvent& event)
    wxString selection = popUpHandeler->confirmIntentAddButton(this);
         //promp user for name and text of text button
    if (selection == "text output.") {
+       popUpHandeler->selectPremadeDialog();
+       openDialog();
        wxString buttonName =
-           wxGetTextFromUser("Enter text for button name", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-       wxString buttonText =
-           wxGetTextFromUser("Enter text for button to add", "", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
+           wxGetTextFromUser("Enter name for Button ", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+       wxString buttonText = "Dialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt";
+         //  wxGetTextFromUser("Enter text for Button to add", "", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+       
        //adds the button
-       if (buttonName!=""||buttonText!="") {
+       if (buttonName!="") {
            currentButtonSet->getCurrentPanel()->addQLink(buttonName, buttonText);
            int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
            currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex + 1);
+
+           std::fstream fileReader("Dialogs/0dialogList.txt",fstream::app);
+           //fileReader.open();
+           fileReader << buttonName.ToStdString();
+           fileReader << " \tDialogs/dialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt\n";
+           fileReader.close();
+           fileReader.open("Dialogs/0dialogCount.txt");
+           fileReader << std::to_string(DialogCreationHelper->getDialogCount());
+
+           
+
        }
      //  int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
        currentButtonSet->getCurrentPanel()->getQLinkList().back()->
            Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
       // int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
        currentButtonSet->getCurrentPanel()->getQLinkList().back()->
-           Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
+           Bind(wxEVT_BUTTON, &MainFrame::readDialogFile, this);
 
    }
    else if (selection == "new page.") {
@@ -619,15 +636,16 @@ void MainFrame::swapButtonSet(wxCommandEvent& evt)
         currentButtonSet = buttonSetList.at(setIndex);
         //load panels for the new current set
         currentButtonSet->loadPanelsAndButtons(currentButtonSet->getSetName());
-
+        buildNavLinks(currentButtonSet->getCurrentPanel());
         //detach several sizers and reattach them to update the layout properly
         mainSizer->Detach(buttonSetSizer);
         mainSizer->Detach(controls);
         mainSizer->Detach(currentButtonSet->getCurrentPanel());
 
-        mainSizer->Prepend(currentButtonSet->getCurrentPanel(), 2, wxEXPAND);
-        mainSizer->Prepend(controls, 0, wxALIGN_CENTER);
+        mainSizer->Prepend(currentButtonSet->getCurrentPanel(), 5, wxEXPAND);
+        mainSizer->Prepend(controls, 1, wxEXPAND);
         mainSizer->Prepend(buttonSetSizer, 0, wxALIGN_CENTER);
+        bindAllButtons();
 
         mainSizer->Layout();
     }
@@ -691,10 +709,11 @@ void MainFrame::newSet(wxCommandEvent& event) {
                 userSelection->Append(buttonSetNames[i]);
             }
         }
+        std::string names[4]  = {"Subjective","Objective","Assesment","Plan"};
         //sets the original set as the first and saves basic set information
         userSelection->SetSelection(0);
         for (int i = 0; i < 4; i++) {
-            newSetStream << "button-List" + std::to_string(i + 1);
+            newSetStream << names[i];
             newSetStream << "\n";
             newSetStream << (pathname + "/layout" + std::to_string(i + 1) + ".txt");
             newSetStream << "\n";
@@ -765,20 +784,157 @@ void MainFrame::linkNavigation(wxHyperlinkEvent& evt) {
 /// <summary>
 /// binds all the buttons loaded from file to thier appropriate methods
 /// </summary>
-void MainFrame::bindAllButtons(){
+void MainFrame::bindAllButtons() {
     for (size_t k = 0; k < buttonSetList.size(); k++) {
+        size_t size = buttonSetList.at(k)->getPanelList().size();
+        for (size_t j = 0; j < size; j++) {
+            ButtonPanel* tempPanelLevel1 = buttonSetList.at(k)->getPanelList().at(j);
 
-        for (size_t j = 0; j < buttonSetList.at(k)->getPanelList().size(); j++) {
-            ButtonPanel* tempPanel = buttonSetList.at(k)->getPanelList().at(j);
-            for (size_t i = 0; i < tempPanel->getQLinkList().size(); i++) {
-
-                tempPanel->getQLinkList().at(i)->Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
-                if (tempPanel->getQLinkList().at(i)->GetId() == BUTTON_Panel) {
-                    tempPanel->getQLinkList().at(i)->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
+            for (size_t i = 0; i < tempPanelLevel1->getQLinkList().size(); i++) {
+                wxButton* button = tempPanelLevel1->getQLinkList().at(i);
+                std::string name = button->GetName().ToStdString();
+                button->Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
+                if (functionHelper->isNumber(name)) {
+                    button->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
                 }
+                else if (functionHelper->isPopup(name)) {
+                    popupButtonBind(button->GetName().ToStdString(), tempPanelLevel1->getQLinkList().at(i));
+                }
+                else if (functionHelper->isText(name)) {
+                    button->Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
+                }
+                //take sub panels
 
             }
+            for (size_t l = 0; l < tempPanelLevel1->getSubPanelList().size(); l++) {
+                ButtonPanel* tempPanelLevel2 = tempPanelLevel1->getSubPanelList().at(l);
+                for (size_t i = 0; i < tempPanelLevel2->getQLinkList().size(); i++) {
+                    wxButton* button2 = tempPanelLevel2->getQLinkList().at(i);
+                    std::string name = button2->GetName().ToStdString();
+                    button2->Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
+                    if (functionHelper->isNumber(name)) {
+                        button2->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
+                    }
+                    else if (functionHelper->isPopup(name)) {
+                        popupButtonBind(button2->GetName().ToStdString(), tempPanelLevel2->getQLinkList().at(i));
+                    }
+                    else if (functionHelper->isText(name)) {
+                        button2->Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
+                    }
+                }
+                for (size_t l = 0; l < tempPanelLevel2->getSubPanelList().size(); l++) {
+                    ButtonPanel* tempPanelLevel3 = tempPanelLevel2->getSubPanelList().at(l);
+                    for (size_t i = 0; i < tempPanelLevel3->getQLinkList().size(); i++) {
+                        wxButton* button3 = tempPanelLevel3->getQLinkList().at(i);
+                        std::string name = button3->GetName().ToStdString();
+                        button3->Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
+                        if (functionHelper->isNumber(name)) {
+                            button3->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
+                        }
+                        else if (functionHelper->isPopup(name)) {
+                            popupButtonBind(button3->GetName().ToStdString(), tempPanelLevel3->getQLinkList().at(i));
+                        }
+                        else if (functionHelper->isText(name)) {
+                            button3->Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
+                        }
+                    }
+                }
+            }
         }
+    }
+}
+void MainFrame::popupButtonBind(std::string str, wxButton* btton) {
+    wxButton* button = btton;
+    button->GetName();
+   
+    if (str == "Dialog-ID-Allergies") {
+        
+        button->Bind(wxEVT_BUTTON, &MainFrame::allergies, this);
+    }
+    if (str == "Dialog-ID-Body") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::body, this);
+    }
+    if (str == "Dialog-ID-Cervical-Adjustment") {       
+        button->Bind(wxEVT_BUTTON, &MainFrame::cervicaladjustment, this);
+    }
+    if (str == "Dialog-ID-Complicating-Factors") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::compicatingFactors, this);
+    }
+    if (str == "Dialog-ID-Contraindiction") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::contraindiction, this);
+    }
+    if (str == "Dialog-ID-Nutrition") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::dietNutrition, this);
+    }
+    if (str == "Dialog-ID-Dificulty-Performing") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::dificultyPerforming, this);
+    }
+    if (str == "Dialog-ID-Drugs-Medication") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::drugsMedication, this);
+    }
+    if (str == "Dialog-ID-Exercise") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::exerciseRoutine, this);
+    }
+    if (str == "Dialog-ID-Family-History") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::familyHistory, this);
+    }
+    //freqency of pain
+    if (str == "Dialog-ID-Goals") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::goals, this);
+    }
+    if (str == "Dialog-ID-Pain") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::freqofPain, this);
+    }
+    if (str == "Dialog-ID-Improve/Decline") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::betterorWorse, this);
+    }
+    if (str == "Dialog-ID-Injury") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::injury, this);
+    }
+    if (str == "Dialog-ID-Life-Affected") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::lifeAffected, this);
+    }
+    if (str == "Dialog-ID-Percentorvas") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::percentOrVas, this);
+    }
+    if (str == "Dialog-ID-PosturalChange") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::posturalChange, this);
+    }
+    if (str == "Dialog-ID-QualityofDiscomfort") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::qualityOfDiscomfort, this);
+    }
+    if (str == "Dialog-ID-Improve") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::rateofImprove, this);
+    }
+    if (str == "Dialog-ID-Restrictions") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::restrictions, this);
+    }
+    if (str == "Dialog-ID-ROMregion") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::ROMRegion, this);
+    }
+    if (str == "Dialog-ID-Social") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::socialhabits, this);
+    }
+    if (str == "Dialog-ID-Surgical") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::surgicalHistory, this);
+    }
+    if (str == "Dialog-ID-Muscle") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::specificMuscles, this);
+    }
+    if (str == "Dialog-ID-Side") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::side, this);
+    }
+    if (str == "Dialog-ID-Spine") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::spineDialog, this);
+    }
+    if (str == "Dialog-ID-ToneIntensity") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::toneIntensity, this);
+    }
+    if (str == "Dialog-ID-Work") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::work, this);
+    }
+    if (str == "Dialog-ID-Vas") {
+        button->Bind(wxEVT_BUTTON, &MainFrame::vas, this);
     }
 }
 /// <summary>
@@ -788,18 +944,6 @@ void MainFrame::bindAllButtons(){
 /// <param name="btton"></param>
 void MainFrame::unbindPopupButton(wxString str, wxButton* btton) {
     wxButton* button = btton;
-    if (str == "Chief complaint E&M") {
-        
-        button->Unbind(wxEVT_BUTTON, &MainFrame::chiefEandM, this);
-    }
-    if (str == "Next complaint E&M") {
-        
-        button->Unbind(wxEVT_BUTTON, &MainFrame::nextEandM, this);
-    }
-    if (str == "Past History") {
-        button->Unbind(wxEVT_BUTTON, &MainFrame::pastHealthHistory, this);
-    }
-
     if (str == "Diet & Nutrition") {
         button->Unbind(wxEVT_BUTTON, &MainFrame::dietNutrition, this);
     }
@@ -828,19 +972,6 @@ void MainFrame::unbindPopupButton(wxString str, wxButton* btton) {
 void MainFrame::popupButtonRebind(std::string str,wxButton* btton) {
     wxButton* button = btton;
     button->GetName();
-   // unbindPopupButton(button->GetName(),button);
-    if (str == "Chief complaint E&M") {
-        button->SetLabel("chief E&M");
-        button->Bind(wxEVT_BUTTON, &MainFrame::chiefEandM, this);
-    }
-    if (str == "Next complaint E&M") {
-        button->SetLabel("Next E&M");
-        button->Bind(wxEVT_BUTTON, &MainFrame::nextEandM, this);
-    }
-    if (str == "Past History") {
-        button->SetLabel("Helth History");
-        button->Bind(wxEVT_BUTTON, &MainFrame::pastHealthHistory, this);
-    }
     if (str == "Allergies") {
         button->SetLabel("Allergies");
         button->Bind(wxEVT_BUTTON, &MainFrame::allergies, this);
@@ -860,10 +991,6 @@ void MainFrame::popupButtonRebind(std::string str,wxButton* btton) {
     if (str == "Contraindiction") {
         button->SetLabel("Contraindiction");
         button->Bind(wxEVT_BUTTON, &MainFrame::contraindiction, this);
-    }
-    if (str == "Daily Objective") {
-        button->SetLabel("Daily Objective");
-        button->Bind(wxEVT_BUTTON, &MainFrame::dailyObjective, this);
     }
     if (str == "Diet & Nutrition") {
         button->SetLabel("Nutrition");
@@ -969,21 +1096,7 @@ void MainFrame::popupButtonRebind(std::string str,wxButton* btton) {
 bool MainFrame::dialogButtonHelper() {
 
     wxString dialogChoice = popUpHandeler->SingleChoiceDialog("DialogInformation/DialogSelection.txt", "select a popup.");
-    if (dialogChoice == "Chief complaint E&M"){
-        currentButtonSet->getCurrentPanel()->addQLink("Chief E&M","Dialog-ID-ChiefEM");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::chiefEandM, this);
-        return true;
-    }
-    if (dialogChoice == "Next complaint E&M") {
-        currentButtonSet->getCurrentPanel()->addQLink("Next E&M", "Dialog-ID-NextEM");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::nextEandM, this);
-        return true;
-    }
-    if (dialogChoice == "Past History") {
-        currentButtonSet->getCurrentPanel()->addQLink("Health History", "Dialog-ID-PastHistory");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::pastHealthHistory, this);
-        return true;
-    }
+
     if (dialogChoice == "Allergies") {
         currentButtonSet->getCurrentPanel()->addQLink("Allergies", "Dialog-ID-Allergies");
         currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::allergies, this);
@@ -1007,11 +1120,6 @@ bool MainFrame::dialogButtonHelper() {
     if (dialogChoice == "Contraindiction") {
         currentButtonSet->getCurrentPanel()->addQLink("Contraindiction", "Dialog-ID-Contraindiction");
         currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::contraindiction, this);
-        return true;
-    }
-    if (dialogChoice == "Daily Objective") {
-        currentButtonSet->getCurrentPanel()->addQLink("Daily Objective", "Dialog-ID-DailyyObjective");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::dailyObjective, this);
         return true;
     }
     if (dialogChoice == "Dificulty Performing") {
@@ -1060,12 +1168,12 @@ bool MainFrame::dialogButtonHelper() {
         return true;
     }
     if (dialogChoice == "Life Affected") {
-        currentButtonSet->getCurrentPanel()->addQLink("Life Affected", "Dialog-ID-Life Affected");
+        currentButtonSet->getCurrentPanel()->addQLink("Life Affected", "Dialog-ID-Life-Affected");
         currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::lifeAffected, this);
         return true;
     }
     if (dialogChoice == "Percent or vas") {
-        currentButtonSet->getCurrentPanel()->addQLink("Percent or vas", "Dialog-ID-Percent or vas");
+        currentButtonSet->getCurrentPanel()->addQLink("Percent or vas", "Dialog-ID-Percentorvas");
         currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::percentOrVas, this);
         return true;
     }
@@ -1251,357 +1359,311 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
 /// calles several popups in sucsession to collect data and print it to the screen.
 /// </summary>
 /// <param name="WXUNUSED"></param>
-void MainFrame::chiefEandM(wxCommandEvent& WXUNUSED(event)) {
-    wxString area, date, injury, freq, quality, vas, radiate, allergies, prevEpp, goals, locations, change;
-    locations = popUpHandeler->bodyDialog("what is the cheif complaint?");
-    date = popUpHandeler->Calender();
 
-    injury = popUpHandeler->SingleChoiceDialog("DialogInformation/Injury.txt", "Mechanism of injury or condition.");
-    freq = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Frequency of pain?");
-    quality = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "What are the quality of the pain?");
-    radiate = popUpHandeler->bodyDialog("if the discomfort radiates, were dose it travle to?");
-    change = popUpHandeler->SingleChoiceDialog("DialogInformation/BetterorWorse.txt", "how has the pain changed?");
-    vas = popUpHandeler->SingleChoiceDialog("DialogInformation/VAS.txt", "What is the VAS?");
-    //modifying factors
-    //previos episodes
-    //previos care
-    //recent tests
-    goals = popUpHandeler->MultipleChoiceDialog("DialogInformation/goals.txt", "Patient Goals?");
+void MainFrame::openDialog() {
 
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("HISTORY: \n");
-    mainEditBox->WriteText("Chief Complaint: ");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(locations);
-    mainEditBox->WriteText(locations);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-    mainEditBox->WriteText("\tcomplaint since ");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(date);
-    mainEditBox->WriteText(date);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
+    int x = ManualgetDialogCount("Dialogs/0dialogCount.txt");
+    //DialogCreator* dialog = new DialogCreator(this, wxID_ANY, x);
+    if (DialogCreationHelper->ShowModal() == wxID_OK) {
 
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Mechanism of injury: ");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(injury);
-    mainEditBox->WriteText(injury);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Frequency/Quality: ");
-    mainEditBox->EndBold();
-    mainEditBox->WriteText("experiences pain and discomfort ");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(freq);
-    mainEditBox->WriteText(freq);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-    mainEditBox->WriteText(" of the time and is discribed as");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(quality);
-    mainEditBox->WriteText(quality);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Radiation of symptoms: ");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(radiate);
-    mainEditBox->WriteText(radiate);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Change in Complaint: ");
-    mainEditBox->EndBold();
-    mainEditBox->WriteText("Complaint has ");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(change);
-    mainEditBox->WriteText(change);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-    mainEditBox->WriteText("since the onset and the pain scale is currently rated at ");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(vas);
-    mainEditBox->WriteText(vas);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-    mainEditBox->WriteText("(10/10 being the most severe)");
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n-\tModifying Factors: ");
-    mainEditBox->EndBold();
-    mainEditBox->WriteText("Relived by ");
-    mainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    mainEditBox->WriteText("placeholder");
-    mainEditBox->EndTextColour();
-    mainEditBox->WriteText("and aggravated by ");
-    mainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    mainEditBox->WriteText("placeholder");
-    mainEditBox->EndTextColour();
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Previous Episodes: ");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    mainEditBox->WriteText("placeholder");
-    mainEditBox->EndTextColour();
-    mainEditBox->WriteText("past episodes.");
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Previos Care: ");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    mainEditBox->WriteText("placeholder");
-    mainEditBox->EndTextColour();
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Recent diagnostic tests: ");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    mainEditBox->WriteText("placeholder");
-    mainEditBox->EndTextColour();
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Patient subjective goal(s): ");
-    mainEditBox->EndBold();
-    mainEditBox->WriteText("Explains personal goal for staring treatment");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(goals);
-    mainEditBox->WriteText(goals);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->WriteText("\n--------------------------------------");
-    mainEditBox->EndTextColour();
+    }
 }
-/// <summary>
-/// calles several popups in sucsession to collect data and print it to the screen.
-/// </summary>
-/// <param name="WXUNUSED"></param>
-void MainFrame::nextEandM(wxCommandEvent& WXUNUSED(event)) {
-    wxString injury, freq, quality, vas, radiate, change, locations, date;
-    locations = popUpHandeler->bodyDialog("what is the cheif complaint?");
-    date = popUpHandeler->Calender();
-    injury = popUpHandeler->SingleChoiceDialog("DialogInformation/Injury.txt", "Mechanism of injury or condition.");
-    freq = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Frequency of pain?");
-    quality = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "What are the quality of the pain?");
-    radiate = popUpHandeler->bodyDialog("if the discomfort radiates, were dose it travle to?");
-    change = popUpHandeler->SingleChoiceDialog("DialogInformation/BetterorWorse.txt", "how has the pain changed?");
-    vas = popUpHandeler->SingleChoiceDialog("DialogInformation/VAS.txt", "What is the VAS?");
-    //modifying factors
-    mainEditBox->WriteText("Patient also complains of: ");
-
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(locations);
-    mainEditBox->WriteText(locations);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-    mainEditBox->WriteText("\tcomplaint since ");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(date);
-    mainEditBox->WriteText(date);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Mechanism of injury: ");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(injury);
-    mainEditBox->WriteText(injury);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Frequency/Quality: ");
-    mainEditBox->EndBold();
-    mainEditBox->WriteText("experiences pain and discomfort ");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(freq);
-    mainEditBox->WriteText(freq);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-    mainEditBox->WriteText(" of the time and is discribed as");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(quality);
-    mainEditBox->WriteText(quality);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Radiation of symptoms: ");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(radiate);
-    mainEditBox->WriteText(radiate);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Change in Complaint: ");
-    mainEditBox->EndBold();
-    mainEditBox->WriteText("Complaint has ");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(change);
-    mainEditBox->WriteText(change);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-    mainEditBox->WriteText("since the onset and the pain scale is currently rated at ");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(vas);
-    mainEditBox->WriteText(vas);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-    mainEditBox->WriteText("(10/10 being the most severe)");
-
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n-\tModifying Factors: ");
-    mainEditBox->EndBold();
-    mainEditBox->WriteText("Relived by ");
-    mainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    mainEditBox->WriteText("placeholder");
-    mainEditBox->EndTextColour();
-    mainEditBox->WriteText("and aggravated by ");
-    mainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    mainEditBox->WriteText("placeholder");
-    mainEditBox->EndTextColour();
+void MainFrame::readDialogFile(wxCommandEvent& event) {
+    wxButton* buttn = (wxButton*)event.GetEventObject();
+    std::string file = buttn->GetName().ToStdString();
+    std::ifstream fileReader(file);
+    std::vector<std::string> fileLines;
+    int i = 0;
+    std::string line;
+    while (getline(fileReader, line, '~')) {
+        if (line != "") {
+            fileLines.push_back(line);
+        }
+    }
+    DialogWriter(fileLines);
 }
-/// <summary>
-/// calles several popups in sucsession to collect data and print it to the screen.
-/// </summary>
-/// <param name="WXUNUSED"></param>
-void MainFrame::pastHealthHistory(wxCommandEvent& WXUNUSED(event)) {
-    wxString Allergies, Surgeries, Meds, family, social, work, exersice, diet;
-    Allergies = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", " allergies");
-    Surgeries = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "Surgeries");
-    Meds = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "medications");
-    //Illness = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "what allergies are present");
-    //Accidents
-    family = popUpHandeler->MultipleChoiceDialog("DialogInformation/familyHistory.txt", "Family History");
-    work = popUpHandeler->MultipleChoiceDialog("DialogInformation/work.txt", "Work Habits");
-    social = popUpHandeler->MultipleChoiceDialog("DialogInformation/socialhabits.txt", "Social Habits");
-    exersice = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise Habits");
-    diet = popUpHandeler->MultipleChoiceDialog("DialogInformation/DietNutrition.txt", "Nutrition");
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("Past, Family and Social History");
-    mainEditBox->WriteText("\n\t-Past Health History:");
-    mainEditBox->WriteText("\n\t\t Allergies/Sensitivities:");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(Allergies);
-    mainEditBox->WriteText(Allergies);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
+void MainFrame::DialogWriter(std::vector<std::string> lines) {
+    size_t i = 0;
+    while (i < lines.size()) {
+        wxString result;
+        int linkInd = lines.at(i).find("<");
+        if (lines.at(i).find("<") != std::string::npos) {
+            std::string str = lines.at(i);
 
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t\t Surgeries:");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(Surgeries);
-    mainEditBox->WriteText(Surgeries);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
+            for (int i = 0; i < 3; i++) {
+                str.pop_back();
+            }
+            str = str.substr(3, str.size());
 
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t\t Medications:");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(Meds);
-    mainEditBox->WriteText(Meds);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
+            if (lines.at(i).at(1) == 'b') {
+                mainEditBox->BeginBold();
+                mainEditBox->WriteText(str);
+                mainEditBox->EndBold();
+            }
+            if (lines.at(i).at(1) == 'u') {
+                mainEditBox->BeginUnderline();
+                mainEditBox->WriteText(str);
+                mainEditBox->EndUnderline();
+            }
+            if (lines.at(i).at(1) == 'i') {
+                mainEditBox->BeginItalic();
+                mainEditBox->WriteText(str);
+                mainEditBox->EndItalic();
+            }
 
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t\t Illnesses:");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    mainEditBox->WriteText("placeholder");
-    mainEditBox->EndTextColour();
+            if (str == "Dialog-ID-Allergies") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "Allergies");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Body") {
+                result = popUpHandeler->bodyDialog("body");
+                //result = MultipleChoiceDialog("Allergies.txt", "Allergies");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Calender") {
+                result = popUpHandeler->Calender();
+                //result = MultipleChoiceDialog("Allergies.txt", "Allergies");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Cervical-Adjustment") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Cervicaladjustment.txt", "Cervical Adjustment");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Complicating-Factors") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/CompicatingFactors.txt", "Compicating Factors");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Contraindiction") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/contraindication.txt", "Contraindication");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Nutrition") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/DietNutrition.txt", "Diet and Nutrition");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Dificulty-Performing") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/dificultyPerforming.txt", "Dificulty Performing Tasks");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Drugs-Medication") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "Drugs and Medication");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Exercise") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise Routine");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Family-History") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/familyHistory.txt", "Family History");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Pain") {
+                result = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Frequency of Pain");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Goals") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/goals.txt", "Goals");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Improve/Decline") {
+                result = popUpHandeler->SingleChoiceDialog("DialogInformation/BetterorWorse.txt", "Improve/Decline");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Injury") {
+                result = popUpHandeler->SingleChoiceDialog("DialogInformation/Injury.txt", "Injury");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Life-Affected") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/LifeAffected.txt", "Life Affected");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Percentorvas") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/percentorvas.txt", "Percent or Vas");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-PosturalChange") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/posturalChange.txt", "Postural Change");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-QualityofDiscomfort") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "Quality of Discomfort");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Improve") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/rateofImprove.txt", "Rate of Improvement");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Restrictions") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/restrictions.txt", "Restrictions");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-ROMregion") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ROMregion.txt", "ROM Region");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Social") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/socialhabits.txt", "Social Habits");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Surgical") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "Surgical History");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Muscle") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/SpecificMuseles.txt", "Specific Museles");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Side") {
+                result = popUpHandeler->SingleChoiceDialog("DialogInformation/side.txt", "Side");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
 
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t\t Accidents:");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(239, 51, 10));
-    mainEditBox->WriteText("placeholder");
-    mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Spine") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/spineSegmentsL-R.txt", "Spine SegmentsL-R");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
 
-    mainEditBox->WriteText("\n\t-Family and Social History:");
-    mainEditBox->WriteText("\n\t\t Family History:");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(family);
-    mainEditBox->WriteText(family);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-ToneIntensity") {
+                result = popUpHandeler->SingleChoiceDialog("DialogInformation/ToneIntensity.txt", "Tone Intensity");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Work") {
+                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/work.txt", "Work");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "Dialog-ID-Vas") {
+                result = popUpHandeler->SingleChoiceDialog("DialogInformation/Vas.txt", "Vas");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
 
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t\t Work Habits:");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(work);
-    mainEditBox->WriteText(work);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
 
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t\t Social Habits:");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(social);
-    mainEditBox->WriteText(social);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
+        }
+        else {
+            mainEditBox->WriteText(lines.at(i));
 
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t\t Exercise Habits:");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(exersice);
-    mainEditBox->WriteText(exersice);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
 
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t\t Diet/Nutrition:");
-    mainEditBox->EndBold();
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(diet);
-    mainEditBox->WriteText(diet);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
+        }
+        i++;
+    }
 }
-void MainFrame::dailyObjective(wxCommandEvent& WXUNUSED(event)) {
-    wxString spine, restrictions, posture, ROM; 
-    spine = popUpHandeler->MultipleChoiceDialog("DialogInformation/spineSegmentsL-R.txt", "spinal collem");
-    restrictions = popUpHandeler->MultipleChoiceDialog("DialogInformation/restrictions.txt", "Restrictions/suplications");
-    //posture = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "Posture");
-    //ROM = popUpHandeler->MultipleChoiceDialog("DialogInformation/ROMregion.txt", "ROM");
 
-    mainEditBox->BeginBold();
-    mainEditBox->WriteText("\n\t-Daily Objective Findings");
-    mainEditBox->EndBold();
-    mainEditBox->WriteText("\n\t\t-spinal restriction(s)/subluxation(s):");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(spine);
-    mainEditBox->WriteText(spine);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-
-    mainEditBox->WriteText("\n\t\tExtraspinal Restrictions/Subluxations");
-    mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-    mainEditBox->BeginURL(restrictions);
-    mainEditBox->WriteText(restrictions);
-    mainEditBox->EndURL();
-    mainEditBox->EndTextColour();
-}

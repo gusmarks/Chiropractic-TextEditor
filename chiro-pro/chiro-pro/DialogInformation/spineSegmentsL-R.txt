@@ -1,0 +1,92 @@
+OCC
+Left C1
+Left C2
+Left C3
+Left C4
+Left C5
+Left C6
+Left C7
+Left T1
+Left T2
+Left T3
+Left T4
+Left T5
+Left T6
+Left T7
+Left T8
+Left T9
+Left T10
+Left T11
+Left T12
+Left L1
+Left L2
+Left L3
+Left L4
+Left L5
+Left Pelvis
+Left S1
+Left S2
+Left S3
+Left S4
+Left S5
+C1
+C2
+C3
+C4
+C5
+C6
+C7
+T1
+T2
+T3
+T4
+T5
+T6
+T7
+T8
+T9
+T10
+T11
+T12
+L1
+L2
+L3
+L4
+L5
+Pelvis
+S1
+S2
+S3
+S4
+S5
+Coccyx
+Right C1
+Right C2
+Right C3
+Right C4
+Right C5
+Right C6
+Right C7
+Right T1
+Right T2
+Right T3
+Right T4
+Right T5
+Right T6
+Right T7
+Right T8
+Right T9
+Right T10
+Right T11
+Right T12
+Right L1
+Right L2
+Right L3
+Right L4
+Right L5
+Right Pelvis
+Right S1
+Right S2
+Right S3
+Right S4
+Right S5
