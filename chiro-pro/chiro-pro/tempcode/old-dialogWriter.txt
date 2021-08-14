@@ -372,3 +372,285 @@ void MainFrame::nextEandM(wxCommandEvent& WXUNUSED(event)) {
        
         button->Bind(wxEVT_BUTTON, &MainFrame::pastHealthHistory, this);
     }
+
+	// all of these call a pop up and write a line of text respective to the name the user selected
+	void allergies(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "Allergies");
+		mainEditBox->WriteText("patients Aalergies are: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void body(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->bodyDialog("Select Locations.");
+		mainEditBox->WriteText("Cervical Adjustment: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void betterorWorse(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/BetterorWorse.txt", "Improve/Decline");
+		mainEditBox->WriteText("Improve/Decline: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void cervicaladjustment(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/Cervicaladjustment.txt", "Cervical Adjustment?");
+		wxString spine = popUpHandeler->MultipleChoiceDialog("DialogInformation/spineSegmentsL-R.txt", "Cervical Adjustment?");
+		mainEditBox->BeginBold();
+		mainEditBox->WriteText("\nCervical:");
+		mainEditBox->EndBold();
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+
+		mainEditBox->WriteText("Adjustments to :");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(spine);
+		mainEditBox->WriteText(spine);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+
+	void compicatingFactors(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/CompicatingFactors.txt", "Compicating Factors");
+		mainEditBox->WriteText("Compicating Factors: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void contraindiction(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/contraindication.txt", "contraindiction");
+		mainEditBox->WriteText("Contraindiction is: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void dietNutrition(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/DietNutrition.txt", "what is your diet like?");
+		mainEditBox->WriteText("the patients diet is: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void dificultyPerforming(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/dificultyPerforming.txt", "Dificulty Performing");
+		mainEditBox->WriteText("Dificulty Performing: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void drugsMedication(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "Drugs Medication");
+		mainEditBox->WriteText("Drugs Medication: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void familyHistory(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/familyHistory.txt", "Family History");
+		mainEditBox->WriteText("the Patient has a family history of: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void freqofPain(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Frequency of pain?");
+		mainEditBox->WriteText("pain/discomfort is: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+		mainEditBox->WriteText("(100%)being the worst. \n");
+	}
+	void restrictions(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/restrictions.txt", "Restrictions?");
+		mainEditBox->WriteText("Restrictions: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void rateofImprove(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->SingleChoiceDialog("DialogInformation/rateofImprove.txt", "what is your improvment/decline?");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void side(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->SingleChoiceDialog("DialogInformation/side.txt", "Select Side?");
+		mainEditBox->WriteText("Side: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void socialhabits(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/socialhabits.txt", "what is your social habits?");
+		mainEditBox->WriteText("the patients social behavior is: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void specificMuscles(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/SpecificMuseles.txt", "Select muscle groups?");
+		mainEditBox->WriteText("Muscle groups: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void spineDialog(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/spineSegmentsL-R.txt", "what is your diet like?");
+		mainEditBox->WriteText("the reports spinal issues in: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void surgicalHistory(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "what is your surgical history?");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void tautTender(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->bodyDialog("Taut&Tender");
+		mainEditBox->WriteText("\n\tUpon inspection the following areas were found with Taut and Tender Fibers: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void exerciseRoutine(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise Routine");
+		mainEditBox->WriteText("Exercise Routine: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void goals(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/goals.txt", "Chiropractic Goals");
+		mainEditBox->WriteText("Patients Goals: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void injury(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/Injury.txt", "Injury");
+		mainEditBox->WriteText("Patient injuries: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void lifeAffected(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/LifeAffected.txt", "Life Affected");
+		mainEditBox->WriteText("Life affected: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void percentOrVas(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/percentorvas.txt", "Percent or VAS");
+		mainEditBox->WriteText("Percent of pain or VAS: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void posturalChange(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/posturalChange.txt", "posturalChange?");
+		mainEditBox->WriteText("Change in Posture: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void qualityOfDiscomfort(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "Quality of Discomfort");
+		mainEditBox->WriteText("Quality of discomfort/pain is discribed as: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void ROMRegion(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/ROMregion.txt", "ROM region");
+		mainEditBox->WriteText("ROM: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void toneIntensity(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/ToneIntensity.txt", "Tone Intensity");
+		mainEditBox->WriteText("Tone Intensity: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void vas(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/Vas.txt", "VAS");
+		mainEditBox->WriteText("VAS: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}
+	void work(wxCommandEvent& WXUNUSED(event)) {
+		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/work.txt", "Select work habits?");
+		mainEditBox->WriteText("Work habits include: \n");
+		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+		mainEditBox->BeginURL(str);
+		mainEditBox->WriteText(str);
+		mainEditBox->EndURL();
+		mainEditBox->EndTextColour();
+	}

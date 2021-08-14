@@ -1,0 +1,3 @@
+﻿  main.cpp
+C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\DialogHelper.h(210): warning C4715: 'DialogHelper::selectPremadeDialog': not all control paths return a value
+  chiro-pro.vcxproj -> C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\chiro-pro.exe

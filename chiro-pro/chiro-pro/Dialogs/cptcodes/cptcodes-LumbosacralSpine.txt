@@ -1,0 +1,266 @@
+G54.1	Lumbosacral plexus disorders
+G54.4	Lumbosacral root lesions, not elsewhere classified
+G57.00	Lesion of sciatic nerve unspecified lower limb (piriformis syndrome)
+G57.01	Lesion of sciatic nerve right lower limb (piriformis syndrome)
+G57.02	Lesion of sciatic nerve left lower limb (piriformis syndrome)
+G58.9	Lumbar lumbosacral nerve root compression or entrapment
+M24.28	Disorder of ligament vertebrae (laxity of ligament)
+M24.80	Other specific joint derangements of unspecified joint, not elsewhere classified
+M40.05	Postural kyphosis, thoracolumbar region
+M40.15	Other secondary kyphosis, thoracolumbar region
+M40.205	Unspecified kyphosis, thoracolumbar region
+M40.209	Unspecified kyphosis, site unspecified
+M40.295	Other kyphosis, thoracolumbar region
+M40.35	Flatback syndrome thoracolumbar region
+M40.36	Flatback syndrome lumbar region
+M40.36	Flatback syndrome, lumbar region
+M40.37	Flatback syndrome lumbosacral region
+M40.37	Flatback syndrome, lumbosacral region
+M40.40	Lordosis acquired, postural unspecified region
+M40.45	Postural lordosis, thoracolumbar region
+M40.46	Postural lordosis, lumbar region
+M40.47	Postural lordosis, lumbosacral region
+M40.55	Lordosis, unspecified thoracolumbar region
+M40.56	Lordosis, unspecified lumbar region
+M40.57	Lordosis, unspecified lumbosacral region
+M41.116	Juvenile idiopathic scoliosis, lumbar region
+M41.117	Juvenile idiopathic scoliosis, lumbosacral region
+M41.126	Adolescent idiopathic scoliosis, lumbar region
+M41.127	Adolescent idiopathic scoliosis, lumbosacral region
+M41.26	Other idiopathic scoliosis, lumbar region
+M41.27	Other idiopathic scoliosis, lumbosacral region
+M41.46	Neuromuscular scoliosis, lumbar region
+M41.47	Neuromuscular scoliosis, lumbosacral region
+M41.56	Other secondary scoliosis, lumbar region
+M41.57	Other secondary scoliosis, lumbosacral region
+M41.86	Other forms of scoliosis, lumbar region
+M41.87	Other forms of scoliosis, lumbosacral region
+M43.00	Spondylolysis unspecified
+M43.05	Spondylolysis, thoracolumbar region
+M43.06	Spondylolysis, lumbar region
+M43.07	Spondylolysis, lumbosacral region
+M43.08	Spondylolysis, sacral and sacrococcygeal region
+M43.15	Spondylolisthesis (acquired) thoracolumbar region
+M43.16	Spondylolisthesis (acquired) lumbar region
+M43.17	Spondylolisthesis (acquired) lumbosacral region
+M43.18	Spondylolisthesis (acquired), sacral and sacrococcygeal region
+M43.26	Fusion of spine, lumbar region
+M43.27	Fusion of spine, lumbosacral region
+M43.27	Fusion of spine, lumbosacral spine
+M43.28	Fusion of spine, sacral and sacrococcygeal region
+M43.28	Fusion of spine, sacral and sacrococcygeal region
+M43.8X5	Other specified deforming dorsopathies, thoracolumbar region (retrolisthesis)
+M43.8X6	Other specified deforming dorsopathies, lumbar region (retrolisthesis)
+M43.8X7	Other specified deforming dorsopathies, lumbosacral region (retrolisthesis)
+M43.8X8	Other specified deforming dorsopathies, sacral and sacrococcygeal region (retrolisthesis)
+M43.8X9	Other curvatures of spine (retrolisthesis)
+M43.8X9	Unspecified curvature of spine (retrolisthesis)
+M45.5	Ankylosing spondylitis of thoracolumbar region
+M45.6	Ankylosing spondylitis lumbar region
+M45.7	Ankylosing spondylitis of lumbosacral region
+M45.8	Ankylosing spondylitis sacral and sacrococcygeal region
+M46.05	Spinal enthesopathy thoracolumbar region
+M46.06	Spinal enthesopathy lumbar region
+M46.07	Spinal enthesopathy lumbosacral region
+M46.08	Spinal enthesopathy, sacral and sacrococcygeal region
+M46.1	Sacroiliitis , not elsewhere classified
+M46.46	Discitis, unspecified lumbar, region. Other and unspecified disc disorder, lumbar region
+M46.47	Discitis, unspecified lumboscral, region.
+M47.15	Spondylosis (osteoarthritis) with myelopathy, thoracolumbar region
+M47.16	Spondylosis (osteoarthritis) with myelopathy, lumbar region
+M47.17	Spondylosis (osteoarthritis) with myelopathy, lumbosacral region
+M47.18	Spondylosis (osteoarthritis) with myelopathy, sacral and sacrococcygeal region
+M47.26	Other spondylosis with radiculopathy, lumbar region (osteoarthritis)
+M47.27	Other spondylosis with radiculopathy, lumbosacral region (osteoarthritis)
+M47.28	Other spondylosis with radiculopathy, sacral and sacrococcygeal region (osteoarthritis)
+M47.815	Spondylosis (osteoarthritis) without myelopathy or radiculopathy, thoracolumbar region
+M47.816	Spondylosis (osteoarthritis) without myelopathy or radiculopathy, lumbar region
+M47.817	Spondylosis (osteoarthritis) without myelopathy or radiculopathy, lumbosacral region
+M47.818	Spondylosis (osteoarthritis) without myelopathy or radiculopathy, sacral and sacrococcygeal region
+M47.896	Other spondylosis, lumbar region
+M47.897	Other spondylosis, lumbosacral region
+M47.898	Other spondylosis, sacral and sacrococcygeal region
+M48.05	Spinal stenosis, thoracolumbar region
+M48.06	Spinal stenosis, lumbar region (deleted 10-1-2017)
+M48.061	Spinal stenosis, lumbar region without neurogenic claudication (new 10-1-2017)
+M48.062	Spinal stenosis, lumbar region with neurogenic claudication (new 10-1-2017)
+M48.07	Spinal stenosis, lumbosacral region
+M48.08	Spinal stenosis, sacral and sacrococcygeal region
+M48.16	Ankylosing hyperostosis, lumbar region (DISH)
+M48.17	Ankylosing hyperostosis, lumbosacral region (DISH)
+M48.18	Ankylosing hyperostosis, sacral and sacrococcygeal region (DISH)
+M48.20	Kissing spine unspecified
+M48.25	Kissing spine, thoracolumbar region
+M48.26	Kissing spine, lumbar region
+M48.27	Kissing spine, lumbosacral region
+M48.35	Traumatic spondylopathy, thoraco lumbar region
+M48.36	Traumatic spondylopathy, lumbar region
+M48.37	Traumatic spondylopathy, lumbosacral region
+M48.38	Traumatic spondylopathy, sacral and sacrococcygeal region
+M48.46XA	Fatigue fracture of vertebra, lumbar region, initial encounter for fracture
+M48.47XA	Fatigue fracture of vertebra, lumbosacral region, initial encounter for fracture
+M48.48XA	Fatigue fracture of vertebra, sacral and sacrococcygeal region, initial encounter for fracture
+M48.8X6	Other specified spondylopathies, lumbar region
+M48.8X7	Other specified spondylopathies, lumbosacral region
+M48.8X8	Other specified spondylopathies, sacral and sacrococcygeal region
+M51.05	Thoracolumbar intervertebral disc disorder with myleopathy
+M51.06	Lumbar intervertebral disc disorder with myleopathy
+M51.06	Lumbosacral intervertebral disc disorder with myleopathy
+M51.15	Thoracolumbar intervertebral disc disorders with radiculopathy
+M51.16	Lumbar intervertebral disc disorders with radiculopathy
+M51.17	Lumbosacral intervertebral disc disorders with radiculopathy
+M51.25	Intervertebral disc displacement, thoracolumbar region
+M51.26	Intervertebral disc displacement, lumbar region
+M51.27	Intervertebral disc displacement, lumbosacral region
+M51.35	Thoracolumbar intervertebral disc degeneration
+M51.35	Other intervertebral disc degeneration thoracolumbar region
+M51.36	Lumbar intervertebral disc degeneration
+M51.36	Other intervertebral disc degeneration lumbar region
+M51.37	Lumbosacral intervertebral disc degeneration
+M51.37	Other intervertebral disc degeneration lumbosacral region
+M51.45	Schmorl's nodes thoracolumbar region
+M51.46	Schmorls nodes, lumbar region
+M51.85	Other thoracolumbar intervertebral disc disorders
+M51.86	Other lumbar intervertebral disc disorders
+M51.87	Other lumboscral intervertebral disc disorders
+M51.9	Unspecified thoracic, thoracolumbar and lumbosacral intervertebral disc disorder
+M53.2X6	Spinal instabilities lumbar region
+M53.2X7	Spinal instabilities lumbosacral region
+M53.2X8	Spinal instabilities sacral and sacrococcygeal region
+M53.2X8	Spinal instabilities, sacral and sacrococcygeal region
+M53.3	Sacrococcygeal disorders, not elsewhere classified
+M53.3	Coccygodynia (Coccydynia)
+M53.3	Sacrococcygeal disorders, not elsewhere classified
+M53.3	Sacrococcygeal disorders, not elsewhere classified
+M53.85	Other specified dorsopathies (facet syndrome), thoracolumbar region
+M53.86	Other specified dorsopathies, lumbar region (facet syndrome)
+M53.86	Other specified dorsopathies (facet syndrome), lumbar region
+M53.87	Other specified dorsopathies, lumbosacral region (facet syndrome)
+M53.88	Other specified dorsopathies, sacral and sacrococcygeal region (facet syndrome)
+M53.9	Dorsopathy unspecified
+M54.05	Panniculitis affecting regions of the back thoracolumbar region
+M54.06	Panniculitis affecting regions of the back, lumbar region
+M54.07	Panniculitis affecting regions of the back, lumbosacral region
+M54.08	Panniculitis affecting regions of the back, sacral and sacrococcygeal region
+M54.15	Radiculopathy, thoracolumbar region (neuritis)
+M54.16	Radiculopathy, lumbar region (neuritis)
+M54.17	Radiculopathy, lumbosacral region (neuritis)
+M54.18	Radiculopathy, sacrococcygeal region (neuritis)
+M54.30	Sciatica, unspecified
+M54.31	Sciatica, right side
+M54.32	Sciatica, left side
+M54.40	Lumbago with sciatica, unspecified side
+M54.41	Lumbago with sciatica, right side
+M54.42	Lumbago with sciatica, left side
+M54.5	Low back pain (lumbago)
+M54.89	Other dorsalgia
+M54.9	Backache unspecified
+M95.5	Acquired deformity of the pelvis (unlevel pelvis)
+M96.1	Postlaminectomy syndrome, lumbar region
+M96.1	Postlaminectomy syndrome,not elsewhere classifed (lumbar)
+M99.03	Segmental and somatic dysfunction, lumbar region (Medicare subluxation)
+M99.04	Segmental and somatic dysfunction, sacral , sacrococcygeal, sacroiliac regions (Medicare subluxation)
+M99.05	Segmental and somatic dysfunction, hip, pelvis, pubic region (Medicare subluxation)
+M99.13	Subluxation complex (vertebral), lumbar region
+M99.14	Subluxation complex , sacral region
+M99.15	Subluxation complex , pelvic region
+M99.23	Subluxation stenosis of neural canal, lumbar region
+M99.24	Subluxation stenosis of neural canal, sacral region
+M99.25	Subluxation stenosis of neural canal, pelvic region
+M99.33	Osseous stenosis of neural cnal of lumbar region
+M99.43	Connective tissue stenosis of neural canal of the lumbar region
+M99.53	Intervertebral disc stenosis of neural canal lumbar region
+M99.54	Intervertebral disc stenosis of neural canal of sacral region
+M99.63	Osseous and subluxation stenosis of intervertebral foramina of lumbar region
+M99.73	Connective tissue and disc stenosis of intervertebral foramina of lumbar region
+Q76.0	Spina bifida occulta
+Q76.1	Klippel-Feil syndrome
+Q76.2	Congenital spondylolisthesis
+Spondylolisthesis congenital
+Congenital kyphosis, thoracolumbar region
+Q76.426	Congenital lordosis, lumbar region
+Q76.427	Congenital lordosis, lumbosacral region
+Q76.428	Congenital lordosis, sacral and sacrococcygeal region
+Q76.49	Other congenital malformations of spine, not associated with scoliosis
+Q76.49	Other congenital malformations of spine, not associated with scoliosis
+R29.3	Abnormal posture Loss of height
+R29.890	Loss of height
+S23.20XA	Dislocation of unspecified part of thorax initial encounter
+S23.20XD	Dislocation of unspecified part of thorax subsequent encounter
+S23.20XS	Dislocation of unspecified part of thorax sequela
+S30.0XXA	Contusion of lower back and pelvis, initial encounter (active treatment)
+S30.0XXA	Contusion of buttock (back) Contusion of lower back and pelvis, initial encounter (active treatment)
+S30.0XXD	Contusion of lower back and pelvis, subsequent encounter
+S30.0XXD	Contusion of buttock (back) Contusion of lower back and pelvis, subsequent encounter
+S30.0XXS	Contusion of lower back and pelvis, sequelae
+S30.0XXS	Contusion of buttock (back) Contusion of lower back and pelvis, sequelae
+S30.810A	Abrasion of lower back and pelvis, initial encounter
+S32.010A	Wedge compression fracture of first lumbar vertebra, initial encounter for closed fracture
+S32.010S	Wedge compression fracture of first lumbar vertebra sequela
+S32.020A	Wedge compression fracture of second lumbar vertebra, initial encounter for closed fracture
+S32.020S	Wedge compression fracture of second lumbar vertebra, sequela
+S32.030A	Wedge compression fracture of third lumbar vertebra, initial encounter for closed fracture
+S32.030S	Wedge compression fracture of third lumbar vertebra, sequela
+S32.040A	Wedge compression fracture of fourth lumbar vertebra, initial encounter for closed fracture
+S32.040S	Wedge compression fracture of fourth lumbar vertebra, sequela
+S32.050A	Wedge compression fracture of fifth lumbar vertebra, initial encounter for closed fracture
+S32.050S	Wedge compression fracture of fifth lumbar vertebra, sequela
+S33.0XXA	Traumatic rupture of lumbar intervertebral disc, initial encounter (active treatment)
+S33.0XXD	Traumatic rupture of lumbar intervertebral disc, subsequent encounter
+S33.0XXS	Traumatic rupture of lumbar intervertebral disc, sequela
+S33.100A	Subluxation of unspecified lumbar vertebrae initial encounter
+S33.100D	Subluxation of unspecified lumbar vertebrae subsequent encounter
+S33.100S	Subluxation of unspecified lumbar vertebrae sequela
+S33.110A	Subluxation of L1/L2 lumbar vertebra initial encounter
+S33.110D	Subluxation of L1/L2 lumbar vertebra subsequent encounter
+S33.110S	Subluxation of L1/L2 lumbar vertebra sequela
+S33.120A	Subluxation of L2/L3 lumbar vertebra initial encounter
+S33.120D	Subluxation of L2/L3 lumbar vertebra subsequent encounter
+S33.120S	Subluxation of L2/L3 lumbar vertebra sequela
+S33.130A	Subluxation of L3/L4 lumbar vertebra initial encounter
+S33.130D	Subluxation of L3/L4 lumbar vertebra subsequent encounter
+S33.130S	Subluxation of L3/L4 lumbar vertebra sequela
+S33.140A	Subluxation of L4/L5 lumbar vertebra initial encounter
+S33.140D	Subluxation of L4/L5 lumbar vertebra subsequent encounter
+S33.140S	Subluxation of L4/L5 lumbar vertebra sequela
+S33.2XXA	Dislocation of sacroiliac and sacrococcygeal joint initial encounter
+S33.2XXA	Dislocation of sacroiliac and sacrococcygeal joint initial encounter
+S33.2XXD	Dislocation of sacroiliac and sacrococcygeal joint subequent encounter
+S33.2XXD	Dislocation of sacroiliac and sacrococcygeal joint subequent encounter
+S33.2XXS	Dislocation of sacroiliac and sacrococcygeal joint sequela
+S33.2XXS	Dislocation of sacroiliac and sacrococcygeal joint sequela
+S33.39XA	Dislocation of other parts of lumbar spine and pelvis intial encounter
+S33.39XD	Dislocation of other parts of lumbar spine and pelvis subsequent encounter
+S33.39XS	Dislocation of other parts of lumbar spine and pelvis sequela
+S33.5XXA	Sprain of ligaments of lumbar spine, initial encounter (active treatment)
+S33.5XXD	Sprain of ligaments of lumbar spine, subsequent encounter
+S33.5XXS	Sprain of ligaments of lumbar spine, sequela
+S33.6XXA	Sprain of sacroiliac joint, initial encounter
+S33.6XXD	Sprain of sacroiliac joint, subsequent encounter
+S33.6XXS	Sprain of sacroiliac joint, sequela
+S33.8XXA	Sprain of other parts of lumbar spine and pelvis, initial encounter
+S33.8XXA	Sprain of other parts of lumbar spine and pelvis, initial encounter
+S33.8XXA	Sprain of other parts of lumbar spine and pelvis, initial encounter (active treatment)
+S33.8XXA	Sprain of other parts of lumbar spine and pelvis, initial encounter (sacrospinatus)
+S33.8XXA	Sprain of other parts of lumbar spine and pelvis, initial encounter (sacroiliac)
+S33.8XXD	Sprain of other parts of lumbar spine and pelvis, subsequent encounter
+S33.8XXS	Sprain of other parts of lumbar spine and pelvis, sequela
+S33.9XXA	Sprain of unspecified parts of lumbar spine and pelvis, initial encounter
+S33.9XXD	Sprain of unspecified parts of lumbar spine and pelvis, subsequent encounter
+S33.9XXS	Sprain of unspecified parts of lumbar spine and pelvis, sequela
+S34.21XA	Injury of nerve root of lumbar spine initial encounter
+S34.21XD	Injury of nerve root of lumbar spine subsequent encounter
+S34.21XS	Injury of nerve root of lumbar spine sequela
+S34.22XA	Injury of nerve root of sacral spine initial encounter
+S34.22XD	Injury of nerve root of sacral spine subsequent encounter
+S34.22XS	Injury of nerve root of sacral spine sequela
+S34.4XXA	Injury of lumbosacral plexus initial encounter
+S34.4XXD	Injury of lumbosacral plexus subsequent encounter
+S34.4XXS	Injury of lumbosacral plexus sequela
+S39.002A	Unspecified injury of muscle, fascia and tendon of lower back, initial encounter
+S39.002D	Unspecified injury of muscle, fascia and tendon of lower back, subsequent encounter
+S39.002S	Unspecified injury of muscle, fascia and tendon of lower back, sequela
+	S39.012A	Strain of muscle, fascia and tendon of lower back, initial encounter (active treatment)
+S39.012D	Strain of muscle, fascia and tendon of lower back, subsequent encounter
+S39.012S	Strain of muscle, fascia and tendon of lower back, sequela
+S74.01XA	Injury of sciatic nerve at hip and thigh level, right leg, initial encounter

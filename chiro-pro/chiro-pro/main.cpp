@@ -21,6 +21,7 @@
 #include "FunctionHelper.h"
 #include "LinkPanel.h"
 #include "DialogCreator.h"
+
 //include general functionaly and wx specific functions
 #include <wx/wfstream.h>
 #include <wx/wxprec.h>
@@ -59,6 +60,7 @@ EVT_MENU(MENU_EditButtonText, MainFrame::onPopUpCLick)
 EVT_MENU(MENU_RemoveButton,MainFrame::onPopUpCLick)
 EVT_MENU(MENU_chanegDialog, MainFrame::onPopUpCLick)
 EVT_MENU(MENU_SaveButtons, MainFrame::savePanelsAndButtons)
+EVT_MENU(MENU_BillingDoc, MainFrame::gatherBillingInformation)
 
 EVT_MENU(ID_FORMAT_BOLD, MainFrame::onBold)
 EVT_MENU(ID_FORMAT_ITALIC, MainFrame::onItalic)
@@ -76,7 +78,7 @@ EVT_BUTTON(BUTTON_NewSet, MainFrame::newSet)
 
 //EVT_CHOICE(CHOICE_SWAP_Set, MainFrame::swapButtonSet)
 EVT_HYPERLINK(LINK_NAVIGATE, MainFrame::linkNavigation)
-EVT_TEXT_URL(TEXT_Main,MainFrame::dialogURLHelper)
+//EVT_TEXT_URL(TEXT_Main,MainFrame::dialogURLHelper)
 /*
 EVT_MENU(ID_FORMAT_STRIKETHROUGH, MainFrame::OnStrikethrough)
 EVT_MENU(ID_FORMAT_SUPERSCRIPT, MainFrame::OnSuperscript)
@@ -153,7 +155,13 @@ MainFrame::MainFrame(const wxString& title,
     //formatMenu->AppendCheckItem(ID_FORMAT_STRIKETHROUGH, _("Stri&kethrough"));
     //formatMenu->AppendCheckItem(ID_FORMAT_SUPERSCRIPT, _("Superscrip&t"));
     //formatMenu->AppendCheckItem(ID_FORMAT_SUBSCRIPT, _("Subscrip&t"));
+
+    wxMenu* billingMenu = new wxMenu();
+
+    billingMenu->Append(MENU_BillingDoc, wxT("&gather Information"),
+        wxT("Create a new Billing file"));
     //attach the menu items to the frame
+    mainMenu->Append(billingMenu, wxT("Billing"));
     mainMenu->Append(FileMenu, wxT("File"));
     mainMenu->Append(formatMenu, wxT("format"));
     SetMenuBar(mainMenu);
@@ -270,107 +278,10 @@ MainFrame::MainFrame(const wxString& title,
     Maximize();
     bindAllButtons();
     startingSate();
+  
 }
 /////////////////////end Frame Constructor/////////////
 ////////////////////////methods////////////////////////
-/// </summary>
-/// this method opens a dialog box that lets the user search thier file system 
-/// and open any.doc file
-/// </summary>
-/// <param name="WXUNUSED"></param>
-void MainFrame::openFile(wxCommandEvent& WXUNUSED(event))
-{
-    if (popUpHandeler->confirmIntent("are you sure you want to open a new file and close this one?")) {
-        wxFileDialog
-            openFileDialog(this, _("Open Xml file"), "", "",
-                "Xml files (*.xml)|*.xml", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-        if (openFileDialog.ShowModal() == wxID_CANCEL)
-            return;     // the user changed idea...
-
-        // proceed loading the file chosen by the user;
-        // this can be done with e.g. wxWidgets input streams:
-        wxFileInputStream input_stream(openFileDialog.GetPath());
-
-        if (!input_stream.IsOk())
-        {
-            wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
-            return;
-        }
-        wxString file = openFileDialog.GetPath();
-
-        mainEditBox->Enable();
-        mainEditBox->SetBackgroundColour(wxColour(255,255,255));
-        mainEditBox->SetEditable(true);
-
-        mainEditBox->LoadFile(file);
-       
-    }
-}
-/// <summary>
-/// this is esentualy the same as new file. clearing the text editor and the filename
-/// too let the user have a blank file
-/// </summary>
-/// <param name="WXUNUSED"></param>
-void MainFrame::closeFile(wxCommandEvent& WXUNUSED(event))
-{
-    if (popUpHandeler->confirmIntent("are you sure you want to close the file?")) {
-        mainEditBox->DiscardEdits();
-        mainEditBox->Clear();
-        mainEditBox->Disable();
-        mainEditBox->SetBackgroundColour(wxColour(211,211,211));
-        mainEditBox->SetEditable(false);
-        MainFrame::setFilename("");
-    }
-}
-/// <summary>
-/// if filename variable is empty prompt the user to enter a name then add .doc to the end
-/// if there is already a name save under the name.
-/// </summary>
-/// <param name="WXUNUSED"></param>
-void MainFrame::saveFile(wxCommandEvent& WXUNUSED(event))
-{
-    if (MainFrame::getFilename().empty()) {
-        MainFrame::setFilename(
-            wxGetTextFromUser("Enter Name of File.do not include file extension", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true));
-        //MainFrame::appendFilename(".doc");
-        wxString xmlName= MainFrame::getFilename() + ".xml", docName= MainFrame::getFilename() + ".doc";
-            mainEditBox->SaveFile("PatientFileParse/"+MainFrame::getFilename()+".txt");
-            //mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".docx");
-            mainEditBox->SaveFile("PatientFileLoad/"+MainFrame::getFilename() + ".xml");
-            mainEditBox->SaveFile("PatientFileView/"+MainFrame::getFilename() + ".html");
-           
-    }
-    else {
-        mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
-        //mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".docx",wxRICHTEXT_TYPE_ANY);
-        mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
-        mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
-    }   
-}
-/// <summary>
-///this method opens a dialog box that lets the user search thier file system and 
-/// save a file with a custom name regardless of if there is filename saved.
-/// </summary>
-/// <param name="WXUNUSED"></param>
-void MainFrame::saveFileAs(wxCommandEvent& WXUNUSED(event))
-{
-    //set up rich text buffer
-    wxFileDialog
-        saveFileDialog(this, _("Save Doc file"), "", "",
-            "xml files (*.xml)|*.xml", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-    if (saveFileDialog.ShowModal() == wxID_CANCEL)
-        return;     // the user changed idea...
-
-    // save the current contents in the file;
-    // this can be done with e.g. wxWidgets output streams:
-    wxFileOutputStream output_stream(saveFileDialog.GetPath());
-    setFilename(saveFileDialog.GetFilename());
-    if (!output_stream.IsOk())
-    {
-        wxLogError("Cannot save current contents in file '%s'.", saveFileDialog.GetPath());
-        return;
-    }
-}
 /// <summary>
 /// the function adds a button to the buttonPanel. these are called dynamic buttons
 /// each button will need a lable and text, these are prompted from the user
@@ -381,16 +292,18 @@ void MainFrame::saveFileAs(wxCommandEvent& WXUNUSED(event))
 /// <param name="WXUNUSED"></param>
 void MainFrame::addButton(wxCommandEvent& event)
 {
+    wxString buttonName;
+    wxString buttonText;
     //ask user what type of button they want, text addes text to the document,link adds a link to a new panel
    wxString selection = popUpHandeler->confirmIntentAddButton(this);
         //promp user for name and text of text button
    if (selection == "text output.") {
-       popUpHandeler->selectPremadeDialog();
-       openDialog();
-       wxString buttonName =
-           wxGetTextFromUser("Enter name for Button ", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
-       wxString buttonText = "Dialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt";
-         //  wxGetTextFromUser("Enter text for Button to add", "", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+       if (popUpHandeler->selectPremadeDialog() == "New paragraph") {
+           openDialog();
+           buttonName =
+               wxGetTextFromUser("Enter name for Button ", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+           buttonText = "Dialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt";
+       }
        
        //adds the button
        if (buttonName!="") {
@@ -400,8 +313,8 @@ void MainFrame::addButton(wxCommandEvent& event)
 
            std::fstream fileReader("Dialogs/0dialogList.txt",fstream::app);
            //fileReader.open();
-           fileReader << buttonName.ToStdString();
-           fileReader << " \tDialogs/dialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt\n";
+           fileReader << "\n"+buttonName.ToStdString();
+           fileReader << " \tDialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt\n";
            fileReader.close();
            fileReader.open("Dialogs/0dialogCount.txt");
            fileReader << std::to_string(DialogCreationHelper->getDialogCount());
@@ -448,28 +361,17 @@ void MainFrame::addButton(wxCommandEvent& event)
            popUpHandeler->errorMessage("no name");
        }
        
-   }
-   else if (selection == "popup.") {
-
-       if (dialogButtonHelper()) {
-           int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
-           currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex + 1);
-           currentButtonSet->getCurrentPanel()->getQLinkList().at(QIndex)->
-               Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
-       }
-
-   }
-       
+   }   
 }
 /// <summary>////////////////////////////////////////////////
 /// this function makes a button write its texr to the texteditor/
 /// </summary>/////////////////////////////////////////////////
 /// <param name="event"></param>
-void MainFrame::ButtonWrite(wxCommandEvent& event) {
-    wxButton* temp = (wxButton*)event.GetEventObject();
-    if(temp->GetName()!=""&&mainEditBox->IsEditable())
-        mainEditBox->WriteText(("\n" + temp->GetName() + "\n"));
-}/////////////////////////////end button write///////////////////
+//void MainFrame::ButtonWrite(wxCommandEvent& event) {
+//    wxButton* temp = (wxButton*)event.GetEventObject();
+//    if(temp->GetName()!=""&&mainEditBox->IsEditable())
+//        mainEditBox->WriteText(("\n" + temp->GetName() + "\n"));
+//}/////////////////////////////end button write///////////////////
 /// <summary>
 /// adds a Name, and date+time to the file, as a time stamp and signiture --fix function--
 /// </summary>
@@ -483,7 +385,7 @@ void MainFrame::sign(wxCommandEvent& WXUNUSED(event)) {
     mainEditBox->AppendText("\n Electronicly Signed by:"+currentButtonSet->getSetName() +"\n");
     mainEditBox->WriteText(" Signiture:");
     mainEditBox->WriteImage(signiture);
-    mainEditBox->AppendText( "\n" + functionHelper->getDateToSignNoTime());
+    mainEditBox->AppendText( "\n<"+functionHelper->getDateToSignNoTime()+">");
 
     
 }
@@ -501,14 +403,9 @@ void MainFrame::onRightClick(wxMouseEvent& event) {
         
         
     }
-    else if (functionHelper->isPopup(name)) {
-        menu.Append(MENU_EditButtonName, "edit Name of button");
-        menu.Append(MENU_chanegDialog, "edit Popup of button");
-        menu.Append(MENU_RemoveButton, "remove button");
-    }
     else  if (functionHelper->isText(name)) {
         menu.Append(MENU_EditButtonName, "edit Name of button");
-        menu.Append(MENU_EditButtonText, "edit Text of button");
+        //menu.Append(MENU_EditButtonText, "edit Text of button");
         menu.Append(MENU_RemoveButton, "remove button");
     }
 
@@ -566,7 +463,7 @@ void MainFrame::onPopUpCLick(wxCommandEvent& event) {
     case MENU_chanegDialog: {
         wxString dialogChoice = popUpHandeler->SingleChoiceDialog("DialogInformation/DialogSelection.txt", "select a popup.");
        
-        popupButtonRebind(dialogChoice.ToStdString(),buttonToEdit);
+        //popupButtonRebind(dialogChoice.ToStdString(),buttonToEdit);
             break;
     }
     }
@@ -797,11 +694,9 @@ void MainFrame::bindAllButtons() {
                 if (functionHelper->isNumber(name)) {
                     button->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
                 }
-                else if (functionHelper->isPopup(name)) {
-                    popupButtonBind(button->GetName().ToStdString(), tempPanelLevel1->getQLinkList().at(i));
-                }
+                
                 else if (functionHelper->isText(name)) {
-                    button->Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
+                    button->Bind(wxEVT_BUTTON, &MainFrame::readDialogFile, this);
                 }
                 //take sub panels
 
@@ -816,10 +711,10 @@ void MainFrame::bindAllButtons() {
                         button2->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
                     }
                     else if (functionHelper->isPopup(name)) {
-                        popupButtonBind(button2->GetName().ToStdString(), tempPanelLevel2->getQLinkList().at(i));
+                        //popupButtonBind(button2->GetName().ToStdString(), tempPanelLevel2->getQLinkList().at(i));
                     }
                     else if (functionHelper->isText(name)) {
-                        button2->Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
+                       // button2->Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
                     }
                 }
                 for (size_t l = 0; l < tempPanelLevel2->getSubPanelList().size(); l++) {
@@ -832,10 +727,10 @@ void MainFrame::bindAllButtons() {
                             button3->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
                         }
                         else if (functionHelper->isPopup(name)) {
-                            popupButtonBind(button3->GetName().ToStdString(), tempPanelLevel3->getQLinkList().at(i));
+                            //popupButtonBind(button3->GetName().ToStdString(), tempPanelLevel3->getQLinkList().at(i));
                         }
                         else if (functionHelper->isText(name)) {
-                            button3->Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
+                        //    button3->Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
                         }
                     }
                 }
@@ -843,7 +738,7 @@ void MainFrame::bindAllButtons() {
         }
     }
 }
-void MainFrame::popupButtonBind(std::string str, wxButton* btton) {
+/*void MainFrame::popupButtonBind(std::string str, wxButton* btton) {
     wxButton* button = btton;
     button->GetName();
    
@@ -945,7 +840,7 @@ void MainFrame::popupButtonBind(std::string str, wxButton* btton) {
 void MainFrame::unbindPopupButton(wxString str, wxButton* btton) {
     wxButton* button = btton;
     if (str == "Diet & Nutrition") {
-        button->Unbind(wxEVT_BUTTON, &MainFrame::dietNutrition, this);
+        button->addUnbind(wxEVT_BUTTON, &MainFrame::dietNutrition, this);
     }
     if (str == "Rate of Improvement") {
         button->Unbind(wxEVT_BUTTON, &MainFrame::rateofImprove, this);
@@ -1088,12 +983,12 @@ void MainFrame::popupButtonRebind(std::string str,wxButton* btton) {
         button->SetLabel("Vas");
         button->Bind(wxEVT_BUTTON, &MainFrame::vas, this);
     }
-}
+}*/
 /// <summary>
 /// lets the user select a popup to attach to the new button being made
 /// </summary>
 /// <returns></returns>
-bool MainFrame::dialogButtonHelper() {
+/*bool MainFrame::dialogButtonHelper() {
 
     wxString dialogChoice = popUpHandeler->SingleChoiceDialog("DialogInformation/DialogSelection.txt", "select a popup.");
 
@@ -1250,10 +1145,10 @@ bool MainFrame::dialogButtonHelper() {
     }
     return false;
     
-}
+}*/
 ///calls the popup originaly used to create the text, 
 ///when the user clicks light blue text the original popup is called to replace content
-void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
+/*void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
 
         wxString dialogChoice = popUpHandeler->SingleChoiceDialog("DialogInformation/DialogSelection-2.txt", "select a popup.");
         wxString result;
@@ -1354,18 +1249,14 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
         mainEditBox->Remove(urlS, urlE);
         mainEditBox->WriteText(result);
 
-    }
+    }*/
 /// <summary>
 /// calles several popups in sucsession to collect data and print it to the screen.
 /// </summary>
 /// <param name="WXUNUSED"></param>
 
 void MainFrame::openDialog() {
-
-    int x = ManualgetDialogCount("Dialogs/0dialogCount.txt");
-    //DialogCreator* dialog = new DialogCreator(this, wxID_ANY, x);
     if (DialogCreationHelper->ShowModal() == wxID_OK) {
-
     }
 }
 void MainFrame::readDialogFile(wxCommandEvent& event) {
@@ -1649,6 +1540,169 @@ void MainFrame::DialogWriter(std::vector<std::string> lines) {
             }
             if (str == "Dialog-ID-Vas") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/Vas.txt", "Vas");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Ankle") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-ankle.txt", "Ankle-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-CervicalSpine") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-cervicalSpine.txt", "Cervical-Spine-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-ElbowForarm") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/ctpcodes-ElbowForearm.txt", "Elbow-Forarm-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Foot") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-foot.txt", "Foot-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Hand") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-hand.txt", "Hand-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Head") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-head.txt", "Head-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Hip-Thigh") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-hip_thigh.txt", "Hip-Thigh-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Knee") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/ctpcodes-knee.txt", "Knee-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Lumbosacral-Spine") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-LumbosacralSpine.txt", "Lumbosacral-Spine-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Shoulder") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-shoulder.txt", "Shoulder-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-ThoacicSpine") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-thoacicSpine.txt", "Thoacic-Spine-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Wrist") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-Wrist.txt", "Wrist");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Manipulation") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptChiropractic-Manipulation-CPT-Coding.txt", "Manipulation-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Management") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptEvaluation-and-Management-Codes.txt", "Management-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Misc") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cpt-misc.txt", "Misc-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Rehabilitation") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcode-Physical-Medicine-Rehabilitation.txt", "Rehabilitation");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-Xray") {
+                result = popUpHandeler->SingleChoiceDialog("DialogInformation/cptext-xray.txt", "Xray-CPT");
+                result = "<<" + result + ">>";
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+            }
+            if (str == "CPT-ID-PlaceofService") {
+
+                result = popUpHandeler->SingleChoiceDialog("DialogInformation/cpt-placeofService.txt", "Place of Service-CPT");
+                result = "<<" + result + ">>";
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);

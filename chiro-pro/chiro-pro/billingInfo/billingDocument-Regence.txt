@@ -1,0 +1,4 @@
+Regence 
+--------------------------------------------------------------------------------------------------------------------------------
+Patient			Date of Service		CPT Code [Modifier]		Dx Codes			Initial Date of Tx		Days
+kathy mason		Tue Aug 3 2021		99050				G43.009,	Tue Aug 3 2021			0

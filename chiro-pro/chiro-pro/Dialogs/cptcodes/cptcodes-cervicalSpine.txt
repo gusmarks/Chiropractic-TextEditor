@@ -1,0 +1,268 @@
+S12.000G	Unspecified displaced fracture of first cervical vertebra, subsequent encounter for fracture with delayed healing	
+S12.000S	Unspecified displaced fracture of first cervical vertebra, sequela
+S12.001B	Unspecified nondisplaced fracture of first cervical vertebra, initial encounter for open fracture
+S12.001D	Unspecified nondisplaced fracture of first cervical vertebra, subsequent encounter for fracture with routine healing
+G24.3	Spasmodic Torticollis
+G54.0	Brachial plexus disorder (lesions) Cervical rib syndrome. Costoclavicular syndrome. Scalenus Anticus syndrome
+G54.2	Cervical nerve root lesion
+M24.28	Disorder of ligament vertebrae (laxity of ligament)
+M40.03	Postural kyphosis, cervicothoracic region
+M40.03	Postural kyphosis cervicothoracic
+M40.10	Other secondary kyphosis site unspecified
+M40.12	Other secondary kyphosis cervical
+M40.13	Other secondary kyphosis cervicothoracic
+M40.202	Unspecified kyphosis cervical region
+M40.203	Unspecified kyphosis cervicothoracic
+M40.292	Other kyphosis cervical region
+M40.292	Other kyphosis, cervical region
+M40.293	Other kyphosis cervicothoracic
+M40.293	Other kyphosis, cervicothoracic region
+M40.40	Lordosis acquired, postural
+M40.50	Lordosis, site unspecified
+M41.112	Juvenile idiopathic scoliosis, cervical region
+M41.113	Juvenile idiopathic scoliosis, cervicothoracic region
+M41.122	Adolescent idiopathic scoliosis, cervical region
+M41.123	Adolescent idiopathic scoliosis, cervicothoracic region
+M41.22	Scolioisis idiopathic, cervical region
+M41.23	Scolioisis idiopathic, cervicothoracic region
+M41.41	Neuromuscular scoliosis, occipito-atlanto-axial region
+M41.42	Neuromuscular scoliosis, cervical
+M41.43	Neuromuscular scoliosis, cervicothoracic
+M41.52	Other secondary scoliosis, cervical
+M41.53	Other secondary scoliosis, cervicothoracic
+M41.82	Other forms of scoliosis, cervical region
+M41.83	Other forms of scoliosis, cervicothoracic region
+M43.01	Spondylolysis occipito-atlanto-axial region
+M43.02	Spondylolysis cervical region
+M43.03	Spondylolysis cervicothoracic region
+M43.11	Spondylolisthesis (acquired) occipito-atlanto-axial region
+M43.12	Spondylolisthesis (acquired) cervical region
+M43.13	Spondylolisthesis (acquired) cervicothoracic region
+M43.21	Fusion of spine, occipito-atlanto-axial region
+M43.22	Fusion of spine, cervical region
+M43.23	Fusion of spine, cervicothoracic region
+M43.6	Torticollis
+M43.8X1	Other specified deforming dorsopathies, occipito-atlanto-axial region (retrolisthesis)
+M43.8X2	Other specified deforming dorsopathies, cervical region (retrolisthesis)
+M43.8X3	Other specified deforming dorsopathies, cervicothoracic region (retrolisthesis)
+M45.1	Ankylosing spondylitis of occipito-atlanto-axial region
+M45.2	Ankylosing spondylitis of cervical region
+M45.3	Ankylosing spondylitis of cervicothoracic region
+M46.01	Spinal enthesopathy occipito-atlanto-axial region
+M46.02	Spinal enthesopathy cervical region
+M46.03	Spinal enthesopathy cervicothoracic region
+M46.41	Discitis, unspecified cervical region. Other and unspecified disc disorder, occipito atlantal axial region
+M46.42	Discitis, unpsecified, occipito-atlanto-axial region. Other and unspecified disc disorder, cervical region
+M46.43	Discitis, unspecified cervicothoracic region.
+M46.91	Unspecified inflammatory spondylopathy, occipito-atlanto-axial region
+M46.92	Unspecified inflammatory spondylopathy, cervical region
+M46.93	Unspecified inflammatory spondylopathy, cervicothoracic region
+M47.11	Spondylosis (osteoarthritis) with myelopathy occipito-atlanto-axial region
+M47.12	Spondylosis (osteoarthritis) with myelopathy cervical region
+M47.13	Spondylosis (osteoarthritis) with myelopathy cervicothoracic region
+M47.21	Other spondylosis with radiculopathy, occipito-atlanto-axial region
+M47.22	Spondylosis (osteoarthritis) with radiculopathy cervical region
+M47.23	Spondylosis (osteoarthritis) with radiculopathy cervicothoracic region
+M47.811	Spondylosis (osteoarthritis) without myelopathy or radiculopathy occipito-atlanto-axial region
+M47.812	Spondylosis (osteoarthritis) without myelopathy or radiculopathy cervical region
+M47.813	Spondylosis (osteoarthritis) without myelopathy or radiculopathy cervicothoracic region
+M47.891	Other spondylosis (osteoarthritis) occipito-atlanto-axial region
+M47.892	Other spondylosis (osteoarthritis) cervical region
+M47.893	Other spondylosis (osteoarthritis) cervicothoracic region
+M48.00	Spinal stenosis site unspecified
+M48.01	Spinal stenosis occipito-atlanto-axial region
+M48.02	Spinal stenosis cervical region
+M48.03	Spinal stenosis cervicothoracic region
+M48.11	Ankylosing hyperostosis occipito-atlanto-axial region (DISH)
+M48.12	Ankylosing hyperostosis cervical region (DISH)
+M48.13	Ankylosing hyperostosis cervicothoracic region (DISH)
+M48.20	Kissing spine site unspecified
+M48.21	Kissing spine occipito-atlanto-axial region
+M48.22	Kissing spine cervical region
+M48.23	Kissing spine cervicothoracic region
+M48.30	Traumatic spondylopathy site unspecified
+M48.31	Traumatic spondylopathy occipito-atlanto-axial region
+M48.32	Traumatic spondylopathy cervical region
+M48.33	Traumatic spondylopathy cervicothoracic region
+M48.41XA	Fatigue fracture of vertebra, occipito-atlanto-axial region, initial encounter for fracture
+M48.42XA	Fatigue fracture of vertebra, cervical region, initial encounter for fracture
+M48.43XA	Fatigue fracture of vertebra, cervicothoracic region, initial encounter for fracture
+M48.8X1	Other specified spondylopathies, occipito-atlanto-axial region
+M48.8X2	Other specified spondylopathies, cervical region
+M48.8X3	Other specified spondylopathies, cervicothoracic region
+M50.00	Cervical disc disorder with myelopathy, unspecified
+M50.01	Cervical disc disorder with myelopathy high cervical C2-3 C3-4
+M50.02	Cervical disc disorder with myelopathy mid-cervical region C4-5 C5-6 C6-7 (deleted 10-1-2016)
+M50.020	Cervical disc disorder with myelopathy, mid-cervical region, unspecified level (effective 10-1-2016)
+M50.021	Cervical disc disorder at C4-C5 level with myelopathy (effective 10-1-2016)
+M50.022	Cervical disc disorder at C5-C6 level with myelopathy (effective 10-1-2016)
+M50.023	Cervical disc disorder at C6-C7 level with myelopathy (effective 10-1-2016)
+M50.03	Cervical disc disorder with myelopathy cervicothoracic region C7-T1
+M50.10	Cervical disc disorder with radiculopathy, unspecified cervical region
+M50.11	Cervical disc disorder with radiculopathy high cervical region C2-3 C3-4
+M50.12	Cervical disc disorder with radiculopathy mid-cervical region C4-5 C5-6 C6-7 (deleted 10-1-2016)
+M50.121	Cervical disc disorder at C4-C5 level with radiculopathy (effective 10-1-2016)
+M50.122	Cervical disc disorder at C5-C6 level with radiculopathy (effective 10-1-2016)
+M50.123	Cervical disc disorder at C6-C7 level with radiculopathy(effective 10-1-2016)
+M50.13	Cervical disc disorder with radiculopathy cervicothoracic region C7-T1
+M50.20	Other cervical disc displacement unspecified cervical region
+M50.21	Other cervical disc displacement C2-3 C3-4
+M50.22	Other cervical disc displacement C4-5 C5-6 C6-7 (deleted 10-1-2016)
+M50.220	Other cervical disc displacement, mid-cervical region, unspecified level (effective 10-1-2016)
+M50.221	Other cervical disc displacement at C4-C5 level (effective 10-1-2016)
+M50.222	Other cervical disc displacement at C5-C6 level (effective 10-1-2016)
+M50.223	Other cervical disc displacement at C6-C7 level (effective 10-1-2016)
+M50.23	Other cervical disc displacement cervicothoracic region C7-T1
+M50.30	Other cervical disc degeneration, unspecified cervical region
+M50.31	Other cervical disc degeneration high cervical region C2-3 C3-4
+M50.32	Other cervical disc degeneration C4-5 C5-6 C6-7 (deleted 10-1-2016)
+M50.320	Other cervical disc degeneration, mid-cervical region, unspecified level (effective 10-1-2016)
+M50.321	Other cervical disc degeneration at C4-C5 level (effective 10-1-2016)
+M50.322	Other cervical disc degeneration at C5-C6 level (effective 10-1-2016)
+M50.323	Other cervical disc degeneration at C6-C7 level (effective 10-1-2016) â�?�¢
+M50.33	Other cervical disc degeneration cervicothoracic region C7-T1
+M50.80	Other cervical disc disorders unspecified cervical region (calcification of disc)
+M50.81	Other cervical disc disorders high cervical C2-3 C3-4
+M50.82	Other cervical disc disorders mid-cervical region C4-5 C5-6 C6-7 (deleted 10-1-2016)
+M50.820	Other cervical disc disorders, mid-cervical region, unspecified level (effective 10-1-2016)
+M50.821	Other cervical disc disorders at C4-C5 level (effective 10-1-2016)
+M50.822	Other cervical disc disorders at C5-C6 level (effective 10-1-2016)
+M50.823	Other cervical disc disorders at C6-C7 level (effective 10-1-2016)
+M50.83	Other cervical disc disorders cervicothoracic region C7-T1
+M50.90	Cervical disc disorder unspecified cervical region
+M50.91	Cervical disc disorder unspecified, high cervical C2-3 C3-4
+M50.92	Cervical disc disorder unspecified, mid-cervical region C4-5 C5-6 C6-7 (deleted 10-1-2016)
+M50.920	Unspecified cervical disc disorder, mid-cervical region, unspecified level (effective 10-1-2016)
+M50.921	Unspecified cervical disc disorder at C4-C5 level (effective 10-1-2016)
+M50.922	Unspecified cervical disc disorder at C5-C6 level (effective 10-1-2016)
+M50.923	Unspecified cervical disc disorder at C6-C7 level (effective 10-1-2016)
+M50.93	Cervical disc disorder unspecified, mid-cervical region C4-5 C5-6 C6-7 (deleted 10-1-2016)
+M53.0	Cervicocranial syndrome
+M53.1	Cervicobrachial syndrome
+M53.2X1	Spinal instabilities occipito-atlanto-axial region
+M53.2X2	Spinal instabilities cervical region
+M53.2X3	Spinal instabilities cervicothoracic region
+M53.81	Other specified dorsopathies (facet syndrome), occipito-atlanto-axial region
+M53.82	Other specified dorsopathies (facet syndrome), cervical region
+M53.82	Other specified dorsopathies (facet syndrome), cervical region
+M54.01	Panniculitis affecting occopital -atlantal- axial region
+	M54.02	Panniculitis affecting cervical region
+M54.03	Panniculitis affecting cervicothoracic region
+M54.11	Radiculopathy occipito-atlanto-axial region (neuritis)
+M54.12	Radiculopathy cervical region (neuritis)
+M54.13	Radiculopathy cervicothoracic region (neuritis)
+M54.2	Cervicalgia (neck pain)
+M54.81	Occipital neuralgia
+M79.12	Myalgia (myofascial pain syndrome) of auxiliary muscles, head and neck (new 10-1-2018)
+M95.3	Acquired deformity of the neck
+M96.1	Post laminectomy syndrome. Not elsewhere classified. (neck)
+M99.00	Segmental somatic dysfunction head region (occipital) (Medicare subluxation)
+M99.01	Segmental somatic dysfunction cervical region, (Medicare subluxation)
+M99.10	Subluxation complex head region
+M99.11	Subluxation complex cervical region
+M99.20	Subluxation stenosis of neural canal head region
+M99.21	Subluxation stenosis of neural canal cervical region
+M99.30	Osseous stenosis of neural canal of head region
+M99.31	Osseous stenosis of neural canal of cervical region
+M99.40	Connective tissue stenosis of neural canal of head region
+M99.41	Connective tissue stenosis of neural canal of cervical regionM99.41	Connective tissue stenosis of neural canal of cervical region
+M99.50	Intervertebral disc stenosis of neural canal of head region
+M99.51	Intervertebral disc stenosis of neural canal of cervical region
+M99.60	Osseous and subluxation stenosis of intervertebral foramina of head region
+M99.61	Osseous and subluxation stenosis of intervertebral foramina of cervical region
+M99.71	Connective tissue and disc stenosis of intervertebral foramina of cervical region
+M99.81	Other biomechanical lesions, of cervical region
+Q68.0	Congenital deformity of sternocleidomastoid muscle (congenital torticollis)
+Q76.0	Spina bifida occulta
+Q76.1	Klippel-Feil syndrome
+Q76.2	Spondylolisthesis, congenital
+Q76.411	Congenital kyphosis, occipito-atlanto-axial region
+Q76.412	Congenital kyphosis, cervical region
+Q76.413	Congenital kyphosis, cervicothoracic region
+Q76.49	Other congenital malformations of spine, not associated with scoliosis
+Q76.49	Other congenital malformations of spine, not associated with scoliosis
+Q76.49	Other congenital malformations of spine, not associated with scoliosis
+Q76.5	Cervical rib
+R29.3	Abnormal posture Loss of height
+R29.890	Loss of height
+S10.93XA	Contusion of face, scalp and neck except eye(s). Contusion of unspecified part of neck, initial encounter (active treatment)
+S10.93XD	Contusion of face, scalp and neck except eye(s). Contusion of unspecified part of neck, subsequent enocunter
+S10.93XS	Contusion of face, scalp and neck except eye(s). Contusion of unspecified part of neck, sequelae
+	S12.000A	Unspecified fracture of first cervical vertebra, initial encounter for closed fracture
+	S12.000B	Unspecified displaced fracture of first cervical vertebra, initial encounter for open fracture
+S12.000B	Unspecified displaced fracture of first cervical vertebra, initial encounter for open fracture
+	S12.000D	Unspecified displaced fracture of first cervical vertebra, subsequent encounter for fracture with routine healing
+S12.000K	Unspecified displaced fracture of first cervical vertebra, subsequent encounter for fracture with nonunion
+S12.001A	Unspecified nondisplaced fracture of first cervical vertebra, initial encounter for closed fracture
+S12.001G	Unspecified nondisplaced fracture of first cervical vertebra, subsequent encounter for fracture with delayed healing	
+S12.001K	Unspecified nondisplaced fracture of first cervical vertebra, subsequent encounter for fracture with nonunion
+S12.001S	Unspecified nondisplaced fracture of first cervical vertebra, sequelae
+S13.0XXA	Traumatic rupture of cervical intervertebral disc initial encounter
+S13.0XXD	Traumatic rupture of cervical intervertebral disc subsequent encounter
+S13.0XXS	Traumatic rupture of cervical intervertebral disc sequela
+S13.100A	Subluxation of unspecified cervical vertebrae initial encounter (Active care)
+S13.100D	Subluxation of unspecified cervical vertebrae subsequent encounter
+S13.100S	Subluxation of unspecified cervical vertebrae sequela
+S13.110A	Subluxation of C0/C1 cervical vertebrae initial encounter (Active care)
+S13.110D	Subluxation of C0/C1 cervical vertebrae subsequent encounter
+S13.110S	Subluxation of C0/C1 cervical vertebrae sequela
+S13.120A	Subluxation of C1/C2 cervical vertebrae initial encounter (active care)
+S13.120D	Subluxation of C1/C2 cervical vertebrae subsequent encounter
+S13.120S	Subluxation of C1/C2 cervical vertebrae sequela
+S13.130A	Subluxation of C2/C3 cervical vertebrae initial encounter (Active care)
+S13.130D	Subluxation of C2/C3 cervical vertebrae subsequent encounter
+S13.130S	Subluxation of C2/C3 cervical vertebrae sequela
+S13.140A	Subluxation of C3/C4 cervical vertebrae initial encounter (Active care)
+S13.140D	Subluxation of C3/C4 cervical vertebrae subsequent encounter
+S13.140S	Subluxation of C3/C4 cervical vertebrae sequela
+S13.150A	Subluxation of C4/C5 cervical vertebrae initial encounter (Active care)
+S13.150D	Subluxation of C4/C5 cervical vertebrae subsequent encounter
+S13.150S	Subluxation of C4/C5 cervical vertebrae sequela
+S13.160A	Subluxation of C5/C6 cervical vertebrae initial encounter (Active care)
+S13.160D	Subluxation of C5/C6 cervical vertebrae subsequent encounter
+S13.160S	Subluxation of C5/C6 cervical vertebrae sequela
+S13.170A	Subluxation of C6/C7 cervical vertebrae initial encounter (Active care)
+S13.170D	Subluxation of C6/C7 cervical vertebrae subsequent encounter
+S13.170S	Subluxation of C6/C7 cervical vertebrae sequela
+S13.180A	Subluxation of C7/T1 cervical vertebrae initial encounter (Active care)
+S13.180D	Subluxation of C7/T1 cervical vertebrae subsequent encounter
+S13.180S	Subluxation of C7/T1 cervical vertebrae sequela
+S13.4XXA	Sprain of ligaments of cervical spine initial encounter (active care) Whiplash
+S13.4XXD	Sprain of ligaments of cervical spine subsequent encounter
+S13.4XXS	Sprain of ligaments of cervical spine sequela
+S13.8XXA	Sprain of joints and ligaments of other parts of neck (cervical) initial encounter
+S13.8XXD	Sprain of joints and ligaments of other parts of neck (cervical) subsequent encounter
+S13.8XXS	Sprain of joints and ligaments of other parts of neck (cervical) sequela
+S13.9XXA	Sprain of joints and ligaments of unspecified parts of neck initial encounter
+S13.9XXD	Sprain of joints and ligaments of unspecified parts of neck subsequent encounter
+S13.9XXS	Sprain of joints and ligaments of unspecified parts of neck sequela
+S14.2XXA	Injury of nerve root of cervical spine initial encounter
+S14.2XXD	Injury of nerve root of cervical spine subsequent encounter
+S14.2XXS	Injury of nerve root of cervical spine sequela
+S14.3XXA	Injury of brachial plexus initial encounter
+S14.3XXD	Injury of brachial plexus subsequent encounter
+S14.3XXS	Injury of brachial plexus sequela
+S14.4XXA	Injury of peripheral nerves of neck initial encounter
+S14.4XXD	Injury of peripheral nerves of neck subsequent encounter
+S14.4XXS	Injury of peripheral nerves of neck sequela
+S14.5XXA	Injury of cervical sympathetic nerves initial encounter
+S14.5XXD	Injury of cervical sympathetic nerves subsequent encounter
+S14.5XXS	Injury of cervical sympathetic nerves sequela
+S14.8XXA	Injury of other specified nerves of neck initial encounter
+S14.8XXD	Injury of other specified nerves of neck subsequent encounter
+S14.8XXS	Injury of other specified nerves of neck sequela
+S14.9XXA	Injury of unspecified nerves of neck initial encounter
+S14.9XXD	Injury of unspecified nerves of neck subsequent encounter
+S14.9XXS	Injury of unspecified nerves of neck sequela
+S16.1XXA	Strain of muscle, fascia and tendon at neck level (cervical) initial encounter (active care)
+S16.1XXD	Strain of muscle, fascia and tendon at neck level (cervical) subsequent encounter
+	S16.1XXS	Strain of muscle, fascia and tendon at neck level (cervical) sequela
+S16.2XXA	Laceration of muscle, fascia and tendon at neck level initial encounter
+S16.2XXD	Laceration of muscle, fascia and tendon at neck level subsequent encounter
+S16.2XXS	Laceration of muscle, fascia and tendon at neck level sequela
+S16.8XXA	Other specified injury of muscle, fascia and tendon at neck level initial encounter
+S16.8XXD	Other specified injury of muscle, fascia and tendon at neck level subsequent encounter
+S16.8XXS	Other specified injury of muscle, fascia and tendon at neck level sequela
+S16.9XXA	Unspecified injury of muscle, fascia and tendon at neck level initial encounter
+S16.9XXD	Unspecified injury of muscle, fascia and tendon at neck level subsequent encounter
+S16.9XXS	Unspecified injury of muscle, fascia and tendon at neck level sequela

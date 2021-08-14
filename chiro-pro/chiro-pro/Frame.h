@@ -1,5 +1,4 @@
 #pragma once
-
 #ifndef __Frame_H
 #define __Frame_H
 //includes, all wx/ includes are required by the various aspects of wxWidgets used
@@ -8,6 +7,10 @@
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include <wx/richtext/richtextctrl.h>
+#include <wx/hyperlink.h>
+#include <ctime>
+#include <wx/wfstream.h>
+//custome includes
 #include "DialogHelper.h"
 #include "DialogCreator.h"
 #include "ButtonPanel.h"
@@ -17,8 +20,7 @@
 #include "NavLink.h"
 #include "LinkPanel.h"
 #include "ControlPanel.h"
-#include <wx/hyperlink.h>
-#include <ctime>
+#include "billingInfoCreator.h"
 enum
 {
 	TEXT_Main,
@@ -44,6 +46,7 @@ enum
 	MENU_RemoveButton,
 	MENU_SaveButtons,
 	MENU_chanegDialog,
+	MENU_BillingDoc,
 	LINK_NAVIGATE,
 	ID_FORMAT_BOLD,
 	ID_FORMAT_ITALIC,
@@ -84,17 +87,22 @@ private:
 	// a set of sizers to orginize the page, ButtonSetSizer aranges the set changer and the new set button, MainSizer holds all other sizers
 	//and and the text box, finaly ControlSizer aranges the loose buttons 
 	wxBoxSizer* buttonSetSizer, *controlSizer, *mainSizer, *linkSizer;
-
+	//control panel holds all of the buttons used to manipulate buttons
 	controlPanel* controls;
+	//the linkpanel holds the links that allow the user to navagate the diferant button panels
 	linkPanel* links;
 	//the DialogHelper allows for popup use, while function handeler, deals with functions that dont quite fit in the main files 
 	DialogHelper* popUpHandeler;
+	//function helper performs various auxilery functions
 	FuncHelper* functionHelper;
+	//dialogcreation helper, opens and controls the dialog creator allowing the user to make all buttons and popups 
+	//easy to customize and make.
 	DialogCreator* DialogCreationHelper;
 	// check to see if the document has been signed or not
 	bool Signed = false;
+	//check if somthing is bold?
 	bool isBold=false;
-	// input and output streams to read txt files that store information
+	// input and output streams to read txt files that store information about the user set
 	std::ifstream setInfoIn;
 	std::ofstream setInfoOut;
 	// navlinks are hyperlinks that swap to and from panels inside a set.
@@ -103,37 +111,144 @@ public:
 	//Constuctor for the frame
 	MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 	// function headers for event functions.
-	void openFile(wxCommandEvent& event);
-	void saveFile(wxCommandEvent& event);
-	void saveFileAs(wxCommandEvent& event);
-	void closeFile(wxCommandEvent& event); 
+	/// </summary>
+/// this method opens a dialog box that lets the user search thier file system 
+/// and open any.xml file
+/// </summary>
+/// <param name="WXUNUSED"></param>
+	void openFile(wxCommandEvent& WXUNUSED(event))
+	{
+		if (popUpHandeler->confirmIntent("are you sure you want to open a new file and close this one?")) {
+			wxFileDialog
+				openFileDialog(this, _("Open Xml file"), "", "",
+					"Xml files (*.xml)|*.xml", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+			if (openFileDialog.ShowModal() == wxID_CANCEL)
+				return;     // the user changed idea...
 
+			// proceed loading the file chosen by the user;
+			// this can be done with e.g. wxWidgets input streams:
+			wxFileInputStream input_stream(openFileDialog.GetPath());
+
+			if (!input_stream.IsOk())
+			{
+				wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
+				return;
+			}
+			wxString file = openFileDialog.GetPath();
+
+			mainEditBox->Enable();
+			mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
+			mainEditBox->SetEditable(true);
+
+			mainEditBox->LoadFile(file);
+
+		}
+	}
+	/// <summary>
+/// if filename variable is empty prompt the user to enter a name then add .doc to the end
+/// if there is already a name save under the name.
+/// </summary>
+/// <param name="WXUNUSED"></param>
+	void saveFile(wxCommandEvent& WXUNUSED(event))
+	{
+		if (MainFrame::getFilename().empty()) {
+			MainFrame::setFilename(
+				wxGetTextFromUser("Enter Name of File.do not include file extension", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true));
+			//MainFrame::appendFilename(".doc");
+			wxString xmlName = MainFrame::getFilename() + ".xml", docName = MainFrame::getFilename() + ".doc";
+			mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
+			//mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".docx");
+			mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
+			mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
+
+		}
+		else {
+			mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
+			//mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".docx",wxRICHTEXT_TYPE_ANY);
+			mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
+			mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
+		}
+	}
+	/// <summary>
+	///this method opens a dialog box that lets the user search thier file system and 
+	/// save a file with a custom name regardless of if there is filename saved.
+	/// </summary>
+	/// <param name="WXUNUSED"></param>
+	void saveFileAs(wxCommandEvent& WXUNUSED(event))
+	{
+		//set up rich text buffer
+		wxFileDialog
+			saveFileDialog(this, _("Save Doc file"), "", "",
+				"xml files (*.xml)|*.xml", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+		if (saveFileDialog.ShowModal() == wxID_CANCEL) {
+			return;     // the user changed idea...
+		}
+
+		// save the current contents in the file;
+		// this can be done with e.g. wxWidgets output streams:
+		wxFileOutputStream output_stream(saveFileDialog.GetPath());
+		setFilename(saveFileDialog.GetFilename());
+		if (!output_stream.IsOk())
+		{
+			wxLogError("Cannot save current contents in file '%s'.", saveFileDialog.GetPath());
+			return;
+		}
+	}
+	/// <summary>
+/// this is esentualy the same as new file. clearing the text editor and the filename
+/// too let the user have a blank file
+/// </summary>
+/// <param name="WXUNUSED"></param>
+	void closeFile(wxCommandEvent& WXUNUSED(event))
+	{
+		if (popUpHandeler->confirmIntent("are you sure you want to close the file?")) {
+			mainEditBox->DiscardEdits();
+			mainEditBox->Clear();
+			mainEditBox->Disable();
+			mainEditBox->SetBackgroundColour(wxColour(211, 211, 211));
+			mainEditBox->SetEditable(false);
+			MainFrame::setFilename("");
+		}
+	}
+
+	//saves the information about the current button set to file
 	void saveButtonSetInfo(std::string path);
+	//loads the information about the selected set from file
 	void loadButtonSetInfo(std::string path);
+	//saves the buttons and panel information to file, for the currest user set
 	void savePanelsAndButtons(wxCommandEvent& event);
+	//adds a button to the current panel
 	void addButton(wxCommandEvent& event);
-	void ButtonWrite(wxCommandEvent& event);
+	//void ButtonWrite(wxCommandEvent& event);
+	//swaps the panel the user is currently using for the selected panel
 	void swapPanels(ButtonPanel* newPanel);
+	//swap heper just provides some addition details for swap panels
 	void swapHelper(wxCommandEvent& event);
+	//start swap helper provides additional details for swap panels relating the first time the panels load
 	void startSwapHelper(wxCommandEvent& event);
-
+	// swaps the user set to the selected one
 	void swapButtonSet(wxCommandEvent& evt);
+	//makes a new user set, with the appropriate files and directories
 	void newSet(wxCommandEvent& event);
-
+	//signs the document, adds some descriptive text, and an image signiture
 	void sign(wxCommandEvent& WXUNUSED(event));
+	//on right click brings up a menu when right clicking some componants, this allows the user to edit certain componants
 	void onRightClick(wxMouseEvent& event);
+	// on popupclick dose very similar to on right click for pop ups
 	void onPopUpCLick(wxCommandEvent& event);
-
+	//the linknavigation lets the user navigate panels of buttons
 	void linkNavigation(wxHyperlinkEvent& evt);
+	//openDialog opens the dialogcreator, consider renaming
 	void openDialog();
+	//read dialog file, reads in a file and passes the information to the dialog writer
 	void readDialogFile(wxCommandEvent& event);
+	//dialog writer writes the lines of a file to the text box, it also includes dialogs
 	void DialogWriter(std::vector<std::string>);
 
 	/// <summary>
 /// builds the navlinks based on the currentpanel and how many previous elements thier are
 /// </summary>
 /// <param name="panelToWork"></param>
-
 	void buildNavLinks(ButtonPanel* panelToWork) {
 		wxString name = panelToWork->GetName();
 		switch (panelToWork->getLevel()) {
@@ -219,9 +334,12 @@ public:
 
 		}
 	}
-
+	/// <summary>
+	/// distroy panels will systimaticly delete all the the users panels this is used to swap user sets
+	/// </summary>
+	/// <param name="usr"></param>
 	void destroyPanels(wxString usr);
-
+	//onbold will make the selected text and future text bold until toggled off
 	void onBold(wxCommandEvent& WXUNUSED(event))
 	{
 		if (isBold == false) {
@@ -235,53 +353,64 @@ public:
 			
 		//mainEditBox->ApplyBoldToSelection();
 	}
+	//onItalic will make the selected text and future text italic until toggled off
 	void onItalic(wxCommandEvent& WXUNUSED(event))
 	{
 		mainEditBox->ApplyItalicToSelection();
 	}
+	//onUnderline will male the selected text and future text underlined until toggled off
 	void onUnderline(wxCommandEvent& WXUNUSED(event))
 	{
 		mainEditBox->ApplyUnderlineToSelection();
 	}
+	//onStrikethrough will male the selected text and future text striken through until toggled off
 	void onStrikethrough(wxCommandEvent& WXUNUSED(event))
 	{
 		mainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_STRIKETHROUGH);
 	}
+	//onSuperscript will male the selected text and future text superscript until toggled off
 	void onSuperscript(wxCommandEvent& WXUNUSED(event))
 	{
 		mainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUPERSCRIPT);
 	}
+	//onSubscript will male the selected text and future text subscript until toggled off
 	void onSubscript(wxCommandEvent& WXUNUSED(event))
 	{
 		mainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUBSCRIPT);
 	}
+	//onAlignLeft will male the selected text and future text alighned left until toggled off
 	void onAlignLeft(wxCommandEvent& WXUNUSED(event))
 	{
 		mainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_LEFT);
 	}
+	//onAlignCentre will male the selected text and future text aligned center until toggled off
 	void onAlignCentre(wxCommandEvent& WXUNUSED(event))
 	{
 		mainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_CENTRE);
 	}
+	//onAlignRight will male the selected text and future text aligned right until toggled off
 	void onAlignRight(wxCommandEvent& WXUNUSED(event))
 	{
 		mainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_RIGHT);
 	}
 
-
+	//this bids all buttons the the appropriate functions, needs work
 	void bindAllButtons();
+	//this will re do the results of a dialog
 	bool dialogButtonHelper();
+	//this directs the url click to the dialog button helper function
 	void dialogURLHelper(wxTextUrlEvent& evt);
+	//this binds all pup up buttons, consider removing
 	void popupButtonBind(std::string str, wxButton* btton);
+	//this rebinds all pop up buttons, consider removing
 	void popupButtonRebind(std::string str,wxButton* btton);
+	// undbind buttons called between rebinding
 	void unbindPopupButton(wxString str, wxButton* btton);
 
-
-	void chiefEandM(wxCommandEvent& WXUNUSED(event));
-	void nextEandM(wxCommandEvent& WXUNUSED(event));
-	void pastHealthHistory(wxCommandEvent& WXUNUSED(event));
-	void dailyObjective(wxCommandEvent& WXUNUSED(event));
-
+	/// <summary>
+	/// this function opens the dialog count file and reads in the previos dialog count
+	/// this keeps the count accurate when the program opens and closes
+	/// </summary>
 	int ManualgetDialogCount(std::string file) {
 		std::ifstream fileReader(file);
 		std::string fileCount;
@@ -291,292 +420,10 @@ public:
 		}
 		return 0;
 	}
-
-	// all of these call a pop up and write a line of text respective to the name the user selected
-	void allergies(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "Allergies");
-		mainEditBox->WriteText("patients Aalergies are: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void body(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->bodyDialog("Select Locations.");
-		mainEditBox->WriteText("Cervical Adjustment: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void betterorWorse(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/BetterorWorse.txt", "Improve/Decline");
-		mainEditBox->WriteText("Improve/Decline: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void cervicaladjustment(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/Cervicaladjustment.txt", "Cervical Adjustment?");
-		wxString spine = popUpHandeler->MultipleChoiceDialog("DialogInformation/spineSegmentsL-R.txt", "Cervical Adjustment?");
-		mainEditBox->BeginBold();
-		mainEditBox->WriteText("\nCervical:");
-		mainEditBox->EndBold();
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-
-		mainEditBox->WriteText("Adjustments to :");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(spine);
-		mainEditBox->WriteText(spine);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void compicatingFactors(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/CompicatingFactors.txt", "Compicating Factors");
-		mainEditBox->WriteText("Compicating Factors: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void contraindiction(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/contraindication.txt", "contraindiction");
-		mainEditBox->WriteText("Contraindiction is: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void dietNutrition(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/DietNutrition.txt", "what is your diet like?");
-		mainEditBox->WriteText("the patients diet is: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void dificultyPerforming(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/dificultyPerforming.txt", "Dificulty Performing");
-		mainEditBox->WriteText("Dificulty Performing: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void drugsMedication(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "Drugs Medication");
-		mainEditBox->WriteText("Drugs Medication: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void familyHistory(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/familyHistory.txt", "Family History");
-		mainEditBox->WriteText("the Patient has a family history of: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void freqofPain(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Frequency of pain?");
-		mainEditBox->WriteText("pain/discomfort is: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-		mainEditBox->WriteText("(100%)being the worst. \n");
-	}
-	void restrictions(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/restrictions.txt", "Restrictions?");
-		mainEditBox->WriteText("Restrictions: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void rateofImprove(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->SingleChoiceDialog("DialogInformation/rateofImprove.txt", "what is your improvment/decline?");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void side(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->SingleChoiceDialog("DialogInformation/side.txt", "Select Side?");
-		mainEditBox->WriteText("Side: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void socialhabits(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/socialhabits.txt", "what is your social habits?");
-		mainEditBox->WriteText("the patients social behavior is: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void specificMuscles(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/SpecificMuseles.txt", "Select muscle groups?");
-		mainEditBox->WriteText("Muscle groups: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void spineDialog(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/spineSegmentsL-R.txt", "what is your diet like?");
-		mainEditBox->WriteText("the reports spinal issues in: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void surgicalHistory(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "what is your surgical history?");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void tautTender(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->bodyDialog("Taut&Tender");
-		mainEditBox->WriteText("\n\tUpon inspection the following areas were found with Taut and Tender Fibers: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void exerciseRoutine(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise Routine");
-		mainEditBox->WriteText("Exercise Routine: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void goals(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/goals.txt", "Chiropractic Goals");
-		mainEditBox->WriteText("Patients Goals: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void injury(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/Injury.txt", "Injury");
-		mainEditBox->WriteText("Patient injuries: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void lifeAffected(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/LifeAffected.txt", "Life Affected");
-		mainEditBox->WriteText("Life affected: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void percentOrVas(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/percentorvas.txt", "Percent or VAS");
-		mainEditBox->WriteText("Percent of pain or VAS: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void posturalChange(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/posturalChange.txt", "posturalChange?");
-		mainEditBox->WriteText("Change in Posture: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void qualityOfDiscomfort(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "Quality of Discomfort");
-		mainEditBox->WriteText("Quality of discomfort/pain is discribed as: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void ROMRegion(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/ROMregion.txt", "ROM region");
-		mainEditBox->WriteText("ROM: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void toneIntensity(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/ToneIntensity.txt", "Tone Intensity");
-		mainEditBox->WriteText("Tone Intensity: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void vas(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/Vas.txt", "VAS");
-		mainEditBox->WriteText("VAS: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-	void work(wxCommandEvent& WXUNUSED(event)) {
-		wxString str = popUpHandeler->MultipleChoiceDialog("DialogInformation/work.txt", "Select work habits?");
-		mainEditBox->WriteText("Work habits include: \n");
-		mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-		mainEditBox->BeginURL(str);
-		mainEditBox->WriteText(str);
-		mainEditBox->EndURL();
-		mainEditBox->EndTextColour();
-	}
-
-/// //new file method, this method clears the texteditor and filename for saving.
-///allowing people to make and save new files
-/// </summary>
-/// <param name="WXUNUSED"></param>
+	/// //new file method, this method clears the texteditor and filename for saving.
+	///allowing people to make and save new files
+	/// </summary>
+	/// <param name="WXUNUSED"> an unused Command event</param>
 	void newFile(wxCommandEvent& WXUNUSED(event))
 	{
 		if (popUpHandeler->confirmIntent("are you sure you want to open a new file?")) {
@@ -591,12 +438,12 @@ public:
 			mainEditBox->BeginBold();
 			mainEditBox->WriteText("Patient Name: ");
 			mainEditBox->EndBold();
-			mainEditBox->WriteText(name);
+			mainEditBox->WriteText("<"+name+">");
 			mainEditBox->WriteText("   ");
 			mainEditBox->BeginBold();
 			mainEditBox->WriteText("Date of First Visit: ");
 			mainEditBox->EndBold();
-			mainEditBox->WriteText(functionHelper->getDateToSignNoTime());
+			mainEditBox->WriteText("<"+functionHelper->getDateToSignNoTime()+">");
 			mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
 			mainEditBox->SetEditable(true);
 		}
@@ -642,6 +489,15 @@ public:
 	//tells the object weather or not the document has been singed.
 	void setSigned(bool Sign) {
 		this->Signed = Sign;
+	}
+
+
+
+	void gatherBillingInformation(wxCommandEvent& event) {
+		billingInfoCreator BIC = billingInfoCreator("PatientFileParse", "billingInfo/billingDocument.txt",
+			"billingInfo/billingDocument-Medicare.txt", "billingInfo/billingDocument-Regence.txt",
+			"billingInfo/billingDocument-Other.txt");
+		BIC.documentCreation();
 	}
 	/// <summary>
 /// the quit function saves the button configuration to a file

@@ -28,3 +28,23 @@ Surgical history
 Tone Intensity
 Work
 Vas
+---------codes----------
+Ankle
+Cervical Spine
+Elbow Forarm
+Foot
+Hand
+Head
+Hip-Thigh
+Knee
+Lumbosacral Spine
+Shoulder
+Thoacic Spine
+Wrist
+----------------
+Manipulation
+Management
+Misc
+Rehabilitation
+Xray
+Place of Service

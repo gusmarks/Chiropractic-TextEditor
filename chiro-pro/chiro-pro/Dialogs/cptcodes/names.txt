@@ -1,0 +1,19 @@
+ankle
+cervical spine
+elbow forarm
+foot
+hand
+head
+hip-thigh
+knee
+lumbosacral spine
+shoulder
+thoacic spine
+wrist
+----------------
+Manipulation
+Management
+Misc
+Rehabilitation
+Xray
+PlaceofService

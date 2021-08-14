@@ -167,6 +167,61 @@ public:
 		if (name == "Vas") {
 			return "Dialog-ID-Vas";
 		}
+		if (name == "Ankle") {
+			return "CPT-ID-Ankle";
+		}
+		if (name == "Cervical Spine") {
+			return "CPT-ID-CervicalSpine";
+		}
+		if (name == "Elbow Forarm") {
+			return "CPT-ID-ElbowForarm";
+		}
+		if (name == "Foot") {
+			return "CPT-ID-Foot";
+		}
+		if (name == "Hand") {
+			return "CPT-ID-Hand";
+		}
+		if (name == "Head") {
+			return "CPT-ID-Head";
+		}
+		if (name == "Hip-Thigh") {
+			return "CPT-ID-Hip-Thigh";
+		}
+		if (name == "Knee") {
+			return "CPT-ID-Knee";
+		}
+		if (name == "Lumbosacral-Spine") {
+			return "CPT-ID-Lumbosacral-Spine";
+		}
+		if (name == "Shoulder") {
+			return "CPT-ID-Shoulder";
+		}
+		if (name == "Thoacic Spine") {
+			return "CPT-ID-ThoacicSpine";
+		}
+		if (name == "Wrist") {
+			return "CPT-ID-Wrist";
+		}
+		if (name == "Manipulation") {
+			return "CPT-ID-Manipulation";
+		}
+		if (name == "Management") {
+			return "CPT-ID-Management";
+		}
+		if (name == "Misc") {
+			return "CPT-ID-Misc";
+		}
+		if (name == "Rehabilitation") {
+			return "CPT-ID-Rehabilitation";
+		}
+		if (name == "Xray") {
+			return "CPT-ID-Xray";
+		}
+		if (name == "Place of Service") {
+			return "CPT-ID-PlaceofService";
+		}
+
 		return "OTHER";
 	}
 	int getDialogCount() {

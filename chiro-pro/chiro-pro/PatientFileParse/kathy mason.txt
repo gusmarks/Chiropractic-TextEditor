@@ -1,0 +1,8 @@
+Patient Name: <kathy mason>   Date of First Visit: <Tue Aug 3 2021> Insurance:<Regence>
+
+DX:<<G43.009	Migraine without aura without status migrainous>>
+CPT:<<99050	gobledegook>>
+
+Electronicly Signed by:Rob
+Signiture:
+latest date of visit:<Tue Aug 3 2021>
