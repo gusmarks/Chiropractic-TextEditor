@@ -1,0 +1,331 @@
+S22.42XD	Multiple fractures of ribs, left side, subsequent encounter for fracture with routine healing
+S22.43XG	Multiple fractures of ribs, bilateral, subsequent encounter for fracture with delayed healing
+S22.49XG	Multiple fractures of ribs, unspecified side, subsequent encounter for fracture with delayed healing
+S22.49XK	Multiple fractures of ribs, unspecified side, subsequent encounter for fracture with nonunion
+G54.0	Brachial plexus disorder (lesions) Thoracic outlet syndrome
+G54.3	Thoracic root lesions not elsewhere classified
+G58.0	Intercostal (thoracic) neuritis, neuralgia, neuropathy
+	G58.9	Thoracic nerve root compression or entrapment
+M24.28	Disorder of ligament vertebrae (laxity of ligament)
+M40.03	Postural kyphosis cervicothoracic
+M40.04	Postural kyphosis thoracic
+M40.05	Postural kyphosis thoracolumbar
+M40.13	Other secondary kyphosis, cervicothoracic region
+M40.14	Other secondary kyphosis, thoracic region
+M40.15	Other secondary kyphosis, thoracolumbar region
+M40.203	Unspecified kyphosis, cervicothoracic region
+M40.204	Unspecified kyphosis, thoracic region
+M40.205	Unspecified kyphosis, thoracolumbar region
+M40.293	Other kyphosis, cervicothoracic region
+M40.294	Other kyphosis, thoracic region
+M40.295	Other kyphosis, thoracolumbar region
+M40.295	Other kyphosis, thoracolumbar region
+M40.35	Flatback syndrome thoracolumbar region
+M40.35	Flatback syndrome, thoracolumbar region
+M40.40	Lordosis acquired, postural unspecified region
+M40.45	Postural lordosis, thoracolumbar region
+M40.50	Unspecified lordosis, unspecified region
+M40.55	Unspecified lordosis, thoracolumbar region
+M41.114	Juvenile idiopathic scoliosis, thoracic region
+M41.115	Juvenile idiopathic scoliosis, thoracolumbar region
+M41.124	Adolescent idiopathic scoliosis, thoracic region
+M41.125	Adolescent idiopathic scoliosis, thoracolumbar region
+M41.24	Scolioisis idiopathic, thoracic
+M41.25	Scolioisis idiopathic, thoracolumbar
+M41.30	Thoracogenic scoliosis, unspecified
+M41.34	Thoracogenic scoliosis, thoracic region
+M41.35	Thoracogenic scoliosis, thoracolumbar
+M41.44	Neuromuscular scoliosis, thoracic
+M41.30	Thoracogenic scoliosis, unspecified
+M41.34	Thoracogenic scoliosis, thoracic region
+M41.35	Thoracogenic scoliosis, thoracolumbar
+M41.44	Neuromuscular scoliosis, thoracic
+M41.45	Neuromuscular scoliosis, thoracolumbar
+M41.54	Other secondary scoliosis, thoracic
+M41.55	Other secondary scoliosis, thoracolumbar region
+M41.84	Other forms of scoliosis, thoracic region
+M41.85	Other forms of scoliosis, thoracolumbar region
+M43.03	Spondylolysis, cervicothoracic region
+M43.04	Spondylolysis, thoracic region
+M43.05	Spondylolysis, thoracolumbar region
+M43.13	Spondylolisthesis (acquired) cervicothoracic region
+M43.14	Spondylolisthesis (acquired) thoracic region
+M43.15	Spondylolisthesis (acquired) thoracolumbar region
+M43.24	Fusion of spine, thoracic region
+M43.25	Fusion of spine, thoracolumbar region
+M43.8X3	Other specified deforming dorsopathies, cervicothoracic region (retrolisthesis)
+M43.8X5	Other specified deforming dorsopathies, thoracolumbar region (retrolisthesis)
+M45.4	Ankylosing spondylitis of thoracic region
+M45.5	Ankylosing spondylitis of thoracolumbar region
+M46.03	Spinal enthesopathy cervicothoracic region
+M46.04	Spinal enthesopathy thoracic region
+M46.05	Spinal enthesopathy thoracolumbar region
+M46.44	Discitis, unspecified thoracic region. Other and unspecified disc disorder, thoracic region
+M46.45	Discitis, unspecified thoracolumbar region.
+M46.8X4	Other specified deforming dorsopathies, thoracic region
+M46.94	Unspecified inflammatory spondylopathy, thoracic region
+M46.95	Unspecified inflammatory spondylopathy, thoracolumbar region
+M47.13	Spondylosis (osteoarthritis) with myelopathy cervicothoracic region
+M47.14	Spondylosis (osteoarthritis) with myelopathy thoracic region
+M47.15	Spondylosis (osteoarthritis) with myelopathy thoracolumbar region
+M47.24	Other spondylosis (osteoarthritis) with radiculopathy thoracic region
+M47.25	Other spondylosis (osteoarthritis) with radiculopathy thoracolumbar region
+M47.813	Thoracic spondylosis (osteoarthritis) without myelopathy or radiculopathy cervicothoracic region
+M47.814	Thoracic spondylosis (osteoarthritis) without myelopathy or radiculopathy thoracic region
+M47.815	Thoracic spondylosis (osteoarthritis) without myelopathy or radiculopathy thoracolumbar region
+M47.893	Other spondylosis (osteoarthritis) cervicothoracic region
+M47.894	Other spondylosis (osteoarthritis) thoracic region
+M47.895	Other spondylosis (osteoarthritis) thoracolumbar region
+M47.895	Other spondylosis, thoracolumbar region
+M48.03	Spinal stenosis cervicothoracic
+M48.04	Spinal stenosis thoracic
+M48.14	Ankylosing hyperostosis thoracic region (DISH)
+M48.15	Ankylosing hyperostosis thoracolumbar region (DISH)
+M48.20	Kissing spine unspecified
+M48.23	Kissing spine cervicothoracic region
+M48.24	Kissing spine thoracic region
+M48.25	Kissing spine thoracolumbar region
+M48.30	Traumatic spondylopathy cervicothoracic region
+M48.33	Traumatic spondylopathy cervicothoracic region
+M48.34	Traumatic spondylopathy thoracic region
+M48.35	Traumatic spondylopathy thoracolumbar region
+M48.44XA	Fatigue fracture of vertebra, thoracic region, initial encounter for fracture
+M48.45XA	Fatigue fracture of vertebra, thoracolumbar region, initial encounter for fracture
+M48.8X4	Other specified spondylopathies, thoracic region
+M48.8X5	Other specified spondylopathies, thoracolumbar region
+M51.04	Thoracic intervertebral disc disorder with myleopathy
+M51.05	Thoracolumbar intervertebral disc disorder with myleopathy
+M51.14	Thoracic intervertebral disc disorders with radiculopathy
+M51.15	Thoracolumbar intervertebral disc disorders with radiculopathy
+M51.24	Thoracic intervertebral disc displacement
+M51.25	Thoracolumbar intervertebral disc displacement
+M51.34	Thoracic disc degeneration
+M51.34	Other intervertebral disc degeneration thoracic region
+M51.35	Thoracolumbar intervertebral disc degeneration
+M51.35	Other intervertebral disc degeneration thoracolumbar region
+M51.44	Schmorl's nodes thoracic region
+M51.45	Schmorl's nodes thoracolumbar region
+M51.84	Other thoracic intervertebral disc disorders
+M51.85	Other thoracolumbar intervertebral disc disorders
+M51.9	Unspecified thoracic, thoracolumbar and lumbosacral intervertebral disc disorder
+M53.2X4	Spinal instabilities thoracic region
+M53.2X5	Spinal instabilities thoracolumbar region
+M53.83	Other specified dorsopathies (facet syndrome), cervicothoracic region
+M53.84	Other specified dorsopathies (facet syndrome), thoracic region
+M53.85	Other specified dorsopathies (facet syndrome), thoracolumbar region
+M53.9	Other unspecified back disorders, ankylosis, compression of root or spinal disorders not elswhere classified
+M53.9	Dorsopathy unspecified
+M54.03	Panniculitis affecting regions of the neck and back cervicothoracic region
+M54.04	Panniculitis affecting regions of the back thoracic region
+M54.05	Panniculitis affecting regions of the back thoracolumbar region
+M54.08	Other symptoms referrable to back, panniculitis
+M54.14	Radiculopathy thoracic (neuritis)
+M54.15	Radiculopathy thoracolumbar
+M54.6	Pain in thoracic spine
+M94.0	Costalchondral junction syndrome (Tietze) Costochondritis
+M96.1	Postlaminectomy syndrome, thoracic region
+M99.02	Segmental somatic dysfunction thoracic region (Medicare subluxation)
+M99.08	Segmental dysfunction rib cage (costovertebral)
+M99.12	Subluxation complex (vertebral) thoracic region
+M99.12	Subluxation complex (vertebral) thoracic region
+M99.18	Subluxation complex of rib cage
+M99.22	Subluxation stenosis of neural canal thoracic region
+M99.32	Osseous stenosis of neural canal of thoracic region
+M99.42	Connective tissue stenosis of neural canal of the thoracic region
+M99.52	Intervertebral disc stenosis of neural canal of thoracic region
+M99.62	Osseous and subluxation stenosis of intervertebral foramina of thoracic region
+M99.72	Connective tissue and disc stenosis of intervertebral foramina of thoracic region
+M99.82	Other biomechanical lesions, of thoracic region
+Q76.0	Spina bifida occulta
+Q76.1	Klippel-Feil syndrome
+Q76.2	Spondylolisthesis congenital
+Q76.414	Congenital kyphosis, thoracic region
+Q76.425	Congenital lordosis, thoracolumbar
+Q76.49	Other congenital malformations of spine, not associated with scoliosis
+Q76.49	Other congenital malformations of spine, not associated with scoliosis
+Q76.49	Other congenital malformations of spine, not associated with scoliosis
+Q76.5	Cervical rib
+R07.82	Intercostal pain
+R07.89	Other chest pain (discomfort in chest, pressure in chest, tightness in chest)
+R29.3	Abnormal posture Loss of height
+R29.890	Loss of height
+S20.01XA	Contusion of right breast initial encounter (active treatment)
+S20.01XD	Contusion of right breast subsequent encounter
+S20.01XS	Contusion of right breast, sequelae
+S20.02XA	Contusion of left breast, initial encounter (active treatment)
+S20.02XD	Contusion of left breast subsequent encounter
+S20.02XS	Contusion of left breast, sequelae
+S20.211A	Contusion of right front wall of thorax (chest), initial encounter (active treatment)
+S20.211D	Contusion of right front wall of thorax, subsequent encounter
+S20.211S	Contusion of right front wall of thorax, sequelae
+S20.212A	Contusion of left front wall of thorax (chest) (active treatment)
+S20.212D	Contusion of left front wall of thorax (chest), subsequent encounter
+S20.212S	Contusion of left front wall of thorax (chest), sequelae
+S20.213A	Contusion of bilateral front wall of thorax, initial encounter (new 10-1-2020)
+S20.214A	Contusion of middle front wall of thorax, initial encounter (new 10-1-2020)
+S20.221A	Contusion of right back wall of thorax, initial encounter (active treatment)
+S20.221A	Contusion of right back wall of thorax, initial encounter (active treatment)
+S20.221D	Contusion of right back wall of thorax, subsequent encounter
+S20.221D	Contusion of right back wall of thorax, subsequent encounter
+S20.221D	Contusion of right back wall of thorax, subsequent encounter
+S20.221S	Contusion of right back wall of thorax, sequelae
+S20.222A	Contusion of left back wall of thorax, initial encounter (active treatment)
+S20.222D	Contusion of left back wall of thorax, subsequent encounter
+S20.222S	Contusion of left back wall of thorax, sequelae
+S20.223A	Contusion of bilateral back wall of thorax, initial encounter (new 10-1-2020)
+S20.224A	Contusion of middle back wall of thorax, initial encounter (new 10-1-2020)
+S20.229A	Interscapular contusion. Contusion of unspecified back wall of thorax, initial encounter (active treatment)
+S20.229D	Interscapular contusion. Contusion of unspecified back wall of thorax, subsequent encounter
+S20.229S	Interscapular contusion. Contusion of unspecified back wall of thorax, sequelae
+S20.311A	Abrasion of right front wall of thorax, initial encounter
+S20.312A	Abrasion of left front wall of thorax, initial encounter
+S20.313A	Abrasion of bilateral front wall of thorax, initial encounter (new 10-1-2020)
+S20.314A	Abrasion of middle front wall of thorax, initial encounter (new 10-1-2020)
+S20.411A	Abrasion of right back wall of thorax, initial encounter
+S20.412A	Abrasion of left back wall of thorax, initial encount
+S20.91XA	Abrasion of unspecified parts of thorax, initial encounter
+S22.010A	Wedge compression fracture of first thoracic vertebra, initial encounter Closed fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.010D	Wedge compression fracture of first thoracic vertebra, subsequent encounter fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.010S	Wedge compression fracture of first thoracic vertebra, sequela, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.020A	Wedge compression fracture of second thoracic vertebra, initial encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.020D	Wedge compression fracture of second thoracic vertebra, subsequent encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.020S	Wedge compression fracture of second thoracic vertebra, sequela, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.030A	Wedge compression fracture of third thoracic vertebra, initial encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.030D	Wedge compression fracture of third thoracic vertebra, subsequent encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.030S	Wedge compression fracture of third thoracic vertebra, sequela, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.040A	Wedge compression fracture of fourth thoracic vertebra, initial encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.040D	Wedge compression fracture of fourth thoracic vertebra, subsequent encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.040S	Wedge compression fracture of fourth thoracic vertebra, sequela, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.050A	Wedge compression fracture of T5-T-6 thoracic vertebra, initial encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.050D	Wedge compression fracture of T5-T6 thoracic vertebra, subsequent encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+	S22.050S	Wedge compression fracture of T5-T-6 thoracic vertebra, sequela, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.060A	Wedge compression fracture of T7-T8 thoracic vertebra, initial encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.060D	Wedge compression fracture of T7-T8 thoracic vertebra, subsequent encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.060S	Wedge compression fracture of T7-T8 thoracic vertebra, sequela, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.070A	Wedge compression fracture of T9-T10 thoracic vertebra, initial encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.070D	Wedge compression fracture of T9-T10 thoracic vertebra, subsequent encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.070S	Wedge compression fracture of T9-T10 thoracic vertebra, sequela, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.080A	Wedge compression fracture of T11-T12 thoracic vertebra, initial encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.080D	Wedge compression fracture of T11-T12 thoracic vertebra, subsequent encounter, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.080S	Wedge compression fracture of T11-T12 thoracic vertebra, sequela, fracture of dorsal [thoracic] vertebra without mention of spinal cord injury
+S22.31XA	Fracture of one rib, right side, initial encounter for closed fracture
+S22.31XB	Fracture of one rib, right side, initial encounter for open fracture
+S22.31XD	Fracture of one rib, right side, subsequent encounter for fracture with routine healing
+S22.31XG	Fracture of one rib, right side, subsequent encounter for fracture with delayed healing
+S22.31XK	Fracture of one rib, right side, subsequent encounter for fracture with nonunion
+S22.31XS	Fracture of one rib, right side, sequela
+S22.32XA	Fracture of one rib, left side, initial encounter for closed fracture
+S22.32XB	Fracture of one rib, left side, initial encounter for open fracture
+S22.32XB	Fracture of one rib, left side, initial encounter for open fracture
+S22.32XD	Fracture of one rib, left side, subsequent encounter for fracture with routine healing
+S22.32XG	Fracture of one rib, left side, subsequent encounter for fracture with delayed healing
+S22.32XK	Fracture of one rib, left side, subsequent encounter for fracture with nonunion
+S22.32XS	Fracture of one rib, left side, sequela
+S22.39XA	Fracture of one rib, unspecified side, initial encounter for closed fracture
+S22.39XB	Fracture of one rib, unspecified side, initial encounter for open fracture
+S22.39XB	Fracture of one rib, unspecified side, initial encounter for open fracture
+S22.39XD	Fracture of one rib, unspecified side, subsequent encounter for closed fracture
+S22.39XD	Fracture of one rib, unspecified side, subsequent encounter for fracture with routine healing
+S22.39XG	Fracture of one rib, unspecified side, subsequent encounter for fracture with delayed healing
+S22.39XK	Fracture of one rib, unspecified side, subsequent encounter for fracture with nonunion
+S22.39XS	Fracture of one rib, unspecified side, sequela for closed fracture
+S22.39XS	Fracture of one rib, unspecified side, sequela
+S22.41XA	Multiple fractures of ribs, right side, initial encounter for closed fracture
+S22.41XB	Multiple fractures of ribs, right side, initial encounter for open fracture
+S22.41XD	Multiple fractures of ribs, right side, subsequent encounter for fracture with routine healing
+S22.41XG	Multiple fractures of ribs, right side, subsequent encounter for fracture with delayed healing
+S22.41XK	Multiple fractures of ribs, right side, subsequent encounter for fracture with nonunion
+S22.41XS	Multiple fractures of ribs, right side, sequela
+S22.42XA	Multiple fractures of ribs, left side, initial encounter for closed fracture
+S22.42XB	Multiple fractures of ribs, left side, initial encounter for open fracture
+S22.42XB	Multiple fractures of ribs, left side, initial encounter for open fracture
+S22.42XG	Multiple fractures of ribs, left side, subsequent encounter for fracture with delayed healing
+S22.42XK	Multiple fractures of ribs, left side, subsequent encounter for fracture with nonunion
+S22.42XS	Multiple fractures of ribs, left side, sequela
+S22.43XA	Multiple fractures of ribs, bilateral, initial encounter for closed fracture
+S22.43XB	Multiple fractures of ribs, bilateral, initial encounter for open fracture
+S22.43XB	Multiple fractures of ribs, bilateral, initial encounter for open fracture
+S22.43XD	Multiple fractures of ribs, bilateral, subsequent encounter for fracture with routine healing
+S22.43XK	Multiple fractures of ribs, bilateral, subsequent encounter for fracture with nonunion
+S22.43XS	Multiple fractures of ribs, bilateral, sequela
+S22.49XA	Multiple fractures of ribs, unspecified side, initial encounter for closed fracture
+S22.49XB	Open fracture of two ribs. Multiple fractures of ribs, unspecified side, initial encounter for open fracture
+S22.49XB	Multiple fractures of ribs, unspecified side, initial encounter for open fracture
+807.02	S22.49XD	Multiple fractures of ribs, unspecified side, subsequent encounter for fracture with routine healing
+S22.49XG	Multiple fractures of ribs, unspecified side, subsequent encounter for fracture with delayed healing
+S22.49XK	Multiple fractures of ribs, unspecified side, subsequent encounter for fracture with nonunion
+S22.49XS	Multiple fractures of ribs, unspecified side, sequlela
+S23.0XXA	Traumatic rupture of thoracic intervertebral disc initial encounter
+S23.0XXD	Traumatic rupture of thoracic intervertebral disc subsequent encounter
+S23.0XXS	Traumatic rupture of thoracic intervertebral disc sequela
+S23.100A	Subluxation of unspecified thoracic vertebrae initial encounter
+S23.100D	Subluxation of unspecified thoracic vertebrae subsequent encounter
+S23.100S	Subluxation of unspecified thoracic vertebrae sequela
+S23.110A	Subluxation of T1/T2 thoracic vertebra initial encounter
+S23.110D	Subluxation of T1/T2 thoracic vertebra subsequent encounter
+S23.110S	Subluxation of T1/T2 thoracic vertebra sequela
+S23.120A	Subluxation of T2/T3 thoracic vertebra initial encounter
+S23.120D	Subluxation of T2/T3 thoracic vertebra subsequent encounter
+S23.120S	Subluxation of T2/T3 thoracic vertebra sequela
+S23.122A	Subluxation of T3/T4 thoracic vertebra initial encounter
+S23.122D	Subluxation of T3/T4 thoracic vertebra subsequent encounter
+S23.122S	Subluxation of T3/T4 thoracic vertebra sequela
+S23.130A	Subluxation of T4/T5 thoracic vertebra initial encounter
+S23.130D	Subluxation of T4/T5 thoracic vertebra subsequent encounter
+S23.130S	Subluxation of T4/T5 thoracic vertebra sequela
+S23.132A	Subluxation of T5/T6 thoracic vertebra initial encounter
+S23.132D	Subluxation of T5/T6 thoracic vertebra subsequent encounter
+S23.132S	Subluxation of T5/T6 thoracic vertebra sequela
+S23.140A	Subluxation of T6/T7 thoracic vertebra initial encounter
+S23.140D	Subluxation of T6/T7 thoracic vertebra subsequent encounter
+S23.140S	Subluxation of T6/T7 thoracic vertebra sequela
+S23.142A	Subluxation of T7/T8 thoracic vertebra initial encounter
+S23.142D	Subluxation of T7/T8 thoracic vertebra subsequent encounter
+S23.142S	Subluxation of T7/T8 thoracic vertebra sequela
+S23.150A	Subluxation of T8/T9 thoracic vertebra initial encounter
+S23.150D	Subluxation of T8/T9 thoracic vertebra subsequent encounter
+S23.150S	Subluxation of T8/T9 thoracic vertebra sequela
+S23.152A	Subluxation of T9/T10 thoracic vertebra initial encounter
+S23.152D	Subluxation of T9/T10 thoracic vertebra subsequent encounter
+S23.152S	Subluxation of T9/T10 thoracic vertebra sequela
+S23.160A	Subluxation of T10/T11 thoracic vertebra initial encounter
+S23.160D	Subluxation of T10/T11 thoracic vertebra subsequent encounter
+S23.160S	Subluxation of T10/T11 thoracic vertebra sequela
+S23.162D	Subluxation of T11/T12 thoracic vertebra subsequent encounter
+S23.162S	Subluxation of T11/T12 thoracic vertebra sequela
+S23.163A	Subluxation of T11/T12 thoracic vertebra initial encounter
+S23.170A	Subluxation of T12/L1 thoracic vertebra initial encounter
+S23.170D	Subluxation of T12/L1 thoracic vertebra subsequent encounter
+S23.170S	Subluxation of T12/L1 thoracic vertebra sequela
+S23.3XXA	Sprain of ligaments of thoracic spine, initial encounter
+S23.3XXD	Sprain of ligaments of thoracic spine subsequent encounter
+S23.3XXS	Sprain of ligaments of thoracic spine sequela
+S23.41XA	Sprain of ribs, initial encounter (active treatment)
+S23.41XD	Sprain of ribs, subsequent encounter
+S23.41XS	Sprain of ribs, sequela
+S23.8XXA	Sprain of other specified parts of thorax, initial encounter (active treatment)
+S23.8XXD	Sprain of other specified parts of thorax, subsequent encounter
+S23.8XXS	Sprain of other specified parts of thorax, sequela
+S24.2XXA	Injury of nerve root of thoracic spine initial encounter
+S24.2XXA	Injury of nerve root of thoracic spine, initial encounter
+S24.2XXD	Injury of nerve root of thoracic spine subsequent encounter
+S24.2XXS	Injury of nerve root of thoracicl spine sequela
+S24.3XXA	IInjury of peripheral nerves of thorax initial encounter
+S24.3XXD	Injury of peripheral nerves of thorax subsequent encounter
+S24.3XXS	Injury of peripheral nerves of thorax sequela
+S24.4XXA	Injury of thoracic sympathetic nerves initial encounter
+S24.4XXD	Injury of thoracic sympathetic nerves subsequent encounter
+S24.4XXS	Injury of thoracic sympathetic nerves sequela
+S24.8XXA	Injury of other specified nerves of thorax initial encounter
+S24.8XXD	Injury of other specified nerves of thorax subsequent encounter
+S24.8XXS	Injury of other specified nerves of thorax sequela
+S24.9XXA	Injury of unspecified nerves of thorax initial encounter
+S24.9XXD	Injury of unspecified nerves of thorax subsequent encounter
+S24.9XXS	Injury of unspecified nerves of thorax sequela
+S29.011A	Strain of muscle and tendon of the front wall of thorax
+S29.012A	Strain of muscle and tendon of back wall of thorax initial encounter (thoracic spine strain)
+S29.012D	Strain of muscle and tendon of back wall of thorax subsequent encounter (thoracic spine strain)
+S29.012S	Strain of muscle and tendon of back wall of thorax sequela (thoracic spine strain)
+S29.019A	Strain of muscle and tendon of unspecified wall of thorax initial encounter
+S29.019D	Strain of muscle and tendon of unspecified wall of thorax subsequent encounter
+S29.019S	Strain of muscle and tendon of unspecified wall of thorax sequela

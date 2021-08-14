@@ -1,0 +1,202 @@
+70.042	Crepitant synovitis (acute) (chronic), left hand
+M15.1	Osteoarthrosis (osteoarthritis), generalized, hand. Heberden's nodes (with arthropathy)
+M15.2	Osteoarthrosis (osteoarthritis), generalized, hand. Bouchard's nodes (with arthropathy)
+M19.041	Osteoarthrosis (osteoarthritis), localized, primary, right hand
+M19.042	Osteoarthrosis (osteoarthritis), localized, primary, left hand
+M19.049	Osteoarthrosis (osteoarthritis), localized, primary, hand unspecified side
+M25.541	Pain in joints of right hand (effective 10-1-2016)
+M25.542	Pain in joints of left hand (effective 10-1-2016)
+M25.549	Pain in joints of unspecified hand (effective 10-1-2016)
+M25.641	Stiffness of right hand
+M25.642	Stiffness of left hand
+M25.649	Stiffness of hand, unspecified
+M65.30	Trigger finger (acquired) unspecified finger
+M65.311	Trigger thumb, right
+M65.312	Trigger thumb, left
+M65.319	Trigger thumb, unspecified thumb
+M65.319	Trigger index finger unspecified
+M65.321	Trigger right index finger
+M65.322	Trigger left index finger
+M65.331	Trigger right middle finger
+M65.332	Trigger left middle finger
+M65.339	Trigger index middle finger unspecified
+M65.341	Trigger right ring finger
+M65.342	Trigger left ring finger
+M65.349	Trigger index ring finger unspecified
+M65.351	Trigger right little finger
+M65.352	Trigger left little finger
+M65.359	Trigger index little finger unspecified
+M65.4	Radial styloid tenosynovitis (de Quervain's disease)
+M65.841	Other tenosynovitis of hand of right hand
+M65.842	Other tenosynovitis of hand of left hand
+M65.849	Other tenosynovitis of hand of hand and wrist
+M66.141	Rupture of synovium, right hand
+M66.142	Rupture of synovium, left hand
+M66.144	Rupture of synovium, right finger(s)
+M66.145	Rupture of synovium, left finger(s)
+M67.441	Ganglion, right hand
+M67.442	Ganglion of left hand
+M70.041	Crepitant synovitis (acute) (chronic), right hand
+M71.30	Synovial cyst, unspecified
+M71.341	Other bursal cyst, right hand
+M71.342	Other bursal cyst, left hand
+M71.349	Other bursal cyst, unspecified hand
+M79.641	Pain in right hand
+M79.641	Pain in right hand
+M79.642	Pain in left hand
+M79.642	Pain in left hand
+M79.643	Pain in unspecified hand
+M79.644	Pain in right finger(s)
+M79.645	Pain in left finger(s)
+M99.07	Segmental and somatic dysfunction of upper extremity (subluxation)
+R29.898	Other symptoms referable to joint (hand). Joint crepitus. Other symptoms and signs involving the musculoskeletal system
+S63.104A	Unspecified dislocation of right thumb, initial encounter
+S63.105A	Unspecified dislocation of left thumb, initial encounter
+S63.114A	Dislocation of metacarpophalangeal joint of right thumb, initial encounter
+S63.115A	Dislocation of metacarpophalangeal joint of left thumb, initial encounter
+S63.124A	Dislocation of unspecified interphalangeal joint of right thumb, initial encounter
+S63.125A	Dislocation of unspecified interphalangeal joint of left thumb, initial encounter
+S63.134A	Dislocation of proximal interphalangeal joint of right thumb, initial encounter
+S63.135A	Dislocation of proximal interphalangeal joint of left thumb, initial encounter
+S63.136A	Dislocation of proximal interphalangeal joint of unspecified thumb, initial encounter
+S63.144A	Dislocation of distal interphalangeal joint of right thumb, initial encounter
+S63.145A	Dislocation of distal interphalangeal joint of left thumb, initial encounter
+S63.146A	Dislocation of distal interphalangeal joint of unspecified thumb, initial encounter
+S63.250A	Unspecified dislocation of right index finger, initial encounter
+S63.251A	Unspecified dislocation of left index finger, initial encounter
+S63.252A	Unspecified dislocation of right middle finger, initial encounter
+S63.253A	Unspecified dislocation of left middle finger, initial encounter
+S63.254A	Unspecified dislocation of right ring finger, initial encounter
+S63.255A	Unspecified dislocation of left ring finger, initial encounter
+S63.256A	Unspecified dislocation of right little finger, initial encounter
+S63.257A	Unspecified dislocation of left little finger, initial encounter
+S63.258A	Unspecified dislocation of other finger, initial encounter
+S63.260A	Dislocation of metacarpophalangeal joint of right index finger, initial encounte
+S63.261A	Dislocation of metacarpophalangeal joint of left index finger, initial encounter
+S63.262A	Dislocation of metacarpophalangeal joint of right middle finger, initial encounter
+S63.263A	Dislocation of metacarpophalangeal joint of left middle finger, initial encounter
+S63.264A	Dislocation of metacarpophalangeal joint of right ring finger, initial encounter
+S63.265A	Dislocation of metacarpophalangeal joint of left ring finger, initial encounter
+S63.266A	Dislocation of metacarpophalangeal joint of right little finger, initial encounter
+S63.267A	Dislocation of metacarpophalangeal joint of left little finger, initial encounter
+S63.268A	Dislocation of metacarpophalangeal joint of other finger, initial encounter
+S63.271A	Dislocation of unspecified interphalangeal joint of left index finger, initial encounter
+S63.272A	Dislocation of unspecified interphalangeal joint of right middle finger, initial encounter
+S63.273A	Dislocation of unspecified interphalangeal joint of left middle finger, initial encounter
+S63.274A	Dislocation of unspecified interphalangeal joint of right ring finger, initial encounter
+S63.275A	Dislocation of unspecified interphalangeal joint of left ring finger, initial encounter
+S63.276A	Dislocation of unspecified interphalangeal joint of right little finger, initial encounter
+S63.277A	Dislocation of unspecified interphalangeal joint of left little finger, initial encounte
+S63.278A	Dislocation of unspecified interphalangeal joint of other finger, initial encounter
+S63.280A	Dislocation of proximal interphalangeal joint of right index finger, initial encounter
+S63.281A	Dislocation of proximal interphalangeal joint of left index finger, initial encounter
+S63.282A	Dislocation of proximal interphalangeal joint of right middle finger, initial encounter
+S63.283A	Dislocation of proximal interphalangeal joint of left middle finger, initial encounter
+S63.284A	Dislocation of proximal interphalangeal joint of right ring finger, initial encounter
+S63.285A	Dislocation of proximal interphalangeal joint of left ring finger, initial encounter
+S63.286A	Dislocation of proximal interphalangeal joint of right little finger, initial encounter
+S63.287A	Dislocation of proximal interphalangeal joint of left little finger, initial encounter
+S63.288A	Dislocation of proximal interphalangeal joint of other finger, initial encounter
+S63.290A	Dislocation of distal interphalangeal joint of right index finger, initial encounter
+S63.291A	Dislocation of distal interphalangeal joint of left index finger, initial encounter
+S63.292A	Dislocation of distal interphalangeal joint of right middle finger, initial encounter
+S63.293A	Dislocation of distal interphalangeal joint of left middle finger, initial encounter
+S63.294A	Dislocation of distal interphalangeal joint of right ring finger, initial encounter
+S63.295A	Dislocation of distal interphalangeal joint of left ring finger, initial encounter
+S63.296A	Dislocation of distal interphalangeal joint of right little finger, initial encounter
+S63.297A	Dislocation of distal interphalangeal joint of left little finger, initial encounter
+S63.298A	Dislocation of distal interphalangeal joint of other finger, initial encounter
+S63.621A	Sprain of interphalangeal joint of right thumb, initial encounter
+S63.621D	Sprain of interphalangeal joint of right thumb, subsequent encounter
+S63.621S	Sprain of interphalangeal joint of right thumb, sequela
+S63.622A	Sprain of interphalangeal joint of left thumb, initial encounter
+S63.622D	Sprain of interphalangeal joint of left thumb, subsequent encounter
+S63.622S	Sprain of interphalangeal joint of left thumb, sequela
+S63.629A	Sprain of interphalangeal joint of unspecified thumb, initial encounter
+S63.629D	Sprain of interphalangeal joint of unspecified thumb, subsequent encounter
+S63.629S	Sprain of interphalangeal joint of unspecified thumb, sequela
+S63.630A	Sprain of interphalangeal joint of right index finger, initial encounter
+S63.630D	Sprain of interphalangeal joint of right index finger, subsequent encounter
+S63.630S	Sprain of interphalangeal joint of right index finger, sequela
+S63.631A	Sprain of interphalangeal joint of left index finger, initial encounter
+S63.631D	Sprain of interphalangeal joint of left index finger, subsequent encounter
+S63.631S	Sprain of interphalangeal joint of left index finger, sequela
+S63.632A	Sprain of interphalangeal joint of right middle finger, initial encounter
+S63.632D	Sprain of interphalangeal joint of right middle finger, subsequent encounter
+S63.632S	Sprain of interphalangeal joint of right middle finger, sequela
+S63.633A	Sprain of interphalangeal joint of left middle finger, initial encounter
+S63.633D	Sprain of interphalangeal joint of left middle finger, subsequent encounter
+S63.633S	Sprain of interphalangeal joint of left middle finger, sequela
+S63.634A	Sprain of interphalangeal joint of right ring finger, initial encounter
+S63.634D	Sprain of interphalangeal joint of right ring finger, subsequent encounter
+S63.634S	Sprain of interphalangeal joint of right ring finger, sequela
+S63.635A	Sprain of interphalangeal joint of left ring finger, initial encounter
+S63.635D	Sprain of interphalangeal joint of left ring finger, subsequent encounter
+S63.635S	Sprain of interphalangeal joint of left ring finger, sequela
+S63.636A	Sprain of interphalangeal joint of right little finger, initial encounter
+S63.636D	Sprain of interphalangeal joint of right little finger, subsequent encounter
+S63.636S	Sprain of interphalangeal joint of right little finger, sequela
+S63.637A	Sprain of interphalangeal joint of left little finger, initial encounter
+S63.637D	Sprain of interphalangeal joint of left little finger, subsequent encounter
+S63.637S	Sprain of interphalangeal joint of left little finger, sequela
+S63.638A	Sprain of interphalangeal joint of other finger, initial encounter
+S63.638D	Sprain of interphalangeal joint of other finger, subsequent encounter
+S63.638S	Sprain of interphalangeal joint of other finger, sequela
+S63.639A	Sprain of interphalangeal joint of unspecified finger, initial encounter
+S63.639A	Sprain of interphalangeal joint of unspecified finger, initial encounter
+S63.639D	Sprain of interphalangeal joint of unspecified finger, subsequent encounter
+S63.639D	Sprain of interphalangeal joint of unspecified finger, subsequent encounter
+S63.639S	Sprain of interphalangeal joint of unspecified finger, sequela
+S63.639S	Sprain of interphalangeal joint of unspecified finger, sequela
+S63.641A	Sprain of metacarpophalangeal joint of right thumb, initial encounter
+S63.642A	Sprain of metacarpophalangeal joint of left thumb, initial encounter
+S63.650A	Sprain of metacarpophalangeal joint of right index finger, initial encounter
+S63.651A	Sprain of metacarpophalangeal joint of left index finger, initial encounter
+S63.652A	Sprain of metacarpophalangeal joint of right middle finger, initial encounter
+S63.653A	Sprain of metacarpophalangeal joint of left middle finger, initial encounter
+S63.654A	Sprain of metacarpophalangeal joint of right ring finger, initial encounter
+S63.655A	Sprain of metacarpophalangeal joint of left ring finger, initial encounter
+S63.656A	Sprain of metacarpophalangeal joint of right little finger, initial encounter
+S63.657A	Sprain of metacarpophalangeal joint of left little finger, initial encounter
+S63.8X1A	Sprain of other part of right wrist and hand, initial encounter
+S63.8X1A	Sprain of other part of right wrist and hand, initial encounter
+S63.8X1D	Sprain of other part of right wrist and hand, subsequent encounter
+S63.8X1D	Sprain of other part of right wrist and hand, subsequent encounter
+S63.8X1S	Sprain of other part of right wristand hand, sequela
+S63.8X1S	Sprain of other part of right wristand hand, sequela
+S63.8X2A	Sprain of other part of left wrist and hand, initial encounter
+S63.8X2A	Sprain of other part of left wrist and hand, initial encounter
+S63.8X2D	Sprain of other part of left wrist and hand, subsequent encounter
+S63.8X2D	Sprain of other part of left wrist and hand, subsequent encounter
+S63.8X2S	Sprain of other part of left wrist and hand, sequela
+S63.8X2S	Sprain of other part of left wrist and hand, sequela
+S63.8X9A	Sprain of other part of unspecified wrist and hand, initial encounter
+S63.8X9A	Sprain of other part of unspecified wrist and hand, initial encounter
+S63.8X9D	Sprain of other part of unspecified wrist and hand, subsequent encounter
+S63.8X9D	Sprain of other part of unspecified wrist and hand, subsequent encounter
+S63.8X9S	Sprain of other part of unspecified wrist and hand, sequela
+S63.8X9S	Sprain of other part of unspecified wrist and hand, sequela
+S63.90XA	Unspecified sprain of unspecified wrist and hand, initial encounter
+S63.90XD	Unspecified sprain of unspecified wrist and hand, subsequent encounter
+S63.90XS	Unspecified sprain of unspecified wrist and hand, sequela
+S63.91XA	Unspecified sprain of right wrist and hand, initial encounter
+S63.91XD	Unspecified sprain of right wrist and hand, subsequent encounter
+S63.91XS	Unspecified sprain of right wristand hand, sequela
+S63.92XA	Unspecified sprain of left wrist and hand, initial encounter
+S63.92XD	Unspecified sprain of left wrist and hand, subsequent encounter
+S63.92XS	Unspecified sprain of left wrist and hand, sequela
+S66.911A	Strain of unspecified muscles, fascia and tendons at wrist and hand level, right arm, initial encounter
+S66.911A	Strain of unspecified muscles, fascia and tendons at wrist and hand level, right arm, initial encounter
+S66.911D	Strain of unspecified muscles, fascia and tendons at wrist and hand level, right arm, subsequent encounter
+S66.911D	Strain of unspecified muscles, fascia and tendons at wrist and hand level, right arm, subsequent encounter
+S66.911S	Strain of unspecified muscles, fascia and tendons at wrist and hand level, right arm, sequela
+S66.911S	Strain of unspecified muscles, fascia and tendons at wrist and hand level, right arm, sequela
+S66.912A	Strain of unspecified muscles, fascia and tendons at wrist and hand level, left arm, initial encounter
+S66.912A	Strain of unspecified muscles, fascia and tendons at wrist and hand level, left arm, initial encounter
+S66.912D	Strain of unspecified muscles, fascia and tendons at wrist and handlevel, left arm, subsequent encounter
+S66.912D	Strain of unspecified muscles, fascia and tendons at wrist and handlevel, left arm, subsequent encounter
+S66.912S	Strain of unspecified muscles, fascia and tendons at wrist and hand level, left arm, sequela
+S66.912S	Strain of unspecified muscles, fascia and tendons at wrist and hand level, left arm, sequela
+S66.919A	Strain of unspecified muscles, fascia and tendons at wrist and hand level, unspecified arm, initial encounter
+S66.919D	Strain of unspecified muscles, fascia and tendons at wrist and hand level, unspecified arm, subsequent encounter
+S66.919S	Strain of unspecified muscles, fascia and tendons at wrist and hand level, unspecified arm, sequela

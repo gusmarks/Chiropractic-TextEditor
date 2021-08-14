@@ -1,0 +1,26 @@
+Entire cervical spine
+Entire lumbar spine
+Entire lumbar and cervical spine
+-----------
+Cervical extension
+Cervical flexion
+Cervical left rotation
+Cervical right rotation
+Cervical left lateral flexion
+Cervical right lateral flexion
+-----------
+Lumbar extension
+Lumbar flexion
+Lumbar left rotation
+Lumbar right rotation
+Lumbar left lateral flexion
+Lumbar right lateral flexion
+-----------
+Thoracic flexion
+Thoracic extension
+-----------
+Right shoulder flexion
+Right shoulder abduction
+Left shoulder flexion
+Left shoulder abduction
+Sacral nutation

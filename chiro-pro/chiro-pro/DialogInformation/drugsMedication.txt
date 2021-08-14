@@ -1,0 +1,17 @@
+OTHER
+N/A
+none
+no new or deleted medications
+none reported
+over-the-counter
+prescription
+----
+anti-depressant
+muscle relaxer
+NSAID
+pain reliever
+steroidal anti-inflammatory
+----
+anti acid
+anti-viral
+asprin

@@ -1,0 +1,44 @@
+OTHER
+----
+no changes in diet or nutrition
+N/A
+none reported
+controled
+out-of-control
+----
+restricted
+unrestrictedein
+----
+1 to 2 meals a day
+2 to 3 meals a day
+more than 3 meals a day
+----
+reports eating too little
+reports eating too much
+binges
+purges
+----
+balanced
+high protein
+low carbohydrate
+low-fat
+low-cholesterol
+no red meat
+----
+Atkins
+diabetic
+gluten free
+ideal protein
+Jenny Craig
+kosher
+Macrobiotic
+paleo
+raw food
+SouthBeach
+vegan
+vegetarian
+WeightWatchers
+Zone
+----
+dose not take daily supplements
+takes daily supplements

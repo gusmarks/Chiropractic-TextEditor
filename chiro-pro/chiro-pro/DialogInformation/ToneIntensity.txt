@@ -1,0 +1,7 @@
+None detected
+-------------
+mild
+mild to moderate
+moderate 
+moderate to severe
+severe

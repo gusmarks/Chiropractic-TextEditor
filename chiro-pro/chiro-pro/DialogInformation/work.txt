@@ -1,0 +1,33 @@
+none reported
+no chance in work habits since condition began
+cannot work due to presenting condition 
+N/A
+permenently fully disabled
+permenently partially disabled
+----
+full-time
+part-time
+homemaker
+retired
+student
+unemployed
+----
+0 to 20hrs per week
+20 to 40hrs per week
+40 to 50hrs per week
+50 to 60hrs per week
+60 to 70hrs per week
+over 70hrs per week
+----
+mostly sitting
+mostly standing
+mostly walking
+----
+computer
+repetitive
+telephone
+----
+dificult
+enjoyable
+relaxed
+stressed

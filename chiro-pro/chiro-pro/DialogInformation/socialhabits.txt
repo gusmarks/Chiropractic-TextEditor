@@ -1,0 +1,35 @@
+OTHER
+no chance in social habits since injury
+Dose not smoke, drink alcohol, or take rec. drugs
+no chance in scoial habits
+N/A
+none reported
+----
+dose not drink alcohol
+is a social drinker
+is a light drinker
+is a moderate drinker
+is a heavy drinker
+is an alcoholic
+is a recovoring alcoholic
+----
+current everyday smoker
+current somedays smoker
+ex-smoker
+heavy tobacco smoker
+light tobacco smoker
+never smoked tobacco
+smoker status unknown
+unknown if ever smoked
+----
+dose not drink caffine
+drinks 1 cup of caffeine in the morning
+drinks 2 to 4 cups of caffeine per day
+drinks 5 or more cups of caffeine a day
+----
+dose not use recreational drugs
+light use of recreational drugs
+moderate use of recreational drugs
+heavy use of recreational drugs
+is drug addicted
+is a recovering drug addict 

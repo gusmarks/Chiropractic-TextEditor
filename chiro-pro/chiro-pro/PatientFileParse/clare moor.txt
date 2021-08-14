@@ -1,0 +1,8 @@
+Patient Name: <clare moor>   Date of First Visit: <Tue may 8 2021> Insurance: <Medicare>
+
+DX:<<f43.009	ygvgbjhb>><<f23.009	ygvgbjhb>><<f44.009	ygvgbjhb>>
+CPT:<<99060	gobledegook>>
+
+Electronicly Signed by:Rob
+Signiture:
+latest date of visit:<Tue Aug 3 2021>

@@ -1,0 +1,8 @@
+Subjective
+panelLayout/PanelLayoutRob/layout1.txt
+Objective
+panelLayout/PanelLayoutRob/layout2.txt
+Assesment
+panelLayout/PanelLayoutRob/layout3.txt
+Plan
+panelLayout/PanelLayoutRob/layout4.txt

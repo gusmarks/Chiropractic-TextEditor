@@ -1,0 +1,44 @@
+Other
+-----
+none reported
+none
+no new surgeries
+N/A
+-----
+abdominal aortic aneurysm repair
+appendectomy
+bunionectomy
+C-section
+cardiac bypass
+cardiac valve replacement
+carpal tunnel - left
+carpal tunnel - right
+cataract - left
+cataract - right
+cosmetic - breast reduction or enlargment
+cosmetic - face lift
+cosmetic - nose
+cosmetic - OTHER
+cosmetic - tummy tuck
+discetomy level
+ear tubes
+gall blatter removed
+ganglion cyst
+gastric bypass
+hysterectomy - complete
+hysterectomy - partial
+implants
+knee - left
+knee - right
+Lasik
+mastectomy
+shoulder - left
+shoulder - right
+spinal fusion
+thyroidectomy
+tonsils
+tonsils & adenoids
+transplant
+wisdom teeth
+right hip replacement
+left hip replacement
