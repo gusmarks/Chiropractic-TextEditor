@@ -1,0 +1,186 @@
+G43.001	Migraine without aura, not intractable, with status migrainosus
+G43.009	Migraine without aura without status migrainous
+G43.011	Migraine without aura, intractable, with status migrainosu
+G43.019	Migraine without aura, with intractable migraine, so stated, without mention of status migrainosus
+G43.101	Migraine with aura, not intractable, with status migrainosus
+G43.109	Migraine with aura not intractable without status migrainosus
+G43.111	Migraine with aura, intractable, with status migrainosus
+G43.119	Migraine with aura, with intractable migraine, so stated, without mention of status migrainosus
+G43.401	Hemiplegic migraine, not intractable, with status migrainosus
+G43.409	Hemiplegic migraine
+G43.411	Hemiplegic migraine, intractable, with status migrainosus
+G43.419	Hemiplegic migraine, intractable, without status migrainosus
+G43.501	Persistent migraine aura without cerebral infarction, not intractable, with status migrainosus
+G43.509	Persistent migraine aura without cerebral infraction
+G43.511	Persistent migraine aura without cerebral infarction, intractable, with status migrainosus
+G43.519	Persistent migraine aura without cerebral infarction, intractable, without status migrainosus
+G43.601	Persistent migraine aura with cerebral infarction, not intractable, with status migrainosus
+G43.609	Persistent migraine aura with cerebral infraction
+G43.611	Persistent migraine aura with cerebral infarction, intractable, with status migrainosus
+G43.619	Persistent migraine aura with cerebral infarction, intractable, without status migrainosus
+G43.701	Chronic migraine without aura, not intractable, with status migrainosus
+G43.709	Chronic migraine without aura
+G43.711	Chronic migraine without aura, intractable, with status migrainosus
+G43.801	Other migraine, not intractable, with status migrainosus
+G43.809	Other migraine
+G43.811	Other migraine, intractable, with status migrainosus
+G43.819	Other migraine, intractable, without status migrainosus
+G43.821	Menstrual migraine, not intractable, with status migrainosus
+G43.829	Menstrual migraine, not intractable, without status migrainosus
+G43.831	Menstrual migraine, intractable, with status migrainosus
+G43.839	Menstrual migraine, intractable, without status migrainosus
+G43.901	Migraine, unspecified, not intractable, with status migrainosus
+G43.909	Migraine, unspecified
+G43.911	Migraine, unspecified, intractable, with status migrainosus
+G43.919	Migraine, unspecified, with intractable migraine, so stated, without mention of status migrainosus
+G43.919	Migraine, unspecified, intractable, without status migrainosus
+G43.A0	Cyclical vomiting, in migraine, not intractable (updated 10-1-2019)
+G43.A1	Cyclical vomiting, in migraine, intractable (updated 10-1-2019)
+G43.B0	Ophthalmoplegic migraine, not intractable
+G43.B1	Ophthalmoplegic migraine, intractable
+G43.C0	Periodic headache syndromes in child or adult, not intractable
+G43.D0	Abdominal migraine, not intractable
+G43.D1	Abdominal migraine, intractable
+G44.001	Cluster headache syndrome, unspecified, intractable
+G44.009	Cluster headache syndrome, unspecified non intractable
+G44.011	Episodic cluster headache, intractable
+G44.019	Episodic cluster headache not intractable
+G44.021	Chronic cluster headache, intractable
+G44.029	Chronic cluster headache, not intractable
+G44.031	Episodic paroxysmal hemicrania, intractable
+G44.039	Episodic paroxysmal hemicrania not intractable
+G44.041	Chronic paroxysmal hemicrania, intractable
+G44.049	Chronic paroxysmal hemicrania not intractable
+G44.051	Short lasting unilateral neuralgiform headache with conjunctival injection and tearing (SUNCT), intractable	 
+G44.059	Short lasting unilateral neuralgiform headache with conjunctival injection and tearing. Not intractable
+G44.091	Other trigeminal autonomic cephalgias (TAC), intractable
+G44.099	Other trigeminal autonomic cephalgias (TAC) not intractable
+G44.1	Vascular headache, not elsewhere classified
+G44.201	Tension-type headache, unspecified, intractable
+G44.209	Tension-type headache, unspecified not intractable
+G44.211	Episodic tension-type headache, intractable
+G44.219	Episodic tension-type headache not intractable
+G44.221	Chronic tension-type headache, intractable
+G44.229	Chronic tension-type headache, not intractable
+G44.301	Post-traumatic headache, unspecified, intractable
+G44.309	Post-traumatic headache, unspecified not intractable
+G44.311	Acute post-traumatic headache, intractable
+G44.319	Acute post-traumatic headache not intractable
+G44.321	Chronic post-traumatic headache, intractable
+G44.329	Chronic post-traumatic headache not intractable
+G44.40	Drug-induced headache, not elsewhere classified, not intractable
+G44.41	Drug induced headache intractable
+G44.51	Hemicrania continua
+G44.52	New daily persistent headache
+G44.53	Primary thunderclap headache
+G44.59	Other complicated headache syndrome
+G44.81	Hypnic headache
+G44.82	headache associated with sexual activity
+G44.83	Primary cough headache
+G44.84	Primary exertional headache
+G44.85	Primary stabbing headache
+G44.89	Other headache syndrome
+G50.0	Trigeminal neuralgia
+G50.1	Atypical facial pain
+G50.8	Other disorders of trigeminal nerve
+G50.9	Disorder of trigeminal nerve, unspecified
+G51.0	Bell's palsy (facial palsy)
+H93.11	Tinnitus (ringing in the ear), right ear
+H93.12	Tinnitus (ringing in the ear), left ear
+H93.13	Tinnitus (ringing in the ear), bilateral
+H93.A1	Pulsatile tinnitus (ringing in the ear), right ear (effective 10-1-2016)
+H93.A2	Pulsatile tinnitus, (ringing in the ear) left ear (effective 10-1-2016)
+H93.A3	Pulsatile tinnitus, (ringing in the ear) bilateral (effective 10-1-2016)
+H93.A9	Pulsatile tinnitus, (ringing in the ear) unspecified ear (effective 10-1-2016)
+M26.52	Limited mandibular range of motion (TMJ)
+M26.53	Deviation in opening and closing of the mandible (TMJ Jaw)
+M26.601	Right temporomandibular joint (TMJ) disorder, unspecified (effective 10-1-2016)
+M26.602	Left temporomandibular joint (TMJ) disorder, unspecified (effective 10-1-2016)
+M26.603	Bilateral temporomandibular joint (TMJ)disorder, unspecified(effective 10-1-2016)
+M26.609	Unspecified temporomandibular joint (TMJ)disorder, unspecified side (effective 10-1-2016)
+M26.611	Adhesions and ankylosis of right temporomandibular joint(TMJ) (effective 10-1-2016)	
+	M26.612	Adhesions and ankylosis of left temporomandibular joint(TMJ) (effective 10-1-2016)	
+M26.613	Adhesions and ankylosis of bilateral temporomandibular joint (TMJ) (effective 10-1-2016)	
+	M26.619	Adhesions and ankylosis of temporomandibular joint (TMJ), unspecified side (effective 10-1-2016)	 	
+M26.62	Arthralgia of temporomandibular joint (TMJ) (deleted 10-1-2016)	
+M26.621	Arthralgia of right temporomandibular joint (TMJ) (effective 10-1-2016)	
+M26.622	Arthralgia of left temporomandibular joint (TMJ) (effective 10-1-2016)	
+M26.623	Arthralgia of bilateral temporomandibular joint (TMJ) (effective 10-1-2016)	
+M26.629	Arthralgia of temporomandibular joint (TMJ) , unspecified side (effective 10-1-2016)	
+M26.63	Articular disc disorder of temporomandibular joint (TMJ) (deleted 10-1-2016)	
+M26.631	Articular disc disorder of right temporomandibular joint (TMJ) (effective 10-1-2016)
+M26.632	Articular disc disorder of left temporomandibular joint (TMJ) (effective 10-1-2016)
+M26.633	Articular disc disorder of bilateral temporomandibular joint (TMJ) (effective 10-1-2016)
+M26.639 Articular disc disorder of temporomandibular joint (TMJ), unspecified side (effective 10-1-2016)	 	
+M26.641	Arthritis of right temporomandibular joint (TMJ) (new 10-1-2020)
+M26.642	Arthritis of left temporomandibular joint (TMJ) (new 10-1-2020)	
+M26.643	Arthritis of bilateral temporomandibular joint (TMJ) (New 10-1-2020)	
+M26.649	Arthritis of unspecified temporomandibular joint (TMJ) (new 10-1-2020)	
+M26.651	Arthropathy of right temporomandibular joint (TMJ) (new 10-1-2020)	
+M26.652	Arthropathy of left temporomandibular joint (TMJ) (new 10-1-2020)
+M26.653	Arthropathy of bilateral temporomandibular joint (TMJ) (new 10-1-2020)
+M26.659	Arthropathy of unspecified temporomandibular joint (TMJ) (new 10-1-2020)
+M26.69	TMJ sounds on opening and closing -Other specified disorders of temporomandibular joint
+M26.69	Other specified disorders of temporomandibular joint (TMJ)
+M99.80	Other biomechanical lesions, of head region
+R42	Dizziness and giddiness (lightheadedness and vertigo not otherwise specified)
+R51	Headache (deleted 10-1-2020 see R51.9)
+R51.0	Headache with orthostatic component, not elsewhere classified (new 10-1-2020)
+R51.9	Headache, unspecified (new 10-1-2020) Approximate Synonyms: Cervicogenic headache; Chronic facial pain; Chronic mixed headache syndrome; Chronic pain in face; Craniofacial pain; Daily headache; Facial pain; Facial pain, chronic;, Headache, cervicogenic (from the neck); Headache, chronic daily; Headache, mixed; Headache, occipital; Headache, sinus; Occipital headacche; Pain in face; Sinus headache; & Sinus pain
+S00.01XA	Abrasion of scalp, initial encounter
+S00.211A	Abrasion of right eyelid and periocular area, initial encounter
+S00.212A	Abrasion of left eyelid and periocular area, initial encounter
+S00.31XA	Abrasion of nose, initial encounter
+S00.411A	Abrasion of right ear, initial encounter
+S00.412A	Abrasion of left ear, initial encounter
+S00.419A	Abrasion of unspecified ear, initial encounter
+S00.511A	Abrasion of lip, initial encounter
+S00.512A	Abrasion of oral cavity, initial encounter
+S00.81XA	Abrasion of other part of head, initial encounter
+S00.91XA	Abrasion of unspecified part of head, initial encounter
+S00.93XA	Contusion of face, scalp and neck except eye(s). Contusion of unspecified part of head, initial encounter (active treatment)
+S00.93XD	Contusion of face, scalp, and neck except eye(s). Contusion of unspecified part of head, subsequent encounter
+S00.93XS	Contusion of face, scalp, and neck except eye(s). Contusion of unspecified part of head, sequelae
+S03.40XA	Sprain of jaw, unspecified side, initial encounter (effective 10-1-2016)
+S03.40XD	Sprain of jaw, unspecified side, subsequent encounter (effective 10-1-2016)
+S03.40XS	Sprain of jaw, unspecified side, sequela (effective 10-1-2016)
+S03.41XA	Sprain of jaw, right side, initial encounter (effective 10-1-2016)
+S03.41XD	Sprain of jaw, right side, subsequent encounter (effective 10-1-2016)
+S03.41XS	Sprain of jaw, right side, sequela (effective 10-1-2016)
+S03.42XA	Sprain of jaw, left side, initial encounter(effective 10-1-2016)
+S03.42XD	Sprain of jaw, left side, subsequent encounter (effective 10-1-2016)
+S03.42XS	Sprain of jaw, left side, sequela (effective 10-1-2016)
+S03.43XA	Sprain of jaw, bilateral, initial encounter (effective 10-1-2016)
+S03.43XD	Sprain of jaw, bilateral, subsequent encounter (effective 10-1-2016)
+S03.43XS	Sprain of jaw, bilateral, sequela (effective 10-1-2016)
+S03.4XXA	Sprain of jaw, initial encounter (deleted 10-1-2016)
+S03.4XXD	Sprain of jaw, subsequent encounter (deleted 10-1-2016)
+S03.4XXS	Sprain of jaw, sequela (deleted 10-1-2016)
+S03.8XXA	Sprain of joints and ligaments of other parts of head, initial encounter (active treatment)
+S03.8XXD	Sprain of joints and ligaments of other parts of head, subsequent encounter
+S03.8XXS	Sprain of joints and ligaments of other parts of head, sequela
+S03.9XXA	Sprain of joints and ligaments of unspecified parts of head, initial encounter (active treatment)
+S03.9XXD	Sprain of joints and ligaments of unspecified parts of head, subsequent encounter
+S03.9XXS	Sprain of joints and ligaments of unspecified parts of head, sequela
+S06.1X0A	Traumatic cerebral edema without loss of consciousness, initial encounter
+S06.2X0A	Diffuse traumatic brain injury without loss of consciousness, initial encounter
+S06.2X1A	Diffuse traumatic brain injury with loss of consciousness of 30 minutes or less, initial encounter
+S06.2X2A	Diffuse traumatic brain injury with loss of consciousness of 31 minutes to 59 minutes, initial encounter
+S06.2X3A	Diffuse traumatic brain injury with loss of consciousness of 1 hour to 5 hours 59 minutes, initial encounter	 
+S06.2X4A	Diffuse traumatic brain injury with loss of consciousness of 6 hours to 24 hours, initial encounter
+S06.300A	Unspecified focal traumatic brain injury without loss of consciousness, initial encounter
+S06.301A	Unspecified focal traumatic brain injury with loss of consciousness of 30 minutes or less, initial encounter
+S06.302A	Unspecified focal traumatic brain injury with loss of consciousness of 31 minutes to 59 minutes, initial encounter	
+S06.303A	Unspecified focal traumatic brain injury with loss of consciousness of 1 hour to 5 hours 59 minutes, initial encounter
+S06.304A	Unspecified focal traumatic brain injury with loss of consciousness of 6 hours to 24 hours, initial encounter
+S06.890A	Other specified intracranial injury without loss of consciousness, initial encounter
+S06.890A	Other specified intracranial injury without loss of consciousness, initial encounter
+S06.891A	Other specified intracranial injury with loss of consciousness of 30 minutes or less, initial encounter
+S06.892A	Other specified intracranial injury with loss of consciousness of 31 minutes to 59 minutes, initial encounter
+S06.893A	Other specified intracranial injury with loss of consciousness of 1 hour to 5 hours 59 minutes, initial encounter
+S06.894A	Other specified intracranial injury with loss of consciousness of 6 hours to 24 hours, initial encounter
+S06.9X0A	Unspecified intracranial injury without loss of consciousness, initial encounter
+S06.9X1A	Unspecified intracranial injury with loss of consciousness of 30 minutes or less, initial encounter
+S06.9X2A	Unspecified intracranial injury with loss of consciousness of 31 minutes to 59 minutes, initial encounte
+S06.9X3A	Unspecified intracranial injury with loss of consciousness of 1 hour to 5 hours 59 minutes, initial encounter
+S06.9X4A	Unspecified intracranial injury with loss of consciousness of 6 hours to 24 hours, initial encounter

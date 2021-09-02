@@ -1,0 +1,5 @@
+allergies 
+Dialogs/DialogFile4.txt
+michel
+0
+panelLayout/panelLayoutGus/layout1-panels/LayoutLevel2-1-panels/LayoutLevel3-1.txt

@@ -1,0 +1,56 @@
+---Chiropractic Manipulation CPT Coding---------------
+98940	Chiropractic manipulative treatment (CMT); spinal, one to two regions
+98941	Chiropractic manipulative treatment (CMT); spinal, three to four regions
+98942	Chiropractic manipulative treatment (CMT); spinal, five regions
+98943	Chiropractic manipulative treatment (CMT); extraspinal, one or more regions
+-------------Evaluation and Management Codes-------------
+New Patient	A new patient is one who has not received any professional services from the physician/qualified health care professional or another physician/qualified health care professional of the exact same specialty and subspecialty who belongs to the same group practice, within the past three years.
+99202	Office or other outpatient visit for the evaluation and management of a new patient, which requires a medically appropriate history and/or examination and straightforward medical decision making. When using time for code selection, 15-29 minutes of total time is spent on the date of the encounter
+99203	Office or other outpatient visit for the evaluation and management of a new patient, which requires a medically appropriate history and/or examination and low level of medical decision making. When using time for code selection, 30-44 minutes of total time is spent on the date of the encounter.
+99204	Office or other outpatient visit for the evaluation and management of a new patient, which requires a medically appropriate history and/or examination and moderate level of medical decision making. When using time for code selection, 45-59 minutes of total time is spent on the date of the encounter
+99205	Office or other outpatient visit for the evaluation and management of a new patient, which requires a medically appropriate history and/or examination and high level of medical decision making. When using time for code selection, 60-74 minutes of total time is spent on the date of the encounter. (For services 75 minutes or longer, see Prolonged Services 99XXX)
+Established Patient	An established patient is one who has received professional services from the physician/qualified health care professional or another physician/qualified health care professional of the exact same specialty and subspecialty who belongs to the same group practice, within the past three years.
+99211	Office or other outpatient visit for the evaluation and management of an established patient, that may not require the presence of a physician or other qualified health care professional. Usually, the presenting problem(s) are minimal
+99212	Office or other outpatient visit for the evaluation and management of an established patient, which requires a medically appropriate history and/or examination and straightforward medical decision making. When using time for code selection, 10-19 minutes of total time is spent on the date of the encounter.
+99213	Office or other outpatient visit for the evaluation and management of an established patient, which requires a medically appropriate history and/or examination and low level of medical decision making. When using time for code selection, 20-29 minutes of total time is spent on the date of the encounter.
+99214	Office or other outpatient visit for the evaluation and management of an established patient, which requires a medically appropriate history and/or examination and moderate level of medical decision making. When using time for code selection, 30-39 minutes of total time is spent on the date of the encounter.
+99215	Office or other outpatient visit for the evaluation and management of an established patient, which requires a medically appropriate history and/or examination and high level of medical decision making. When using time for code selection, 40-54 minutes of total time is spent on the date of the encounter. (For services 55 minutes or longer, see Prolonged Services 99XXX)
+-------------------Physical Medicine & Rehabilitation---------------------------------
+97010	Hot or cold packs
+97012	Traction, mechanical
+97014	Electrical stimulation, (unattended)
+G0283	Electrical stimulation, (unattended)
+97016	Vasopneumatic devices
+97018	Paraffin bath
+97022	Whirlpool
+97024	Diathermy (Includes Microwave)
+97026	infra red heat
+97028	Ultraviolet
+97032	Electrical stimulation, (manual), each 15 minutes application to one or more areas.
+97033	Iontophoresis; Electrical stimulation, (manual) each 15 minutes
+97034	Contrast baths, each 15 minutes (direct one on one attendance required)
+97035	Ultrasound, each 15 minutes (direct one on one contact required)
+97036	Hubbard tank, each 15 minutes (direct one on one contact)
+97039	Unlisted modality (specify type and time if constant attendance)
+97110	Therapeutic exercises to develop strength and endurance, range of motion and flexibility. (direct one one-on-one patient contact is required each 15 minutes)
+97112	Neuromuscular reeducation of movement, balance, coordination, kinesthetic sense, posture, and/or proprioception for sitting and/or standing activities. (direct one on one attendance required each 15 minutes)
+97113 Aquatic therapy with therapeutic exercises. (direct one on one attendance required each 15 minutes)
+97116	Gait Training (includes stair climbing) (direct one on one attendance required each 15 minutes)
+97124	Massage, including effleurage, petrissage, and /or tapotement (stroking, compression, percussion) (each 15 minutes with direct one-on-one contact)
+97139	Unlisted therapeutic procedure (specify) (each 15 minutes and one-on-one contact with patient)
+97140	Manual therapy techniques (e.g., mobilization/manipulation, manual lymphatic drainage, manual traction), 1 or more regions each 15 minutes
+97150	Therapeutic procedure(s), group (2 or more individuals)
+97530	Therapeutic activities, direct (one-on-one) patient contact (use of dynamic activities to improve functional performance), each 15 minutes
+97532	Development of cognitive skills to improve attention, memory, problem solving (includes compensatory training) direct (one-on-one) patient contact, each 15 minutes
+97533	Sensory integrative techniques to enhance sensory processing and promote adaptive responses to environmental demands, direct (one-on-one) patient contact by the provider, each 15 minutes Sensory integrative techniques to enhance sensory processing and promote adaptive responses to environmental demands, direct (one-on-one) patient contact by the provider, each 15 minutes
+97535	Self-care/home management training (e.g., activities of daily living (ADL) and compensatory training, meal preparation, safety procedures, and instructions in use of assistive technology devices/adaptive equipment) direct one-on-one contact by provider, each 15 minutes
+97537	Community/Work Reintegration Training (e.g., shopping, transportation, money management, avocational activities and/or work environment/modification analysis, work task analysis) direct one-on-one contact by provider, each 15 minutes
+97542	Wheelchair Management (e.g., assessment, fitting, training), each 15 minutes
+97545	Work hardening/conditioning; initial 2 hours
+97546	Work hardening/conditioning; each additional hour
+97750	Physical Performance Test or Measurement (e.g., musculoskeletal, functional capacity) with written report, each 15 minutes
+97755	Assistive technology assessment (e.g., to restore, augment or compensate for existing function, optimize functional tasks and/or maximize environmental accessibility), direct one-on-one contact by provider, with written report, each 15 minutes
+97760	Orthotic(s) management and training (including assessment and fitting when not otherwise reported), upper extremity(s), lower extremity(s) and/or trunk, each 15 minutes
+97761	Prosthetic training, upper and/or lower extremity(s), each 15 minutes
+97762	Checkout for orthotic/prosthetic use, established patient, each 15 minutes
+97799	Unlisted physical medicine/rehabilitation service or procedure, not timed Also see other unlisted CPT codes 97039 and 97139

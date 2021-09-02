@@ -47,7 +47,7 @@ public:
 		//keep track of the parent
 		this->parent = parent;
 		//initulize the button sizer, then set the sizer to the panel, this applies the sizer the panel to actualy change the layout
-		buttonSizer = new wxFlexGridSizer(3, 15, 0, 0);
+		buttonSizer = new wxFlexGridSizer(3, 10, 0, 0);
 		this->SetSizer(buttonSizer);
 		//layout name is the filename of the button information
 		this->layoutName = layoutName;
@@ -160,7 +160,7 @@ public:
 			std::string check = "Dialog-ID";
 			if (text.find(check) != std::string::npos) {
 				wxButton* newButton = new wxButton(this
-					, wxID_ANY, ButtonName, wxDefaultPosition, wxSize(130, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, ButtonText);
+					, wxID_ANY, ButtonName, wxDefaultPosition, wxSize(136, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, ButtonText);
 
 				newButton->SetForegroundColour(*wxBLUE);
 				qLinkList.push_back(newButton);
@@ -171,7 +171,7 @@ public:
 			}
 			else {
 				qLinkList.push_back(new wxButton(this
-					, wxID_ANY, ButtonName, wxDefaultPosition, wxSize(130, 23), 0, wxDefaultValidator, ButtonText));
+					, wxID_ANY, ButtonName, wxDefaultPosition, wxSize(136, 23), 0, wxDefaultValidator, ButtonText));
 				//add the button to the button sizer
 				buttonSizer->Add(qLinkList.back(), wxLeft);
 				//update layout of page and button index
@@ -182,7 +182,7 @@ public:
 		}
 		else {
 			wxButton* newButton = new wxButton(this,
-				wxID_ANY, ButtonName, wxDefaultPosition, wxSize(130, 23), 0, wxDefaultValidator, ButtonText);
+				wxID_ANY, ButtonName, wxDefaultPosition, wxSize(136, 23), 0, wxDefaultValidator, ButtonText);
 			newButton->SetForegroundColour(wxColor(255, 0, 0));
 			newButton->Refresh();
 			qLinkList.push_back(newButton);
@@ -220,7 +220,6 @@ public:
 			newPanel->makeLevel();
 			newPanel->Hide();
 			subPanelCount++;
-			//newPanel->LoadButtons();
 
 		}
 	}
@@ -267,7 +266,7 @@ public:
 
 				//make button
 				if (functionHelper->isNumber(maintext)) {
-					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(130, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, maintext));
+					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(136, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, maintext));
 					this->qLinkList.back()->SetForegroundColour(*wxRED);
 					std::string pathName;
 					getline(this->buttonLayoutin, pathName);
@@ -275,11 +274,11 @@ public:
 
 				}
 				else if (functionHelper->isPopup(maintext)) {
-					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(130, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, maintext));
+					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(136, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, maintext));
 					this->qLinkList.back()->SetForegroundColour(*wxBLUE);
 				}
 				else if (functionHelper->isText(maintext)) {
-					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(130, 23), 0, wxDefaultValidator, maintext));
+					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(136, 23), 0, wxDefaultValidator, maintext));
 				}
 				//add button to array
 				this->buttonSizer->Add(qLinkList.back(), wxLeft);
@@ -322,6 +321,17 @@ public:
 		for (size_t i = 0; i < subPanelList.size(); i++) {
 			subPanelList.at(i)->saveQLinks();
 		}
+	}
+
+	void removeButtonWithTextOf(wxString text) {
+		size_t size = qLinkList.size();
+		for (size_t i = 0; i < size; i++) {
+			if (qLinkList.at(i)->GetName() == text) {
+				qLinkList.erase(qLinkList.begin()+i);
+				size--;
+			}
+		}
+
 	}
 };
 #endif

@@ -1,7 +1,3 @@
-New paragraph
+New Paragraph
 
-hello 	Dialogs/DialogFile1.txt
-
-goodbye 	Dialogs/DialogFile2.txt
-
-bumler 	Dialogs/DialogFile3.txt
+allergies 	Dialogs/DialogFile1.txt

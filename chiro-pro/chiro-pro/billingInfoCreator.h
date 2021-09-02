@@ -16,7 +16,7 @@ struct date {
 class billingInfoCreator {
 private:
 	std::fstream in_out;
-	std::fstream outMed;
+	std::ofstream outMed;
 	std::fstream outReg;
 	std::fstream outOth;
 	std::string path;
@@ -95,7 +95,12 @@ public:
 
 				outMed << information[0] << "\t\t";
 				outMed << information[2] << "\t\t";
+				int pos =rearangeDxCodes(0);
+				
 				outMed << information[3] << "\t\t\t\t";
+				pos += 8;
+				outMed << information[4] << "\t";
+				outMed.seekp(pos);
 				outMed << information[1] << "\t\t\t";
 				int days = getDayDifferance(intdateformater(information[1]), intdateformater(information[2]));
 				outMed << days << "\n";
@@ -301,6 +306,32 @@ public:
 		in_out << Medicare.rdbuf() <<"\n"<< Regence.rdbuf();
 	}
 
-	
+	int rearangeDxCodes(int type) {
+		size_t NumberOfCommas = std::count(information[4].begin(), information[4].end(),',');
+		size_t ofsett=0;
+		std::stringstream ss(information[4]);
+		information[4] = "";
+		std::string templine;
+		int position;
+		int i = 0;
+		int test = static_cast<int>(NumberOfCommas);
+		while (getline(ss, templine, ',')) {
+		
+			information[4]+= templine + ",";
+			ofsett += templine.size() + 1;
+			if (i % 2 != 0) {
+				information[4] += "\n\t\t\t\t\t\t\t\t\t\t";
+			}
+			if (i == 1&&type ==0) {
+				int x =static_cast<int>(ofsett);
+				position = outMed.tellp();
+				position += x;
+			}
+			i ++;
+		}
+		return position;
+	}
+
+	//for (size_t i = 0; i < NumberOfCommas; i++) {
 };
 

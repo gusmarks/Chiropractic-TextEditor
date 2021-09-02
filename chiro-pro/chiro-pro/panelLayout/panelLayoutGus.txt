@@ -1,0 +1,8 @@
+Subjective
+panelLayout/panelLayoutGus/layout1.txt
+Objective
+panelLayout/panelLayoutGus/layout2.txt
+Assesment
+panelLayout/panelLayoutGus/layout3.txt
+Plan
+panelLayout/panelLayoutGus/layout4.txt

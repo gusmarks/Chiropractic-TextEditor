@@ -9,6 +9,11 @@
 #include <string>
 #include <iostream>
 #include <filesystem>
+
+struct selectionInformation {
+	std::string selectionText;
+	int selectionIndex;
+};
 class DialogHelper {
 private:
 	//body image, calender and parent are all stored for later use,
@@ -114,6 +119,9 @@ public:
 			}
 			return msg;
 		}
+		else if (dialog.ShowModal() == wxID_CANCEL) {
+			return "OTHER";
+		}
 		return "OTHER";
 	}
 	/// <summary>
@@ -133,15 +141,37 @@ public:
 		}
 		wxSingleChoiceDialog dialog(this->parent, text, wxT("Make a Selection"), choices);
 		if (dialog.ShowModal() == wxID_OK) {
+
 			if (choices.IsEmpty()) {
 				return "OTHER";
 			}
 			int selection = dialog.GetSelection();
 			return choices[selection];
 		}
-		return "Other";
+		return "OTHER";
+	}
+	int SingleChoiceDialogIndex(std::string path, std::string text) {
+		std::ifstream choiceIn;
+		choiceIn.open(path, std::fstream::in);
+		wxArrayString choices;
+		std::string choice;
+		while (choiceIn.peek() != EOF) {
+			getline(choiceIn, choice);
+			choices.Add(choice);
+		}
+		wxSingleChoiceDialog dialog(this->parent, text, wxT("Make a Selection"), choices);
+		if (dialog.ShowModal() == wxID_OK) {
+
+			if (choices.IsEmpty()) {
+				return -1;
+			}
+			int selection = dialog.GetSelection();
+			return selection;
+		}
+		return -1;
 	}
 	/// <summary>
+
 /// this fucntion opens a Dialog to allow the user to select a date, upto todays date
 /// 	and returns the date in string form.
 /// </summary>
@@ -169,7 +199,7 @@ public:
 	}
 
 
-	std::string selectPremadeDialog() {
+	selectionInformation selectPremadeDialog() {
 		wxArrayString options;
 
 		std::string pathName = "Dialogs/0dialogList.txt";
@@ -194,18 +224,26 @@ public:
 			}
 
 		}
+		selectionInformation selection;
+		selectionInformation Cancel;
+		Cancel.selectionText = "Cancel";
+		Cancel.selectionIndex = -1;
 		wxSingleChoiceDialog dialog(parent, wxT("what button would you like?"), wxT("Question"), options);
+		
 		switch (dialog.ShowModal()) {
 		case wxID_OK:
 			wxLogStatus(wxT("You pressed \"Ok\""));
-			return dialog.GetStringSelection().ToStdString();
+			selection.selectionText = dialog.GetStringSelection().ToStdString();
+			selection.selectionIndex = dialog.GetSelection();
+			return selection;
 			break;
 		case wxID_CANCEL:
 			wxLogStatus(wxT("You pressed \"Cancel\""));
-			return "Cancel";
+			return Cancel;
 			break;
 		default:       wxLogError(wxT("Unexpected wxMessageDialog return code!"));
+			return Cancel;
 		}
-		//return "";
+		return Cancel;
 	}
 };

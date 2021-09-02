@@ -1,0 +1,49 @@
+Patient Name: <liara tarkurt>   Date of First Visit: <Tue Aug 24 2021>   Insurance: <Medicare>
+i have allergies to:, Dairy
+ anterior-Head right-TMJ left-TMJ
+, IMPULSE
+, Diabetes, Obesity
+, Acute joint inflimation, Anatomic dislocation
+, no changes in diet or nutrition, controled
+, Sitting, Standing
+, prescription, anti-depressant
+, daily, streching, strength
+, no change in family health history
+, 25-50%, On and off
+, Decrease Pain 100%, Improve index scores
+, Regressing
+, Same as chief complaint
+, Sitting
+, 25-50%
+, Decreased cervical curvature
+, stabbing, shooting
+, Mild
+, Cervical right rotation
+, Bilateral 
+, dose not drink alcohol, current everyday smoker
+, Glureus maximus, Gracilis
+, Left T1
+, abdominal aortic aneurysm repair
+OTHER
+OTHER
+, full-time
+, 9/10
+cpt/dx codes---------------------
+<<G57.50	Tarsal tunnel syndrome, unspecified lower limb>>
+<<S12.001B	Unspecified nondisplaced fracture of first cervical vertebra, initial encounter for open fracture>>
+<<M12.221	Villonodular synovitis (pigmented), right elbow>>
+<<G57.60	Lesion of plantar nerve unspecified (Morton\'s neuroma, neuralgia or metatarsalgia)>>
+<<M15.1	Osteoarthrosis (osteoarthritis), generalized, hand. Heberden's nodes (with arthropathy)>>
+<<G43.001	Migraine without aura, not intractable, with status migrainosus>>
+<<M12.352	Palindromic rheumatism, left hip>>
+<<M12.562	Traumatic arthropathy, left knee>>
+<<M12.412	Intermittent hydrarthrosis, left shoulder>>
+<<G54.3	Thoracic root lesions not elsewhere classified>>
+<<G56.11	Median nerve neuritis (lesion), right upper limb>>
+<<98942	Chiropractic manipulative treatment (CMT); spinal, five regions>>
+<<99211	Office or other outpatient visit for the evaluation and management of an established patient, that may not require the presence of a physician or other qualified health care professional. Usually, the presenting problem(s) are minimal>>
+<<99060	Service(s) provided on an emergency basis, out of the office, which disrupts other scheduled office services, in addition to the basic service>>
+<<97022	Whirlpool>>
+<<Other>>
+<<Other>>
+

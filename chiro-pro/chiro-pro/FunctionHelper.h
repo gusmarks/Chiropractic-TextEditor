@@ -17,6 +17,7 @@ public:
     bool isText(const std::string& str) {
         return !(str.find("Dialog-ID") != std::string::npos)&&!str.empty();
     }
+
     long getLineNo(std::string& str, std::string delim) {
 
         std::vector<std::string> stringsNoBlankLines;
@@ -46,6 +47,8 @@ public:
         time(&current);
         std::string time= ctime(&current);
         time.erase(time.end() - 14, time.end() - 5);
+
+        time.erase(std::remove(time.begin(),time.end(),'\n'),time.end());
         return  time;
     }
     bool DoseUserExist(wxString usr) {

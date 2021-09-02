@@ -69,7 +69,6 @@ public://an ofstream to save configurations
 	}
 
 // a set of panel manipulating functions defined in ButtonSet.cpp
-//	void addNewPanel(wxFrame* parent,wxString name);
 	void saveAllPanels(wxString set) {
 		//std::string user = set.ToStdString();
 		std::string PanelLayout = this->path + ".txt";

@@ -1,0 +1,155 @@
+G57.50	Tarsal tunnel syndrome, unspecified lower limb
+G57.51	Tarsal tunnel syndrome, right lower limb
+G57.52	Tarsal tunnel syndrome, left lower limb
+G57.53	Tarsal tunnel syndrome, bilateral lower limbs (effective 10-1-2016)
+M12.371	Palindromic rheumatism, right ankle and foot
+M12.372	
+M12.471	Intermittent hydrarthrosis, right ankle and foot
+M12.472	Intermittent hydrarthrosis, left ankle and foot
+M19.071	Primary osteoarthritis, right ankle and foot
+M19.072	Primary osteoarthritis, left ankle and foot
+M19.079	Osteoarthrosis (osteoarthritis), localized, primary, ankle and foot unspecified side
+M24.071	Loose body in right ankle
+M24.072	Loose body in left ankle
+M24.073	Loose body in unspecified ankle
+M25.474	Effusion, right foot
+M25.571	Pain in unspecified ankle and joints of right foot
+M25.572	Pain in unspecified ankle and joints of left foot
+M25.579	Pain in unspecified ankle and joints of unspecified foot
+M25.671	Stiffness of right ankle
+M25.672	Stiffness of left ankle
+M25.673	Stiffness of ankle, unspecified
+M66.361	Spontaneous rupture of flexor tendons (Achilles), right lower leg
+M66.362	Spontaneous rupture of flexor tendons (Achilles), left lower leg
+M66.369	Rupture Achilles tendon, non traumatic
+M66.369	Spontaneous rupture of flexor tendons (Achilles) , unspecified lower leg
+M76.60	Achilles tendinitis, unspecified leg (Enthesopathies, lower limb)
+M76.61	Achilles tendinitis, right leg (Enthesopathies, lower limb)
+M76.62	Achilles tendinitis, left leg (Enthesopathies, lower limb)
+M76.821	Posterior tibial tendinitis, right leg (Enthesopathies, lower limb)
+M76.822	Posterior tibial tendinitis, left leg (Enthesopathies, lower limb)
+M76.829	Posterior tibial tendinitis, unspecified leg (Enthesopathies, lower limb)
+M79.661	Pain in right lower leg
+M79.662	Pain in left lower leg
+M99.06	Segmental and somatic dysfunction of lower extremity (subluxation)
+R29.898	Other symptoms referable to joint (ankle and foot). Joint crepitus. Other symptoms and signs involving the musculoskeletal system
+S86.011A	Strain of right Achilles tendon, initial encounter
+S86.011D	Strain of right Achilles tendon, subsequent encounter
+S86.011S	Strain of right Achilles tendon, sequela
+S86.012A	Strain of left Achilles tendon, initial encounter
+S86.012D	Strain of left Achilles tendon, subsequent encounter
+S86.012S	Strain of left Achilles tendon, sequela
+S86.019A	Strain of unspecified Achilles tendon, initial encounter
+S86.019D	Strain of unspecified Achilles tendon, subsequent encounter
+S86.019S	Strain of unspecified Achilles tendon, sequela
+S86.111A	Strain of other muscle(s) and tendon(s) of posterior muscle group at lower leg level, right leg, initial encounter (gastrocnemius, soleus)
+	S86.111D	Strain of other muscle(s) and tendon(s) of posterior muscle group at lower leg level, right leg, subsequent encounter (gastrocnemius, soleus)
+S86.111S	Strain of other muscle(s) and tendon(s) of posterior muscle group at lower leg level, right leg, sequela (gastrocnemius, soleus)
+S86.112A	Strain of other muscle(s) and tendon(s) of posterior muscle group at lower leg level, left leg, initial encounter (gastrocnemius, soleus)
+S86.112D	Strain of other muscle(s) and tendon(s) of posterior muscle group at lower leg level, left leg, subsequent encounter (gastrocnemius, soleus)
+S86.112S	Strain of other muscle(s) and tendon(s) of posterior muscle group at lower leg level, left leg, sequela (gastrocnemius, soleus)
+S86.119A	Strain of other muscle(s) and tendon(s) of posterior muscle group at lower leg level, unspecified leg, initial encounter
+S86.119D	Strain of other muscle(s) and tendon(s) of posterior muscle group at lower leg level, unspecified leg, subsequent encounter
+S86.119S	Strain of other muscle(s) and tendon(s) of posterior muscle group at lower leg level, unspecified leg, sequela
+S86.211A	Strain of muscle(s) and tendon(s) of anterior muscle group at lower leg level, right leg, initial encounter
+S86.211D	Strain of muscle(s) and tendon(s) of anterior muscle group at lower leg level, right leg, subsequemt encounter	
+S86.211S	Strain of muscle(s) and tendon(s) of anterior muscle group at lower leg level, right leg, sequela
+S86.212A	Strain of muscle(s) and tendon(s) of anterior muscle group at lower leg level, left leg, initial encounter
+S86.212D	Strain of muscle(s) and tendon(s) of anterior muscle group at lower leg level, left leg, subsequemt encounter
+S86.212S	Strain of muscle(s) and tendon(s) of anterior muscle group at lower leg level, left leg, sequela
+	S86.219A	Strain of muscle(s) and tendon(s) of anterior muscle group at lower leg level, unspecified leg, initial encounter
+S86.219D	Strain of muscle(s) and tendon(s) of anterior muscle group at lower leg level, unspecified leg, subsequemt encounter
+S86.219S	Strain of muscle(s) and tendon(s) of anterior muscle group at lower leg level, unspecified leg, sequela
+S86.311A	Strain of muscle(s) and tendon(s) of peroneal muscle group at lower leg level, right leg, intitial encounter
+S86.311D	Strain of muscle(s) and tendon(s) of peroneal muscle group at lower leg level, right leg, subsequent encounter	
+	S86.311S	Strain of muscle(s) and tendon(s) of peroneal muscle group at lower leg level, right leg, sequela
+S86.312A	Strain of muscle(s) and tendon(s) of peroneal muscle group at lower leg level, left leg, intitial encounter	
+S86.312D	Strain of muscle(s) and tendon(s) of peroneal muscle group at lower leg level, left leg, subsequent encounter
+S86.312S	Strain of muscle(s) and tendon(s) of peroneal muscle group at lower leg level, left leg, sequela
+S86.319A	Strain of muscle(s) and tendon(s) of peroneal muscle group at lower leg level, unspecified leg, intitial encounter
+S86.319D	Strain of muscle(s) and tendon(s) of peroneal muscle group at lower leg level, unspecified leg, subsequent encounter
+S86.319S	Strain of muscle(s) and tendon(s) of peroneal muscle group at lower leg level, unspecified leg, sequela
+S86.811A	Strain of other muscle(s) and tendon(s) at lower leg level, right leg, initial encounter
+S86.811D	Strain of other muscle(s) and tendon(s) at lower leg level, right leg, subsequent encounter
+	S86.811D	Strain of other muscle(s) and tendon(s) at lower leg level, right leg, sequela
+S86.812A	Strain of other muscle(s) and tendon(s) at lower leg level, left leg, initial encounter
+S86.812D	Strain of other muscle(s) and tendon(s) at lower leg level, left leg, subsequent encounter
+S86.812D	Strain of other muscle(s) and tendon(s) at lower leg level, left leg, sequela
+S86.819A	Strain of other muscle(s) and tendon(s) at lower leg level, unspecified leg, initial encounter
+	S86.819D	Strain of other muscle(s) and tendon(s) at lower leg level, unspecified leg, subsequent encounter
+S86.819S	Strain of other muscle(s) and tendon(s) at lower leg level, unspecified leg, sequela
+S86.911A	Strain of unspecified muscle(s) and tendon(s) at lower leg level, right leg, initial encounter
+S86.911D	Strain of unspecifiedmuscle(s) and tendon(s) at lower leg level, right leg, subsequent encounter
+S86.911S	Strain of unspecified muscle(s) and tendon(s) at lower leg level, right leg, sequela
+	S86.912A	Strain of unspecified muscle(s) and tendon(s) at lower leg level, left leg, initial encounter
+S86.912D	Strain of unspecifiedmuscle(s) and tendon(s) at lower leg level, left leg, subsequent encounter
+S86.912S	Strain of unspecified muscle(s) and tendon(s) at lower leg level, left leg, sequela
+	S86.919A	Strain of unspecified muscle(s) and tendon(s) at lower leg level, unspecified leg, initial encounter
+S86.919D	Strain of unspecifiedmuscle(s) and tendon(s) at lower leg level, unspecified leg, subsequent encounter
+S86.919S	Strain of unspecified muscle(s) and tendon(s) at lower leg level, unspecified leg, sequela
+S93.01XA	Subluxation of right ankle joint, intial encounter
+S93.02XA	Subluxation of left ankle joint, intial encounter
+S93.401A	Sprain of unspecified ligament of right ankle, initial encounter
+S93.401D	Sprain of unspecified ligament of right ankle, subsequent encounter
+S93.401S	Sprain of unspecified ligament of right ankle, sequela
+S93.402A	Sprain of unspecified ligament of left ankle, initial encounter
+S93.402D	Sprain of unspecified ligament of left ankle, subsequent encounter
+S93.402S	Sprain of unspecified ligament of left ankle, sequela
+S93.409A	Sprain of unspecified ligament of unspecified ankle, initial encounter
+S93.409D	Sprain of unspecified ligament of unspecified ankle, subsequent encounter
+S93.409S	Sprain of unspecified ligament of unspecified ankle, sequela
+S93.411A	Sprain of calcaneofibular ligament of right ankle, initial encounter
+S93.411D	Sprain of calcaneofibular ligament of right ankle, subsequent encounter
+S93.411S	Sprain of calcaneofibular ligament of right ankle, sequela
+S93.412A	Sprain of calcaneofibular ligament of left ankle, initial encounter
+S93.412D	Sprain of calcaneofibular ligament of left ankle, subsequent encounter
+S93.412S	Sprain of calcaneofibular ligament of left ankle, sequela
+S93.419A	Sprain of calcaneofibular ligament of unspecified ankle, initial encounter
+S93.419D	Sprain of calcaneofibular ligament of unspecified ankle, subsequent encounter
+S93.419S	Sprain of calcaneofibular ligament of unspecified ankle, sequela
+S93.421A	Sprain of deltoid ligament of right ankle, initial encounter
+S93.421D	Sprain of deltoid ligament of right ankle, subsequent encounter
+S93.421S	Sprain of deltoid ligament of right ankle, sequela
+S93.422A	Sprain of deltoid ligament of left ankle, initial encounter
+S93.422D	Sprain of deltoid ligament of left ankle, subsequent encounter
+S93.422S	Sprain of deltoid ligament of left ankle, sequela
+S93.429A	Sprain of deltoid ligament of unspecified ankle, initial encounter
+S93.429D	Sprain of deltoid ligament of unspecified ankle, subsequent encounter
+S93.429S	Sprain of deltoid ligament of unspecified ankle, sequela
+S93.431A	Sprain of tiboiofibular ligament of right ankle, initial encounter
+S93.431D	Sprain of tibiofibular ligament of right ankle, subsequent encounter
+S93.431S	Sprain of tibiofibular ligament of right ankle, sequela
+S93.432A	Sprain of tiboiofibular ligament of left ankle, initial encounter
+S93.432D	Sprain of tibiofibular ligament of left ankle, subsequent encounter
+S93.432S	Sprain of tibiofibular ligament of left ankle, sequela
+S93.439A	Sprain of tiboiofibular ligament of unspecified ankle, initial encounter
+S93.439D	Sprain of tibiofibular ligament of unspecified ankle, subsequent encounter
+S93.439S	Sprain of tibiofibular ligament of unspecified ankle, sequela
+S93.491A	Sprain of other ligament of right ankle, initial encounter
+S93.491D	Sprain of other ligament of right ankle, subsequent encounter
+S93.491S	Sprain of other ligament of right ankle, sequela
+S93.492A	Sprain of other ligament of left ankle, initial encounter
+S93.492D	Sprain of other ligament of left ankle, subsequent encounter
+S93.492S	Sprain of other ligament of left ankle, sequela
+S93.499A	Sprain of other ligament of unspecified ankle, initial encounter
+S93.499D	Sprain of other ligament of unspecified ankle, subsequent encounter
+S93.499S	Sprain of other ligament of unspecified ankle, sequela
+S96.011A	Strain of muscle and tendon of long flexor muscle of toe at ankle and foot level, right foot, initial encounter
+S96.012A	Strain of muscle and tendon of long flexor muscle of toe at ankle and foot level, left foot, initial encounter
+S96.111A	Strain of muscle and tendon of long extensor muscle of toe at ankle and foot level, right foot, initial encounter
+S96.112A	Strain of muscle and tendon of long extensor muscle of toe at ankle and foot level, left foot, initial encounter	
+S96.211A	Strain of intrinsic muscle and tendon at ankle and foot level, right foot, initial encounter
+	S96.212A	Strain of intrinsic muscle and tendon at ankle and foot level, left foot, initial encounter
+S96.811A	Strain of other specified muscles and tendons at ankle and foot level, right foot, initial encounter
+S96.812A	Strain of other specified muscles and tendons at ankle and foot level, left foot, initial encounter
+S96.911A	Strain of unspecified muscle and tendon at ankle and foot level, right foot, initial encounter
+S96.911A	Strain of unspecified muscle and tendon at ankle and foot level, right foot, initial encounter
+S96.911D	Strain of unspecified muscle and tendon at ankle and foot level, right foot, subsequent encounter
+S96.911S	Strain of unspecified muscle and tendon at ankle and foot level, right foot, sequela
+S96.912A	Strain of unspecified muscle and tendon at ankle and foot level, left foot, initial encounter
+96.912A	Strain of unspecified muscle and tendon at ankle and foot level, left foot, initial encounter
+S96.912D	Strain of unspecified muscle and tendon at ankle and foot level, left foot, subsequent encounter
+S96.912S	Strain of unspecified muscle and tendon at ankle and foot level, left foot, sequela
+S96.919A	Strain of unspecified muscle and tendon at ankle and foot level, unspecified foot, initial encounter
+S96.919D	Strain of unspecified muscle and tendon at ankle and foot level, unspecified foot, subsequent encounter
+S96.919S	Strain of unspecified muscle and tendon at ankle and foot level, unspecified foot, sequela

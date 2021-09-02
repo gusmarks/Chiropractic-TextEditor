@@ -1,0 +1,74 @@
+----------------head-neck-sfot tissue--------------
+70140	Facial bones, less than 3 views
+70160	Nasal bones, min 3 views
+70328	Temporomandibular joint, unilateral
+70330	Temporomandibular joint, bilateral
+70360	Neck, soft tissue
+----------------chest-------------------------
+71010	Chest, single view, frontal
+71020	Chest, 2 views, frontal and lateral
+71100	Ribs, unilateral, 2 views
+71110	Ribs, bilateral, 3 views
+-------------Spine--------------
+Spine, single view, specify level. Use 72081 if view includes entire thoracic spine.
+72040	Cervical spine, 2 or 3 views
+72050	Cervical spine, minimum 4 or 5 views
+72052	Cervical spine, 6 or more views
+72070	Thoracic spine, 2 views
+72072	Thoracic spine 3 views
+72074	Thoracic spine, 4 views
+72080	Thoracolumbar, 2 views
+72100Lumbosacral spine, 2 or 3 views
+72110	Lumbosacral spine, minimum 4 views
+72114	Lumbosacral spine, minimum 6 views
+72120	Lumbosacral spine, bending only 2 or 3 views
+----------------Pelvis----------------
+Pelvis, 1 or 2 views
+72190	Pelvis complete, minimum 3 views
+72200	Sacroiliac joints, less than 3 views
+72202	Sacroiliac joints, 3 or more views
+72220	Sacrum and coccyx, minimum 2 views
+--------------------Upper Extremities
+73000	Clavicle, Complete
+73010	Scapula, Complete
+73020	Shoulder, 1 view
+73030	Shoulder, complete, minimum 2 views
+73050	Acromioclavicular joints bilateral with or without weighted distraction
+73060	Humerus, minimum 2 views
+73070	Elbow, 2 views
+73080	Elbow, complete, minimum 3 views
+73090	Forearm, 2 views
+73092	Upper extremities, infant, minimum 2 views
+73140	Fingers, minimum 2 views
+73100	Wrist, 2 views
+73110	Wrist, complete, minimum 3 views
+73120	Hand, 2 views
+73130	Hand, minimum 3 views
+73560	Knee, 1 or 2 views
+73562	Knee, 3 views
+73564	Knee, complete 4 or more views
+73565	Knees, both standing anteroposterior
+73590	Tibia and Fibula, 2 views
+73600	Ankle, 2 views
+73610	Ankle, complete, minimum 3 views
+73620	Foot, 2 views
+73630	Foot, complete, minimum 3 views
+73650	Calcaneus, minimum 2 views
+73660	Toes, minimum 2 views
+-----------------------Consultation-------------------
+76140	Consultation on x-ray made elsewhere, written report (2nd opinion)
+-----------------------Spine---------------------------
+72081	Spine entire thoracic and lumbar including skull 1 view
+72082	Spine entire thoracic and lumbar including skull 2-3 views
+72083	Spine entire thoracic and lumbar including skull 4-5 views
+72084	Spine entire thoracic and lumbar including skull 6 views
+-------------------Lower Extremities----------------
+73501	Radiologic exam hip, unilateral with pelvis when performed 1 view
+73502	Radiologic exam hip, unilateral with pelvis when performed 2-3 views
+73503	Radiologic exam hip, unilateral with pelvis when performed 4 views
+73521	Radiologic exam, hips bilateral with pelvis when performed 2 views
+73522	Radiologic exam, hips bilateral with pelvis when performed 3-4 views
+73523	Radiologic exam, hips bilateral with pelvis when performed minimum 5 views
+73551	Radiologic examination, femur, 1 view
+73552	Radiologic examination, femur, 2 views
+73525	Radiologic examination, hip, arthography, supervision and interpretation

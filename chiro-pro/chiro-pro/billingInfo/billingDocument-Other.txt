@@ -1,4 +1,4 @@
 Other 
 --------------------------------------------------------------------------------------------------------------------------------
 Patient			Date of Service		CPT Code [Modifier]		Dx Codes			Initial Date of Tx		Days
-feff michals		Tue Aug 3 2021		99050				G43.009,	mon jun 9 2021			55
+feff michals		Tue Aug 3 2021		99050					mon jun 9 2021			55

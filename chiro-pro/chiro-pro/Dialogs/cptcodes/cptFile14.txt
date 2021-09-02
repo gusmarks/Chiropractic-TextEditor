@@ -1,0 +1,12 @@
+99050	Services provided in the office at times other than regularly scheduled office hours or days when the office is normally closed (e.g. Holidays, Saturday, and Sunday) in addition to the basic service
+Service(s) provided in the office during the regularly scheduled evening, weekend, or holiday office hours, in addition to the basic service
+99053	Service(s) provided between 10:00 PM and 8:00 AM at a 24 hour facility, in addition to basic services.
+99056	Service(s) typically provided in the office, provided out of the office at the request of the patient, in addition to the basic service. (Note place of service is "12" to indicate patient home)
+99058	Service(s) provided on an emergency basis in the office, which disrupts, other scheduled office services, in addition to the basic service
+99060	Service(s) provided on an emergency basis, out of the office, which disrupts other scheduled office services, in addition to the basic service
+99070	Supplies and materials provided by the physician over and above those usually included with the office visit or other services rendered specify).For DME do not use this code but the corresponding HCPCS code
+99071	Educational supplies, such as books, tapes, and pamphlets, provided by the physician for the patient's education at cost to physician
+99075	Medical Testimony
+99078	Physician, or other qualified health care professional qualified by by education, training licensure/regulation (when applicable) educational services rendered to patients in a group setting (e.g. prenatal, obesity, or diabetic instructions)
+99080	Special reports such as insurance forms, more than the information conveyed in the usual medical communications or standard reporting form.
+99082	Unusual travel (e.g. transportation and escort of patient)

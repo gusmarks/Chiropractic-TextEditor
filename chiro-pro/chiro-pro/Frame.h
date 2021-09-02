@@ -13,10 +13,11 @@
 //custome includes
 #include "DialogHelper.h"
 #include "DialogCreator.h"
+#include "DialogEditor.h"
 #include "ButtonPanel.h"
 #include "FunctionHelper.h"
 #include "ButtonSet.h"
-#include "buttonPanel.h"
+
 #include "NavLink.h"
 #include "LinkPanel.h"
 #include "ControlPanel.h"
@@ -47,6 +48,8 @@ enum
 	MENU_SaveButtons,
 	MENU_chanegDialog,
 	MENU_BillingDoc,
+	MENU_EditCodes,
+	MENU_EditGenDialog,
 	LINK_NAVIGATE,
 	ID_FORMAT_BOLD,
 	ID_FORMAT_ITALIC,
@@ -98,10 +101,11 @@ private:
 	//dialogcreation helper, opens and controls the dialog creator allowing the user to make all buttons and popups 
 	//easy to customize and make.
 	DialogCreator* DialogCreationHelper;
+	DialogEditor* DialogEditingHelper;
 	// check to see if the document has been signed or not
 	bool Signed = false;
 	//check if somthing is bold?
-	bool isBold=false;
+	bool isBold=false,isItalic=false,isunderline=false;
 	// input and output streams to read txt files that store information about the user set
 	std::ifstream setInfoIn;
 	std::ofstream setInfoOut;
@@ -118,7 +122,7 @@ public:
 /// <param name="WXUNUSED"></param>
 	void openFile(wxCommandEvent& WXUNUSED(event))
 	{
-		if (popUpHandeler->confirmIntent("are you sure you want to open a new file and close this one?")) {
+		if (fileName == ""||popUpHandeler->confirmIntent("are you sure you want to open a new file and close this one?")) {
 			wxFileDialog
 				openFileDialog(this, _("Open Xml file"), "", "",
 					"Xml files (*.xml)|*.xml", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
@@ -128,7 +132,9 @@ public:
 			// proceed loading the file chosen by the user;
 			// this can be done with e.g. wxWidgets input streams:
 			wxFileInputStream input_stream(openFileDialog.GetPath());
-
+			wxString filename = openFileDialog.GetFilename();
+			filename.erase(filename.Length()-4,4);
+			fileName = filename;
 			if (!input_stream.IsOk())
 			{
 				wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
@@ -143,6 +149,7 @@ public:
 			mainEditBox->LoadFile(file);
 
 		}
+		
 	}
 	/// <summary>
 /// if filename variable is empty prompt the user to enter a name then add .doc to the end
@@ -239,7 +246,9 @@ public:
 	//the linknavigation lets the user navigate panels of buttons
 	void linkNavigation(wxHyperlinkEvent& evt);
 	//openDialog opens the dialogcreator, consider renaming
-	void openDialog();
+	void openDialogCreator();
+	void openCPT_DxEditor(wxCommandEvent& WXUNUSED(event));
+	void openGenDialogEditor(wxCommandEvent& WXUNUSED(event));
 	//read dialog file, reads in a file and passes the information to the dialog writer
 	void readDialogFile(wxCommandEvent& event);
 	//dialog writer writes the lines of a file to the text box, it also includes dialogs
@@ -334,11 +343,17 @@ public:
 
 		}
 	}
+	bool isFileOpen() {
+		return mainEditBox->IsEditable();
+	}
+
 	/// <summary>
 	/// distroy panels will systimaticly delete all the the users panels this is used to swap user sets
 	/// </summary>
 	/// <param name="usr"></param>
 	void destroyPanels(wxString usr);
+
+
 	//onbold will make the selected text and future text bold until toggled off
 	void onBold(wxCommandEvent& WXUNUSED(event))
 	{
@@ -351,16 +366,32 @@ public:
 			isBold = false;
 		}
 			
-		//mainEditBox->ApplyBoldToSelection();
+		mainEditBox->ApplyBoldToSelection();
 	}
 	//onItalic will make the selected text and future text italic until toggled off
 	void onItalic(wxCommandEvent& WXUNUSED(event))
 	{
+		if (isItalic == false) {
+			mainEditBox->BeginItalic();
+			isItalic = true;
+		}
+		else if (isItalic == true) {
+			mainEditBox->EndItalic();
+			isBold = isItalic;
+		}
 		mainEditBox->ApplyItalicToSelection();
 	}
 	//onUnderline will male the selected text and future text underlined until toggled off
 	void onUnderline(wxCommandEvent& WXUNUSED(event))
 	{
+		if (isunderline == false) {
+			mainEditBox->BeginUnderline();
+			isunderline = true;
+		}
+		else if (isunderline == true) {
+			mainEditBox->EndUnderline();
+			isunderline = false;
+		}
 		mainEditBox->ApplyUnderlineToSelection();
 	}
 	//onStrikethrough will male the selected text and future text striken through until toggled off
@@ -428,6 +459,7 @@ public:
 	{
 		if (popUpHandeler->confirmIntent("are you sure you want to open a new file?")) {
 			wxString name=wxGetTextFromUser("Enter Patient name", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+			wxString insurance= popUpHandeler->SingleChoiceDialog("DialogInformation/Insurance.txt","Select A Provider.");
 			if (name == "") {
 				return;
 			}
@@ -444,6 +476,11 @@ public:
 			mainEditBox->WriteText("Date of First Visit: ");
 			mainEditBox->EndBold();
 			mainEditBox->WriteText("<"+functionHelper->getDateToSignNoTime()+">");
+			mainEditBox->WriteText("   ");
+			mainEditBox->BeginBold();
+			mainEditBox->WriteText("Insurance: ");
+			mainEditBox->EndBold();
+			mainEditBox->WriteText("<"+insurance+">");
 			mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
 			mainEditBox->SetEditable(true);
 		}
@@ -453,7 +490,7 @@ public:
 		MainFrame::setFilename("");
 		mainEditBox->Disable();
 		mainEditBox->SetBackgroundColour(wxColour(211, 211, 211));
-		mainEditBox->SetEditable(true);
+		mainEditBox->SetEditable(false);
 	}
 	//getFilename is a getter method for the filename variable used for saving and loading textfiles
 	wxString getFilename() {
@@ -480,6 +517,9 @@ public:
 		this->getbuttonToEdit()->SetName(Text);
 	}
 	void removebuttonToEdit() {
+		wxString text = this->getbuttonToEdit()->GetName();
+		
+		currentButtonSet->getCurrentPanel()->removeButtonWithTextOf(text);
 		this->getbuttonToEdit()->Destroy();
 	}
 	//checks if the file has already been signed
