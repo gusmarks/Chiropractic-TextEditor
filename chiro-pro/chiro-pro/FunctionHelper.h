@@ -2,12 +2,11 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "dialogHelper.h"
 class FuncHelper {
-
+private:
+    DialogHelper* popupHandeler;
 public:
-	FuncHelper() {
-
-	}
     bool isPopup(const std::string& str) {
         return (str.find("Dialog-ID")!= std::string::npos);
     }
@@ -19,18 +18,21 @@ public:
     }
 
     long getLineNo(std::string& str, std::string delim) {
+        try {
+            std::vector<std::string> stringsNoBlankLines;
+            std::string::size_type pos = 0;
+            std::string::size_type prev = 0;
 
-        std::vector<std::string> stringsNoBlankLines;
-
-        std::string::size_type pos = 0;
-        std::string::size_type prev = 0;
-
-        while ((pos = str.find(delim, prev)) != std::string::npos) {
+            while ((pos = str.find(delim, prev)) != std::string::npos) {
+                stringsNoBlankLines.push_back(str.substr(prev));
+                prev = pos + 1;
+            }
             stringsNoBlankLines.push_back(str.substr(prev));
-            prev = pos + 1;
+            return (long)stringsNoBlankLines.size();
         }
-        stringsNoBlankLines.push_back(str.substr(prev));
-        return (long)stringsNoBlankLines.size();
+        catch (...) {
+            popupHandeler->errorMessage("an error occured in function helper");
+        }
     }
     /// <summary>
 /// this function returns the current date and time 
@@ -53,18 +55,23 @@ public:
     }
     bool DoseUserExist(wxString usr) {
         //confirm the existance of button set files with an ifstream, by opening it and chacking if it fails
-        std::ifstream setStream;
-        std::string user = usr.ToStdString();
-        std::string fileName = "panelLayout/panelLayout" + user + ".txt";
+        try {
+            std::ifstream setStream;
+            std::string user = usr.ToStdString();
+            std::string fileName = "panelLayout/panelLayout" + user + ".txt";
 
-        setStream.open(fileName, std::fstream::in);
-        if (setStream.fail()) {
-            setStream.close();
-            return false;
+            setStream.open(fileName, std::fstream::in);
+            if (setStream.fail()) {
+                setStream.close();
+                return false;
+            }
+            else {
+                setStream.close();
+                return true;
+            }
         }
-        else {
-            setStream.close();
-            return true;
+        catch (...) {
+            popupHandeler->errorMessage("an error occured in function helper");
         }
 
     }

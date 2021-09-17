@@ -1,3 +1,5 @@
 New Paragraph
-
+-----------------------
 allergies 	Dialogs/DialogFile1.txt
+cal 	Dialogs/DialogFile2.txt
+ding 	Dialogs/DialogFile3.txt

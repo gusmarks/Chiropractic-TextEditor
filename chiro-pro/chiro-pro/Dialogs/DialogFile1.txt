@@ -1,1 +1,2 @@
-i have an allergy to~<H>Dialog-ID-Allergies<H>~
+allergies~<H>Dialog-ID-Allergies<H>~
+mb

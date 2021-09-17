@@ -14,14 +14,16 @@ private:
 	std::string name;
 
 	DialogHelper* popupHandeler;
-	wxBoxSizer* vSizer = new wxBoxSizer(wxVERTICAL);
-	wxBoxSizer* hSizer = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* vSizer;
+	wxBoxSizer* hSizer;
 public:
 	DialogEditor(wxWindow* parent, wxWindowID id,std::string name)
 		:wxDialog(parent, id, "Dx/CPT editor", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "") {
 
 		save = new wxButton(this, wxID_ANY, "save", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "");
 		MainDisplayBox = new wxRichTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxSize(800, 400), wxRE_MULTILINE, wxDefaultValidator);
+		vSizer = new wxBoxSizer(wxVERTICAL);
+		hSizer = new wxBoxSizer(wxHORIZONTAL);
 		MainDisplayBox->Show();
 		save->Show();
 		hSizer->Add(save);
@@ -34,27 +36,34 @@ public:
 		Layout();
 
 		save->Bind(wxEVT_BUTTON, &DialogEditor::SaveDialogText, this);
-		//openFile();
+		
 
 
 	}
 	void openGenFile() {
 	std::ifstream openFileOfCodes;
 	std::string content;
-	openFileOfCodes.open(name, std::ofstream::app);
-	if (openFileOfCodes.is_open()) {
+	try {
+		openFileOfCodes.open(name, std::ofstream::app);
+		if (openFileOfCodes.is_open()) {
 
-		std::string temp;
-		while (std::getline(openFileOfCodes, temp)) {
+			std::string temp;
+			while (std::getline(openFileOfCodes, temp)) {
 
-			content += temp + "\n";
+				content += temp + "\n";
+			}
 		}
+		else {
+			popupHandeler->errorMessage("file failed to open inturnaly");
+		}
+		MainDisplayBox->WriteText(content);
 	}
-	MainDisplayBox->WriteText(content);
-
+	catch (...) {
+		popupHandeler->errorMessage("an error occured in dialog editor");
+	}
 }
 
-	void openFile() {
+	void openCodeFile() {
 		if (name == "Ankle") {
 			name = "Dialogs/cptcodes/cptcodes-ankle.txt";
 		}
@@ -115,38 +124,47 @@ public:
 		if (name == "Mods") {
 			name = "Dialogs/cptcodes/cptcodes-mods.txt";
 		}
+		try {
+			std::ifstream openFileOfCodes;
+			std::string content;
+			openFileOfCodes.open(name, std::ofstream::app);
+			if (openFileOfCodes.is_open()) {
 
-		std::ifstream openFileOfCodes;
-		std::string content;
-		openFileOfCodes.open(name, std::ofstream::app);
-		if (openFileOfCodes.is_open()) {
-			
-			std::string temp;
-			while (std::getline(openFileOfCodes, temp)) {
+				std::string temp;
+				while (std::getline(openFileOfCodes, temp)) {
 
-				content += temp+"\n";
+					content += temp + "\n";
+				}
 			}
+			else {
+				popupHandeler->errorMessage("file failed to open inturnaly");
+			}
+			MainDisplayBox->WriteText(content);
 		}
-		MainDisplayBox->WriteText(content);
-
+		catch (...) {
+			popupHandeler->errorMessage("an error occured in dialog editor");
+		}
 	}
 	void SaveDialogText(wxCommandEvent& event) {
-		
-			
-
-		if (MainDisplayBox->SaveFile(name, wxRICHTEXT_TYPE_ANY)) {
-			wxMessageDialog dialog(NULL, wxT("The file saved successfuly"), wxT("save file"), wxOK);
-			if (dialog.ShowModal() == wxID_OK) {
-				MainDisplayBox->Clear();
-				//DialogCount++;
-				this->Close();
+		try {
+			if (MainDisplayBox->SaveFile(name, wxRICHTEXT_TYPE_ANY)) {
+				wxMessageDialog dialog(NULL, wxT("The file saved successfuly"), wxT("save file"), wxOK);
+				if (dialog.ShowModal() == wxID_OK) {
+					MainDisplayBox->Clear();
+					//DialogCount++;
+					this->Close();
+				}
+			}
+			else {
+				wxMessageDialog dialog(NULL, wxT("The file Failed to save"), wxT("save file"), wxOK);
+				if (dialog.ShowModal() == wxID_OK) {
+				}
 			}
 		}
-		else {
-			wxMessageDialog dialog(NULL, wxT("The file Failed to save"), wxT("save file"), wxOK);
-			if (dialog.ShowModal() == wxID_OK) {
-			}
+		catch (...) {
+			popupHandeler->errorMessage("an error occured in dialog editor");
 		}
 	}
+	
 
 };

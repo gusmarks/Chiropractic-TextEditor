@@ -8,7 +8,6 @@ class NavLink : public wxHyperlinkCtrl {
 private:
 	ButtonPanel* Panel;
 public:
-	NavLink(){}
 	/// <summary>
 	/// constructor for a hyperlink used to navigate panels, each one stores a referance to a panel and switched to it when clicked
 	/// </summary>

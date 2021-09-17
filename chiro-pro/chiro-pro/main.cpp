@@ -159,19 +159,12 @@ MainFrame::MainFrame(const wxString& title,
     formatMenu->AppendCheckItem(ID_FORMAT_ALIGN_RIGHT, _("&Right Align"));
     formatMenu->AppendCheckItem(ID_FORMAT_ALIGN_CENTRE, _("&Centre"));
     formatMenu->AppendSeparator();
-    //formatMenu->AppendCheckItem(ID_FORMAT_STRIKETHROUGH, _("Stri&kethrough"));
-    //formatMenu->AppendCheckItem(ID_FORMAT_SUPERSCRIPT, _("Superscrip&t"));
-    //formatMenu->AppendCheckItem(ID_FORMAT_SUBSCRIPT, _("Subscrip&t"));
-
-    //billing menu has one item, it allows for compiling patient information into one clear document.
-
-
+  
     //attach the menu items to the frame
     mainMenu->Append(FileMenu, wxT("File"));
     mainMenu->Append(formatMenu, wxT("format"));
     SetMenuBar(mainMenu);
 
-   
     toolBar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,wxNO_BORDER);
    
     toolBar->AddCheckTool(ID_FORMAT_BOLD, wxEmptyString, wxBitmap(bold_xpm), wxNullBitmap, _("Bold"));
@@ -304,79 +297,86 @@ void MainFrame::addButton(wxCommandEvent& event)
        popUpHandeler->errorMessage("exceding 30 buttons, cannot place");
        return;
    }
-        //promp user for name and text of text button
-   if (selection == "text output.") {
-       premadeSelection = popUpHandeler->selectPremadeDialog();
-       if (premadeSelection.selectionText == "New Paragraph") {
-           openDialogCreator();
-           buttonName = wxGetTextFromUser("Enter name for Button ", "Must have name(errors may occur if unnamed)", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
-           buttonText = "Dialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt";
+   try {
+       //promp user for name and text of text button
+       if (selection == "text output.") {
+           premadeSelection = popUpHandeler->selectPremadeDialog();
+           if (premadeSelection.selectionText == "New Paragraph") {
+               openDialogCreator();
+               buttonName = wxGetTextFromUser("Enter name for Button & Dialog", "Must have name(errors may occur if unnamed)", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+               buttonText = "Dialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt";
 
-           std::fstream fileReader("Dialogs/0dialogList.txt", fstream::app);
-           fileReader << "\n" + buttonName.ToStdString();
-           fileReader << " \tDialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt";
-           fileReader.close();
-           fileReader.open("Dialogs/0dialogNames.txt");
-           fileReader <<buttonName.ToStdString()+"\n";
-           fileReader.close();
-           fileReader.open("Dialogs/0dialogCount.txt");
-           fileReader << std::to_string(DialogCreationHelper->getDialogCount());
-           fileReader.close();
+               std::fstream fileReader("Dialogs/0dialogList.txt", fstream::app);
+               if (fileReader.is_open()) {
+                   fileReader << "\n" + buttonName.ToStdString();
+                   fileReader << " \tDialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt";
+               }
+               fileReader.close();
+               fileReader.open("Dialogs/0dialogNames.txt");
+               if (fileReader.is_open())
+                   fileReader << buttonName.ToStdString() + "\n";
+               fileReader.close();
+               fileReader.open("Dialogs/0dialogCount.txt");
+               if (fileReader.is_open())
+                   fileReader << std::to_string(DialogCreationHelper->getDialogCount());
+               fileReader.close();
+           }
+           else if (premadeSelection.selectionText == "Cancel") {
+               buttonName = "";
+           }
+           else if (premadeSelection.selectionText != "") {
+               buttonName = premadeSelection.selectionText;
+               buttonText = ("Dialogs/DialogFile" + std::to_string(premadeSelection.selectionIndex) + ".txt");
+
+           }
+
+           //adds the button
+           if (buttonName != "") {
+               currentButtonSet->getCurrentPanel()->addQLink(buttonName, buttonText);
+               int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
+               currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex + 1);
+
+               currentButtonSet->getCurrentPanel()->getQLinkList().back()->
+                   Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
+
+               currentButtonSet->getCurrentPanel()->getQLinkList().back()->
+                   Bind(wxEVT_BUTTON, &MainFrame::readDialogFile, this);
+           }
        }
-       else if (premadeSelection.selectionText == "Cancel") {
-           buttonName = "";
-       }
-       else if (premadeSelection.selectionText!="") {
-           buttonName = premadeSelection.selectionText;
-           buttonText = ("Dialogs/DialogFile" + std::to_string(premadeSelection.selectionIndex) + ".txt");
+       else if (selection == "new page.") {
+           if (currentButtonSet->getCurrentPanel()->getLevel() >= 2) {
+               popUpHandeler->errorMessage("max panel depth reached");
+               return;
+           }
+           wxString ButtonName =
+               wxGetTextFromUser("Enter text for button name", "Must have name(errors may occur if unnamed)", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
+           if (ButtonName != "" && currentButtonSet->getCurrentPanel()->getLevel() < 2) {
+               //gets the panel index and adds the new button, also the new panel that the button will link to.
+               int panelCount = currentButtonSet->getCurrentPanel()->getPanelCount();
+               std::string panelCountStr = std::to_string(panelCount);
+               currentButtonSet->getCurrentPanel()->addQLink(ButtonName, panelCountStr);
 
-       }
-       
-       //adds the button
-       if (buttonName != "") {
-           currentButtonSet->getCurrentPanel()->addQLink(buttonName, buttonText);
-           int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
-           currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex + 1);
+               currentButtonSet->getCurrentPanel()->addNewPanel(this, ButtonName, currentButtonSet->getPath());
 
-           currentButtonSet->getCurrentPanel()->getQLinkList().back()->
-               Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
+               //bind the editing function, and update the button index for the panel
+               int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
+               currentButtonSet->getCurrentPanel()->getQLinkList().at(QIndex)->
+                   Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
 
-           currentButtonSet->getCurrentPanel()->getQLinkList().back()->
-               Bind(wxEVT_BUTTON, &MainFrame::readDialogFile, this);
+               currentButtonSet->getCurrentPanel()->getQLinkList().at(QIndex)->
+                   Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
+
+
+               currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex + 1);
+
+           }
+           else if (ButtonName == "") {
+               popUpHandeler->errorMessage("no name");
+           }
+
        }
    }
-   else if (selection == "new page.") {
-       if (currentButtonSet->getCurrentPanel()->getLevel() >= 2) {
-           popUpHandeler->errorMessage("max panel depth reached");
-           return;
-       }
-       wxString ButtonName =
-           wxGetTextFromUser("Enter text for button name", "Must have name(errors may occur if unnamed)", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-       if (ButtonName != "" && currentButtonSet->getCurrentPanel()->getLevel() < 2) {
-           //gets the panel index and adds the new button, also the new panel that the button will link to.
-           int panelCount = currentButtonSet->getCurrentPanel()->getPanelCount();
-           std::string panelCountStr = std::to_string(panelCount);
-           currentButtonSet->getCurrentPanel()->addQLink(ButtonName, panelCountStr);
-           
-           currentButtonSet->getCurrentPanel()->addNewPanel(this, ButtonName, currentButtonSet->getPath());
-
-           //bind the editing function, and update the button index for the panel
-           int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
-           currentButtonSet->getCurrentPanel()->getQLinkList().at(QIndex)->
-               Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
-
-           currentButtonSet->getCurrentPanel()->getQLinkList().at(QIndex)->
-               Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
-
-
-           currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex + 1);
-           
-       }
-       else if (ButtonName == "") {
-           popUpHandeler->errorMessage("no name");
-       }
-       
-   }   
+   catch (...) { popUpHandeler->errorMessage("an error occured in main.cpp"); }
 }
 /// <summary>////////////////////////////////////////////////
 /// this function makes a button write its texr to the texteditor/
@@ -392,19 +392,19 @@ void MainFrame::addButton(wxCommandEvent& event)
 /// </summary>
 /// <param name="WXUNUSED"></param>
 void MainFrame::sign(wxCommandEvent& WXUNUSED(event)) {
+    try {
+        mainEditBox->EndAllStyles();
+        mainEditBox->EndURL();
+        mainEditBox->WriteText("\n");
+        wxBitmap signiture;
+        signiture.LoadFile("bitmaps/fakesig.png", wxBITMAP_TYPE_ANY);
 
-    mainEditBox->EndAllStyles();
-    mainEditBox->EndURL();
-    mainEditBox->WriteText("\n");
-    wxBitmap signiture;
-    signiture.LoadFile("bitmaps/fakesig.png", wxBITMAP_TYPE_ANY);
-    
-    mainEditBox->AppendText("\n Electronicly Signed by:"+currentButtonSet->getSetName() +"\n");
-    mainEditBox->WriteText(" Signiture:");
-    mainEditBox->WriteImage(signiture);
-    mainEditBox->AppendText( "\n<"+functionHelper->getDateToSignNoTime()+">");
-
-    
+        mainEditBox->AppendText("\n Electronicly Signed by:" + currentButtonSet->getSetName() + "\n");
+        mainEditBox->WriteText(" Signiture:");
+        mainEditBox->WriteImage(signiture);
+        mainEditBox->AppendText("\n<" + functionHelper->getDateToSignNoTime() + ">");
+    }
+    catch (...) { popUpHandeler->errorMessage("an error occured in main.cpp"); }
 }
 /// <summary>
 /// this function allows the user to make a right click on a button and offer them 2 choices edit lable or edit text
@@ -626,21 +626,24 @@ void MainFrame::savePanelsAndButtons(wxCommandEvent & event) {
 }
 void MainFrame::saveButtonSetInfo(std::string path) {
     //work on this one
-    setInfoOut.open(path,std::ofstream::out|std::ofstream::trunc);
-    if (setInfoOut.fail()) {
-        popUpHandeler->errorMessage("failed to save layout");
-        return;
-    }
-    if (!setInfoOut.fail()) {
-        for (size_t i = 0; i < buttonSetList.size(); i++) {
-            setInfoOut << buttonSetList.at(i)->getSetName().ToStdString();
-            setInfoOut << "\n";
-            setInfoOut << buttonSetList.at(i)->getPanelCount();
-            setInfoOut << "\n";
-            setInfoOut << buttonSetList.at(i)->getPath();
-            setInfoOut << "\n";
+    try {
+        setInfoOut.open(path, std::ofstream::out | std::ofstream::trunc);
+        if (setInfoOut.fail()) {
+            popUpHandeler->errorMessage("failed to save layout");
+            return;
+        }
+        if (!setInfoOut.fail()) {
+            for (size_t i = 0; i < buttonSetList.size(); i++) {
+                setInfoOut << buttonSetList.at(i)->getSetName().ToStdString();
+                setInfoOut << "\n";
+                setInfoOut << buttonSetList.at(i)->getPanelCount();
+                setInfoOut << "\n";
+                setInfoOut << buttonSetList.at(i)->getPath();
+                setInfoOut << "\n";
+            }
         }
     }
+    catch (...) { popUpHandeler->errorMessage("an error occured in main.cpp"); }
 }
 /// <summary>
 /// loads the information for defined button sets
@@ -654,20 +657,22 @@ void MainFrame::loadButtonSetInfo(std::string path) {
     std::string setName;
     std::string setPath;
     //int i = 0;
-    while (setInfoIn.peek() != EOF) {
-        getline(setInfoIn, setName);
-        getline(setInfoIn, setNo);
-        getline(setInfoIn, setPath);
+    if (setInfoIn.is_open()) {
+        while (setInfoIn.peek() != EOF) {
+            getline(setInfoIn, setName);
+            getline(setInfoIn, setNo);
+            getline(setInfoIn, setPath);
 
-        int SetNo = std::stoi(setNo);
-        buttonSetNames[setCount] = setName;
-        buttonSetList.push_back(new ButtonSet(this, setName, setCount, setPath, SetNo));
-        setCount++;
+            int SetNo = std::stoi(setNo);
+            buttonSetNames[setCount] = setName;
+            buttonSetList.push_back(new ButtonSet(this, setName, setCount, setPath, SetNo));
+            setCount++;
 
-    }
-    currentButtonSet = buttonSetList.at(0);
+        }
+        currentButtonSet = buttonSetList.at(0);
 
 
+    }else{ popUpHandeler->errorMessage("an error occured in main.cpp"); }
 }
 /// <summary>
 /// allows the Navlinks to swap panels to thier stores panel 
@@ -709,12 +714,13 @@ void MainFrame::bindAllButtons() {
                     if (functionHelper->isNumber(name)) {
                         button2->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
                     }
-                    else if (functionHelper->isPopup(name)) {
+                   /* else if (functionHelper->isPopup(name)) {
                         //popupButtonBind(button2->GetName().ToStdString(), tempPanelLevel2->getQLinkList().at(i));
                     }
                     else if (functionHelper->isText(name)) {
                        // button2->Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
-                    }
+                    }*/
+
                 }
                 for (size_t l = 0; l < tempPanelLevel2->getSubPanelList().size(); l++) {
                     ButtonPanel* tempPanelLevel3 = tempPanelLevel2->getSubPanelList().at(l);
@@ -725,12 +731,12 @@ void MainFrame::bindAllButtons() {
                         if (functionHelper->isNumber(name)) {
                             button3->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
                         }
-                        else if (functionHelper->isPopup(name)) {
+                      /*  else if (functionHelper->isPopup(name)) {
                             //popupButtonBind(button3->GetName().ToStdString(), tempPanelLevel3->getQLinkList().at(i));
                         }
                         else if (functionHelper->isText(name)) {
                         //    button3->Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
-                        }
+                        }*/
                     }
                 }
             }
@@ -903,9 +909,7 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
 /// <param name="WXUNUSED"></param>
 
 void MainFrame::openDialogCreator() {
-    if (DialogCreationHelper->ShowModal() == wxID_OK) {
-       
-        
+    if (DialogCreationHelper->ShowModal() == wxID_OK) {    
     }
 }
 void MainFrame::openCPT_DxEditor(wxCommandEvent& WXUNUSED(event)) {
@@ -913,7 +917,7 @@ void MainFrame::openCPT_DxEditor(wxCommandEvent& WXUNUSED(event)) {
     wxString str = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/names.txt", "select a code catagory to edit.");
     std::string name = str.ToStdString();
     DialogEditingHelper = new DialogEditor(this, wxID_ANY,name);
-    DialogEditingHelper->openFile();
+    DialogEditingHelper->openCodeFile();
     if (DialogEditingHelper->ShowModal() == wxID_OK) {
 
 
@@ -940,9 +944,11 @@ void MainFrame::readDialogFile(wxCommandEvent& event) {
         std::vector<std::string> fileLines;
         int i = 0;
         std::string line;
-        while (getline(fileReader, line, '~')) {
-            if (line != "") {
-                fileLines.push_back(line);
+        if (fileReader.is_open()) {
+            while (getline(fileReader, line, '~')) {
+                if (line != "") {
+                    fileLines.push_back(line);
+                }
             }
         }
         DialogWriter(fileLines);
@@ -1396,4 +1402,3 @@ void MainFrame::DialogWriter(std::vector<std::string> lines) {
     }
 
 }
-

@@ -122,33 +122,36 @@ public:
 /// <param name="WXUNUSED"></param>
 	void openFile(wxCommandEvent& WXUNUSED(event))
 	{
-		if (fileName == ""||popUpHandeler->confirmIntent("are you sure you want to open a new file and close this one?")) {
-			wxFileDialog
-				openFileDialog(this, _("Open Xml file"), "", "",
-					"Xml files (*.xml)|*.xml", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-			if (openFileDialog.ShowModal() == wxID_CANCEL)
-				return;     // the user changed idea...
+		try {
+			if (fileName == "" || popUpHandeler->confirmIntent("are you sure you want to open a new file and close this one?")) {
+				wxFileDialog
+					openFileDialog(this, _("Open Xml file"), "", "",
+						"Xml files (*.xml)|*.xml", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+				if (openFileDialog.ShowModal() == wxID_CANCEL)
+					return;     // the user changed idea...
 
-			// proceed loading the file chosen by the user;
-			// this can be done with e.g. wxWidgets input streams:
-			wxFileInputStream input_stream(openFileDialog.GetPath());
-			wxString filename = openFileDialog.GetFilename();
-			filename.erase(filename.Length()-4,4);
-			fileName = filename;
-			if (!input_stream.IsOk())
-			{
-				wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
-				return;
+				// proceed loading the file chosen by the user;
+				// this can be done with e.g. wxWidgets input streams:
+				wxFileInputStream input_stream(openFileDialog.GetPath());
+				wxString filename = openFileDialog.GetFilename();
+				filename.erase(filename.Length() - 4, 4);
+				fileName = filename;
+				if (!input_stream.IsOk())
+				{
+					wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
+					return;
+				}
+				wxString file = openFileDialog.GetPath();
+
+				mainEditBox->Enable();
+				mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
+				mainEditBox->SetEditable(true);
+
+				mainEditBox->LoadFile(file);
+
 			}
-			wxString file = openFileDialog.GetPath();
-
-			mainEditBox->Enable();
-			mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
-			mainEditBox->SetEditable(true);
-
-			mainEditBox->LoadFile(file);
-
 		}
+		catch (...) { popUpHandeler->errorMessage("an error occured in frame.h"); }
 		
 	}
 	/// <summary>
@@ -158,23 +161,23 @@ public:
 /// <param name="WXUNUSED"></param>
 	void saveFile(wxCommandEvent& WXUNUSED(event))
 	{
-		if (MainFrame::getFilename().empty()) {
-			MainFrame::setFilename(
-				wxGetTextFromUser("Enter Name of File.do not include file extension", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true));
-			//MainFrame::appendFilename(".doc");
-			wxString xmlName = MainFrame::getFilename() + ".xml", docName = MainFrame::getFilename() + ".doc";
-			mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
-			//mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".docx");
-			mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
-			mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
+		try {
+			if (MainFrame::getFilename().empty()) {
+				MainFrame::setFilename(
+					wxGetTextFromUser("Enter Name of File.do not include file extension", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true));
+				wxString xmlName = MainFrame::getFilename() + ".xml", docName = MainFrame::getFilename() + ".doc";
+				mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
+				mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
+				mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
 
+			}
+			else {
+				mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
+				mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
+				mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
+			}
 		}
-		else {
-			mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
-			//mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".docx",wxRICHTEXT_TYPE_ANY);
-			mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
-			mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
-		}
+		catch (...) { popUpHandeler->errorMessage("an error occured in frame.h"); }
 	}
 	/// <summary>
 	///this method opens a dialog box that lets the user search thier file system and 

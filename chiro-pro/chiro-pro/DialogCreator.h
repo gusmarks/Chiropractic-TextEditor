@@ -56,32 +56,46 @@ public:
 		italic->Bind(wxEVT_BUTTON, &DialogCreator::addItalictoText, this);
 
 	}
+	~DialogCreator() {
+		delete popupHandeler;
+	}
 	//adds a dialog from a predefined list to the text box
 	void AddDialogToText(wxCommandEvent& event) {
-		wxString dialogChoice = popupHandeler->SingleChoiceDialog("DialogInformation/DialogSelection-2.txt", "select a popup.");
-		dialogChoice = TranslateDialogNames(dialogChoice);
-		MainDisplayBox->WriteText("~<H>");
-		MainDisplayBox->WriteText(dialogChoice);
-		MainDisplayBox->WriteText("<H>~");
-
+		try {
+			wxString dialogChoice = popupHandeler->SingleChoiceDialog("DialogInformation/DialogSelection-2.txt", "select a popup.");
+			dialogChoice = TranslateDialogNames(dialogChoice);
+			if (dialogChoice != "OTHER") {
+				MainDisplayBox->WriteText("~<H>");
+				MainDisplayBox->WriteText(dialogChoice);
+				MainDisplayBox->WriteText("<H>~");
+			}
+		}
+		catch (...) {
+			popupHandeler->errorMessage("an error occured in dialog creator");
+		}
 	}
 	//save the parahgraph for future use
 	void SaveDialogText(wxCommandEvent& event) {
-		std::string DialogFileName = ("Dialogs/DialogFile" + std::to_string(DialogCount+1) + ".txt");
-		if (MainDisplayBox->SaveFile(DialogFileName, wxRICHTEXT_TYPE_ANY)) {
-			
-			
-			wxMessageDialog dialog(NULL, wxT("The file saved successfuly"), wxT("save file"), wxOK);
-			if (dialog.ShowModal() == wxID_OK) {
-				MainDisplayBox->Clear();
-				DialogCount++;
-				this->Close();
+		try {
+			std::string DialogFileName = ("Dialogs/DialogFile" + std::to_string(DialogCount + 1) + ".txt");
+			if (MainDisplayBox->SaveFile(DialogFileName, wxRICHTEXT_TYPE_ANY)) {
+
+
+				wxMessageDialog dialog(NULL, wxT("The file saved successfuly"), wxT("save file"), wxOK);
+				if (dialog.ShowModal() == wxID_OK) {
+					MainDisplayBox->Clear();
+					DialogCount++;
+					this->Close();
+				}
+			}
+			else {
+				wxMessageDialog dialog(NULL, wxT("The file Failed to save"), wxT("save file"), wxOK);
+				if (dialog.ShowModal() == wxID_OK) {
+				}
 			}
 		}
-		else {
-			wxMessageDialog dialog(NULL, wxT("The file Failed to save"), wxT("save file"), wxOK);
-			if (dialog.ShowModal() == wxID_OK) {
-			}
+		catch (...) {
+			popupHandeler->errorMessage("an error occured in dialog creator");
 		}
 	}
 	//adds a bold line to the text
@@ -246,6 +260,9 @@ public:
 		}
 		if (name == "Place of Service") {
 			return "CPT-ID-PlaceofService";
+		}
+		if (name == "OTHER") {
+			popupHandeler->errorMessage("value not accepted");
 		}
 
 		return "OTHER";

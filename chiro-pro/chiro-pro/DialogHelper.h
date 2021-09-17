@@ -57,22 +57,27 @@ public:
 	/// <returns></returns>
 	wxString confirmIntentAddButton(wxWindow* parent) {
 		wxArrayString options;
-		options.Add("text output.");
-		options.Add("new page.");
-		wxSingleChoiceDialog dialog(parent, wxT("would you like a text button, or a Linking Button?"), wxT("Question"), options);
-		//dialog.SetYesNoLabels((wxMessageDialogBase::ButtonLabel)"text", (wxMessageDialogBase::ButtonLabel)"Link");
-		switch (dialog.ShowModal()) {
-		case wxID_OK:
-			wxLogStatus(wxT("You pressed \"Ok\""));
-			return dialog.GetStringSelection();
-			break;
-		case wxID_CANCEL:
-			wxLogStatus(wxT("You pressed \"Cancel\""));
-			return "Cancel";
-			break;
-		default:       wxLogError(wxT("Unexpected wxMessageDialog return code!"));
+		try {
+			options.Add("text output.");
+			options.Add("new page.");
+			wxSingleChoiceDialog dialog(parent, wxT("would you like a text button, or a Linking Button?"), wxT("Question"), options);
+			//dialog.SetYesNoLabels((wxMessageDialogBase::ButtonLabel)"text", (wxMessageDialogBase::ButtonLabel)"Link");
+			switch (dialog.ShowModal()) {
+			case wxID_OK:
+				wxLogStatus(wxT("You pressed \"Ok\""));
+				return dialog.GetStringSelection();
+				break;
+			case wxID_CANCEL:
+				wxLogStatus(wxT("You pressed \"Cancel\""));
+				return "Cancel";
+				break;
+			default:       wxLogError(wxT("Unexpected wxMessageDialog return code!"));
+			}
+			return "";
 		}
-		return "";
+		catch (...) {
+			errorMessage("an error occured in dialog helper");
+		}
 	}
 	/// <summary>
 	/// takes in a string with any message, and produces a popup error message this helps prevent crashing
@@ -100,29 +105,37 @@ public:
 /// <returns></returns>
 	wxString MultipleChoiceDialog(std::string path, std::string text) {
 		std::ifstream choiceIn;
-		choiceIn.open(path, std::fstream::in);
-		wxArrayString choices;
-		std::string choice;
-		while (choiceIn.peek() != EOF) {
-			getline(choiceIn, choice);
-			choices.Add(choice);
-		}
-		wxMultiChoiceDialog dialog(this->parent, text, wxT("Make a Selection"), choices);
-		if (dialog.ShowModal() == wxID_OK) {
-			wxArrayInt selections = dialog.GetSelections();
-			if (selections.IsEmpty()) {
+		try {
+			choiceIn.open(path, std::fstream::in);
+			if (choiceIn.is_open()) {
+				wxArrayString choices;
+				std::string choice;
+				while (choiceIn.peek() != EOF) {
+					getline(choiceIn, choice);
+					choices.Add(choice);
+				}
+				wxMultiChoiceDialog dialog(this->parent, text, wxT("Make a Selection"), choices);
+				if (dialog.ShowModal() == wxID_OK) {
+					wxArrayInt selections = dialog.GetSelections();
+					if (selections.IsEmpty()) {
+						return "OTHER";
+					}
+					wxString msg;
+					for (size_t n = 0; n < selections.GetCount(); n++) {
+						msg += wxString::Format(wxT(", %s"), choices[selections[n]].c_str());
+					}
+					return msg;
+				}
+				else if (dialog.ShowModal() == wxID_CANCEL) {
+					return "OTHER";
+				}
 				return "OTHER";
 			}
-			wxString msg;
-			for (size_t n = 0; n < selections.GetCount(); n++) {
-				msg += wxString::Format(wxT(", %s"), choices[selections[n]].c_str());
-			}
-			return msg;
-		}
-		else if (dialog.ShowModal() == wxID_CANCEL) {
 			return "OTHER";
 		}
-		return "OTHER";
+		catch (...) {
+			errorMessage("an error occured in dialog helper");
+		}
 	}
 	/// <summary>
 	/// this function pops up a list of strings and asks the user to pick one
@@ -132,43 +145,62 @@ public:
 	/// <returns></returns>
 	wxString SingleChoiceDialog(std::string path, std::string text) {
 		std::ifstream choiceIn;
-		choiceIn.open(path, std::fstream::in);
-		wxArrayString choices;
-		std::string choice;
-		while (choiceIn.peek() != EOF) {
-			getline(choiceIn, choice);
-			choices.Add(choice);
-		}
-		wxSingleChoiceDialog dialog(this->parent, text, wxT("Make a Selection"), choices);
-		if (dialog.ShowModal() == wxID_OK) {
+		try {
+			choiceIn.open(path, std::fstream::in);
+			if (choiceIn.is_open()) {
+				wxArrayString choices;
+				std::string choice;
+				while (choiceIn.peek() != EOF) {
+					getline(choiceIn, choice);
+					choices.Add(choice);
+				}
+				wxSingleChoiceDialog dialog(this->parent, text, wxT("Make a Selection"), choices);
+				if (dialog.ShowModal() == wxID_OK) {
 
-			if (choices.IsEmpty()) {
+					if (choices.IsEmpty()) {
+						return "OTHER";
+					}
+					int selection = dialog.GetSelection();
+					return choices[selection];
+				}
 				return "OTHER";
 			}
-			int selection = dialog.GetSelection();
-			return choices[selection];
+			return "OTHER";
 		}
-		return "OTHER";
+		catch (...) {
+			errorMessage("an error occured in dialog helper");
+		}
 	}
 	int SingleChoiceDialogIndex(std::string path, std::string text) {
 		std::ifstream choiceIn;
-		choiceIn.open(path, std::fstream::in);
-		wxArrayString choices;
-		std::string choice;
-		while (choiceIn.peek() != EOF) {
-			getline(choiceIn, choice);
-			choices.Add(choice);
-		}
-		wxSingleChoiceDialog dialog(this->parent, text, wxT("Make a Selection"), choices);
-		if (dialog.ShowModal() == wxID_OK) {
+		try {
+			choiceIn.open(path, std::fstream::in);
+			if (choiceIn.is_open()) {
+				wxArrayString choices;
+				std::string choice;
+				while (choiceIn.peek() != EOF) {
+					getline(choiceIn, choice);
+					choices.Add(choice);
+				}
+				wxSingleChoiceDialog dialog(this->parent, text, wxT("Make a Selection"), choices);
+				if (dialog.ShowModal() == wxID_OK) {
 
-			if (choices.IsEmpty()) {
+					if (choices.IsEmpty()) {
+						return -1;
+					}
+					int selection = dialog.GetSelection();
+					return selection;
+				}
+				else {
+					return -1;
+				}
 				return -1;
 			}
-			int selection = dialog.GetSelection();
-			return selection;
+			return -1;
 		}
-		return -1;
+		catch (...) {
+			errorMessage("an error occured in dialog helper");
+		}
 	}
 	/// <summary>
 
@@ -179,9 +211,9 @@ public:
 	wxString Calender() {
 		cal = new CalenderDialog(parent, "Date of Accident");
 		if (cal->ShowModal() == wxID_OK) {
-			//wxString val = cal->getVal();
 			return cal->getVal();
 		}
+		delete cal;
 		return "OTHER";
 	}
 	/// <summary>
@@ -195,55 +227,65 @@ public:
 		if (bodyDialogObj->ShowModal() == wxID_OK) {
 			return bodyDialogObj->getSelections();
 		}
+		delete bodyDialogObj;
 		return "OTHER";
 	}
 
 
 	selectionInformation selectPremadeDialog() {
 		wxArrayString options;
+		try {
+			std::string pathName = "Dialogs/0dialogList.txt";
+			std::fstream dialogList(pathName);
+			int i = 0;
+			if (dialogList.is_open()) {
+				if (!dialogList.eof()) {
+					while (dialogList) {
+						if (i > 0) {
+							std::string startStr;
+							std::string endStr;
+							std::getline(dialogList, startStr);
+							for (size_t j = 0; j < startStr.size(); j++) {
+								if (startStr[j] == '\t')
+									break;
+								endStr += (startStr[j]);
+							}
 
-		std::string pathName = "Dialogs/0dialogList.txt";
-		std::fstream dialogList(pathName);
-		int i = 0;
-		if (!dialogList.eof()) {
-			while (dialogList) {
-				if (i > 0) {
-					std::string startStr;
-					std::string endStr;
-					std::getline(dialogList, startStr);
-					for (size_t j = 0; j < startStr.size(); j++) {
-						if (startStr[j] == '\t')
-							break;
-						endStr += (startStr[j]);
+							options.Add(endStr);
+
+						}
+						i++;
 					}
 
-					options.Add(endStr);
-
 				}
-				i++;
 			}
+			else {
+				errorMessage("file failed to open inturnaly");
+			}
+			selectionInformation selection;
+			selectionInformation Cancel;
+			Cancel.selectionText = "Cancel";
+			Cancel.selectionIndex = -1;
+			wxSingleChoiceDialog dialog(parent, wxT("what button would you like?"), wxT("Question"), options);
 
-		}
-		selectionInformation selection;
-		selectionInformation Cancel;
-		Cancel.selectionText = "Cancel";
-		Cancel.selectionIndex = -1;
-		wxSingleChoiceDialog dialog(parent, wxT("what button would you like?"), wxT("Question"), options);
-		
-		switch (dialog.ShowModal()) {
-		case wxID_OK:
-			wxLogStatus(wxT("You pressed \"Ok\""));
-			selection.selectionText = dialog.GetStringSelection().ToStdString();
-			selection.selectionIndex = dialog.GetSelection();
-			return selection;
-			break;
-		case wxID_CANCEL:
-			wxLogStatus(wxT("You pressed \"Cancel\""));
-			return Cancel;
-			break;
-		default:       wxLogError(wxT("Unexpected wxMessageDialog return code!"));
+			switch (dialog.ShowModal()) {
+			case wxID_OK:
+				wxLogStatus(wxT("You pressed \"Ok\""));
+				selection.selectionText = dialog.GetStringSelection().ToStdString();
+				selection.selectionIndex = dialog.GetSelection();
+				return selection;
+				break;
+			case wxID_CANCEL:
+				wxLogStatus(wxT("You pressed \"Cancel\""));
+				return Cancel;
+				break;
+			default:       wxLogError(wxT("Unexpected wxMessageDialog return code!"));
+				return Cancel;
+			}
 			return Cancel;
 		}
-		return Cancel;
+		catch (...) {
+			errorMessage("an error occured in dialog helper");
+		}
 	}
 };
