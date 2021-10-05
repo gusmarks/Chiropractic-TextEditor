@@ -69,10 +69,11 @@ public:
                 setStream.close();
                 return true;
             }
+            return false;
         }
         catch (...) {
             popupHandeler->errorMessage("an error occured in function helper");
         }
-
+        return false;
     }
 };

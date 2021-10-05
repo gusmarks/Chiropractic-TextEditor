@@ -108,7 +108,10 @@ MainFrame::MainFrame(const wxString& title,
     wxInitAllImageHandlers();
     //loads the basic data for button sets
     loadButtonSetInfo("SetInfoAll.txt");
-   
+    if (buttonSetList.empty()) {
+        MainFrame::quit();
+        return;
+    }
     //-----------menu-status start-----------
     //statusbar at the bottom of page has 2 cells
     //menu bar at the top ofthe page has 1 tab named File menu and visualy represented as File
@@ -383,19 +386,24 @@ void MainFrame::addButton(wxCommandEvent& event)
 /// <param name="WXUNUSED"></param>
 void MainFrame::sign(wxCommandEvent& WXUNUSED(event)) {
     try {
-        // stop all styling and add a new line
-        mainEditBox->EndAllStyles();
-        mainEditBox->EndURL();
-        mainEditBox->WriteText("\n");
-        wxBitmap signiture;
-        currentButtonSet->getSigniturePath();
-        //load a document containing pixels for a signiture
-        signiture.LoadFile(currentButtonSet->getSigniturePath(), wxBITMAP_TYPE_ANY);
-        // arrange descriptive text, and the current date
-        mainEditBox->AppendText("\n Electronicly Signed by:" + currentButtonSet->getSetName() + "\n");
-        mainEditBox->WriteText(" Signiture:");
-        mainEditBox->WriteImage(signiture);
-        mainEditBox->AppendText("\n Latest Date of Visit<" + functionHelper->getDateToSignNoTime() + ">");
+        if (isFileOpen()) {
+            // stop all styling and add a new line
+            mainEditBox->EndAllStyles();
+            mainEditBox->EndURL();
+            mainEditBox->WriteText("\n");
+            wxBitmap signiture;
+            currentButtonSet->getSigniturePath();
+            //load a document containing pixels for a signiture
+            signiture.LoadFile(currentButtonSet->getSigniturePath(), wxBITMAP_TYPE_ANY);
+            // arrange descriptive text, and the current date
+            mainEditBox->AppendText("\n Electronicly Signed by:" + currentButtonSet->getSetName() + "\n");
+            mainEditBox->WriteText(" Signiture:");
+            mainEditBox->WriteImage(signiture);
+            mainEditBox->AppendText("\n Latest Date of Visit<" + functionHelper->getDateToSignNoTime() + ">");
+        }
+        else {
+            popUpHandeler->errorMessage("There is no file open.\n Please open a file to write.");
+        }
     }
     catch (...) { popUpHandeler->errorMessage("an error occured in main.cpp"); }
 }
@@ -567,53 +575,55 @@ void MainFrame::newSet(wxCommandEvent& event) {
     //opens an ofstream and writes a new file for the button set
     if (setCount <= 9) {
         wxString setName =
-            wxGetTextFromUser("Please enter name of new set", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-        buttonSetNames[setCount] = setName;
-        //create the filename and pathname for the new users information
-        std::string filename = "panelLayout/panelLayout" + setName.ToStdString() + ".txt";
-        std::string pathname = "panelLayout/panelLayout" + setName.ToStdString();
-        std::string sigPath = getSignitureImage();
-        //create the new set
-        buttonSetList.push_back(new ButtonSet(this, setName.ToStdString(), setCount, pathname,sigPath, 4));
-        //store the information for the set, in directories with text files
-        ofstream newSetStream(filename);
-        int check = mkdir(pathname.c_str());
-        for (int i = 0; i < 4; i++) {
-            std::string buttonfilename = pathname + "/layout" + (std::to_string(i + 1)) + ".txt";
-            ofstream basicFileStream(buttonfilename);
-            std::string buttonPathname = pathname + "/layout" + (std::to_string(i + 1)) + "-panels";
-            int check = mkdir(buttonPathname.c_str());
-            for (int j = 0; j < 7; j++) {
-                buttonfilename = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + ".txt";
+            wxGetTextFromUser("Please enter name of new set", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+        if (!setName.empty()) {
+            buttonSetNames[setCount] = setName;
+            //create the filename and pathname for the new users information
+            std::string filename = "panelLayout/panelLayout" + setName.ToStdString() + ".txt";
+            std::string pathname = "panelLayout/panelLayout" + setName.ToStdString();
+            std::string sigPath = getSignitureImage();
+            //create the new set
+            buttonSetList.push_back(new ButtonSet(this, setName.ToStdString(), setCount, pathname, sigPath, 4));
+            //store the information for the set, in directories with text files
+            ofstream newSetStream(filename);
+            int check = mkdir(pathname.c_str());
+            for (int i = 0; i < 4; i++) {
+                std::string buttonfilename = pathname + "/layout" + (std::to_string(i + 1)) + ".txt";
                 ofstream basicFileStream(buttonfilename);
-                std::string LvL2ButtonPathname = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + "-panels";
-                int check = mkdir(LvL2ButtonPathname.c_str());
-                for (int k = 0; k < 7; k++) {
-                    std::string LvL3Buttonfilename = LvL2ButtonPathname + "/LayoutLevel3-" + (std::to_string(k + 1)) + ".txt";
-                    ofstream basicFileStream(LvL3Buttonfilename);
+                std::string buttonPathname = pathname + "/layout" + (std::to_string(i + 1)) + "-panels";
+                int check = mkdir(buttonPathname.c_str());
+                for (int j = 0; j < 7; j++) {
+                    buttonfilename = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + ".txt";
+                    ofstream basicFileStream(buttonfilename);
+                    std::string LvL2ButtonPathname = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + "-panels";
+                    int check = mkdir(LvL2ButtonPathname.c_str());
+                    for (int k = 0; k < 7; k++) {
+                        std::string LvL3Buttonfilename = LvL2ButtonPathname + "/LayoutLevel3-" + (std::to_string(k + 1)) + ".txt";
+                        ofstream basicFileStream(LvL3Buttonfilename);
+                    }
                 }
             }
-        }
-        //set the set selection control
-        size_t size = sizeof(buttonSetNames) / sizeof(buttonSetNames[0]);
-        userSelection->Clear();
-        for (size_t i = 0; i < size; i++) {
-            if (buttonSetNames[i] != wxT("")) {
-                userSelection->Append(buttonSetNames[i]);
+            //set the set selection control
+            size_t size = sizeof(buttonSetNames) / sizeof(buttonSetNames[0]);
+            userSelection->Clear();
+            for (size_t i = 0; i < size; i++) {
+                if (buttonSetNames[i] != wxT("")) {
+                    userSelection->Append(buttonSetNames[i]);
+                }
             }
+            std::string names[4] = { "Subjective","Objective","Assesment","Plan" };
+            //sets the original set as the first and saves basic set information
+            userSelection->SetSelection(0);
+            for (int i = 0; i < 4; i++) {
+                newSetStream << names[i];
+                newSetStream << "\n";
+                newSetStream << (pathname + "/layout" + std::to_string(i + 1) + ".txt");
+                newSetStream << "\n";
+            }
+            setCount++;
+            newSetStream.close();
+            saveButtonSetInfo("SetInfoAll.txt");
         }
-        std::string names[4]  = {"Subjective","Objective","Assesment","Plan"};
-        //sets the original set as the first and saves basic set information
-        userSelection->SetSelection(0);
-        for (int i = 0; i < 4; i++) {
-            newSetStream << names[i];
-            newSetStream << "\n";
-            newSetStream << (pathname + "/layout" + std::to_string(i + 1) + ".txt");
-            newSetStream << "\n";
-        }
-        setCount++;
-        newSetStream.close();
-        saveButtonSetInfo("SetInfoAll.txt");
     }
 }
 void MainFrame::newSet() {
@@ -621,53 +631,50 @@ void MainFrame::newSet() {
   //opens an ofstream and writes a new file for the button set
     if (setCount <= 9) {
         wxString setName =
-            wxGetTextFromUser("Please enter name of new User", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-        buttonSetNames[setCount] = setName;
-        //create the filename and pathname for the new users information
-        std::string filename = "panelLayout/panelLayout" + setName.ToStdString() + ".txt";
-        std::string pathname = "panelLayout/panelLayout" + setName.ToStdString();
-        std::string sigPath = getSignitureImage();
-        //create the new set
-        buttonSetList.push_back(new ButtonSet(this, setName.ToStdString(), setCount, pathname, sigPath, 4));
-        //store the information for the set, in directories with text files
-        ofstream newSetStream(filename);
-        int check = mkdir(pathname.c_str());
-        for (int i = 0; i < 4; i++) {
-            std::string buttonfilename = pathname + "/layout" + (std::to_string(i + 1)) + ".txt";
-            ofstream basicFileStream(buttonfilename);
-            std::string buttonPathname = pathname + "/layout" + (std::to_string(i + 1)) + "-panels";
-            int check = mkdir(buttonPathname.c_str());
-            for (int j = 0; j < 7; j++) {
-                buttonfilename = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + ".txt";
+            wxGetTextFromUser("Please enter name of new User", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+        if (!setName.empty()) {
+            buttonSetNames[setCount] = setName;
+            //create the filename and pathname for the new users information
+            std::string filename = "panelLayout/panelLayout" + setName.ToStdString() + ".txt";
+            std::string pathname = "panelLayout/panelLayout" + setName.ToStdString();
+            std::string sigPath = getSignitureImage();
+            //create the new set
+            buttonSetList.push_back(new ButtonSet(this, setName.ToStdString(), setCount, pathname, sigPath, 4));
+            //store the information for the set, in directories with text files
+            ofstream newSetStream(filename);
+            int check = mkdir(pathname.c_str());
+            for (int i = 0; i < 4; i++) {
+                std::string buttonfilename = pathname + "/layout" + (std::to_string(i + 1)) + ".txt";
                 ofstream basicFileStream(buttonfilename);
-                std::string LvL2ButtonPathname = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + "-panels";
-                int check = mkdir(LvL2ButtonPathname.c_str());
-                for (int k = 0; k < 7; k++) {
-                    std::string LvL3Buttonfilename = LvL2ButtonPathname + "/LayoutLevel3-" + (std::to_string(k + 1)) + ".txt";
-                    ofstream basicFileStream(LvL3Buttonfilename);
+                std::string buttonPathname = pathname + "/layout" + (std::to_string(i + 1)) + "-panels";
+                int check = mkdir(buttonPathname.c_str());
+                for (int j = 0; j < 7; j++) {
+                    buttonfilename = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + ".txt";
+                    ofstream basicFileStream(buttonfilename);
+                    std::string LvL2ButtonPathname = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + "-panels";
+                    int check = mkdir(LvL2ButtonPathname.c_str());
+                    for (int k = 0; k < 7; k++) {
+                        std::string LvL3Buttonfilename = LvL2ButtonPathname + "/LayoutLevel3-" + (std::to_string(k + 1)) + ".txt";
+                        ofstream basicFileStream(LvL3Buttonfilename);
+                    }
                 }
             }
+            //set the set selection control
+            size_t size = sizeof(buttonSetNames) / sizeof(buttonSetNames[0]);
+
+            std::string names[4] = { "Subjective","Objective","Assesment","Plan" };
+            //sets the original set as the first and saves basic set information
+            //userSelection->SetSelection(0);
+            for (int i = 0; i < 4; i++) {
+                newSetStream << names[i];
+                newSetStream << "\n";
+                newSetStream << (pathname + "/layout" + std::to_string(i + 1) + ".txt");
+                newSetStream << "\n";
+            }
+            setCount++;
+            newSetStream.close();
+            saveButtonSetInfo("SetInfoAll.txt");
         }
-        //set the set selection control
-        size_t size = sizeof(buttonSetNames) / sizeof(buttonSetNames[0]);
-       // userSelection->Clear();
-        //for (size_t i = 0; i < size; i++) {
-            //if (buttonSetNames[i] != wxT("")) {
-                //userSelection->Append(buttonSetNames[i]);
-            //}
-        //}
-        std::string names[4] = { "Subjective","Objective","Assesment","Plan" };
-        //sets the original set as the first and saves basic set information
-        //userSelection->SetSelection(0);
-        for (int i = 0; i < 4; i++) {
-            newSetStream << names[i];
-            newSetStream << "\n";
-            newSetStream << (pathname + "/layout" + std::to_string(i + 1) + ".txt");
-            newSetStream << "\n";
-        }
-        setCount++;
-        newSetStream.close();
-        saveButtonSetInfo("SetInfoAll.txt");
     }
 }
 /// <summary>
@@ -736,8 +743,10 @@ void MainFrame::loadButtonSetInfo(std::string path) {
             newSet();
         }
         //test for errors
-        currentButtonSet = buttonSetList.at(0);
-        setInfoIn.close();
+        if (!buttonSetList.empty()) {
+            currentButtonSet = buttonSetList.at(0);
+            setInfoIn.close();
+        }
 
     }else{ 
         setInfoIn.close();

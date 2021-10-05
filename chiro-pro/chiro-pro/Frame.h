@@ -474,7 +474,13 @@ public:
 	/// <param name="WXUNUSED"> an unused Command event</param>
 	void newFile(wxCommandEvent& WXUNUSED(event))
 	{
-		if (popUpHandeler->confirmIntent("are you sure you want to open a new file?")) {
+		if (isFileOpen()) {
+			if (popUpHandeler->confirmIntent("are you sure you want to open a new file?")) {
+			}
+			else
+				return;
+		}
+
 			wxString name=wxGetTextFromUser("Enter Patient name", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
 			if (name == "") 
 				return;
@@ -500,7 +506,7 @@ public:
 			mainEditBox->WriteText("<"+insurance+">");
 			mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
 			mainEditBox->SetEditable(true);
-		}
+		
 	}
 	void startingSate() {
 		mainEditBox->Clear();
@@ -566,7 +572,10 @@ public:
 		event.Skip();
 		Close(TRUE); // Tells the OS to quit running this process
 	}
-	
+	void quit()
+	{
+		Close(TRUE); // Tells the OS to quit running this process
+	}
 		DECLARE_EVENT_TABLE()
 };
 

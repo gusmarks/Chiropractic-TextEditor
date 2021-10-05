@@ -78,6 +78,7 @@ public:
 		catch (...) {
 			errorMessage("an error occured in dialog helper");
 		}
+		return "";
 	}
 	/// <summary>
 	/// takes in a string with any message, and produces a popup error message this helps prevent crashing
@@ -155,6 +156,7 @@ public:
 		catch (...) {
 			errorMessage("an error occured in dialog helper");
 		}
+		return "OTHER";
 	}
 	/// <summary>
 	/// this function pops up a list of strings and asks the user to pick one
@@ -189,6 +191,7 @@ public:
 		catch (...) {
 			errorMessage("an error occured in dialog helper");
 		}
+		return "OTHER";
 	}
 	int SingleChoiceDialogIndex(std::string path, std::string text) {
 		std::ifstream choiceIn;
@@ -220,6 +223,7 @@ public:
 		catch (...) {
 			errorMessage("an error occured in dialog helper");
 		}
+		return -1;
 	}
 	/// <summary>
 
@@ -306,5 +310,6 @@ public:
 		catch (...) {
 			errorMessage("an error occured in dialog helper");
 		}
+		return {"cancel",-1};
 	}
 };

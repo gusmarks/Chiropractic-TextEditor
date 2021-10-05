@@ -82,6 +82,7 @@ public:
 			popupHandeler->errorMessage("an error occured in cathering patient information.");
 			
 		}
+		return information;
 	}
 	//thisfuction is ment to take the information gathered in the previous function and make 3 seperate billing files
 	void documentCreation() {
@@ -242,6 +243,7 @@ public:
 			popupHandeler->errorMessage("an error occured in the document creator-date formatter");
 			
 		}
+		return { 0,0,0 };
 	}
 	void cleanLines() {
 		size_t position = 0;
@@ -293,6 +295,7 @@ public:
 		catch (...) {
 			popupHandeler->errorMessage("an error occured in the document creator-number validator");
 		}
+		return false;
 	}
 	int getDayDifferance(date init,date last) {
 		try {
@@ -314,6 +317,7 @@ public:
 			popupHandeler->errorMessage("an error occured in the document creator-day Method");
 			
 		}
+		return -1;
 	}
 	int countLeapYears(date dt) {
 		try {

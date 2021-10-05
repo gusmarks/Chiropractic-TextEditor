@@ -1,7 +1,2 @@
 New Paragraph
 -----------------------
-place 	Dialogs/DialogFile1.txt
-foot 	Dialogs/DialogFile2.txt
-junk 	Dialogs/DialogFile3.txt
-hello 	Dialogs/DialogFile4.txt
- 	Dialogs/DialogFile4.txt
