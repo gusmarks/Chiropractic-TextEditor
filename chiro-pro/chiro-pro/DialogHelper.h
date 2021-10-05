@@ -58,9 +58,9 @@ public:
 	wxString confirmIntentAddButton(wxWindow* parent) {
 		wxArrayString options;
 		try {
-			options.Add("text output.");
-			options.Add("new page.");
-			wxSingleChoiceDialog dialog(parent, wxT("would you like a text button, or a Linking Button?"), wxT("Question"), options);
+			options.Add("Text Button.");
+			options.Add("New Page Button.");
+			wxSingleChoiceDialog dialog(parent, wxT("would you like a Text button, or a Page Button?"), wxT("Question"), options);
 			//dialog.SetYesNoLabels((wxMessageDialogBase::ButtonLabel)"text", (wxMessageDialogBase::ButtonLabel)"Link");
 			switch (dialog.ShowModal()) {
 			case wxID_OK:
@@ -97,6 +97,19 @@ public:
 		}
 		return false;
 	}
+
+	bool Message(wxString str) {
+		wxMessageDialog dialog(NULL, str, wxT("Message"),
+			wxOK_DEFAULT | wxOK | wxICON_INFORMATION);
+
+		switch (dialog.ShowModal()) {
+		case wxID_OK:
+			wxLogStatus(wxT("you pressed \"okay\""));
+			return true;
+			break;
+		}
+		return false;
+	}
 	/// <summary>
 /// this function opens a list of strings, and asks the user to pick as many as they want
 /// </summary>
@@ -122,8 +135,14 @@ public:
 					}
 					wxString msg;
 					for (size_t n = 0; n < selections.GetCount(); n++) {
-						msg += wxString::Format(wxT(", %s"), choices[selections[n]].c_str());
+						if (n > 0) {
+							msg += wxString::Format(wxT(",%s"), choices[selections[n]].c_str());
+						}
+						else {
+							msg += choices[selections[n]].c_str();
+						}
 					}
+					
 					return msg;
 				}
 				else if (dialog.ShowModal() == wxID_CANCEL) {

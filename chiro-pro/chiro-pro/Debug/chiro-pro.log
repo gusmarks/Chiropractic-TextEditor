@@ -1,13 +1,14 @@
 ﻿  BodyImageDialog.cpp
   main.cpp
   Generating Code...
-C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\FunctionHelper.h(77): warning C4715: 'FuncHelper::DoseUserExist': not all control paths return a value
 C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\dialogHelper.h(81): warning C4715: 'DialogHelper::confirmIntentAddButton': not all control paths return a value
-C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\dialogHelper.h(290): warning C4715: 'DialogHelper::selectPremadeDialog': not all control paths return a value
-C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\dialogHelper.h(173): warning C4715: 'DialogHelper::SingleChoiceDialog': not all control paths return a value
-C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\dialogHelper.h(204): warning C4715: 'DialogHelper::SingleChoiceDialogIndex': not all control paths return a value
-C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\dialogHelper.h(139): warning C4715: 'DialogHelper::MultipleChoiceDialog': not all control paths return a value
+C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\dialogHelper.h(309): warning C4715: 'DialogHelper::selectPremadeDialog': not all control paths return a value
+C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\FunctionHelper.h(77): warning C4715: 'FuncHelper::DoseUserExist': not all control paths return a value
+C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\dialogHelper.h(192): warning C4715: 'DialogHelper::SingleChoiceDialog': not all control paths return a value
+C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\dialogHelper.h(223): warning C4715: 'DialogHelper::SingleChoiceDialogIndex': not all control paths return a value
+C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\dialogHelper.h(158): warning C4715: 'DialogHelper::MultipleChoiceDialog': not all control paths return a value
 C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\billingInfoCreator.h(85): warning C4715: 'billingInfoCreator::gatherInfo': not all control paths return a value
-C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\billingInfoCreator.h(234): warning C4715: 'billingInfoCreator::intdateformater': not all control paths return a value
-C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\billingInfoCreator.h(302): warning C4715: 'billingInfoCreator::getDayDifferance': not all control paths return a value
+C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\billingInfoCreator.h(245): warning C4715: 'billingInfoCreator::intdateformater': not all control paths return a value
+C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\billingInfoCreator.h(317): warning C4715: 'billingInfoCreator::getDayDifferance': not all control paths return a value
+C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\billingInfoCreator.h(296): warning C4715: 'billingInfoCreator::isNumber': not all control paths return a value
   chiro-pro.vcxproj -> C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\chiro-pro.exe

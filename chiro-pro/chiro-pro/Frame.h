@@ -148,33 +148,43 @@ public:
 				mainEditBox->SetEditable(true);
 
 				mainEditBox->LoadFile(file);
-
 			}
 		}
 		catch (...) { popUpHandeler->errorMessage("an error occured in frame.h"); }
 		
+	}
+	std::string getSignitureImage() {
+		wxFileDialog
+			openFileDialog(this, _("Open png file"), "", "",
+				"png files (*.png)|*.png", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+		if (openFileDialog.ShowModal() == wxID_CANCEL) 
+			return "";     // the user changed idea...
+		
+		wxFileInputStream input_stream(openFileDialog.GetPath());
+		if (!input_stream.IsOk())
+		{
+			wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
+			return"";
+		}
+		wxString path = openFileDialog.GetPath();
+		return path.ToStdString();
 	}
 	/// <summary>
 /// if filename variable is empty prompt the user to enter a name then add .doc to the end
 /// if there is already a name save under the name.
 /// </summary>
 /// <param name="WXUNUSED"></param>
+
 	void saveFile(wxCommandEvent& WXUNUSED(event))
 	{
 		try {
-			if (MainFrame::getFilename().empty()) {
-				MainFrame::setFilename(
-					wxGetTextFromUser("Enter Name of File.do not include file extension", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true));
-				wxString xmlName = MainFrame::getFilename() + ".xml", docName = MainFrame::getFilename() + ".doc";
+			if (!MainFrame::getFilename().empty()) {
+
 				mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
 				mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
 				mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
 
-			}
-			else {
-				mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
-				mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
-				mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
+				popUpHandeler->Message("save successful");
 			}
 		}
 		catch (...) { popUpHandeler->errorMessage("an error occured in frame.h"); }
@@ -198,6 +208,7 @@ public:
 		// this can be done with e.g. wxWidgets output streams:
 		wxFileOutputStream output_stream(saveFileDialog.GetPath());
 		setFilename(saveFileDialog.GetFilename());
+		popUpHandeler->Message("save successful");
 		if (!output_stream.IsOk())
 		{
 			wxLogError("Cannot save current contents in file '%s'.", saveFileDialog.GetPath());
@@ -240,6 +251,7 @@ public:
 	void swapButtonSet(wxCommandEvent& evt);
 	//makes a new user set, with the appropriate files and directories
 	void newSet(wxCommandEvent& event);
+	void newSet();
 	//signs the document, adds some descriptive text, and an image signiture
 	void sign(wxCommandEvent& WXUNUSED(event));
 	//on right click brings up a menu when right clicking some componants, this allows the user to edit certain componants
@@ -450,8 +462,10 @@ public:
 		std::string fileCount;
 		getline(fileReader, fileCount);
 		if (fileCount != "") {
+			fileReader.close();
 			return std::stoi(fileCount);
 		}
+		fileReader.close();
 		return 0;
 	}
 	/// //new file method, this method clears the texteditor and filename for saving.
@@ -462,11 +476,11 @@ public:
 	{
 		if (popUpHandeler->confirmIntent("are you sure you want to open a new file?")) {
 			wxString name=wxGetTextFromUser("Enter Patient name", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
-			wxString insurance= popUpHandeler->SingleChoiceDialog("DialogInformation/Insurance.txt","Select A Provider.");
-			if (name == "") {
+			if (name == "") 
 				return;
-			}
-
+			wxString insurance = popUpHandeler->SingleChoiceDialog("DialogInformation/Insurance.txt", "Select A Provider.");
+			if (insurance == "OTHER") 
+				return;
 			mainEditBox->Clear();
 			MainFrame::setFilename(name);
 			mainEditBox->Enable();

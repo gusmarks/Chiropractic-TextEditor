@@ -144,8 +144,11 @@ public:
 					if (outReg.is_open()) {
 						outReg << information[0] << "\t\t";
 						outReg << information[2] << "\t\t";
+						int pos = rearangeDxCodes(1);
 						outReg << information[3] << "\t\t\t\t";
+						pos += 8;
 						outReg << information[4] << "\t";
+						outReg.seekp(pos);
 						outReg << information[1] << "\t\t\t";
 						int days = getDayDifferance(intdateformater(information[1]), intdateformater(information[2]));
 						outReg << days << "\n";
@@ -158,8 +161,11 @@ public:
 					if (outOth.is_open()) {
 						outOth << information[0] << "\t\t";
 						outOth << information[2] << "\t\t";
+						int pos = rearangeDxCodes(2);
 						outOth << information[3] << "\t\t\t\t";
+						pos += 8;
 						outOth << information[4] << "\t";
+						outReg.seekp(pos);
 						outOth << information[1] << "\t\t\t";
 						int days = getDayDifferance(intdateformater(information[1]), intdateformater(information[2]));
 						outOth << days << "\n";
@@ -169,6 +175,7 @@ public:
 
 			}
 			appendFiles();
+			popupHandeler->Message("Billing Document Created. find in files");
 		}
 		catch (...) {
 			popupHandeler->errorMessage("an error occured in the document creator");
@@ -180,6 +187,10 @@ public:
 			int i = 0;
 			std::string tokens[4];
 			while ((position = dt.find(" ")) != std::string::npos) {
+				if (i == 2) { 
+					dt.erase(dt.begin());
+					position = dt.find(" ");
+				}
 				tokens[i] = dt.substr(0, position);
 				dt = dt.substr(position + 1, dt.size());
 				i++;
@@ -269,7 +280,11 @@ public:
 	}
 
 	bool isNumber(std::string str) {
-		try {		
+		try {	
+			int position;
+			if (position = str.find(' ') != std::string::npos) {
+				str.erase(position);
+			}
 		std::string::const_iterator it = str.begin();
 		while (it != str.end() && std::isdigit(*it))
 			it++;
@@ -396,6 +411,16 @@ public:
 					information[4] += "\n\t\t\t\t\t\t\t\t\t\t";
 				}
 				if (i == 1 && type == 0) {
+					int x = static_cast<int>(ofsett);
+					position = outMed.tellp();
+					position += x;
+				}
+				if (i == 1 && type == 1) {
+					int x = static_cast<int>(ofsett);
+					position = outMed.tellp();
+					position += x;
+				}
+				if (i == 1 && type == 2) {
 					int x = static_cast<int>(ofsett);
 					position = outMed.tellp();
 					position += x;

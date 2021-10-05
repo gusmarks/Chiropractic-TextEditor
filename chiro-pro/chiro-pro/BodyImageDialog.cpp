@@ -1,6 +1,6 @@
 #include "BodyImageDialog.h"
 #include <iostream>
-#include <fstream>
+//#include <fstream>
 #include <wx/wx.h>
 BEGIN_EVENT_TABLE(myImagePanel, wxPanel)
 EVT_PAINT(myImagePanel::paintEvent)

@@ -3,7 +3,6 @@
 #include <wx/wx.h>
 #include <wx/richtext/richtextctrl.h>
 #include "DialogHelper.h"
-#include <fstream>
 #include <iostream>
 #include <wx/msgdlg.h>
 /// <summary>

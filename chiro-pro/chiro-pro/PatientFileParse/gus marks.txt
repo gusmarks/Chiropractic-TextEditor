@@ -1,0 +1,16 @@
+Patient Name: <gus marks>   Date of First Visit: <Mon Oct  4 2021>   Insurance: <Regence>
+
+
+
+dx Knee:<<M12.461	Intermittent hydrarthrosis, right knee>>
+
+place of treatment:<<99053	Service(s) provided between 10:00 PM and 8:00 AM at a 24 hour facility, in addition to basic services.,99058	Service(s) provided on an emergency basis in the office, which disrupts, other scheduled office services, in addition to the basic service>>
+stuff<<G57.62	Lesion of plantar nerve left lower limb (Morton's neuroma, neuralgia or metatarsalgia)>>
+place:<<11	Office	Location, other than a hospital, skilled nursing facility (SNF), military treatment facility, community health center, State or local public health clinic, or intermediate care facility (ICF), where the health professional routinely provides health examinations, diagnosis, and treatment of illness or injury on an ambulatory basis.>>
+
+stuff<<M21.41	Flat foot [pes planus] (acquired), right foot>>
+stuff<<M21.42	Flat foot [pes planus] (acquired), left foot>>
+stuff<<M21.40	Flat foot [pes planus] (acquired), unspecified foot>>
+ Electronicly Signed by:gus
+ Signiture:
+ Latest Date of Visit<Mon Oct  4 2021>

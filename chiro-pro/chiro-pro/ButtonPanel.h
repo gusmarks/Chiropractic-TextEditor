@@ -271,6 +271,7 @@ public:
 			if (!this->buttonLayoutin.is_open()) {
 				this->buttonLayoutin.open(layoutName, std::fstream::in);
 				if (!this->buttonLayoutin.is_open()) {
+					buttonLayoutin.close();
 					return;
 				}
 			}
@@ -317,6 +318,7 @@ public:
 		}
 		catch (...) {
 			popUpHandeler->errorMessage("an error occured in buttonpanel");
+			this->buttonLayoutin.close();
 		}
 	}
 	void saveQLinks() {

@@ -1,11 +1,3 @@
 Medicare 
 --------------------------------------------------------------------------------------------------------------------------------
 Patient			Date of Service		CPT Code [Modifier]		Dx Codes			Initial Date of Tx		Days
-clare moor		Tue Aug 3 2021		99060				f43.009,f23.009,
-										f44.009,	Tue may 8 2021			87
-liara tarkurt		Tue Aug 3 2021		98942992119906097022				G57.50,S12.001B,
-										M12.221,G57.60,
-										M15.1,G43.001,
-										M12.352,M12.562,
-										M12.412,G54.3,
-										G56.11,	Tue Aug 24 2021			-21

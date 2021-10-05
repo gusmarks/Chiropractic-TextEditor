@@ -80,6 +80,7 @@ public:
 					ClickCircles[i] = new ImageButton(this, wxID_ANY, circle, wxPoint(X, Y), i, str);
 				}
 			}
+			LocationXY.close();
 	}
 	void render(wxDC& dc);
 

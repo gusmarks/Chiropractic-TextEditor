@@ -14,22 +14,27 @@ private://private variables, the setName, panelCount,panelList, the currentPanel
 	std::string path;
 	DialogHelper* popUpHandeler;
 	wxFrame* parent;
+	std::string signiturepath;
 
 public://an ofstream to save configurations
 	std::ofstream PanelLayoutout;
 	
 	//constructor sets most of the variable
-	ButtonSet(wxFrame* parent, std::string name,int setNo,std::string Directory,int panelNo) {
+	ButtonSet(wxFrame* parent, std::string name,int setNo,std::string Directory,std::string signiture,int panelNo) {
 		popUpHandeler = new DialogHelper(parent);
 		this->parent = parent;
 		path = Directory;
 		setName = name;
 		panelCount = panelNo;
+		signiturepath = signiture;
 	}
 	~ButtonSet() {
 		delete popUpHandeler;
 	}
 	//getter function for the panel count variable
+	std::string getSigniturePath() {
+		return signiturepath;
+	}
 	int getPanelCount() {
 		return panelCount;
 	}

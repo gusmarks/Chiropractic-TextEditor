@@ -52,6 +52,7 @@ public:
 
 				content += temp + "\n";
 			}
+			openFileOfCodes.close();
 		}
 		else {
 			popupHandeler->errorMessage("file failed to open inturnaly");
@@ -135,6 +136,7 @@ public:
 
 					content += temp + "\n";
 				}
+				openFileOfCodes.close();
 			}
 			else {
 				popupHandeler->errorMessage("file failed to open inturnaly");
