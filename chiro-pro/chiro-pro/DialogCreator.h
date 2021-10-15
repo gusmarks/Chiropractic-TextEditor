@@ -160,6 +160,9 @@ public:
 		if (name == "Injury") {
 			return "Dialog-ID-Injury";
 		}
+		if (name == "Insurance") {
+			return "Dialog-ID-Insurance";
+		}
 		if (name == "Life Affected") {
 			return "Dialog-ID-Life-Affected";
 		}
@@ -250,6 +253,9 @@ public:
 		}
 		if (name == "Misc") {
 			return "CPT-ID-Misc";
+		}
+		if (name == "Modifier") {
+			return "CPT-ID-Mod";
 		}
 		if (name == "Rehabilitation") {
 			return "CPT-ID-Rehabilitation";

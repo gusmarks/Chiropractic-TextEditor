@@ -1,0 +1,10 @@
+Patient Name: <patient 19>   Date of First Visit: <Thu Oct 14 2021>   Insurance: <Safeco>
+<<M12.211	Villonodular synovitis (pigmented), right shoulder>>
+<<M12.212	Villonodular synovitis (pigmented), left shoulder>>
+<<M12.311	Palindromic rheumatism, right shoulder>>
+<<98943	Chiropractic manipulative treatment (CMT); extraspinal, one or more regions>>
+
+
+ Electronicly Signed by:Rob Thomas
+ Signiture:
+ Latest Date of Visit<Thu Oct 14 2021>

@@ -1,10 +1,84 @@
-Medicare 
+Medicare Inssurance  
 --------------------------------------------------------------------------------------------------------------------------------
-Patient			Date of Service		CPT Code [Modifier]		Dx Codes			Initial Date of Tx		Days
+Patient				Insurance 				Date of Service		Initial Date of Tx	Days	CPT Code [Modifier]	Dx Codes
+billy bumper dumb		REGENCE (MED ADVANTAGE)			Thu Oct 14 2021		Thu Oct 14 2021		0	98941		M12.411,M12.312,
+																			M12.311,
+glum terry			MEDICARE WA				Thu Oct 14 2021		Thu Oct 14 2021		0	98941		M12.411,M12.312,
+																			M12.311,
+timtom tammerino		AARP					Tue Oct 12 2021		Tue Oct 12 2021		0	98943		G57.02,G57.02,
+																			G57.02,[XS,
+																			
 
-Regence 
+Commercial Inssurance  
 --------------------------------------------------------------------------------------------------------------------------------
-Patient			Date of Service		CPT Code [Modifier]		Dx Codes			Initial Date of Tx		Days
-gus marks		Mon Oct  4 2021		9905311				M12.461,G57.62,
-										M21.41,M21.42,
-										M21.40,	Mon Oct  4 2021			0
+Patient				Insurance 				Date of Service		Initial Date of Tx	Days	CPT Code [Modifier]	Dx Codes
+honey horton			AETNA					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+jammy dogger			ASURIS NORTHWEST HEALTH			Tue Oct 12 2021		Tue Oct 12 2021		0			
+jimmy jim jam			AMERICAN SPECIALTY HEALTH		Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+little jim			BLUE SHIELD OF CA			Thu Oct  7 2021		Sat Oct  9 2021		2	8		M12.411,M12.411,
+																			M19.011,M12.312,
+																			M12.412,AT,
+																			
+Natasha Cook			REGENCE					Tue Oct  5 2021		Tue Oct  5 2021		0	8		M12.311,M12.411,
+																			M12.411,
+patient 1			CIGNA					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 10			UMR					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 11			UNITED HEALTHCARE			Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 2			FIRST CHOICE HEALTH			Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 3			GEHA					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 4			HMA					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 5			HUMANA					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 6			KPS HEALTHPLANS				Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 7			PREMERA					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 8			SHASTA					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 9			TPSC					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+
+Auto Inssurance  
+--------------------------------------------------------------------------------------------------------------------------------
+Patient				Insurance 				Date of Service		Initial Date of Tx	Days	CPT Code [Modifier]	Dx Codes
+billy bob			NATIONWIDE INSURANCE			Tue Oct 12 2021		Tue Oct 12 2021		0			
+patient 12			ALLSTATE				Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 13			FARMERS INSURANCE			Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 14			GEICO					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 15			LIBERTY MUTUAL				Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 16			PEMCO					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 17			STATE FARM				Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 18			PROGRESSIVE				Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 19			SAFECO					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 20			THE HARTFORD				Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 21			USAA					Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+
+LNI Inssurance  
+--------------------------------------------------------------------------------------------------------------------------------
+Patient				Insurance 				Date of Service		Initial Date of Tx	Days	CPT Code [Modifier]	Dx Codes
+Arthur Gustave Markolopolis	ESD 114 WORKERS COMPENSATION TRUST	Sat Oct  9 2021		Sat Oct  9 2021		0	98942		M12.212,M12.211,
+																			M12.512,
+patient 22			DEPARTMENT OF LABOR & INDUSTRIES	Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 23			EBERLE VIVIAN				Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 24			TRIBAL FIRST				Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,

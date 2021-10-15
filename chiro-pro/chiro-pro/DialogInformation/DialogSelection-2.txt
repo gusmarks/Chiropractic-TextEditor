@@ -1,7 +1,7 @@
 Allergies
 Body
-Cervical Adjustment
 Calender
+Cervical Adjustment
 Compicating Factors
 Contraindiction
 Diet & Nutrition
@@ -13,6 +13,7 @@ Freqency of pain
 Goals
 Improve/Decline
 Injury
+Insurance
 Life Affected
 Percent or vas
 Postural Change
@@ -45,6 +46,7 @@ Wrist
 Manipulation
 Management
 Misc
+Modifier
 Rehabilitation
 Xray
 Place of Service

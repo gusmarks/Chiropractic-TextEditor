@@ -1,0 +1,6 @@
+shoulder 
+Dialogs/DialogFile2.txt
+New Paragraph 
+Dialogs/DialogFile-1.txt
+manip 
+Dialogs/DialogFile9.txt

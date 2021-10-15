@@ -1,0 +1,95 @@
+Patient Name: <Natasha Cook>   Date of First Visit: <Tue Oct  5 2021>   Insurance: <Regence>
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+<<M12.311	Palindromic rheumatism, right shoulder>>
+<<M12.411	Intermittent hydrarthrosis, right shoulder>><<M12.411	Intermittent hydrarthrosis, right shoulder>>
+Chief Complaint: thoracic
+<<8	Tribal 638 Provider-based Facility	A facility or location owned and operated by a federally recognized American Indian or Alaska Native tribe or tribal organization under a 638 agreement, which provides diagnostic, therapeutic (surgical and non-surgical), and rehabilitation services to tribal members admitted as inpatients or outpatients. (Effective January 1, 2003)>>
+
+
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+Chief Complaint: thoracic
+Secondary Complaint: cervical< cervical(neck) Upper-thoracic lower-Thoracic Lumbar>
+Frequency/Quality: experiences pain and discomfort 25-50%
+
+
+
+ Electronicly Signed by:Rob Thomas
+ Signiture:
+ Latest Date of Visit<Tue Oct  5 2021>

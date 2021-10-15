@@ -1,0 +1,14 @@
+Patient Name: <billy bumper dumb>   Date of First Visit: <Thu Oct 14 2021>   Insurance: <Regence (Med Advantage)>
+
+
+<<M12.411	Intermittent hydrarthrosis, right shoulder>>
+<<M12.312	Palindromic rheumatism, left shoulder>>
+<<M12.311	Palindromic rheumatism, right shoulder>>
+<<98941	Chiropractic manipulative treatment (CMT); spinal, three to four regions>>
+
+
+
+
+ Electronicly Signed by:Rob Thomas
+ Signiture:
+ Latest Date of Visit<Thu Oct 14 2021>

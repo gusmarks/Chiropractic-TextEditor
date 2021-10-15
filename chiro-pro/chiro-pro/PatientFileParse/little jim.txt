@@ -1,0 +1,19 @@
+Patient Name: <little jim>   Date of First Visit: <Thu Oct  7 2021>   Insurance: <Blue Shield of CA>
+
+
+
+allergiesDust.
+
+patient shoulder is100%.
+<<8	Tribal 638 Provider-based Facility	A facility or location owned and operated by a federally recognized American Indian or Alaska Native tribe or tribal organization under a 638 agreement, which provides diagnostic, therapeutic (surgical and non-surgical), and rehabilitation services to tribal members admitted as inpatients or outpatients. (Effective January 1, 2003)
+<<M12.411	
+<<M12.411	
+<<M19.011	
+<<M12.312	Palindromic rheumatism, left shoulder>>.
+<<M12.412	Intermittent hydrarthrosis, left shoulder>>.
+<<AT	Acute treatment (chiropractic claims) - This modifier should be used when reporting CPT codes 98940, 98941, 98942 for chiropractic Medicare claims	>>.
+
+
+ Electronicly Signed by:Rob Thomas
+ Signiture:
+ Latest Date of Visit<Sat Oct  9 2021>

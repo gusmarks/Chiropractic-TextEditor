@@ -6,6 +6,7 @@
 class FuncHelper {
 private:
     DialogHelper* popupHandeler;
+    std::string BlankSpace = " \n\t\r\f\v";
 public:
     bool isPopup(const std::string& str) {
         return (str.find("Dialog-ID")!= std::string::npos);
@@ -75,5 +76,28 @@ public:
             popupHandeler->errorMessage("an error occured in function helper");
         }
         return false;
+    }
+    bool compaireArrayToElement(std::vector<std::string> insuranceList,std::string patientInsurance) {
+        for (size_t i = 0; i < insuranceList.size(); i++) {
+            if (patientInsurance == insuranceList.at(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    std::string leftTrim(std::string str) {
+        while (isblank(str[0])) {
+            str = str.substr(1, str.size());
+        }
+        return str;
+    }
+    std::string rightTrim(std::string str) {
+        while (isblank(str[str.size()-1])) {
+            str = str.substr(0, str.size()-1);
+        }
+        return str;
+    }
+    std::string trim(std::string strFinal) {
+        return leftTrim(rightTrim(strFinal));
     }
 };

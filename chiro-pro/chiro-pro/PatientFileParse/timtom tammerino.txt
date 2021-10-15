@@ -1,0 +1,14 @@
+Patient Name: <timtom tammerino>   Date of First Visit: <Tue Oct 12 2021>   Insurance: <AARP>
+
+  10/12/21.
+<<98943	Chiropractic manipulative treatment (CMT); extraspinal, one or more regions>>
+<<G57.02	Lesion of sciatic nerve left lower limb (piriformis syndrome)>>
+<<G57.02	Lesion of sciatic nerve left lower limb (piriformis syndrome)>>
+<<G57.02	Lesion of sciatic nerve left lower limb (piriformis syndrome)>>
+<<<<[XS	Separate Structure: A service that is distinct because it was performed on a separate organ/structure. This modifier would be used for services such as 97112, 97124 and 97140 when provided in the same visit as spinal CMT to demonstrate a separate region from CMT.]>>>>
+
+
+
+ Electronicly Signed by:Rob Thomas
+ Signiture:
+ Latest Date of Visit<Tue Oct 12 2021>

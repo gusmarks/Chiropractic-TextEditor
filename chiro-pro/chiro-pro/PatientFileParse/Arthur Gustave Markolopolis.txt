@@ -1,0 +1,13 @@
+Patient Name: <Arthur Gustave Markolopolis>   Date of First Visit: <Sat Oct  9 2021>   Insurance: <ESD 114 Workers Compensation Trust>
+
+<<M12.212	Villonodular synovitis (pigmented), left shoulder>>
+<<M12.211	Villonodular synovitis (pigmented), right shoulder>>
+<<M12.512	Traumatic arthropathy, left shoulder>>
+<<98942	Chiropractic manipulative treatment (CMT); spinal, five regions>>
+[XE	Separate Encounter: A service that is distinct because it occurred during a separate encounter]
+
+
+
+ Electronicly Signed by:Rob Thomas
+ Signiture:
+ Latest Date of Visit<Sat Oct  9 2021>

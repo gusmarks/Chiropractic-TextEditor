@@ -18,23 +18,35 @@ class billingInfoCreator {
 private:
 	std::fstream in_out;
 	std::ofstream outMed;
-	std::fstream outReg;
-	std::fstream outOth;
+	std::fstream outCom;
+	std::fstream outAuto;
+	std::fstream outLni;
+	std::fstream insuranceMedicareStream;
+	std::fstream insuranceCommStream;
+	std::fstream insuranceAutoStream;
+	std::fstream insuranceLnIStream;
+	std::vector<std::string>insuranceMedicare;
+	std::vector<std::string>insuranceComm;
+	std::vector<std::string>insuranceAuto;
+	std::vector<std::string>insuranceLnI;
 	std::string path;
-	std::string billingfile,billingfileMed,billingfileReg,billingfileOther;
+	std::string billingfile,billingfileMed,billingfileComm,billingfileAuto, billingfileLnI;
 	std::string information[6];
 	const int months[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
 	DialogHelper* popupHandeler;
+	FuncHelper* funcHelp;
 public:
 	//constructor for the infor-Creator assigns all paths to variables
 	billingInfoCreator(std::string dirpath,std::string billfilename,
-		std::string billfileMed, std::string billgfileReg, std::string billfileOther) {
+		std::string billfileMed, std::string billgfileCom, std::string billfileAuto, std::string billfileLnI) {
 		try {
 			path = dirpath;
 			billingfile = billfilename;
 			billingfileMed = billfileMed;
-			billingfileReg = billgfileReg;
-			billingfileOther = billfileOther;
+			billingfileComm = billgfileCom;
+			billingfileAuto = billfileAuto;
+			billingfileLnI = billfileLnI;
+			funcHelp = new FuncHelper();
 		}
 		catch (...) {
 			popupHandeler->errorMessage("an error occured making the billing creator");
@@ -43,6 +55,10 @@ public:
 	//this function gathers the information for the main billing documents from patient files.
 	std::string* gatherInfo(std::fstream& inout) {
 		try {
+			for (int i = 0; i < (sizeof(information) / sizeof(information[0])); i++) {
+				information[i].clear();
+			}
+			information->clear();
 			std::string infoline;
 			std::string templine;
 			if (inout.is_open()) {
@@ -84,32 +100,86 @@ public:
 		}
 		return information;
 	}
+	void GatherInsurance() {
+		insuranceAutoStream.open("DialogInformation/InsuranceAuto.txt");
+		if (insuranceAutoStream.is_open()) {
+			int i = 0;
+			std::string str;
+			while (std::getline(insuranceAutoStream, str)) {
+				std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+				insuranceAuto.push_back(str);
+				i++;
+			}
+			insuranceAutoStream.close();
+		}
+		insuranceMedicareStream.open("DialogInformation/InsuranceMedicare.txt");
+		if (insuranceMedicareStream.is_open()) {
+			int i = 0;
+			std::string str;
+			while (std::getline(insuranceMedicareStream, str)) {
+				std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+				insuranceMedicare.push_back(str);
+				i++;
+			}
+			insuranceMedicareStream.close();
+		}
+		insuranceCommStream.open("DialogInformation/InsuranceCommercial.txt");
+		if (insuranceCommStream.is_open()) {
+			int i = 0;
+			std::string str;
+			while (std::getline(insuranceCommStream,str)) {
+				std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+				insuranceComm.push_back(str);
+				i++;
+			}
+			insuranceCommStream.close();
+		}
+		insuranceLnIStream.open("DialogInformation/InsuranceLnI.txt");
+		if (insuranceLnIStream.is_open()) {
+			int i = 0;
+			std::string str;
+			while (std::getline(insuranceLnIStream, str)) {
+				std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+				insuranceLnI.push_back(str);
+				i++;
+			}
+			insuranceLnIStream.close();
+		}
+	}
 	//thisfuction is ment to take the information gathered in the previous function and make 3 seperate billing files
 	void documentCreation() {
 		try {
+			
 			in_out.open(billingfile, std::ios::out, std::ios::trunc);
 			in_out.close();
 			outMed.open(billingfileMed, std::ios::out, std::ios::trunc);
 			if (outMed.is_open()) {
-				outMed << "Medicare \n";
+				outMed << "Medicare Inssurance  \n";
 				outMed << "--------------------------------------------------------------------------------------------------------------------------------\n";
-				outMed << "Patient\t\t\tDate of Service\t\tCPT Code [Modifier]\t\tDx Codes\t\t\tInitial Date of Tx\t\tDays\n";
+				outMed << "Patient\t\t\t\tInsurance \t\t\t\tDate of Service\t\tInitial Date of Tx\tDays\tCPT Code [Modifier]\tDx Codes\n";
 			}
 			outMed.close();
-			outReg.open(billingfileReg, std::ios::out, std::ios::trunc);
-			if (outReg.is_open()) {
-				outReg << "Regence \n";
-				outReg << "--------------------------------------------------------------------------------------------------------------------------------\n";
-				outReg << "Patient\t\t\tDate of Service\t\tCPT Code [Modifier]\t\tDx Codes\t\t\tInitial Date of Tx\t\tDays\n";
+			outCom.open(billingfileComm, std::ios::out, std::ios::trunc);
+			if (outCom.is_open()) {
+				outCom << "Commercial Inssurance  \n";
+				outCom << "--------------------------------------------------------------------------------------------------------------------------------\n";
+				outCom << "Patient\t\t\t\tInsurance \t\t\t\tDate of Service\t\tInitial Date of Tx\tDays\tCPT Code [Modifier]\tDx Codes\n";
 			}
-			outReg.close();
-			outOth.open(billingfileOther, std::ios::out, std::ios::trunc);
-			if (outReg.is_open()) {
-				outOth << "Other \n";
-				outOth << "--------------------------------------------------------------------------------------------------------------------------------\n";
-				outOth << "Patient\t\t\tDate of Service\t\tCPT Code [Modifier]\t\tDx Codes\t\t\tInitial Date of Tx\t\tDays\n";
+			outCom.close();
+			outAuto.open(billingfileAuto, std::ios::out, std::ios::trunc);
+			if (outAuto.is_open()) {
+				outAuto << "Auto Inssurance  \n";
+				outAuto << "--------------------------------------------------------------------------------------------------------------------------------\n";
+				outAuto << "Patient\t\t\t\tInsurance \t\t\t\tDate of Service\t\tInitial Date of Tx\tDays\tCPT Code [Modifier]\tDx Codes\n";
 			}
-			outOth.close();
+			outAuto.close();
+			outLni.open(billingfileLnI, std::ios::out, std::ios::trunc);
+			if (outLni.is_open()) {
+				outLni << "LNI Inssurance  \n";
+				outLni << "--------------------------------------------------------------------------------------------------------------------------------\n";
+				outLni << "Patient\t\t\t\tInsurance \t\t\t\tDate of Service\t\tInitial Date of Tx\tDays\tCPT Code [Modifier]\tDx Codes\n";
+			}
+			outLni.close();
 
 			for (const auto& entry : filesystem::directory_iterator(path)) {
 				//gather the information
@@ -117,61 +187,91 @@ public:
 				if (in_out.is_open()) {
 					gatherInfo(in_out);
 				}
+				GatherInsurance();
 				in_out.close();
+				size_t position = information[5].find('<');
+				if (position !=std::string::npos) {
+					information[5] = information[5].erase(0, position+1);
+				}
 				//turn information 5 into uppercase letters
 				std::transform(information[5].begin(), information[5].end(), information[5].begin(), ::toupper);
-				if (information[5].find("MEDICARE") != std::string::npos) {
+				if (funcHelp->compaireArrayToElement(insuranceMedicare,information[5])) {
 					seperateCptCodes(information[4]);
 					outMed.open(billingfileMed, std::ios::app);
 					if (outMed.is_open()) {
-
-						outMed << information[0] << "\t\t";
+						controlSpacingInNameAndInsurance();
+						outMed << information[0];
+						outMed << information[5];
+						outMed << information[1] << "\t\t";
 						outMed << information[2] << "\t\t";
-						int pos = rearangeDxCodes(0);
-
-						outMed << information[3] << "\t\t\t\t";
-						pos += 8;
-						outMed << information[4] << "\t";
-						outMed.seekp(pos);
-						outMed << information[1] << "\t\t\t";
 						int days = getDayDifferance(intdateformater(information[1]), intdateformater(information[2]));
-						outMed << days << "\n";
+						outMed << days << "\t";
+						int pos = rearangeDxCodes(0);
+						outMed << information[3] << "\t\t";
+						pos += 8;
+						outMed.seekp(pos);
+						outMed << information[4];
+
 					}
 					outMed.close();
 				}
-				if (information[5].find("REGENCE") != std::string::npos) {
+				if (funcHelp->compaireArrayToElement(insuranceComm,information[5])) {
 					seperateCptCodes(information[4]);
-					outReg.open(billingfileReg, std::ios::app);
-					if (outReg.is_open()) {
-						outReg << information[0] << "\t\t";
-						outReg << information[2] << "\t\t";
-						int pos = rearangeDxCodes(1);
-						outReg << information[3] << "\t\t\t\t";
-						pos += 8;
-						outReg << information[4] << "\t";
-						outReg.seekp(pos);
-						outReg << information[1] << "\t\t\t";
+					outCom.open(billingfileComm, std::ios::app);
+					if (outCom.is_open()) {
+						controlSpacingInNameAndInsurance();
+						outCom << information[0];
+						outCom << information[5];
+						outCom << information[1] << "\t\t";
+						outCom << information[2] << "\t\t";
 						int days = getDayDifferance(intdateformater(information[1]), intdateformater(information[2]));
-						outReg << days << "\n";
+						outCom << days << "\t";
+						int pos = rearangeDxCodes(0);
+						outCom << information[3] << "\t\t";
+						pos += 8;
+						outCom.seekp(pos);
+						outCom << information[4];
+
 					}
-					outReg.close();
+					outCom.close();
 				}
-				if (information[5].find("OTHER") != std::string::npos) {
+				if (funcHelp->compaireArrayToElement(insuranceAuto, information[5])) {
 					seperateCptCodes(information[4]);
-					outOth.open(billingfileOther, std::ios::app);
-					if (outOth.is_open()) {
-						outOth << information[0] << "\t\t";
-						outOth << information[2] << "\t\t";
-						int pos = rearangeDxCodes(2);
-						outOth << information[3] << "\t\t\t\t";
-						pos += 8;
-						outOth << information[4] << "\t";
-						outReg.seekp(pos);
-						outOth << information[1] << "\t\t\t";
+					outAuto.open(billingfileAuto, std::ios::app);
+					if (outAuto.is_open()) {
+						controlSpacingInNameAndInsurance();
+						outAuto << information[0];
+						outAuto << information[5];
+						outAuto << information[1] << "\t\t";
+						outAuto << information[2] << "\t\t";
 						int days = getDayDifferance(intdateformater(information[1]), intdateformater(information[2]));
-						outOth << days << "\n";
+						outAuto << days << "\t";
+						int pos = rearangeDxCodes(0);
+						outAuto << information[3] << "\t\t";
+						pos += 8;
+						outAuto.seekp(pos);
+						outAuto << information[4] ;
 					}
-					outOth.close();
+					outAuto.close();
+				}
+				if (funcHelp->compaireArrayToElement(insuranceLnI, information[5])) {
+					seperateCptCodes(information[4]);
+					outLni.open(billingfileLnI, std::ios::app);
+					if (outLni.is_open()) {
+						controlSpacingInNameAndInsurance();
+						outLni << information[0];
+						outLni << information[5];
+						outLni << information[1] << "\t\t";
+						outLni << information[2] << "\t\t";
+						int days = getDayDifferance(intdateformater(information[1]), intdateformater(information[2]));
+						outLni << days << "\t";
+						int pos = rearangeDxCodes(0);
+						outLni << information[3] << "\t\t";
+						pos += 8;
+						outLni.seekp(pos);
+						outLni << information[4];
+					}
+					outLni.close();
 				}
 
 			}
@@ -384,12 +484,18 @@ public:
 		try {
 			in_out.open(billingfile);
 			std::ifstream Medicare;
-			std::ifstream Regence;
+			std::ifstream Comercial;
+			std::ifstream Auto;
+			std::ifstream LnI;
 			Medicare.open(billingfileMed);
-			Regence.open(billingfileReg);
-			in_out << Medicare.rdbuf() << "\n" << Regence.rdbuf();
+			Comercial.open(billingfileComm);
+			Auto.open(billingfileAuto);
+			LnI.open(billingfileLnI);
+			in_out << Medicare.rdbuf() << "\n" << Comercial.rdbuf()<<"\n"<<Auto.rdbuf()<<"\n"<<LnI.rdbuf();
 			Medicare.close();
-			Regence.close();
+			Comercial.close();
+			Auto.close();
+			LnI.close();
 			in_out.close();
 		}
 		catch (...) {
@@ -404,7 +510,7 @@ public:
 			std::stringstream ss(information[4]);
 			information[4] = "";
 			std::string templine;
-			int position;
+			int position=0;
 			int i = 0;
 			int test = static_cast<int>(NumberOfCommas);
 			while (getline(ss, templine, ',')) {
@@ -412,7 +518,7 @@ public:
 				information[4] += templine + ",";
 				ofsett += templine.size() + 1;
 				if (i % 2 != 0) {
-					information[4] += "\n\t\t\t\t\t\t\t\t\t\t";
+					information[4] += "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
 				}
 				if (i == 1 && type == 0) {
 					int x = static_cast<int>(ofsett);
@@ -431,6 +537,7 @@ public:
 				}
 				i++;
 			}
+			information[4] += "\n";
 			return position;
 		}
 		catch (...) {
@@ -438,5 +545,38 @@ public:
 			return NULL;
 		}
 	}
+	void controlSpacingInNameAndInsurance() {
+		if (information[0].size() > 24 && information[0].size() <= 32) {
+			information[0] += "\t";
+		}
+		if (information[0].size() >= 16 && information[0].size() <= 24) {
+			information[0] += "\t\t";
+		}
+		if (information[0].size() > 8 && information[0].size() < 16) {
+			information[0] += "\t\t\t";
+		}
+		if (information[0].size() <= 8) {
+			information[0] += "\t\t\t\t";
+		}
+		if (information[5].size() > 25 && information[5].size() <= 35) {
+			information[5] += "\t";
+		}
+		if (information[5].size() == 25) {
+			information[5] += "\t\t";
+		}
+		if (information[5].size() >= 17 && information[5].size() <= 24) {
+			information[5] += "\t\t\t";
+		}
+		if (information[5].size() >= 8 && information[5].size() < 17) {
+			information[5] += "\t\t\t\t";
+		}
+		if (information[5].size() < 8) {
+			information[5] += "\t\t\t\t\t";
+		}
+		
+		
+		
+	}
+	
 };
 

@@ -83,7 +83,7 @@ bool MainApplication::OnInit()
 {
     //main frame constructor
      m_styleSheet = new wxRichTextStyleSheet();
-    MainFrame* MainWin = new MainFrame(wxT("DocuMaster"), wxPoint(1, 1),
+    MainFrame* MainWin = new MainFrame("BespokeChartnote", wxPoint(1, 1),
         wxSize(300, 200)); // Create an instance of our frame, or window
     MainWin->Show(TRUE); // show the window
     MainWin->SetIcon(wxIcon("SAMPLE"));
@@ -298,7 +298,7 @@ void MainFrame::addButton(wxCommandEvent& event)
        //promp user for name and text of text button
        if (selection == "Text Button.") {
            premadeSelection = popUpHandeler->selectPremadeDialog();
-           if (premadeSelection.selectionText == "New Paragraph") {
+           if (premadeSelection.selectionText.find("New Paragraph")!= std::string::npos) {
                //open the dialog creator to make a new paragraph name the button to name the new paragraph(could be an issue)
                openDialogCreator();
                buttonName = wxGetTextFromUser("Enter name for Button & Dialog", "Must have name(errors may occur if unnamed)", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
@@ -351,7 +351,7 @@ void MainFrame::addButton(wxCommandEvent& event)
                return;
            }
            wxString ButtonName =
-               wxGetTextFromUser("Enter text for button name", "Must have name(errors may occur if unnamed)", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
+               wxGetTextFromUser("Enter text for button name", "Must have name(errors may occur if unnamed)", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
            if (ButtonName != "" && currentButtonSet->getCurrentPanel()->getLevel() < 2) {
                //gets the panel index and adds the new button, also the new panel that the button will link to.
                int panelCount = currentButtonSet->getCurrentPanel()->getPanelCount();
@@ -392,7 +392,7 @@ void MainFrame::sign(wxCommandEvent& WXUNUSED(event)) {
             mainEditBox->EndURL();
             mainEditBox->WriteText("\n");
             wxBitmap signiture;
-            currentButtonSet->getSigniturePath();
+            wxString str =currentButtonSet->getSigniturePath();
             //load a document containing pixels for a signiture
             signiture.LoadFile(currentButtonSet->getSigniturePath(), wxBITMAP_TYPE_ANY);
             // arrange descriptive text, and the current date
@@ -419,13 +419,13 @@ void MainFrame::onRightClick(wxMouseEvent& event) {
     // depending on what type of button it is, all the user to alter it
     //if its a new page button all the user to edit the name
     if (functionHelper->isNumber(name)) {
-        menu.Append(MENU_EditButtonName, "edit Name of button");
+        menu.Append(MENU_EditButtonName, "rename button");
         
         
     }
     // if its a text button allow the name to be edited and the button to be removed
     else  if (functionHelper->isText(name)) {
-        menu.Append(MENU_EditButtonName, "edit Name of button");
+        menu.Append(MENU_EditButtonName, "rename button");
         menu.Append(MENU_RemoveButton, "remove button");
     }
 
@@ -439,36 +439,67 @@ void MainFrame::onPopUpCLick(wxCommandEvent& event) {
     wxString buttonName;
     wxString buttonText;
     switch (event.GetId()) {
-    case MENU_EditButtonName: {
+        case MENU_EditButtonName: {
         //if the edit name option was chocsen then prompt the user for a new name, as long as it was not empty
         //the new name will replace the old one
-        buttonName =
-            wxGetTextFromUser("Enter text for button name", " ", buttonToEdit->GetLabel(), NULL, wxDefaultCoord, wxDefaultCoord, true);
-        if (!buttonName.IsEmpty()) {
-            MainFrame::setbuttonToEditName(buttonName);
-        }
-
-        break;
-    }
-            //make new case to remove button
-    case MENU_RemoveButton: {
-        std::vector<wxButton*> vect = currentButtonSet->getCurrentPanel()->getQLinkList();
-        int x = 0;
-        for (int i = 0; i != (int)vect.size(); i++) {
-            wxString buttonName = currentButtonSet->getCurrentPanel()->getQLinkList().at(i)->GetName();
-            if (buttonName == buttonToEdit->GetName()) {
-                x = i;
+            buttonName =
+                wxGetTextFromUser("Enter text for button name", " ", buttonToEdit->GetLabel(), NULL, wxDefaultCoord, wxDefaultCoord, true);
+            if (!buttonName.IsEmpty()) {
+                std::string oldName = MainFrame::buttonToEdit->GetLabel().ToStdString();
+                oldName= functionHelper->trim(oldName);
+                MainFrame::setbuttonToEditName(buttonName);
+                std::string namestempstr;
+                fstream nameFile;
+                nameFile.open("Dialogs/0DialogList.txt");
+                if (nameFile.is_open()) {
+                    fstream tempFile;
+                    tempFile.open("Dialogs/temp.txt", ios::out);
+                    if (tempFile.is_open()) {
+                        while (getline(nameFile, namestempstr)) {
+                            stringstream ss(namestempstr);
+                            std::string str;
+                            while (getline(ss, str, ' ')) {
+                                if (str != oldName) {
+                                    tempFile << str << " ";
+                                }
+                                if (str == oldName) {
+                                    tempFile << buttonName << " ";
+                                }
+                            }
+                            tempFile << "\n";
+                        }
+                    }
+                tempFile << "hello" << "\n";
+                tempFile.close();
+                nameFile.close();
+                int test = remove("Dialogs/0dialogList.txt");
+                int test2 = rename("Dialogs/temp.txt", "Dialogs/0dialogList.txt");
+                
+                
+                }
             }
+
+            break;
         }
-        vect.erase(vect.begin() + x);
-        int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
-        currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex - 1);
-        MainFrame::removebuttonToEdit();
-        currentButtonSet->getCurrentPanel()->getGridSizer()->Layout();
-        Update();
-        break;
-    }
-    }
+        //make new case to remove button
+        case MENU_RemoveButton: {
+            std::vector<wxButton*> vect = currentButtonSet->getCurrentPanel()->getQLinkList();
+            int x = 0;
+            for (int i = 0; i != (int)vect.size(); i++) {
+                wxString buttonName = currentButtonSet->getCurrentPanel()->getQLinkList().at(i)->GetName();
+                if (buttonName == buttonToEdit->GetName()) {
+                    x = i;
+                }
+            }
+            vect.erase(vect.begin() + x);
+            int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
+            currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex - 1);
+            MainFrame::removebuttonToEdit();
+            currentButtonSet->getCurrentPanel()->getGridSizer()->Layout();
+            Update();
+            break;
+        }
+    }  
 }
 /// <summary>
 /// swapPanels takes in a ButtonPanel and makes it the active panel
@@ -664,7 +695,6 @@ void MainFrame::newSet() {
 
             std::string names[4] = { "Subjective","Objective","Assesment","Plan" };
             //sets the original set as the first and saves basic set information
-            //userSelection->SetSelection(0);
             for (int i = 0; i < 4; i++) {
                 newSetStream << names[i];
                 newSetStream << "\n";
@@ -697,12 +727,10 @@ void MainFrame::saveButtonSetInfo(std::string path) {
         // if the file opend properly save all the information to the users file path
         if (!setInfoOut.fail()) {
             for (size_t i = 0; i < buttonSetList.size(); i++) {
-                setInfoOut << buttonSetList.at(i)->getSetName().ToStdString();
-                setInfoOut << "\n";
-                setInfoOut << buttonSetList.at(i)->getPanelCount();
-                setInfoOut << "\n";
-                setInfoOut << buttonSetList.at(i)->getPath();
-                setInfoOut << "\n";
+                setInfoOut << buttonSetList.at(i)->getSetName().ToStdString() << "\n";
+                setInfoOut << buttonSetList.at(i)->getPanelCount() << "\n";
+                setInfoOut << buttonSetList.at(i)->getPath() << "\n";
+                setInfoOut << buttonSetList.at(i)->getSigniturePath() << "\n";
                 setInfoOut.close();
             }
         }
@@ -825,6 +853,10 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
     if (dialogChoice == "Body") {
         result = popUpHandeler->bodyDialog("Select a location(s)");
         CptOrDx = 1;
+    } 
+    if (dialogChoice == "Calender") {
+        result = popUpHandeler->Calender();
+        CptOrDx = 1;
     }
     if (dialogChoice == "Cervical Adjustment") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Cervicaladjustment.txt", "Cervical Adjustment");
@@ -854,25 +886,28 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise Routine");
         CptOrDx = 1;
     }
-    if (dialogChoice == "Freqency of pain") {
-        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/FreqOfPain.txt", "Freqency of pain");
-        CptOrDx = 1;
-    }
     if (dialogChoice == "Family History") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/familyHistory.txt", "family History");
+        CptOrDx = 1;
+    }
+    if (dialogChoice == "Freqency of pain") {
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Freqency of pain");
         CptOrDx = 1;
     }
     if (dialogChoice == "Goals") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/goals.txt", "Goals");
         CptOrDx = 1;
     }
-
     if (dialogChoice == "Improve/Decline") {
-        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/BetterorWorse.txt", "Improve/Decline");
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/BetterorWorse.txt", "Improve/Decline");
         CptOrDx = 1;
     }
     if (dialogChoice == "Injury") {
-        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Injury.txt", "Injury");
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/Injury.txt", "Injury");
+        CptOrDx = 1;
+    }
+    if (dialogChoice == "Insurance") {
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/InsuranceAll.txt", "Insurance");
         CptOrDx = 1;
     }
     if (dialogChoice == "Life Affected") {
@@ -917,7 +952,7 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
         CptOrDx = 1;
     }
     if (dialogChoice == "Side") {
-        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/side.txt", "Side");
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/side.txt", "Side");
         CptOrDx = 1;
     }
     if (dialogChoice == "Spine") {
@@ -925,7 +960,7 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
         CptOrDx = 1;
     }
     if (dialogChoice == "Tone Intensity") {
-        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ToneIntensity.txt", "Tone Intensity");
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/ToneIntensity.txt", "Tone Intensity");
         CptOrDx = 1;
     }
     if (dialogChoice == "Work") {
@@ -933,79 +968,84 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
         CptOrDx = 1;
     }
     if (dialogChoice == "Vas") {
-        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Vas.txt", "VAS");
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/Vas.txt", "VAS");
         CptOrDx = 1;
     }
     if (dialogChoice == "Ankle") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptcodes-ankle.txt", "Dx Ankel");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-ankle.txt", "Dx Ankel");
         CptOrDx = 2;
     }
     if (dialogChoice == "Cervical Spine") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptcodes-cervicalSpine.txt", " DxCervical Spine");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-cervicalSpine.txt", " DxCervical Spine");
         CptOrDx = 2;
     }
     if (dialogChoice == "Elbow Forarm") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/ctpcodes-ElbowForearm.txt", "Dx Elbow Forarm");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/ctpcodes-ElbowForearm.txt", "Dx Elbow Forarm");
         CptOrDx = 2;
     }
     if (dialogChoice == "Foot") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptcodes-foot.txt", "Dx Foot");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-foot.txt", "Dx Foot");
         CptOrDx = 2;
     }
     if (dialogChoice == "Hand") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptcodes-hand.txt", "Dx Hand");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-hand.txt", "Dx Hand");
         CptOrDx = 2;
     }
     if (dialogChoice == "Head") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptcodes-head.txt", "Dx Head");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-head.txt", "Dx Head");
         CptOrDx = 2;
     }
     if (dialogChoice == "Hip-Thigh") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptcodes-hip_thigh.txt", "Dx Hip-Thigh");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-hip_thigh.txt", "Dx Hip-Thigh");
         CptOrDx = 2;
     }
     if (dialogChoice == "Knee") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/ctpcodes-knee.txt", "Dx Knee");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/ctpcodes-knee.txt", "Dx Knee");
         CptOrDx = 2;
     }
     if (dialogChoice == "Lumbosacral Spine") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptcodes-LumbosacralSpine.txt", "Dx Lumbosacral Spine");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-LumbosacralSpine.txt", "Dx Lumbosacral Spine");
         CptOrDx = 2;
     }
     if (dialogChoice == "Shoulder") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptcodes-shoulder.txt", "Dx Shoulder");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-shoulder.txt", "Dx Shoulder");
         CptOrDx = 2;
     }
     if (dialogChoice == "Thoacic Spine") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptcodes-thoacicSpine.txt", "Dx Thoacic Spine");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-thoacicSpine.txt", "Dx Thoacic Spine");
         CptOrDx = 2;
     }
     if (dialogChoice == "Wrist") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptcodes-Wrist.txt", "Dx Wrist");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-Wrist.txt", "Dx Wrist");
         CptOrDx = 2;
     }
     if (dialogChoice == "Manipulation") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptChiropractic-Manipulation-CPT-Coding.txt", " Manipulation");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptChiropractic-Manipulation-CPT-Coding.txt", " Manipulation");
         CptOrDx = 2;
     }
     if (dialogChoice == "Management") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptEvaluation-and-Management-Codes.txt", " Management");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptEvaluation-and-Management-Codes.txt", " Management");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Modifier") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-mods.txt", " Modifier");
+        result = "[" + result + "]";
         CptOrDx = 2;
     }
     if (dialogChoice == "Misc") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cpt-misc.txt", "Misc");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cpt-misc.txt", "Misc");
         CptOrDx = 2;
     }
     if (dialogChoice == "Rehabilitation") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptcode-Physical-Medicine-Rehabilitation.txt", "Rehabilitation");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcode-Physical-Medicine-Rehabilitation.txt", "Rehabilitation");
         CptOrDx = 2;
     }
     if (dialogChoice == "Xray") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cptext-xray.txt", "Xray");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptext-xray.txt", "Xray");
         CptOrDx = 2;
     }
     if (dialogChoice == "Place of Service") {
-        result = popUpHandeler->MultipleChoiceDialog("Dialogs/cptcodes/cpt-placeofService.txt", "Place of Service");
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cpt-placeofService.txt", "Place of Service");
         CptOrDx = 2;
     }
     if (dialogChoice != "OTHER") {
@@ -1022,7 +1062,6 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
         
         mainEditBox->EndURL();
         mainEditBox->EndAllStyles();
-        mainEditBox->WriteText("\n");
     }
 
 }
@@ -1056,7 +1095,7 @@ void MainFrame::openGenDialogEditor(wxCommandEvent& WXUNUSED(event)) {
         std::string name = "Dialogs/DialogFile"+ std::to_string(index)+".txt";
     
         DialogEditingHelper = new DialogEditor(this, wxID_ANY, name);
-        DialogEditingHelper->openGenFile();
+        DialogEditingHelper->openGenFile(name);
         if (DialogEditingHelper->ShowModal() == wxID_OK) {
 
 
@@ -1095,6 +1134,8 @@ void MainFrame::readDialogFile(wxCommandEvent& event) {
 /// <param name="lines"></param>
 void MainFrame::DialogWriter(std::vector<std::string> lines) {
     size_t i = 0;
+    mainEditBox->EndURL();
+    mainEditBox->EndTextColour();
     while (i < lines.size()) {
         wxString result;
         int linkInd = lines.at(i).find("<");
@@ -1124,410 +1165,506 @@ void MainFrame::DialogWriter(std::vector<std::string> lines) {
 
             if (str == "Dialog-ID-Allergies") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "Allergies");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Body") {
                 result = popUpHandeler->bodyDialog("body");
-
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Calender") {
                 result = popUpHandeler->Calender();
-             
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Cervical-Adjustment") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Cervicaladjustment.txt", "Cervical Adjustment");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Complicating-Factors") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/CompicatingFactors.txt", "Compicating Factors");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Contraindiction") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/contraindication.txt", "Contraindication");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Nutrition") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/DietNutrition.txt", "Diet and Nutrition");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Dificulty-Performing") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/dificultyPerforming.txt", "Dificulty Performing Tasks");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Drugs-Medication") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "Drugs and Medication");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Exercise") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise Routine");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Family-History") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/familyHistory.txt", "Family History");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Pain") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Frequency of Pain");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Goals") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/goals.txt", "Goals");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Improve/Decline") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/BetterorWorse.txt", "Improve/Decline");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Injury") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/Injury.txt", "Injury");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
+            }
+            if (str == "Dialog-ID-Insurance") {
+                result = popUpHandeler->SingleChoiceDialog("DialogInformation/InsuranceAll.txt", "Insurance");
+                mainEditBox->WriteText("  ");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Life-Affected") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/LifeAffected.txt", "Life Affected");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Percentorvas") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/percentorvas.txt", "Percent or Vas");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-PosturalChange") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/posturalChange.txt", "Postural Change");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-QualityofDiscomfort") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "Quality of Discomfort");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Improve") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/rateofImprove.txt", "Rate of Improvement");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Restrictions") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/restrictions.txt", "Restrictions");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-ROMregion") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ROMregion.txt", "ROM Region");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Social") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/socialhabits.txt", "Social Habits");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Surgical") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "Surgical History");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Muscle") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/SpecificMuseles.txt", "Specific Museles");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Side") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/side.txt", "Side");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
 
             }
             if (str == "Dialog-ID-Spine") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/spineSegmentsL-R.txt", "Spine SegmentsL-R");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
 
             }
             if (str == "Dialog-ID-ToneIntensity") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/ToneIntensity.txt", "Tone Intensity");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Work") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/work.txt", "Work");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Vas") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/Vas.txt", "Vas");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "CPT-ID-Ankle") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-ankle.txt", "Ankle-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-CervicalSpine") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-cervicalSpine.txt", "Cervical-Spine-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-ElbowForarm") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/ctpcodes-ElbowForearm.txt", "Elbow-Forarm-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-Foot") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-foot.txt", "Foot-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-Hand") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-hand.txt", "Hand-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-Head") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-head.txt", "Head-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-Hip-Thigh") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-hip_thigh.txt", "Hip-Thigh-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-Knee") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/ctpcodes-knee.txt", "Knee-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-Lumbosacral-Spine") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-LumbosacralSpine.txt", "Lumbosacral-Spine-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-Shoulder") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-shoulder.txt", "Shoulder-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-ThoacicSpine") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-thoacicSpine.txt", "Thoacic-Spine-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-Wrist") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-Wrist.txt", "Wrist");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-Manipulation") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptChiropractic-Manipulation-CPT-Coding.txt", "Manipulation-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-Management") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptEvaluation-and-Management-Codes.txt", "Management-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-Misc") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cpt-misc.txt", "Misc-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
+            }
+            if (str == "CPT-ID-Mod") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-mods.txt", "Misc-CPT");
+                mainEditBox->WriteText("[");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+                mainEditBox->WriteText("]");
             }
             if (str == "CPT-ID-Rehabilitation") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcode-Physical-Medicine-Rehabilitation.txt", "Rehabilitation");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-Xray") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptext-xray.txt", "Xray-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
             if (str == "CPT-ID-PlaceofService") {
 
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cpt-placeofService.txt", "Place of Service-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("<<");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(">>");
             }
         }
         else {

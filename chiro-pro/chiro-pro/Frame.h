@@ -484,10 +484,13 @@ public:
 			wxString name=wxGetTextFromUser("Enter Patient name", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
 			if (name == "") 
 				return;
-			wxString insurance = popUpHandeler->SingleChoiceDialog("DialogInformation/Insurance.txt", "Select A Provider.");
+			wxString insurance = popUpHandeler->SingleChoiceDialog("DialogInformation/InsuranceAll.txt", "Select A Provider.");
 			if (insurance == "OTHER") 
 				return;
+			mainEditBox->SetInsertionPoint(0);
+			mainEditBox->DiscardEdits();
 			mainEditBox->Clear();
+			mainEditBox->Disable();
 			MainFrame::setFilename(name);
 			mainEditBox->Enable();
 			mainEditBox->BeginBold();
@@ -503,8 +506,13 @@ public:
 			mainEditBox->BeginBold();
 			mainEditBox->WriteText("Insurance: ");
 			mainEditBox->EndBold();
+			mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+			mainEditBox->BeginURL(insurance);
 			mainEditBox->WriteText("<"+insurance+">");
 			mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
+			mainEditBox->EndURL();
+			mainEditBox->EndTextColour();
+			mainEditBox->WriteText(".");
 			mainEditBox->SetEditable(true);
 		
 	}
@@ -558,8 +566,8 @@ public:
 
 	void gatherBillingInformation(wxCommandEvent& event) {
 		billingInfoCreator BIC = billingInfoCreator("PatientFileParse", "billingInfo/billingDocument.txt",
-			"billingInfo/billingDocument-Medicare.txt", "billingInfo/billingDocument-Regence.txt",
-			"billingInfo/billingDocument-Other.txt");
+			"billingInfo/billingDocument-Medicare.txt", "billingInfo/billingDocument-Comm.txt",
+			"billingInfo/billingDocument-Auto.txt","billingInfo/billingDocument-Lni.txt");
 		BIC.documentCreation();
 	}
 	/// <summary>

@@ -1,0 +1,11 @@
+LNI Inssurance  
+--------------------------------------------------------------------------------------------------------------------------------
+Patient				Insurance 				Date of Service		Initial Date of Tx	Days	CPT Code [Modifier]	Dx Codes
+Arthur Gustave Markolopolis	ESD 114 WORKERS COMPENSATION TRUST	Sat Oct  9 2021		Sat Oct  9 2021		0	98942		M12.212,M12.211,
+																			M12.512,
+patient 22			DEPARTMENT OF LABOR & INDUSTRIES	Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 23			EBERLE VIVIAN				Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
+patient 24			TRIBAL FIRST				Thu Oct 14 2021		Thu Oct 14 2021		0	98943		M12.211,M12.212,
+																			M12.311,
