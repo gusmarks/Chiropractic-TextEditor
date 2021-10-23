@@ -1,31 +1,31 @@
-22	Unusual Procedural Services: When the service(s) provided is greater than that usually required for the listed procedure, it may be identified by adding the modifier '-22' to the usual procedure number or by use of the separate five digit modifier code 09922. A report may also be appropriate.
-25	Significant, Separately Identifiable Evaluation and Management Service by the Same Physician on the Same Day of a Procedure or Other Service: The physician may need to indicate that on the day a procedure or service identified by a CPT code was performed, the patient's condition required a significant, separately identifiable E/M service above and beyond the other service provided or beyond the usual preoperative or postoperative care associated with the procedure that was performed. This circumstance may be reported ay adding the modifier '-25' to the appropriate level of E/M service, or the separate five digit modifier 09925 may be used. Use this modifier on the E&M code when it is performed in the same visit at chiropractic manipulation.
-26	Professional Component: Certain procedures are a combination of a physician component and a technical component. When the physician component is reported separately, the service may be identified by adding the modifier '-26' to the usual procedure number, or the service may be reported by use of the separate five digit modifier code 09926.
-32	Mandated Services: Service related to mandated consultation and/or related services (e.g. PRO, 3rd party payer) may be identified by adding the modifier '-32' to the basic procedure or the service may be reported by use of the five-digit modifier 09932.
-50	Bilateral Procedure: is used to report bilateral procedures that are performed during the same operative session by the same physician in either separate operative areas (e.g. hands, feet, legs, arms, ears), or one (same) operative area (e.g. nose, eyes, breasts).
-51	Multiple Procedures: When multiple procedures, other than Evaluation and Management Services, are performed on the same day or at the same session by the same provider, the primary procedure or service may be reported as listed. The additional procedure(s) or service(s) may be identified by appending the modifier '-51' to the additional procedure or service code(s) or by the use of the separate five digit modifier 09951. This modifier should not be appended to designated "add-on" codes
-52	Reduced Services: Under certain circumstances, a service or procedure is partially reduced or eliminated at the physician's election. Under these circumstances, the service provided can be identified by its usual procedure number and the addition of the modifier '-52,' signifying that the service is reduced. This provides a means of reporting reduced services without disturbing the identification of the basic service. Modifier code 09952 may be used as an alternative to modifier '-52.' This modifier is also not be used for timed services done 7 minutes or less when a timed service is done 7 minutes or less it is not billable. United Health Care will reduce the payment by 50% when this modifier is used. It is also not appropriate to use this modifier with evaluation and management codes.
-59	Distinct Procedural Service: Under certain circumstances, the physician may need to indicate that a procedure or service was distinct or independent from other services performed on the same day. Modifier "-59" is used to identify procedures/services that are not normally reported together but are appropriate under the circumstances. Modifier code 09959 may be used as an alternative to modifier "-59". Use this modifier on 97112, 97124, & 97140 when done in the same visit as Chiropractic Manipulative Therapy, to a separate regiion from teh spne regions of CMT. However, it would be more accurate to use the XS modifier to demonstrate a separate region.
-XE	Separate Encounter: A service that is distinct because it occurred during a separate encounter
-XS	Separate Structure: A service that is distinct because it was performed on a separate organ/structure. This modifier would be used for services such as 97112, 97124 and 97140 when provided in the same visit as spinal CMT to demonstrate a separate region from CMT.
-XP	Separate Practitioner: A service that is distinct because it was performed by a different practitioner
-XU	Unusual Non-Overlapping Service: The use of a service that is distinct because it does not overlap the usual components of the main service.
-76	Repeat Procedure by Same Physician: The physician may need to indicate that a procedure or service was repeated subsequent to the original service. This circumstance may be reported by adding the modifier '-76' to the repeated service or the separate five digit modifier code 09976 may be used
-90	Reference (Outside) Laboratory: When laboratory procedures are performed by a party other than the treating or reporting physician by adding the modifier '-90' to the usual procedure number.
-95	Synchronous telemedicine service rendered via a real-time interactive audio and video telecommunications system. Append this modifier to an appropriate CPT code for a real time interaction between a physician or other qualified healthcare professional and a patient who is located at a distant site from the reporting provider. Some payers may request modifier GT or GQ. Note that with use of this modifier it must also be indicated place of service 02.
-GT	Telemedicine via interactive audio and video telecommunication systems. Use only when directed by your payer in lieu of modifier 95.
-GQ	Telemedicine via an asynchronous telecommunications system apply only when reporting telehealth services.
-GP	Services delivered under an outpatient physical therapy plan of care also referred to as the "always therapy" modifier. This modifier is required on all physical medicine services on claims to the VA, United Health Care and Medicare claims perfomed by doctor of chiropractic.
-97	When a service or procedure that may be either habilitative or rehabilitative in nature is provided for rehabilitative purposes, the physician or other qualified healthcare professional may add modifier 97- to the service or procedure code to indicate that the service or procedure provided was rehabilitative. This modifier is required by Humana for chiropractic claims on CMT and physical medicine services.
-GA	The GA modifier is used when you report a mandatory advance beneficiary notice of noncoverage (ABN) for an item or service. This means the patient knows the item or service doesn't meet the definition of any Medicare or Medicaid policies, and will therefore not be covered. Waiver of Liability Statement Issued, as Required by Payer Policy. This is used for chiropractic claims where spinal CMT is considered maintenance and the patient has signed an ABN
-GY	Item or service statutorily excluded, does not meet the definition of any Medicare benefit. For chiropractic claims this would be appended to any all services that are not spinal manipulation
-AT	Acute treatment (chiropractic claims) - This modifier should be used when reporting CPT codes 98940, 98941, 98942 for chiropractic Medicare claims	
-GX	The GX modifier is used to report that a voluntary Advance Beneficiary Notice of Noncoverage (ABN) has been issued to the beneficiary before/upon receipt of their Part B procedure/service because it is statutorily noncovered or does not meet the definition of a Medicare benefit. This modifier is not typically used but could be used for an excluded service to indicate a waiver of liability was signed and would be included with a GY. A waiver of excluded services is not required to be signed and therefore is not required or often used.
-GZ	The provider expects a medical necessity denial, however, did not provide an Advance Beneficiary Notice of Noncoverage (ABN) to the patient. The line item containing the GZ modifier is denied provider-liable. This would be used when an ABN should have been issued but did not and to inform Medicare it is maintenance. This is used to meet the mandatory submission of a spinal CMT and will automatically denied with with provider liablity and no collection from the patient for the covered service.
-Q6	Service furnished by a locum tenens physician
-QU	Physician service in an urban HPSA.
-KR	Rental item, durable medical equipment �?? billing for partial month
-RR	Rental (use the RR modifier when DME is a rental)
-NU	New equipment (DME)
-LT	Left Side - Used to identify procedures performed on the left side of the body.
-RT	Right Side - Used to identify procedures performed on the right side of the body.
+22
+25
+26
+32
+50
+51
+52
+59
+XE
+XS
+XP
+XU
+76
+90
+95
+GT
+GQ
+GP
+97
+GA
+GY
+AT
+GX
+GZ
+Q6
+QU
+KR
+RR
+NU
+LT
+RT

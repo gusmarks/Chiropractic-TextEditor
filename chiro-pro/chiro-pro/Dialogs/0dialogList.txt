@@ -1,17 +1,3 @@
 New Paragraph 
 ----------------------- 
-place  Treatment  	Dialogs/DialogFile1.txt 
-shoulder 	Dialogs/DialogFile2.txt 
-pain 	Dialogs/DialogFile3.txt 
-allergies 	Dialogs/DialogFile4.txt 
-Hello World! This is Life Callling, leave me a message 	Dialogs/DialogFile5.txt 
-Hello World, this is Life!!!! 	Dialogs/DialogFile6.txt 
-modifier 	Dialogs/DialogFile7.txt 
-vas 	Dialogs/DialogFile8.txt 
-manip 	Dialogs/DialogFile9.txt 
-manip-cal 	Dialogs/DialogFile10.txt 
-spine 	Dialogs/DialogFile11.txt 
-cal 	Dialogs/DialogFile12.txt 
-insurance 	Dialogs/DialogFile13.txt 
-hello
- 	Dialogs/DialogFile13.txt
+

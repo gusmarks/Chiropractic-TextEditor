@@ -249,6 +249,7 @@ public:
 	void startSwapHelper(wxCommandEvent& event);
 	// swaps the user set to the selected one
 	void swapButtonSet(wxCommandEvent& evt);
+	void swapButtonSet(int setIndex);
 	//makes a new user set, with the appropriate files and directories
 	void newSet(wxCommandEvent& event);
 	void newSet();

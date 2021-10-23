@@ -74,7 +74,6 @@ public://an ofstream to save configurations
 	ButtonPanel* getPanelAt(int i) {
 		return panelList[i];
 	}
-
 // a set of panel manipulating functions defined in ButtonSet.cpp
 	void saveAllPanels(wxString set) {
 		try {
@@ -90,11 +89,10 @@ public://an ofstream to save configurations
 					this->PanelLayoutout << "\n";
 					this->PanelLayoutout << this->panelList[i]->getLayoutName();
 					this->PanelLayoutout << "\n";
-					//this->PanelLayoutout << this->panelList[i]->getPrev()->GetName();
 
 				}
 			}
-
+			popUpHandeler->Message("save sucsessful");
 			//clsoe file
 			this->PanelLayoutout.close();
 		}

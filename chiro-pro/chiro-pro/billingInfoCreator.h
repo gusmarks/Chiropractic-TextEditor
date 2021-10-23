@@ -30,14 +30,14 @@ private:
 	std::vector<std::string>insuranceAuto;
 	std::vector<std::string>insuranceLnI;
 	std::string path;
-	std::string billingfile,billingfileMed,billingfileComm,billingfileAuto, billingfileLnI;
-	std::string information[6];
+	std::string billingfile, billingfileMed, billingfileComm, billingfileAuto, billingfileLnI;
+	std::vector<std::vector<std::string>> information;
 	const int months[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
 	DialogHelper* popupHandeler;
 	FuncHelper* funcHelp;
 public:
 	//constructor for the infor-Creator assigns all paths to variables
-	billingInfoCreator(std::string dirpath,std::string billfilename,
+	billingInfoCreator(std::string dirpath, std::string billfilename,
 		std::string billfileMed, std::string billgfileCom, std::string billfileAuto, std::string billfileLnI) {
 		try {
 			path = dirpath;
@@ -53,37 +53,49 @@ public:
 		}
 	}
 	//this function gathers the information for the main billing documents from patient files.
-	std::string* gatherInfo(std::fstream& inout) {
+	std::vector <std::vector<std::string>>  gatherInfo(std::fstream& inout) {
 		try {
-			for (int i = 0; i < (sizeof(information) / sizeof(information[0])); i++) {
+
+			for (int j = 0; j < 6; j++) {
+				std::vector<std::string> temp;
+				information.push_back(temp);
+			}
+			for (size_t i = 0; i < information.size(); i++) {
 				information[i].clear();
 			}
-			information->clear();
+			//information->clear();
+			
 			std::string infoline;
 			std::string templine;
 			if (inout.is_open()) {
 				while (!inout.eof()) {
 					std::getline(inout, infoline);
-					std::stringstream ss(infoline);
-					while (getline(ss, templine, '>')) {
-						std::string line = templine;
-						transform(line.begin(), line.end(), line.begin(), ::toupper);
-						if (line.find("PATIENT NAME") != std::string::npos) {
-							information[0] = templine;
-						}
-						if (line.find("DATE OF FIRST VISIT") != std::string::npos) {
-							information[1] = templine;
-						}
-						if (line.find("LATEST DATE OF VISIT") != std::string::npos) {
-							information[2] = templine;
-						}
-						if (line.find("INSURANCE") != std::string::npos) {
-							information[5] = templine;
-						}
-						if (line.find("<<") != std::string::npos) {
-
-							information[4] += templine + "\n";
-
+					std::stringstream LineStream(infoline);
+					while (getline(LineStream, templine, '>')) {
+						std::string token;
+						std::stringstream TokenStream(templine);
+						int i = 0;
+						while (getline(TokenStream, token, '\t')) {
+							std::string line = token;
+							transform(line.begin(), line.end(), line.begin(), ::toupper);
+							if (line.find("PATIENT NAME") != std::string::npos) {
+								information.at(0).push_back(token);
+							}
+							if (line.find("DATE OF FIRST VISIT") != std::string::npos) {
+								information.at(1).push_back(token);
+							}
+							if (line.find("LATEST DATE OF VISIT") != std::string::npos) {
+								information.at(2).push_back(token);
+							}
+							if (line.find("INSURANCE") != std::string::npos) {
+								information.at(5).push_back(token);
+							}
+							
+							if (line.find("<<") != std::string::npos) {
+								information.at(4).push_back(token);
+							}
+							if (i % 2 == 0) { i++; }
+							
 						}
 					}
 				}
@@ -189,92 +201,232 @@ public:
 				}
 				GatherInsurance();
 				in_out.close();
-				size_t position = information[5].find('<');
+				size_t position = information.at(5).at(0).find('<');
 				if (position !=std::string::npos) {
-					information[5] = information[5].erase(0, position+1);
+					information.at(5).at(0) = information.at(5).at(0).erase(0, position+1);
 				}
 				//turn information 5 into uppercase letters
-				std::transform(information[5].begin(), information[5].end(), information[5].begin(), ::toupper);
-				if (funcHelp->compaireArrayToElement(insuranceMedicare,information[5])) {
+				std::transform(information.at(5).at(0).begin(), information.at(5).at(0).end(), information.at(5).at(0).begin(), ::toupper);
+				if (funcHelp->compaireArrayToElement(insuranceMedicare,information.at(5).at(0))) {
 					seperateCptCodes(information[4]);
 					outMed.open(billingfileMed, std::ios::app);
 					if (outMed.is_open()) {
 						controlSpacingInNameAndInsurance();
-						outMed << information[0];
-						outMed << information[5];
-						outMed << information[1] << "\t\t";
-						outMed << information[2] << "\t\t";
-						int days = getDayDifferance(intdateformater(information[1]), intdateformater(information[2]));
-						outMed << days << "\t";
-						int pos = rearangeDxCodes(0);
-						outMed << information[3] << "\t\t";
-						pos += 8;
-						outMed.seekp(pos);
-						outMed << information[4];
-
+						int largersize = 0;
+						rearangeCptCodes(0);
+						rearangeDxCodes(0);
+						if (information.at(3).size() >= information.at(4).size()) {
+							largersize = information.at(3).size();
+						}
+						else {
+							largersize = information.at(4).size();
+						}
+						int i = 0;
+						do{
+							if (i == 0) {
+								outMed << information.at(0).at(0);
+								outMed << information.at(5).at(0);
+								outMed << information.at(1).at(0) << "\t\t";
+								outMed << information.at(2).at(0) << "\t\t";
+								int days = getDayDifferance(intdateformater(information.at(1).at(0)), intdateformater(information.at(2).at(0)));
+								outMed << days << "\t";
+							}
+							else {
+								outMed << "\t\t\t\t";
+								outMed << "\t\t\t\t\t";
+								outMed << "\t\t\t";
+								outMed << "\t\t\t\t";
+							}
+							if ((size_t)i < information.at(3).size()) {
+								outMed << information.at(3).at(i) + "\t";
+								if (information.at(3).at(i).size() < 7) {
+									outMed << "\t\t";
+								}
+								if (information.at(3).at(i).size() >= 7 && information.at(3).at(i).size() <= 10) {
+									outMed << "\t";
+								}
+							}
+							else {
+								outMed << "\t\t\t";
+							}
+							if ((size_t)i < information.at(4).size()) {
+								outMed << information.at(4).at(i) + "\n";
+							}
+							else {
+								outMed << "\t\t\n";
+							}
+							i++;
+						} while (i<largersize);
 					}
+
 					outMed.close();
 				}
-				if (funcHelp->compaireArrayToElement(insuranceComm,information[5])) {
+				if (funcHelp->compaireArrayToElement(insuranceComm,information.at(5).at(0))) {
 					seperateCptCodes(information[4]);
 					outCom.open(billingfileComm, std::ios::app);
 					if (outCom.is_open()) {
 						controlSpacingInNameAndInsurance();
-						outCom << information[0];
-						outCom << information[5];
-						outCom << information[1] << "\t\t";
-						outCom << information[2] << "\t\t";
-						int days = getDayDifferance(intdateformater(information[1]), intdateformater(information[2]));
-						outCom << days << "\t";
-						int pos = rearangeDxCodes(0);
-						outCom << information[3] << "\t\t";
-						pos += 8;
-						outCom.seekp(pos);
-						outCom << information[4];
-
+						int largersize = 0;
+						rearangeCptCodes(0);
+						rearangeDxCodes(0);
+						if (information.at(3).size() >= information.at(4).size()) {
+							largersize = information.at(3).size();
+						}
+						else {
+							largersize = information.at(4).size();
+						}
+						int i = 0;
+						do{
+							if (i == 0) {
+								outCom << information.at(0).at(0);
+								outCom << information.at(5).at(0);
+								outCom << information.at(1).at(0) << "\t\t";
+								outCom << information.at(2).at(0) << "\t\t";
+								int days = getDayDifferance(intdateformater(information.at(1).at(0)), intdateformater(information.at(2).at(0)));
+								outCom << days << "\t";
+							}
+							else {
+								outCom << "\t\t\t\t";
+								outCom << "\t\t\t\t\t";
+								outCom << "\t\t\t";
+								outCom << "\t\t\t\t";
+							}
+							if ((size_t)i < information.at(3).size()) {
+								outCom << information.at(3).at(i) + "\t";
+								if (information.at(3).at(i).size() < 7) {
+									outCom << "\t\t";
+								}
+								if (information.at(3).at(i).size() >= 7 && information.at(3).at(i).size() <= 10) {
+									outCom << "\t";
+								}
+							}
+							else {
+								outCom << "\t\t\t";
+							}
+							if ((size_t)i < information.at(4).size()) {
+								outCom << information.at(4).at(i) + "\n";
+							}
+							else {
+								outCom << "\t\t\n";
+							}
+							i++;
+						} while (i<largersize);
 					}
+
 					outCom.close();
 				}
-				if (funcHelp->compaireArrayToElement(insuranceAuto, information[5])) {
+				if (funcHelp->compaireArrayToElement(insuranceAuto, information.at(5).at(0))) {
 					seperateCptCodes(information[4]);
 					outAuto.open(billingfileAuto, std::ios::app);
 					if (outAuto.is_open()) {
 						controlSpacingInNameAndInsurance();
-						outAuto << information[0];
-						outAuto << information[5];
-						outAuto << information[1] << "\t\t";
-						outAuto << information[2] << "\t\t";
-						int days = getDayDifferance(intdateformater(information[1]), intdateformater(information[2]));
-						outAuto << days << "\t";
-						int pos = rearangeDxCodes(0);
-						outAuto << information[3] << "\t\t";
-						pos += 8;
-						outAuto.seekp(pos);
-						outAuto << information[4] ;
+						int largersize = 0;
+						rearangeCptCodes(0);
+						rearangeDxCodes(0);
+						if (information.at(3).size() >= information.at(4).size()) {
+							largersize = information.at(3).size();
+						}
+						else {
+							largersize = information.at(4).size();
+						}
+						int i = 0;
+						do{
+							if (i == 0) {
+								outAuto << information.at(0).at(0);
+								outAuto << information.at(5).at(0);
+								outAuto << information.at(1).at(0) << "\t\t";
+								outAuto << information.at(2).at(0) << "\t\t";
+								int days = getDayDifferance(intdateformater(information.at(1).at(0)), intdateformater(information.at(2).at(0)));
+								outAuto << days << "\t";
+								
+							}
+							else {
+								outAuto << "\t\t\t\t";
+								outAuto << "\t\t\t\t\t";
+								outAuto << "\t\t\t";
+								outAuto << "\t\t\t\t";
+							}
+							if ((size_t)i < information.at(3).size()) {
+								outAuto << information.at(3).at(i) + "\t";
+								if (information.at(3).at(i).size() < 7) {
+									outAuto << "\t\t";
+								}
+								if (information.at(3).at(i).size() >= 7 && information.at(3).at(i).size() <= 10) {
+									outAuto << "\t";
+								}
+							}
+							else {
+								outAuto << "\t\t\t";
+							}
+							if ((size_t)i < information.at(4).size()) {
+								outAuto << information.at(4).at(i) + "\n";
+							}
+							else {
+								outAuto << "\t\t\n";
+							}
+							i++;
+						} while (i < largersize);
 					}
+					
 					outAuto.close();
 				}
-				if (funcHelp->compaireArrayToElement(insuranceLnI, information[5])) {
+				if (funcHelp->compaireArrayToElement(insuranceLnI, information.at(5).at(0))) {
 					seperateCptCodes(information[4]);
 					outLni.open(billingfileLnI, std::ios::app);
 					if (outLni.is_open()) {
 						controlSpacingInNameAndInsurance();
-						outLni << information[0];
-						outLni << information[5];
-						outLni << information[1] << "\t\t";
-						outLni << information[2] << "\t\t";
-						int days = getDayDifferance(intdateformater(information[1]), intdateformater(information[2]));
-						outLni << days << "\t";
-						int pos = rearangeDxCodes(0);
-						outLni << information[3] << "\t\t";
-						pos += 8;
-						outLni.seekp(pos);
-						outLni << information[4];
+						int largersize = 0;
+						rearangeCptCodes(0);
+						rearangeDxCodes(0);
+						if (information.at(3).size() >= information.at(4).size()) {
+							largersize = information.at(3).size();
+						}
+						else {
+							largersize = information.at(4).size();
+						}
+						int i = 0;
+						do{
+							if (i == 0) {
+								outLni << information.at(0).at(0);
+								outLni << information.at(5).at(0);
+								outLni << information.at(1).at(0) << "\t\t";
+								outLni << information.at(2).at(0) << "\t\t";
+								int days = getDayDifferance(intdateformater(information.at(1).at(0)), intdateformater(information.at(2).at(0)));
+								outLni << days << "\t";
+								
+							}
+							else {
+								outLni << "\t\t\t\t";
+								outLni << "\t\t\t\t\t";
+								outLni << "\t\t\t";
+								outLni << "\t\t\t\t";
+							}
+							if ((size_t)i < information.at(3).size()) {
+								outLni << information.at(3).at(i)+"\t";
+								if (information.at(3).at(i).size() <7) {
+									outLni << "\t\t";
+								}
+								if (information.at(3).at(i).size() >= 7&& information.at(3).at(i).size()<=10) {
+									outLni << "\t";
+								}
+							}
+							else {
+								outLni << "\t\t\t";
+							}
+							if ((size_t)i < information.at(4).size()) {
+								outLni << information.at(4).at(i)+"\n";
+							}
+							else {
+								outLni << "\t\t\n";
+							}
+							i++;
+						} while (i < largersize);
 					}
 					outLni.close();
 				}
-
+				information.clear();
 			}
+			
 			appendFiles();
 			popupHandeler->Message("Billing Document Created. find in files");
 		}
@@ -350,28 +502,20 @@ public:
 		size_t position2 = 0;
 		std::string templine;
 		try {
-			for (int i = 0; i < 5; i++) {
-				if ((information[i].find("<<")) != std::string::npos) {
-					if ((information[i].find("\t")) != std::string::npos) {
-						std::stringstream ss(information[i]);
-						information[i] = "";
-						while (getline(ss, templine, '\n')) {
-							if ((position = templine.find("<<")) != std::string::npos) {
-								if ((position2 = templine.find("\t")) != std::string::npos) {
-
-									templine = templine.substr(position + 1, position2);
-									if ((position2 = templine.find("\t")) != std::string::npos) {
-										information[i] += templine.substr(0, position2) + ",";
-										information[i].erase(std::remove(information[i].begin(), information[i].end(), '<'), information[i].end());
-										information[i].erase(std::remove(information[i].begin(), information[i].end(), '\t'), information[i].end());
-									}
-								}
+			for (size_t i = 0; i < information.size(); i++) {
+				for (size_t j = 0; j < information.at(i).size(); j++) {
+					if ((information.at(i).at(j).find("<<")) != std::string::npos) {
+						std::stringstream ss(information.at(i).at(j));
+						information.at(i).at(j) = "";
+						while (getline(ss, templine, '<')) {
+							if (templine != "") {
+								information.at(i).at(j) += templine;
 							}
 						}
 					}
-				}
-				if ((position = information[i].find('<')) != std::string::npos) {
-					information[i] = information[i].substr(position + 1, information[i].size());
+					if ((position = information.at(i).at(j).find('<')) != std::string::npos) {
+						information.at(i).at(j) = information.at(i).at(j).substr(position + 1, information.at(i).at(j).size());
+					}
 				}
 			}
 
@@ -380,7 +524,6 @@ public:
 			popupHandeler->errorMessage("an error occured in the document creator-line cleaner");
 		}
 	}
-
 	bool isNumber(std::string str) {
 		try {	
 			int position;
@@ -431,24 +574,26 @@ public:
 			popupHandeler->errorMessage("an error occured in the document creator-years");
 		}
 	}
-	void seperateCptCodes(std::string str) {
+	void seperateCptCodes(std::vector<std::string> vec) {
 		try {
-			std::stringstream ss(str);
-			information[3] = "";
-			std::string templine;
-			while (getline(ss, templine, ',')) {
-				if (isNumber(templine)) {
-					size_t pos = information[4].find(templine);
-					information[4].erase(pos, templine.size() + 1);
-					information[3] += templine;
-				}
+			int count = 0;
+			for (size_t i = 0; i < vec.size(); i++) {
+				std::string str = vec.at(i);
+				
+					if (str.find('[') != std::string::npos || isNumber(str)) {
+						information.at(4).erase(information.at(4).begin()+(count));
+						count--;
+						information.at(3).push_back(str+",");
+					}
+					count++;
 			}
+		
 		}
 		catch (...) {
 			popupHandeler->errorMessage("an error occured in the document creator-seperator");
 		}
 	}
-	void printDxCodes(std::fstream out) {
+	/*void printDxCodes(std::fstream out) {
 		try {
 			std::stringstream ss(information[4]);
 			std::string templine;
@@ -479,7 +624,7 @@ public:
 			popupHandeler->errorMessage("an error occured in the document creator-print method");
 		}
 		
-	}
+	}*/
 	void appendFiles() {
 		try {
 			in_out.open(billingfile);
@@ -502,81 +647,70 @@ public:
 			popupHandeler->errorMessage("an error occured in the document creator-append method");
 		}
 	}
-
-	int rearangeDxCodes(int type) {
-		try {
-			size_t NumberOfCommas = std::count(information[4].begin(), information[4].end(), ',');
-			size_t ofsett = 0;
-			std::stringstream ss(information[4]);
-			information[4] = "";
-			std::string templine;
-			int position=0;
-			int i = 0;
-			int test = static_cast<int>(NumberOfCommas);
-			while (getline(ss, templine, ',')) {
-
-				information[4] += templine + ",";
-				ofsett += templine.size() + 1;
-				if (i % 2 != 0) {
-					information[4] += "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
+	void rearangeCptCodes(int type) {
+		try{
+			if (information.at(3).size() != 0) {
+				for (size_t i = 0; i < information.at(3).size() - 1; i++) {
+					information.at(3).at(i) += information.at(3).at(i + 1);
+					information.at(3).erase(information.at(3).begin() + (i + 1));
 				}
-				if (i == 1 && type == 0) {
-					int x = static_cast<int>(ofsett);
-					position = outMed.tellp();
-					position += x;
-				}
-				if (i == 1 && type == 1) {
-					int x = static_cast<int>(ofsett);
-					position = outMed.tellp();
-					position += x;
-				}
-				if (i == 1 && type == 2) {
-					int x = static_cast<int>(ofsett);
-					position = outMed.tellp();
-					position += x;
-				}
-				i++;
 			}
-			information[4] += "\n";
-			return position;
+		}
+		catch (...) {
+			popupHandeler->errorMessage("an error occured in the document creator-rearange cpt");
+		}
+	}
+	void rearangeDxCodes(int type) {
+		try {
+			if (information.at(4).size() != 0) {
+				
+				for (size_t i = 0; i < information.at(4).size() - 1; i++) {
+					information.at(4).at(i) += ",";
+					if (i == information.at(4).size() - 2) {
+						information.at(4).at(i) += information.at(4).at(i + 1) + ".";
+					}
+					else {
+						information.at(4).at(i) += information.at(4).at(i + 1) + ",";
+					}
+					information.at(4).erase(information.at(4).begin() + (i + 1));
+				}
+			}
 		}
 		catch (...) {
 			popupHandeler->errorMessage("an error occured in the document creator-rearange dx");
-			return NULL;
 		}
 	}
 	void controlSpacingInNameAndInsurance() {
-		if (information[0].size() > 24 && information[0].size() <= 32) {
-			information[0] += "\t";
+		if (information.at(0).at(0).size() > 24 && information.at(0).at(0).size() <= 32) {
+			information.at(0).at(0) += "\t";
 		}
-		if (information[0].size() >= 16 && information[0].size() <= 24) {
-			information[0] += "\t\t";
+		if (information.at(0).at(0).size() >= 16 && information.at(0).at(0).size() <= 24) {
+			information.at(0).at(0) += "\t\t";
 		}
-		if (information[0].size() > 8 && information[0].size() < 16) {
-			information[0] += "\t\t\t";
+		if (information.at(0).at(0).size() > 8 && information.at(0).at(0).size() < 16) {
+			information.at(0).at(0) += "\t\t\t";
 		}
-		if (information[0].size() <= 8) {
-			information[0] += "\t\t\t\t";
+		if (information.at(0).at(0).size() <= 8) {
+			information.at(0).at(0) += "\t\t\t\t";
 		}
-		if (information[5].size() > 25 && information[5].size() <= 35) {
-			information[5] += "\t";
+		if (information.at(5).at(0).size() > 25 && information.at(5).at(0).size() <= 35) {
+			information.at(5).at(0) += "\t";
 		}
-		if (information[5].size() == 25) {
-			information[5] += "\t\t";
+		if (information.at(5).at(0).size() == 25) {
+			information.at(5).at(0) += "\t\t";
 		}
-		if (information[5].size() >= 17 && information[5].size() <= 24) {
-			information[5] += "\t\t\t";
+		if (information.at(5).at(0).size() >= 17 && information.at(5).at(0).size() <= 24) {
+			information.at(5).at(0) += "\t\t\t";
 		}
-		if (information[5].size() >= 8 && information[5].size() < 17) {
-			information[5] += "\t\t\t\t";
+		if (information.at(5).at(0).size() >= 8 && information.at(5).at(0).size() < 17) {
+			information.at(5).at(0) += "\t\t\t\t";
 		}
-		if (information[5].size() < 8) {
-			information[5] += "\t\t\t\t\t";
+		if (information.at(5).at(0).size() < 8) {
+			information.at(5).at(0) += "\t\t\t\t\t";
 		}
 		
 		
 		
-	}
-	
+	}	
 };
 
