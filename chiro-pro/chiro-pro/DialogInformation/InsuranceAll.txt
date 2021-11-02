@@ -1,0 +1,41 @@
+Medicare:
+Medicare WA
+AARP
+Regence (Med Advantage)
+
+Commercial Insurance:
+Aetna
+American Specialty Health
+Asuris Northwest Health
+Blue Shield of CA
+Cigna
+First Choice Health
+GEHA
+HMA
+Humana
+KPS Healthplans
+Premera
+Regence
+Shasta
+TPSC
+UMR
+United Healthcare
+
+Auto:
+Allstate
+Farmers Insurance
+Geico
+Liberty Mutual
+Nationwide Insurance
+Pemco
+Progressive
+Safeco
+State Farm
+The Hartford
+USAA
+
+LNI:
+Department of Labor & Industries
+Eberle Vivian
+ESD 114 Workers Compensation Trust
+Tribal First

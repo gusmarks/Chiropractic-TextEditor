@@ -1,0 +1,4 @@
+98940	Chiropractic manipulative treatment (CMT); spinal, one to two regions
+98941	Chiropractic manipulative treatment (CMT); spinal, three to four regions
+98942	Chiropractic manipulative treatment (CMT); spinal, five regions
+98943	Chiropractic manipulative treatment (CMT); extraspinal, one or more regions

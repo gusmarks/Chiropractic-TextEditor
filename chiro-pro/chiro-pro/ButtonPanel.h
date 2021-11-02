@@ -43,25 +43,37 @@ private:
 public:
 	//constructor & destructor definitions
 	ButtonPanel(wxWindow* parent,wxString name,std::string layoutName,int ind):wxPanel(parent,wxID_ANY,wxDefaultPosition,
-		wxSize(600,69),wxTAB_TRAVERSAL,name) {
-		//keep track of the parent
-		this->parent = parent;
-		//initulize the button sizer, then set the sizer to the panel, this applies the sizer the panel to actualy change the layout
-		buttonSizer = new wxFlexGridSizer(3, 15, 0, 0);
-		this->SetSizer(buttonSizer);
-		//layout name is the filename of the button information
-		this->layoutName = layoutName;
-		functionHelper = new FuncHelper();
-		popUpHandeler = new DialogHelper(parent);
-		//make level deturmins the level of the panel when it is created, this is based on if there is a previous element.
-		this->makeLevel();
+		wxSize(10000,69),wxTAB_TRAVERSAL,name) {
+		try {
+			//keep track of the parent
+			this->parent = parent;
+			//initulize the button sizer, then set the sizer to the panel, this applies the sizer the panel to actualy change the layout
+			buttonSizer = new wxFlexGridSizer(3, 9, 0, 0);
+			this->SetSizer(buttonSizer);
+			//layout name is the filename of the button information
+			this->layoutName = layoutName;
+			functionHelper = new FuncHelper();
+			popUpHandeler = new DialogHelper(parent);
+			//make level deturmins the level of the panel when it is created, this is based on if there is a previous element.
+			this->makeLevel();
+		}
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in buttonpanel");
+		}
 
 	}
 	~ButtonPanel() {
-		//this function deletes the panel, by destroying all the buttons.
-		for (size_t i = qLinkList.size(); i >0 ; i--) {
-			buttonSizer->Detach(qLinkList.at(i-1));
-			qLinkList.at(i-1)->~wxButton();
+		try {
+			//this function deletes the panel, by destroying all the buttons.
+			for (size_t i = qLinkList.size(); i > 0; i--) {
+				buttonSizer->Detach(qLinkList.at(i - 1));
+				qLinkList.at(i - 1)->~wxButton();
+			}
+			delete functionHelper;
+			delete popUpHandeler;
+		}
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in buttonpanel");
 		}
 	}
 	//getlayoutname returns the layoutname variable
@@ -155,88 +167,99 @@ public:
 	//addLoadedPanel helps load in panels from file
 	void addQLink(wxString ButtonName, wxString ButtonText)
 	{
-		if (!functionHelper->isNumber(ButtonText.ToStdString())) {
-			std::string text = ButtonText.ToStdString();
-			std::string check = "Dialog-ID";
-			if (text.find(check) != std::string::npos) {
-				wxButton* newButton = new wxButton(this
-					, wxID_ANY, ButtonName, wxDefaultPosition, wxSize(130, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, ButtonText);
+		try {
+			if (!functionHelper->isNumber(ButtonText.ToStdString())) {
+				std::string text = ButtonText.ToStdString();
+				std::string check = "Dialog-ID";
+				if (text.find(check) != std::string::npos) {
+					wxButton* newButton = new wxButton(this
+						, wxID_ANY, ButtonName, wxDefaultPosition, wxSize(150, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, ButtonText);
 
-				newButton->SetForegroundColour(*wxBLUE);
-				qLinkList.push_back(newButton);
-				//add the button to the button sizer
-				buttonSizer->Add(qLinkList.back(), wxLeft);
-				//update layout of page and button index
-				buttonSizer->Layout();
+					newButton->SetForegroundColour(*wxBLUE);
+					qLinkList.push_back(newButton);
+					//add the button to the button sizer
+
+					buttonSizer->Add(qLinkList.back(), wxSizerFlags().Proportion(9).Left().Align(1));
+					//update layout of page and button index
+					buttonSizer->Layout();
+				}
+				else {
+					qLinkList.push_back(new wxButton(this
+						, wxID_ANY, ButtonName, wxDefaultPosition, wxSize(150, 23), 0, wxDefaultValidator, ButtonText));
+					//add the button to the button sizer
+					buttonSizer->Add(qLinkList.back(), wxLeft);
+					//update layout of page and button index
+					buttonSizer->Layout();
+				}
+
+
 			}
 			else {
-				qLinkList.push_back(new wxButton(this
-					, wxID_ANY, ButtonName, wxDefaultPosition, wxSize(130, 23), 0, wxDefaultValidator, ButtonText));
-				//add the button to the button sizer
+				wxButton* newButton = new wxButton(this,
+					wxID_ANY, ButtonName, wxDefaultPosition, wxSize(150, 23), 0, wxDefaultValidator, ButtonText);
+				newButton->SetForegroundColour(wxColor(255, 0, 0));
+				newButton->Refresh();
+				qLinkList.push_back(newButton);
+				//newButton->Bind()
 				buttonSizer->Add(qLinkList.back(), wxLeft);
 				//update layout of page and button index
 				buttonSizer->Layout();
+				//Layout();
+
 			}
-
-
 		}
-		else {
-			wxButton* newButton = new wxButton(this,
-				wxID_ANY, ButtonName, wxDefaultPosition, wxSize(130, 23), 0, wxDefaultValidator, ButtonText);
-			newButton->SetForegroundColour(wxColor(255, 0, 0));
-			newButton->Refresh();
-			qLinkList.push_back(newButton);
-			//newButton->Bind()
-			buttonSizer->Add(qLinkList.back(), wxLeft);
-			//update layout of page and button index
-			buttonSizer->Layout();
-			//Layout();
-
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in buttonpanel");
 		}
 	}
 	void addNewPanel(wxWindow* parent, wxString name, wxString filePath) {
 		std::string fileName;
-		if (this->level == 0) {
+		try {
+			if (this->level == 0) {
 
-			fileName = this->getLayoutName();
-			fileName = fileName.substr(0, fileName.size() - 4);
-			fileName.append("-panels/LayoutLevel2-");
-			fileName += std::to_string(subPanelCount + 1);
-			fileName.append(".txt");
+				fileName = this->getLayoutName();
+				fileName = fileName.substr(0, fileName.size() - 4);
+				fileName.append("-panels/LayoutLevel2-");
+				fileName += std::to_string(subPanelCount + 1);
+				fileName.append(".txt");
+			}
+			if (this->level == 1) {
+
+				fileName = this->getLayoutName();
+				fileName = fileName.substr(0, fileName.size() - 4);
+				fileName.append("-panels/LayoutLevel3-");
+				fileName += std::to_string(subPanelCount + 1);
+				fileName.append(".txt");
+			}
+
+			if (subPanelCount <= 7) {
+				ButtonPanel* newPanel = new ButtonPanel(parent, name, fileName, subPanelCount);
+				newPanel->setPrev(this);
+				this->setSubPanel(subPanelCount, newPanel);
+				newPanel->makeLevel();
+				newPanel->Hide();
+				subPanelCount++;
+
+			}
 		}
-		if (this->level == 1) {
-
-			fileName = this->getLayoutName();
-			fileName = fileName.substr(0, fileName.size() - 4);
-			fileName.append("-panels/LayoutLevel3-");
-			fileName += std::to_string(subPanelCount + 1);
-			fileName.append(".txt");
-		}
-
-		if (subPanelCount <= 7) {
-			ButtonPanel* newPanel = new ButtonPanel(parent, name, fileName, subPanelCount);
-			newPanel->setPrev(this);
-			this->setSubPanel(subPanelCount, newPanel);
-			newPanel->makeLevel();
-			newPanel->Hide();
-			subPanelCount++;
-			//newPanel->LoadButtons();
-
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in buttonpanel");
 		}
 	}
 	void addLoadedPanel(wxWindow* parent, wxString name, wxString filePath) {
-
-
-
-		if (subPanelCount <= 7) {
-			ButtonPanel* newPanel = new ButtonPanel(parent, name, filePath.ToStdString(), subPanelCount);
-			newPanel->setPrev(this);
-			this->setSubPanel(subPanelCount, newPanel);
-			newPanel->makeLevel();
-			newPanel->Hide();
-			subPanelCount++;
-			newPanel->loadQLinks();
-
+		try {
+			if (subPanelCount <= 7) {
+				ButtonPanel* newPanel = new ButtonPanel(parent, name, filePath.ToStdString(), subPanelCount);
+				newPanel->setPrev(this);
+				this->setSubPanel(subPanelCount, newPanel);
+				newPanel->makeLevel();
+				newPanel->Hide();
+				subPanelCount++;
+				newPanel->loadQLinks();
+			}
+		}
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in buttonpanel");
 		}
 	}
 	// loadQlinks loads the buttons into the panel from file
@@ -244,83 +267,117 @@ public:
 	//save subpanels saves the subpanel information to file
 	void loadQLinks()
 	{
-		//open the button layout file assuming it is closed already
-		if (!this->buttonLayoutin.is_open()) {
-			this->buttonLayoutin.open(layoutName, std::fstream::in);
+		try {
+			//open the button layout file assuming it is closed already
 			if (!this->buttonLayoutin.is_open()) {
-				return;
+				this->buttonLayoutin.open(layoutName, std::fstream::in);
+				if (!this->buttonLayoutin.is_open()) {
+					buttonLayoutin.close();
+					return;
+				}
+			}
+			//two strings name and lable holding the lable and text
+			std::string name;
+			std::string maintext;
+
+			qLinkCount = 0;//give value to index
+			//while there is still text in the layout file keep taking in two lines into out string variables
+			// creating buttons from those strings and adding them to the array. 
+			//lastly updating th layout of the page and closing the layout file
+			if (buttonLayoutin.is_open()) {
+				while (this->buttonLayoutin.peek() != EOF) {
+					//get input
+					getline(this->buttonLayoutin, name);
+					getline(this->buttonLayoutin, maintext);
+
+					//make button
+					if (functionHelper->isNumber(maintext)) {
+						this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(150, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, maintext));
+						this->qLinkList.back()->SetForegroundColour(*wxRED);
+						std::string pathName;
+						getline(this->buttonLayoutin, pathName);
+						this->addLoadedPanel(parent, name, pathName);
+
+					}
+					else if (functionHelper->isPopup(maintext)) {
+						this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(150, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, maintext));
+						this->qLinkList.back()->SetForegroundColour(*wxBLUE);
+					}
+					else if (functionHelper->isText(maintext)) {
+						this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(150, 23), 0, wxDefaultValidator, maintext));
+					}
+					//add button to array
+					this->buttonSizer->Add(qLinkList.back(), wxLeft);
+					//update layout
+					buttonSizer->Layout();
+					//update index
+					qLinkCount++;
+				}
+				//close file
+				this->buttonLayoutin.close();
 			}
 		}
-		//two strings name and lable holding the lable and text
-		std::string name;
-		std::string maintext;
-
-		qLinkCount = 0;//give value to index
-		//while there is still text in the layout file keep taking in two lines into out string variables
-		// creating buttons from those strings and adding them to the array. 
-		//lastly updating th layout of the page and closing the layout file
-		if (buttonLayoutin.is_open()) {
-			while (this->buttonLayoutin.peek() != EOF) {
-				//get input
-				getline(this->buttonLayoutin, name);
-				getline(this->buttonLayoutin, maintext);
-
-				//make button
-				if (functionHelper->isNumber(maintext)) {
-					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(130, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, maintext));
-					this->qLinkList.back()->SetForegroundColour(*wxRED);
-					std::string pathName;
-					getline(this->buttonLayoutin, pathName);
-					this->addLoadedPanel(parent, name, pathName);
-
-				}
-				else if (functionHelper->isPopup(maintext)) {
-					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(130, 23), wxBG_STYLE_COLOUR, wxDefaultValidator, maintext));
-					this->qLinkList.back()->SetForegroundColour(*wxBLUE);
-				}
-				else if (functionHelper->isText(maintext)) {
-					this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(130, 23), 0, wxDefaultValidator, maintext));
-				}
-				//add button to array
-				this->buttonSizer->Add(qLinkList.back(), wxLeft);
-				//update layout
-				buttonSizer->Layout();
-				//update index
-				qLinkCount++;
-			}
-			//close file
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in buttonpanel");
 			this->buttonLayoutin.close();
 		}
 	}
 	void saveQLinks() {
 		//if the layout file is not open, open it
-		if (!this->buttonLayoutout.is_open()) {
-			buttonLayoutout.open(this->layoutName, std::fstream::out);
-		}
-		int size = qLinkList.size();
-		for (int i = 0; i < size; i++) {
-			if (this->qLinkList.at(i) != nullptr) {
+		try {
+			if (!this->buttonLayoutout.is_open()) {
+				buttonLayoutout.open(this->layoutName, std::fstream::out);
+			}
+			if (buttonLayoutout.is_open()) {
+				int size = qLinkList.size();
+				for (int i = 0; i < size; i++) {
+					if (this->qLinkList.at(i) != nullptr) {
 
-				this->buttonLayoutout << this->qLinkList.at(i)->GetLabel();
-				this->buttonLayoutout << "\n";
-				this->buttonLayoutout << this->qLinkList.at(i)->GetName();
-				this->buttonLayoutout << "\n";
-				if (this->qLinkList.at(i)->GetName().IsNumber()) {
-					std::string layout = this->subPanelList.front()->getLayoutName();
-					this->buttonLayoutout << layout;
-					this->buttonLayoutout << "\n";
+						this->buttonLayoutout << this->qLinkList.at(i)->GetLabel();
+						this->buttonLayoutout << "\n";
+						this->buttonLayoutout << this->qLinkList.at(i)->GetName();
+						this->buttonLayoutout << "\n";
+						if (this->qLinkList.at(i)->GetName().IsNumber()) {
+							std::string layout = this->subPanelList.front()->getLayoutName();
+							this->buttonLayoutout << layout;
+							this->buttonLayoutout << "\n";
+						}
+					}
 				}
 			}
+			//clsoe file
+			this->buttonLayoutout.close();
+			if (this->level < 3 && this->subPanelCount>0) {
+				this->saveSubPanels();
+			}
 		}
-		//clsoe file
-		this->buttonLayoutout.close();
-		if (this->level < 3 && this->subPanelCount>0) {
-			this->saveSubPanels();
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in buttonpanel");
 		}
 	}
 	void saveSubPanels() {
-		for (size_t i = 0; i < subPanelList.size(); i++) {
-			subPanelList.at(i)->saveQLinks();
+		try {
+			for (size_t i = 0; i < subPanelList.size(); i++) {
+				subPanelList.at(i)->saveQLinks();
+			}
+		}
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in buttonpanel");
+		}
+	}
+
+	void removeButtonWithTextOf(wxString text) {
+		try {
+			size_t size = qLinkList.size();
+			for (size_t i = 0; i < size; i++) {
+				if (qLinkList.at(i)->GetName() == text) {
+					qLinkList.erase(qLinkList.begin() + i);
+					size--;
+				}
+			}
+		}
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in buttonpanel");
 		}
 	}
 };

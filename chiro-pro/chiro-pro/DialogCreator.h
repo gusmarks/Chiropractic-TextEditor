@@ -3,36 +3,56 @@
 #include <wx/wx.h>
 #include <wx/richtext/richtextctrl.h>
 #include "DialogHelper.h"
-#include <fstream>
 #include <iostream>
 #include <wx/msgdlg.h>
+/// <summary>
+/// dialog creator is capable of creating and saving new paragraphs that are attached to buttons.
+/// </summary>
 class DialogCreator : public wxDialog {
 public:
+	/// <summary>
+	/// this is the constructor for the creator.
+	/// </summary>
+	/// <param name="parent">parent is the window this is atached to</param>
+	/// <param name="id">id is not specific but automaticly allocated</param>
+	/// <param name="dialogCount">dialog count shows how many there currently are, added here to help wuth loading information</param>
 	DialogCreator(wxWindow* parent, wxWindowID id, int dialogCount)
-		:wxDialog(parent, id, "hello", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "") {
+		:wxDialog(parent, id, "Dialog Creator", wxDefaultPosition, wxSize(500,500), wxDEFAULT_DIALOG_STYLE, "") {
+
+		//dialog helper to provide auxilery functions
 		popupHandeler = new DialogHelper(this);
+		//create the buttons that will interface with the creator
 		addDialog = new wxButton(this, wxID_ANY, "addDialog", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "");
 		save = new wxButton(this, wxID_ANY, "save", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "");
 		bold = new wxButton(this, wxID_ANY, "bold", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "");
 		underline = new wxButton(this, wxID_ANY, "underline", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "");
 		italic = new wxButton(this, wxID_ANY, "italic", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "");
+		//create the text box the paragraph will be writen in
 		MainDisplayBox = new wxRichTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxSize(600, 400), wxRE_MULTILINE, wxDefaultValidator);
 		DialogCount = dialogCount;
+		//show and add the components to the sizer
 		save->Show();
 		addDialog->Show();
 		bold->Show();
 		underline->Show();
 		italic->Show();
+		hSizer->AddSpacer(20);
 		hSizer->Add(save);
-		hSizer->Add(addDialog);
-		hSizer->Add(bold);
-		hSizer->Add(underline);
-		hSizer->Add(italic);
-		vSizer->Add(MainDisplayBox);
+		hSizer->AddSpacer(20);
+		hSizer->Add(addDialog,wxCenter);
+		hSizer->AddSpacer(20);
+		hSizer->Add(bold, wxCenter);
+		hSizer->AddSpacer(20);
+		hSizer->Add(underline, wxCenter);
+		hSizer->AddSpacer(20);
+		hSizer->Add(italic, wxCenter);
+		vSizer->Add(MainDisplayBox, wxCenter);
 		vSizer->Add(hSizer);
 		hSizer->Layout();
+		//set the sizer
 		SetSizer(vSizer);
 		Layout();
+		//bind the buttons
 		addDialog->Bind(wxEVT_BUTTON, &DialogCreator::AddDialogToText, this);
 		save->Bind(wxEVT_BUTTON, &DialogCreator::SaveDialogText, this);
 		bold->Bind(wxEVT_BUTTON, &DialogCreator::addBoldtoText, this);
@@ -40,45 +60,65 @@ public:
 		italic->Bind(wxEVT_BUTTON, &DialogCreator::addItalictoText, this);
 
 	}
+	~DialogCreator() {
+		delete popupHandeler;
+	}
+	//adds a dialog from a predefined list to the text box
 	void AddDialogToText(wxCommandEvent& event) {
-		wxString dialogChoice = popupHandeler->SingleChoiceDialog("DialogInformation/DialogSelection-3.txt", "select a popup.");
-		dialogChoice = TranslateDialogNames(dialogChoice);
-		MainDisplayBox->WriteText("~<H>");
-		MainDisplayBox->WriteText(dialogChoice);
-		MainDisplayBox->WriteText("<H>~");
-
+		try {
+			wxString dialogChoice = popupHandeler->SingleChoiceDialog("DialogInformation/DialogSelection-2.txt", "select a popup.");
+			dialogChoice = TranslateDialogNames(dialogChoice);
+			if (dialogChoice != "OTHER") {
+				MainDisplayBox->WriteText("~{H}");
+				MainDisplayBox->WriteText(dialogChoice);
+				MainDisplayBox->WriteText("{H}~");
+			}
+		}
+		catch (...) {
+			popupHandeler->errorMessage("an error occured in dialog creator");
+		}
 	}
+	//save the parahgraph for future use
 	void SaveDialogText(wxCommandEvent& event) {
-		std::string DialogFileName = ("Dialogs/DialogFile" + std::to_string(DialogCount+1) + ".txt");
-		if (MainDisplayBox->SaveFile(DialogFileName, wxRICHTEXT_TYPE_ANY)) {
-			
-			
-			wxMessageDialog dialog(NULL, wxT("The file saved successfuly"), wxT("save file"), wxOK);
-			if (dialog.ShowModal() == wxID_OK) {
-				
-				MainDisplayBox->Clear();
-				DialogCount++;
-				this->Close();
+		try {
+			std::string DialogFileName = ("Dialogs/DialogFile" + std::to_string(DialogCount + 1) + ".txt");
+			if (MainDisplayBox->SaveFile(DialogFileName, wxRICHTEXT_TYPE_ANY)) {
+
+
+				wxMessageDialog dialog(NULL, wxT("The file saved successfuly"), wxT("save file"), wxOK);
+				if (dialog.ShowModal() == wxID_OK) {
+					MainDisplayBox->Clear();
+					DialogCount++;
+					this->Close();
+				}
+			}
+			else {
+				wxMessageDialog dialog(NULL, wxT("The file Failed to save"), wxT("save file"), wxOK);
+				if (dialog.ShowModal() == wxID_OK) {
+				}
 			}
 		}
-		else {
-			wxMessageDialog dialog(NULL, wxT("The file Failed to save"), wxT("save file"), wxOK);
-			if (dialog.ShowModal() == wxID_OK) {
-			}
+		catch (...) {
+			popupHandeler->errorMessage("an error occured in dialog creator");
 		}
 	}
+	//adds a bold line to the text
 	void addBoldtoText(wxCommandEvent& event) {
-		MainDisplayBox->WriteText("~<b>");
-		MainDisplayBox->WriteText("<b>~");
+		MainDisplayBox->WriteText("~{b}");
+		MainDisplayBox->WriteText("{b}~");
 	}
+	//adds an underline to the text
 	void addUnderlinetoText(wxCommandEvent& event) {
-		MainDisplayBox->WriteText("~<u>");
-		MainDisplayBox->WriteText("<u>~");
+		MainDisplayBox->WriteText("~{u}");
+		MainDisplayBox->WriteText("{u}~");
 	}
+	//adds italic to the text
 	void addItalictoText(wxCommandEvent& event) {
-		MainDisplayBox->WriteText("~<i>");
-		MainDisplayBox->WriteText("<i>~");
+		MainDisplayBox->WriteText("~{i}");
+		MainDisplayBox->WriteText("{i}~");
 	}
+	//this takes a word and makes it into the "code" for it, this " code" 
+	//is understood by the reading end to produce the right output
 	wxString TranslateDialogNames(wxString name) {
 		if (name == "Allergies") {
 			return "Dialog-ID-Allergies";
@@ -88,6 +128,9 @@ public:
 		}
 		if (name == "Cervical Adjustment") {
 			return "Dialog-ID-Cervical-Adjustment";
+		}
+		if (name == "Calender") {
+			return "Dialog-ID-Calender";
 		}
 		if (name == "Compicating Factors") {
 			return "Dialog-ID-Complicating-Factors";
@@ -121,6 +164,9 @@ public:
 		}
 		if (name == "Injury") {
 			return "Dialog-ID-Injury";
+		}
+		if (name == "Insurance") {
+			return "Dialog-ID-Insurance";
 		}
 		if (name == "Life Affected") {
 			return "Dialog-ID-Life-Affected";
@@ -167,6 +213,7 @@ public:
 		if (name == "Vas") {
 			return "Dialog-ID-Vas";
 		}
+		//----------codes--------------
 		if (name == "Ankle") {
 			return "CPT-ID-Ankle";
 		}
@@ -191,7 +238,7 @@ public:
 		if (name == "Knee") {
 			return "CPT-ID-Knee";
 		}
-		if (name == "Lumbosacral-Spine") {
+		if (name == "Lumbosacral Spine") {
 			return "CPT-ID-Lumbosacral-Spine";
 		}
 		if (name == "Shoulder") {
@@ -212,6 +259,9 @@ public:
 		if (name == "Misc") {
 			return "CPT-ID-Misc";
 		}
+		if (name == "Modifier") {
+			return "CPT-ID-Mod";
+		}
 		if (name == "Rehabilitation") {
 			return "CPT-ID-Rehabilitation";
 		}
@@ -221,9 +271,16 @@ public:
 		if (name == "Place of Service") {
 			return "CPT-ID-PlaceofService";
 		}
+		if (name == "OTHER") {
+			
+		}
 
 		return "OTHER";
 	}
+	/// <summary>
+	///returns the dialog count
+	/// </summary>
+	/// <returns></returns>
 	int getDialogCount() {
 		return DialogCount;
 	}

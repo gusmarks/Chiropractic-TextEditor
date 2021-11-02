@@ -1,0 +1,394 @@
+Q68.6	Discoid meniscus
+M12.261	Villonodular synovitis (pigmented), right knee
+M12.262	Villonodular synovitis (pigmented), left knee
+M12.361	Palindromic rheumatism, right knee
+M12.362	Palindromic rheumatism, left knee
+M12.461	Intermittent hydrarthrosis, right knee
+M12.462	Intermittent hydrarthrosis, left knee
+M12.561	Traumatic arthropathy, right knee
+M12.562	Traumatic arthropathy, left knee
+M12.9	Arthropathy, unspecified
+M17.0	Bilateral primary osteoarthritis of knee. Primary localized osteoarthrosis, lower leg
+M17.10	Osteoarthrosis (osteoarthritis), localized, primary, lower leg (knee)
+M17.11	Osteoarthrosis, (osteoarthritis), localized, primary, right knee
+M17.12	Osteoarthrosis (osteoarthritis), localized, primary, left knee
+M17.2	Bilateral post-traumatic osteoarthritis of knee
+M17.31	Unilateral post-traumatic osteoarthritis, right knee
+M17.32	Unilateral post-traumatic osteoarthritis, left knee
+M17.4	Other bilateral secondary osteoarthritis of knee
+M17.5	Other unilateral secondary osteoarthritis of knee
+M17.9	Osteoarthritis of knee, unspecified. Localized osteoarthrosis not specified whether primary or secondary, lower leg
+M17.9	Osteoarthrosis, unspecified whether generalized or localized, lower leg. Osteoarthritis of knee, unspecified
+M17.9	Osteoarthritis of knee, unspecified
+M21.061	Valgus deformity, not elsewhere classified, right knee
+M21.062	Valgus deformity, not elsewhere classified, left knee
+M21.161	Varus deformity, not elsewhere classified, right knee
+M21.162	Varus deformity, not elsewhere classified, left knee
+M21.861	Other specified acquired deformities of right lower leg
+M21.862	Other specified acquired deformities of left lower leg
+M21.869	Other specified acquired deformities of unspecified lower leg
+M22.01	Recurrent dislocation of patella, right knee
+M22.02	Recurrent dislocation of patella, left knee
+M22.11	Recurrent subluxation of patella, right knee
+M22.12	Recurrent subluxation of patella, left knee
+M22.2X1	Patellofemoral disorders, right knee
+M22.2X2	Patellofemoral disorders, left knee
+M22.2X9	Patellofemoral disorders, unspecified knee
+M22.3X1	Other derangements of patella, right knee
+M22.3X2	Other derangements of patella, left knee
+M22.41	Chondromalacia patella, right knee
+M22.42	Chondromalacia patella, left knee
+M22.8X1	Other disorders of patella, right knee
+M22.8X2	Other disorders of patella, left knee
+M22.90	Unspecified disorder of patella, unspecified knee
+M22.91	Unspecified disorder of patella, right knee
+M22.92	Unspecified disorder of patella, left knee
+M23.000	Cystic meniscus, unspecified lateral meniscus, right knee
+M23.001	Cystic meniscus, unspecified lateral meniscus, left knee
+M23.003	Cystic meniscus, unspecified medial meniscus, right knee
+M23.004	Cystic meniscus, unspecified medial meniscus, left knee
+M23.006	Cystic meniscus, unspecified meniscus, right knee
+M23.007	Cystic meniscus, unspecified meniscus, left knee
+M23.011	Cystic meniscus, anterior horn of medial meniscus, right knee
+M23.012	Cystic meniscus, anterior horn of medial meniscus, left knee
+M23.021	Cystic meniscus, posterior horn of medial meniscus, right knee
+M23.022	Cystic meniscus, posterior horn of medial meniscus, left knee
+M23.031	Cystic meniscus, other medial meniscus, right knee
+M23.032	Cystic meniscus, other medial meniscus, left knee
+M23.041	Cystic meniscus, anterior horn of lateral meniscus, right knee
+M23.042	Cystic meniscus, anterior horn of lateral meniscus, left knee
+M23.051	Cystic meniscus, posterior horn of lateral meniscus, right knee
+M23.052	Cystic meniscus, posterior horn of lateral meniscus, left knee
+M23.061	Cystic meniscus, other lateral meniscus, right knee
+M23.062	Cystic meniscus, other lateral meniscus, left knee
+M23.200	Derangement of unspecified lateral meniscus due to old tear or injury, right knee
+M23.201	Derangement of unspecified lateral meniscus due to old tear or injury, left knee
+M23.202	Derangement of unspecified lateral meniscus due to old tear or injury, unspecified knee
+M23.203	Derangement of unspecified medial meniscus due to old tear or injury, right knee
+M23.204	Derangement of unspecified medial meniscus due to old tear or injury, left knee
+M23.206	Derangement of unspecified meniscus due to old tear or injury, right knee
+M23.207	Derangement of unspecified meniscus due to old tear or injury, left knee
+M23.211	Derangement of anterior horn of medial meniscus due to old tear or injury, right knee
+M23.212	Derangement of anterior horn of medial meniscus due to old tear or injury, left knee
+M23.221	Derangement of posterior horn of medial meniscus due to old tear or injury, right knee
+M23.222	Derangement of posterior horn of medial meniscus due to old tear or injury, left knee
+M23.231	Derangement of other medial meniscus due to old tear or injury, right knee
+M23.232	Derangement of other medial meniscus due to old tear or injury, left knee
+M23.241	Derangement of anterior horn of lateral meniscus due to old tear or injury, right knee
+M23.242	Derangement of anterior horn of lateral meniscus due to old tear or injury, left knee
+M23.251	Derangement of posterior horn of lateral meniscus due to old tear or injury, right knee
+M23.252	Derangement of posterior horn of lateral meniscus due to old tear or injury, left knee
+M23.261	Derangement of other lateral meniscus due to old tear or injury, right knee
+M23.262	Derangement of other lateral meniscus due to old tear or injury, left knee
+M23.300	Other meniscus derangements, unspecified lateral meniscus, right knee
+M23.301	Other meniscus derangements, unspecified lateral meniscus, left knee
+M23.301	Other meniscus derangements, unspecified lateral meniscus, left knee
+M23.304	Other meniscus derangements, unspecified medial meniscus, left knee
+M23.306	Other meniscus derangements, unspecified meniscus, right knee
+M23.307	Other meniscus derangements, unspecified meniscus, left knee
+M23.311	Other meniscus derangements, anterior horn of medial meniscus, right knee
+M23.312	Other meniscus derangements, anterior horn of medial meniscus, left knee
+M23.321	Other meniscus derangements, posterior horn of medial meniscus, right knee
+M23.322	Other meniscus derangements, posterior horn of medial meniscus, left knee
+M23.331	Other meniscus derangements, other medial meniscus, right knee
+M23.332	Other meniscus derangements, other medial meniscus, left knee
+M23.341	Other meniscus derangements, anterior horn of lateral meniscus, right knee
+M23.342	Other meniscus derangements, anterior horn of lateral meniscus, left knee
+M23.351	Other meniscus derangements, posterior horn of lateral meniscus, right knee
+M23.352	Other meniscus derangements, posterior horn of lateral meniscus, left knee
+M23.361	Other meniscus derangements, other lateral meniscus, right knee
+M23.362	Other meniscus derangements, other lateral meniscus, left knee
+M23.40	Loose body in knee (joint mice knee) (rice bodies, knee joint) unspecified knee
+M23.41	Loose body in knee (joint mice knee) (rice bodies, knee joint) right knee
+M23.42	Loose body in knee (joint mice knee) (rice bodies, knee joint) left knee
+M23.50	Chronic instability of knee, unspecified knee
+M23.51	Chronic instability of knee, right knee
+M23.51	Chronic instability of knee, right knee
+M23.52	Chronic instability of knee, left knee
+M23.52	Chronic instability of knee, left knee
+M23.8X1	Other internal derangements of right knee
+M23.8X2	Other internal derangements of left knee
+M23.91	Unspecified internal derangement of right knee
+M23.92	Unspecified internal derangement of left knee
+M24.361	Pathological dislocation of right knee, not elsewhere classified
+M24.362	Pathological dislocation of left knee, not elsewhere classified
+M24.461	Recurrent dislocation, right knee
+M24.462	Recurrent dislocation, left knee
+M24.561	Contracture, right knee
+M24.562	Contracture, left knee
+M24.661	Ankylosis, right knee
+M24.662	Ankylosis, left knee
+M25.061	Hemarthrosis, right knee
+M25.062	Hemarthrosis, left knee
+M25.261	Flail joint, right knee
+M25.262	Flail joint, left knee
+M25.361	Other instability, right knee
+M25.362	Other instability, left knee
+M25.461	Patellar (knee) effusion right knee
+M25.462	Patellar (knee) effusion left knee
+M25.469	Patellar (knee) effusion unspecified knee
+M25.561	Pain in the right knee (joint)
+M25.562	Pain in the left knee (joint)
+M25.569	Pain in the knee (joint), unspecified
+M25.661	Stiffness of right knee
+M25.662	Stiffness of left knee
+M25.669	Stiffness of knee, unspecified
+M25.762	Osteophyte, left knee
+M25.861	Other specified joint disorders, right knee
+M25.862	Other specified joint disorders, left knee
+M65.261	Calcific tendinitis, right lower leg
+M65.262	Calcific tendinitis, left lower leg
+M66.0	Rupture of popliteal cyst
+M67.461	Ganglion, right knee
+M67.462	Ganglion, left knee
+M67.51	Plica syndrome, right knee
+M67.52	Plica syndrome, left knee
+M70.40	Prepatellar bursitis, unspecified knee
+M70.41	Prepatellar bursitis, right knee
+M70.41	Prepatellar bursitis, right knee
+M70.42	Prepatellar bursitis, left knee
+M70.42	Prepatellar bursitis, left knee
+M70.50	Bursitis of knee not otherwise specified (enthesopathy)
+M70.50	Other bursitis of knee (infrapatellar, subpatellar), unspecified knee
+M70.51	Bursitis of knee not otherwise specified, right knee
+M70.51	Other bursitis of right knee
+M70.52	Bursitis of knee not otherwise specified, left knee
+M70.52	Other bursitis of left knee
+M71.21	Synovial cyst of popliteal space [Baker], right knee
+M71.22	Synovial cyst of popliteal space [Baker], left knee
+M76.40	Tibial collateral bursitis [Pellegrini-Stieda], unspecified leg (Enthesopathies, lower limb)
+M76.41	Tibial collateral bursitis [Pellegrini-Stieda], right leg (Enthesopathies, lower limb)
+M76.42	Tibial collateral bursitis [Pellegrini-Stieda], left leg (Enthesopathies, lower limb)
+M76.50	Patellar tendinitis, unspecified knee (Enthesopathies, lower limb)
+M76.51	Patellar tendinitis, right knee (Enthesopathies, lower limb)
+M76.52	Patellar tendinitis, left knee (Enthesopathies, lower limb)
+M76.811	Anterior tibial syndrome, right leg. Tibialis tendinitis (Enthesopathies, lower limb)
+M76.812	Anterior tibial syndrome, left leg. Tibialis tendinitis (Enthesopathies, lower limb)
+M79.604	Pain in right leg
+M79.605	Pain in left leg
+M84.361A	Stress fracture, right tibia, initial encounter for fracture
+M84.362A	Stress fracture, left tibia, initial encounter for fracture
+M84.363A	Stress fracture, right fibula, initial encounter for fracture
+M84.364A	Stress fracture, left fibula, initial encounter for fracture
+M92.41	Juvenile osteochondrosis of patella, right knee (Osgood Schlatters disease)
+M92.42	Juvenile osteochondrosis of patella, left knee (Osgood Schlatters disease)
+M92.51	Juvenile osteochondrosis of tibia and fibula, right leg (deleted 10-1-2020)
+M92.511	Juvenile osteochondrosis of proximal tibia, right leg (new 10-1-2020)
+M92.512	Juvenile osteochondrosis of proximal tibia, left leg (new 10-1-2020)
+M92.513	Juvenile osteochondrosis of proximal tibia, bilateral (new 10-1-2020)
+M92.52	Juvenile osteochondrosis of tibia and fibula, left leg (deleted 10-1-2020)
+M92.521	Juvenile osteochondrosis of tibia tubercle, right leg (new 10-1-2020)
+M92.522	Juvenile osteochondrosis of tibia tubercle, left leg (new 10-1-2020)
+M92.523	Juvenile osteochondrosis of tibia tubercle, bilateral (new 10-1-2020)
+M92.529	Juvenile osteochondrosis of tibia tubercle, unspecified leg (new 10-1-2020)
+M92.591	Other juvenile osteochondrosis of tibia and fibula, right leg (new 10-1-2020)
+M92.592	Other juvenile osteochondrosis of tibia and fibula, left leg (new 10-1-2020)
+M92.593	Other juvenile osteochondrosis of tibia and fibula, bilateral (new 10-1-2020)
+M92.599	Other juvenile osteochondrosis of tibia and fibula, unspecified leg (new 10-1-2020)
+M94.261	Chondromalacia right knee
+M94.262	Chondromalacia left knee
+M94.8X6	Other specified disorders of cartilage, lower leg
+M99.06	Segmental and somatic dysfunction of lower extremity (subluxation)
+R29.898	Other symptoms referable to joint (knee and lower leg). Joint crepitus. Other symptoms and signs involving the musculoskeletal system
+S80.01XA	Contusion of right knee, initial encounter
+S80.02XA	Contusion of left knee, initial encounter
+S80.211A	Abrasion, right knee, initial encounter
+S80.212A	Abrasion, left knee, initial encounter
+S80.811A	Abrasion, right lower leg, initial encounter
+S80.812A	Abrasion, left lower leg, initial encounter
+S83.001A	Unspecified subluxation of right patella, initial encounter
+S83.001D	Unspecified subluxation of right patella, subsequent encounter
+S83.001S	Unspecified subluxation of right patella, sequela
+S83.002A	Unspecified subluxation of left patella, initial encounter
+S83.002D	Unspecified subluxation of left patella, subsequent encounter
+S83.002S	Unspecified subluxation of left patella, sequela
+S83.004A	Unspecified dislocation of right patella, initial encounter
+S83.004D	Unspecified dislocation of right patella, subsequent encounter
+S83.004S	Unspecified dislocation of right patella, sequela
+S83.005A	Unspecified dislocation of left patella, initial encounter
+S83.005D	Unspecified dislocation of left patella, subsequent encounter
+S83.005S	Unspecified dislocation of left patella, sequela
+S83.006A	Unspecified dislocation of unspecified patella, initial encounter
+S83.006D	Unspecified dislocation of unspecified patella, subsequent encounter
+S83.006S	Unspecified dislocation of unspecified patella, sequela
+S83.011A	Lateral subluxation of right patella, initial encounter
+S83.011D	Lateral subluxation of right patella, subsequent encounter
+S83.011S	Lateral subluxation of right patella, sequela
+S83.012D	Lateral subluxation of left patella, subsequent encounter
+S83.012S	Lateral subluxation of left patella, sequela
+S83.211A	Bucket-handle tear of medial meniscus, current injury, right knee, initial encounter	
+S83.211D	Bucket-handle tear of medial meniscus, current injury, right knee, subsequent encounter
+S83.211S	Bucket-handle tear of medial meniscus, current injury, right knee, sequelae
+S83.212A	Bucket-handle tear of medial meniscus, current injury, left knee, initial encounter
+S83.212D	Bucket-handle tear of medial meniscus, current injury, left knee, subsequent encounter
+S83.212S	Bucket-handle tear of medial meniscus, current injury, left knee, sequelae
+S83.219A	Bucket-handle tear of medial meniscus, current injury, unspecified knee, initial encounter
+S83.219D	Bucket-handle tear of medial meniscus, current injury, unspecified knee, subsequent encounter
+S83.219S	Bucket-handle tear of medial meniscus, current injury, unspecified knee, sequelae
+	S83.221A	Peripheral tear of medial meniscus, current injury, right knee, initial encounter
+S83.221D	Peripheral tear of medial meniscus, current injury, right knee, subsequent encounter
+S83.221S	Peripheral tear of medial meniscus, current injury, right knee, sequelae
+S83.222D	Peripheral tear of medial meniscus, current injury, left knee, subsequent encounter
+S83.222S	Peripheral tear of medial meniscus, current injury, left knee, sequelae
+S83.229A	Peripheral tear of medial meniscus, current injury, unspecified knee, initial encounter
+S83.229D	Peripheral tear of medial meniscus, current injury, unspecified knee, subsequent encounter	 
+S83.229S	Peripheral tear of medial meniscus, current injury, unspecified knee, sequelae
+S83.231A	Complex tear of medial meniscus, current injury, right knee, initial encounter
+S83.231D	Complex tear of medial meniscus, current injury, right knee, subsequent encounter
+S83.231S	Complex tear of medial meniscus, current injury, right knee, sequelae
+S83.232A	Complex tear of medial meniscus, current injury, left knee, initial encounter
+S83.232D	Complex tear of medial meniscus, current injury, left knee, subsequent encounter
+S83.232S	Complex tear of medial meniscus, current injury, left knee, sequelae
+S83.239A	Complex tear of medial meniscus, current injury, unspecified knee, initial encounter	 
+S83.239D	Complex tear of medial meniscus, current injury, unspecified knee, subsequent encounter
+S83.239S	Complex tear of medial meniscus, current injury, unspecified knee, sequelae
+S83.241A	Other tear of medial meniscus, current injury, right knee, initial encounter
+S83.241D	Other tear of medial meniscus, current injury, right knee, subsequent encounter
+S83.241S	Other tear of medial meniscus, current injury, right knee, sequela
+S83.242A	Other tear of medial meniscus, current injury, left knee, initial encounter
+S83.242D	Other tear of medial meniscus, current injury, left knee, subsequent encounter
+S83.242S	Other tear of medial meniscus, current injury, left knee, sequela
+S83.249A	Other tear of medial meniscus, current injury, unspecified knee, initial encounter
+S83.249D	Other tear of medial meniscus, current injury, unspecified knee, subsequent encounter
+S83.249S	Other tear of medial meniscus, current injury, unspecified knee, sequela
+S83.251A	Bucket-handle tear of lateral meniscus, current injury, right knee, initial encounter
+S83.251D	Bucket-handle tear of lateral meniscus, current injury, right knee, subsequent encounter
+S83.251S	Bucket-handle tear of lateral meniscus, current injury, right knee, sequelae
+S83.252A	Bucket-handle tear of lateral meniscus, current injury, left knee, initial encounter
+S83.252D	Bucket-handle tear of lateral meniscus, current injury, left knee, subsequent encounter
+S83.252S	Bucket-handle tear of lateral meniscus, current injury, left knee, sequelae
+S83.259A	Bucket-handle tear of lateral meniscus, current injury, unspecified knee, initial encounter
+S83.259D	Bucket-handle tear of lateral meniscus, current injury, unspecified knee, subsequent encounter
+S83.259S	Bucket-handle tear of lateral meniscus, current injury, unspecified knee, sequelae
+S83.261A	Peripheral tear of lateral meniscus, current injury, right knee, initial encounter
+S83.261D	Peripheral tear of lateral meniscus, current injury, right knee, subsequent encounter
+S83.261S	Peripheral tear of lateral meniscus, current injury, right knee, sequelae
+S83.262A	Peripheral tear of lateral meniscus, current injury, left knee, initial encounter
+S83.262D	Peripheral tear of lateral meniscus, current injury, left knee, subsequent encounter
+S83.262S	Peripheral tear of lateral meniscus, current injury, left knee, sequelae
+S83.269A	Peripheral tear of lateral meniscus, current injury, unspecified knee, initial encounter
+S83.269D	Peripheral tear of lateral meniscus, current injury, unspecified knee, subsequent encounter
+S83.269S	Peripheral tear of lateral meniscus, current injury, unspecified knee, sequelae
+S83.271A	Complex tear of lateral meniscus, current injury, right knee, initial encounter
+S83.271D	Complex tear of lateral meniscus, current injury, right knee, subsequent encounter
+S83.272A	Complex tear of lateral meniscus, current injury, left knee, initial encounter
+S83.272D	Complex tear of lateral meniscus, current injury, left knee, subsequent encounter
+S83.272S	Complex tear of lateral meniscus, current injury, left knee, sequelae
+S83.279A	Complex tear of lateral meniscus, current injury, unspecified knee, initial encounter
+S83.279D	Complex tear of lateral meniscus, current injury, unspecified knee, subsequent encounter
+S83.279S	Complex tear of lateral meniscus, current injury, unspecified knee, sequelae
+S83.281A	Other tear of lateral meniscus, current injury, right knee, initial encounter
+S83.281D	Other tear of lateral meniscus, current injury, right knee, subsequent encounter
+S83.281S	Other tear of lateral meniscus, current injury, right knee, sequela
+S83.282A	Other tear of lateral meniscus, current injury, left knee, initial encounter
+S83.282D	Other tear of lateral meniscus, current injury, left knee, subsequent encounter
+S83.282S	Other tear of lateral meniscus, current injury, left knee, sequela
+S83.289A	Other tear of lateral meniscus, current injury, unspecified knee, initial encounter
+S83.289D	Other tear of lateral meniscus, current injury, unspecified knee, subsequent encounter
+S83.289S	Other tear of lateral meniscus, current injury, unspecified knee, sequela
+S83.401A	Sprain of unspecified collateral ligament of right knee, initial encounter
+S83.401D	Sprain of unspecified collateral ligament of right knee, subsequent encounter
+S83.401S	Sprain of unspecified collateral ligament of right knee, sequela
+S83.402A	Sprain of unspecified collateral ligament of left knee, initial encounter
+S83.402D	Sprain of unspecified collateral ligament of left knee, subsequent encounter
+S83.402S	Sprain of unspecified collateral ligament of left knee, sequela
+S83.409A	Sprain of unspecified collateral ligament of unspecified knee, initial encounter
+S83.409D	Sprain of unspecified collateral ligament of unspecified knee, subsequent encounter
+S83.409S	Sprain of unspecified collateral ligament of unspecified knee, sequela
+S83.411A	Sprain of medial collateral ligament of right knee, initial encounter
+S83.411D	Sprain of medial collateral ligament of right knee, subsequent encounter
+S83.411S	Sprain of medial collateral ligament of right knee, sequela
+S83.412A	Sprain of medial collateral ligament of left knee, initial encounter
+S83.412D	Sprain of medial collateral ligament of left knee, subsequent encounter
+S83.412S	Sprain of medial collateral ligament of left knee, sequela
+S83.419A	Sprain of medial collateral ligament of unspecified knee, initial encounter
+S83.419D	Sprain of medial collateral ligament of unspecified knee, subsequent encounter
+S83.419S	Sprain of medial collateral ligament of unspecified knee, sequela
+S83.421A	Sprain of lateral collateral ligament of right knee, initial encounter
+S83.421D	Sprain of lateral collateral ligament of right knee, subsequent encounter
+S83.421S	Sprain of lateral collateral ligament of right knee, sequela
+S83.422A	Sprain of lateral collateral ligament of left knee, initial encounter
+S83.422D	Sprain of lateral collateral ligament of left knee, subsequent encounter
+S83.422S	Sprain of lateral collateral ligament of left knee, sequela
+S83.429A	Sprain of lateral collateral ligament of unspecified knee, initial encounter
+S83.429D	Sprain of lateral collateral ligament of unspecified knee, subsequent encounter
+S83.429S	Sprain of lateral collateral ligament of unspecified knee, sequela
+S83.501A	Sprain of unspecified cruciate ligament of right knee, initial encounter
+S83.501D	Sprain of unspecified cruciate ligament of right knee, subsequent encounter
+S83.501S	Sprain of unspecified cruciate ligament of right knee, sequela
+S83.502A	Sprain of unspecified cruciate ligament of left knee, initial encounter
+S83.502D	Sprain of unspecified cruciate ligament of left knee, subsequent encounter
+S83.502S	Sprain of unspecified cruciate ligament of left knee, sequela
+S83.509A	Sprain of unspecified cruciate ligament of unspecified knee, initial encounter
+S83.509D	Sprain of unspecified cruciate ligament of unspecified knee, subsequent encounter
+S83.509S	Sprain of unspecified cruciate ligament of unspecified knee, sequela
+S83.511A	Sprain of anterior cruciate ligament of right knee, initial encounter
+S83.511D	Sprain of anterior cruciate ligament of right knee, subsequent encounter
+S83.511S	Sprain of anterior cruciate ligament of right knee, sequela
+S83.512A	Sprain of anterior cruciate ligament of left knee, initial encounter
+S83.512D	Sprain of anterior cruciate ligament of left knee, subsequent encounter
+S83.512S	Sprain of anterior cruciate ligament of left knee, sequela
+S83.519A	Sprain of anterior cruciate ligament of unspecified knee, initial encounter
+S83.519D	Sprain of anterior cruciate ligament of unspecified knee, subsequent encounter
+S83.519S	Sprain of anterior cruciate ligament of unspecified knee, sequela
+S83.521A	Sprain of posterior cruciate ligament of right knee, initial encounter
+S83.521D	Sprain of posterior cruciate ligament of right knee, subsequent encounter
+S83.521S	Sprain of posterior cruciate ligament of right knee, sequela
+S83.522A	Sprain of posterior cruciate ligament of left knee, initial encounter
+S83.522D	Sprain of posterior cruciate ligament of left knee, subsequent encounter
+S83.522S	Sprain of posterior cruciate ligament of left knee, sequela
+S83.529A	Sprain of posterior cruciate ligament of unspecified knee, initial encounter
+S83.529D	Sprain of posterior cruciate ligament of unspecified knee, subsequent encounter
+S83.529S	Sprain of posterior cruciate ligament of unspecified knee, sequela
+S83.60XA	Sprain of the superior tibiofibular joint and ligament of unspecified knee, initial encounter
+S83.60XD	Sprain of the superior tibiofibular joint and ligament of unspecified knee, subsequent encounter
+S83.60XS	Sprain of the superior tibiofibular joint and ligament of unspecified knee, sequela
+S83.61XA	Sprain of the superior tibiofibular joint and ligament of right knee, initial encounter
+S83.61XD	Sprain of the superior tibiofibular joint and ligament of right knee, subsequent encounter
+S83.61XS	Sprain of the superior tibiofibular joint and ligament of right knee, sequela
+S83.62XA	Sprain of the superior tibiofibular joint and ligament of left knee, initial encounter
+S83.62XD	Sprain of the superior tibiofibular joint and ligament of left knee, subsequent encounter
+S83.62XS	Sprain of the superior tibiofibular joint and ligament of left knee, sequela
+S83.8X1A	Sprain of other specified parts of right knee, initial encounter
+S83.8X1A	Sprain of other specified parts of unspecified knee of right knee, initial encounter
+S83.8X1D	Sprain of other specified parts of unspecified knee of right knee, subsequent encounter
+S83.8X1S	Sprain of other specified parts of unspecified knee of right knee, sequela
+S83.8X2A	Sprain of other specified parts of left knee, initial encounter
+S83.8X2A	Sprain of other specified parts of unspecified knee of left knee, initial encounter
+S83.8X2D	Sprain of other specified parts of unspecified knee of left knee, subsequent encounter
+S83.8X2S	Sprain of other specified parts of unspecified knee of left knee, sequela
+	S83.8X9A	Sprain of other specified parts of unspecified knee, initial encounter
+S83.8X9A	Sprain of other specified parts of unspecified knee of unspecified knee, initial encounter
+S83.8X9D	Sprain of other specified parts of unspecified knee of unspecified knee, subsequent encounter
+S83.8X9S	Sprain of other specified parts of unspecified knee of unspecified knee, sequela
+S83.90XA	Sprain of unspecified site of unspecified knee, initial encounter (medial tibial stress syndrome, shin splints)
+S83.90XD	Sprain of unspecified site of unspecified knee, subsequent encounter (medial tibial stress syndrome, shin splints)
+S83.90XS	Sprain of unspecified site of unspecified knee, sequela (medial tibial stress syndrome, shin splints)
+S83.91XA	Sprain of unspecified site of right knee, initial encounter (medial tibial stress syndrome, shin splints)
+S83.91XD	Sprain of unspecified site of right knee, subsequent encounter (medial tibial stress syndrome, shin splints)
+S83.91XS	Sprain of unspecified site of right knee, sequela (medial tibial stress syndrome, shin splints)
+S83.92XA	Sprain of unspecified site of left knee, initial encounter (medial tibial stress syndrome, shin splints)
+S83.92XD	Sprain of unspecified site of left knee, subsequent encounter (medial tibial stress syndrome, shin splints)
+S83.92XS	Sprain of unspecified site of left knee, sequela (medial tibial stress syndrome, shin splints)
+S86.811A	Strain of other muscle(s) and tendon(s) at lower leg level, right leg, initial encounter
+S86.811D	Strain of other muscle(s) and tendon(s) at lower leg level, right leg, subsequent encounter
+S86.811S	Strain of other muscle(s) and tendon(s) at lower leg level, right leg, sequela
+S86.812A	Strain of other muscle(s) and tendon(s) at lower leg level, left leg, initial encounter
+S86.812D	Strain of other muscle(s) and tendon(s) at lower leg level, left leg, subsequent encounter
+S86.812S	Strain of other muscle(s) and tendon(s) at lower leg level, left leg, sequela
+S86.819A	Strain of other muscle(s) and tendon(s) at lower leg level, unspecified leg, initial encounter
+S86.819A	Strain of other muscle(s) and tendon(s) at lower leg level, unspecified leg, initial encounter
+S86.819D	Strain of other muscle(s) and tendon(s) at lower leg level, unspecified leg, subsequent encounter
+S86.819S	Strain of other muscle(s) and tendon(s) at lower leg level, unspecified leg, sequela
+S86.911A	Strain of unspecified muscle(s) and tendon(s) at lower leg level, right leg, initial encounter
+S86.911D	Strain of unspecified muscle(s) and tendon(s) at lower leg level, right leg, subsequent encounter
+S86.911S	Strain of unspecified muscle(s) and tendon(s) at lower leg level, right leg, sequela
+S86.912A	Strain of unspecified muscle(s) and tendon(s) at lower leg level, left leg, initial encounter
+S86.912D	Strain of unspecified muscle(s) and tendon(s) at lower leg level, left leg, subsequent encounter
+S86.912S	Strain of unspecified muscle(s) and tendon(s) at lower leg level, left leg, sequela
+S86.919A	Strain of unspecified muscle(s) and tendon(s) at lower leg level, unspecified leg, initial encounter
+	S86.919D	Strain of unspecified muscle(s) and tendon(s) at lower leg level, unspecified leg, subsequent encounter
+S86.919S	Strain of unspecified muscle(s) and tendon(s) at lower leg level, unspecified leg, sequela
+Z96.651	Presence of right artificial knee joint
+Z96.652	Presence of left artificial knee joint
+Z96.653	Presence of bilateral artificial knee joint

@@ -1,3 +1,3 @@
 ﻿  main.cpp
-C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\DialogHelper.h(210): warning C4715: 'DialogHelper::selectPremadeDialog': not all control paths return a value
-  chiro-pro.vcxproj -> C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\chiro-pro.exe
+C:\Users\koman\Documents\chiroApp\chiro-pro\wxWidgets-3.1.3\include\wx\string.h(3938,16): warning C5232: in C++20 this comparison calls 'bool wxString::iterator::operator ==(const wxString::const_iterator &) const' recursively
+  chiro-pro.vcxproj -> C:\Users\koman\Documents\chiroApp\chiro-pro\chiro-pro\BespokeChartnote.exe

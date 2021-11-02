@@ -56,93 +56,95 @@ EVT_MENU(MENU_Save, MainFrame::saveFile)
 EVT_MENU(MENU_SaveAs, MainFrame::saveFileAs)
 EVT_MENU(MENU_Quit, MainFrame::quit)
 EVT_MENU(MENU_EditButtonName, MainFrame::onPopUpCLick)
-EVT_MENU(MENU_EditButtonText, MainFrame::onPopUpCLick)
 EVT_MENU(MENU_RemoveButton,MainFrame::onPopUpCLick)
-EVT_MENU(MENU_chanegDialog, MainFrame::onPopUpCLick)
 EVT_MENU(MENU_SaveButtons, MainFrame::savePanelsAndButtons)
 EVT_MENU(MENU_BillingDoc, MainFrame::gatherBillingInformation)
-
+EVT_MENU(MENU_EditCodes, MainFrame::openCPT_DxEditor)
+EVT_MENU(MENU_EditGenDialog, MainFrame::openGenDialogEditor)
 EVT_MENU(ID_FORMAT_BOLD, MainFrame::onBold)
 EVT_MENU(ID_FORMAT_ITALIC, MainFrame::onItalic)
 EVT_MENU(ID_FORMAT_UNDERLINE, MainFrame::onUnderline)
-
 EVT_MENU(ID_FORMAT_ALIGN_LEFT, MainFrame::onAlignLeft)
 EVT_MENU(ID_FORMAT_ALIGN_CENTRE, MainFrame::onAlignCentre)
 EVT_MENU(ID_FORMAT_ALIGN_RIGHT, MainFrame::onAlignRight)
-
-
 EVT_BUTTON(BUTTON_Add, MainFrame::addButton)
 EVT_BUTTON(BUTTON_Sign, MainFrame::sign)
 EVT_BUTTON(BUTTON_NewSet, MainFrame::newSet)
-
-
-//EVT_CHOICE(CHOICE_SWAP_Set, MainFrame::swapButtonSet)
+EVT_CHOICE(CHOICE_SWAP_Set, MainFrame::swapButtonSet)
 EVT_HYPERLINK(LINK_NAVIGATE, MainFrame::linkNavigation)
-//EVT_TEXT_URL(TEXT_Main,MainFrame::dialogURLHelper)
-/*
-EVT_MENU(ID_FORMAT_STRIKETHROUGH, MainFrame::OnStrikethrough)
-EVT_MENU(ID_FORMAT_SUPERSCRIPT, MainFrame::OnSuperscript)
-EVT_MENU(ID_FORMAT_SUBSCRIPT, MainFrame::OnSubscript)*/
+EVT_TEXT_URL(TEXT_Main,MainFrame::dialogURLHelper)
 END_EVENT_TABLE()
 void loadButtonSetInfo(std::string path);
 /////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////main application///////////////////////////
 // Initializes the MainApplication class and tells our program to run it
 IMPLEMENT_APP(MainApplication) 
-
 bool MainApplication::OnInit()
 {
     //main frame constructor
      m_styleSheet = new wxRichTextStyleSheet();
-    MainFrame* MainWin = new MainFrame(wxT("DocuMaster"), wxPoint(1, 1),
+    MainFrame* MainWin = new MainFrame("BespokeChartnote", wxPoint(1, 1),
         wxSize(300, 200)); // Create an instance of our frame, or window
     MainWin->Show(TRUE); // show the window
     MainWin->SetIcon(wxIcon("SAMPLE"));
    // MainWin->SetIcon(wxIcon());
     SetTopWindow(MainWin);// and finally, set it as the main window
-    
     return TRUE;
 }
 /////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////main frame method/////////////////////////
-
 /// <summary>
 /// this is the constructor for the frame, it takes in 3 paramiters to build the frame with.
 /// </summary>
-/// <param name="title"></param>
-/// <param name="pos"></param>
-/// <param name="size"></param>
+/// <param name="title"> the name of the frame to be displayed</param>
+/// <param name="pos">the position on the screen to render the frame</param>
+/// <param name="size"> how large the frame is</param>
 MainFrame::MainFrame(const wxString& title,
     const wxPoint& pos, const wxSize& size)
     : wxFrame((wxFrame*)NULL, -1, title, pos, size)
 {
+    functionHelper->createMissingFiles();
+    //initulize image handelers, allows the use of icons, and bitmaps to apply pictures 
     wxInitAllImageHandlers();
+    
     //loads the basic data for button sets
     loadButtonSetInfo("SetInfoAll.txt");
-   
+    if (buttonSetList.empty()) {
+        MainFrame::quit();
+        return;
+    }
     //-----------menu-status start-----------
     //statusbar at the bottom of page has 2 cells
     //menu bar at the top ofthe page has 1 tab named File menu and visualy represented as File
-    //the File tab has 7 options: new file, open file,close file, save file, save file as, save button layout and quit.
-    //CreateStatusBar(2);
+    //the File tab has 10 options: new file, open file,close file, save file, save file as, gather billing information, 
+    //edit dx/cpt codes, edit general dialogs,save button layout and quit.
     mainMenu = new wxMenuBar();
     wxMenu* FileMenu = new wxMenu();
 
-    FileMenu->Append(MENU_New, wxT("&New"),
+    FileMenu->Append(MENU_New, wxT("&New Patient File"),
         wxT("Create a new file"));
-    FileMenu->Append(MENU_Open, wxT("&Open"),
+    FileMenu->Append(MENU_Open, wxT("&Open Existing Patient File"),
         wxT("Open an existing file"));
-    FileMenu->Append(MENU_Close, wxT("&Close"),
+    FileMenu->Append(MENU_Close, wxT("&Close Patient file"),
         wxT("Close the current document"));
-    FileMenu->Append(MENU_Save, wxT("&Save"),
+    FileMenu->Append(MENU_Save, wxT("&Save File"),
         wxT("Save the current document"));
-    FileMenu->Append(MENU_SaveAs, wxT("Save &As"),
+    FileMenu->Append(MENU_SaveAs, wxT("Save File &As"),
         wxT("Save the current document under a new file name"));
+    FileMenu->Append(MENU_BillingDoc, wxT("&Create Billing Document"),
+        wxT("Create a new Billing file"));
     FileMenu->Append(MENU_SaveButtons, wxT(" &Save the button layout"),
         wxT("Save the button layout"));
     FileMenu->Append(MENU_Quit, wxT(" &Quit"),
         wxT("Quit the editor"));
+    wxMenu* EditMenu = new wxMenu();
 
+    EditMenu->Append(MENU_EditCodes, wxT("&Edit Dx/CPT Codes"),
+        wxT("Edit Dx/CPT Codes."));
+    EditMenu->Append(MENU_EditGenDialog, wxT("&Edit General Dialogs"),
+        wxT("Edit Dx/CPT Codes."));
+
+    //formatting drop down
     wxMenu* formatMenu = new wxMenu;
     formatMenu->AppendCheckItem(ID_FORMAT_BOLD, _("&Bold\tCtrl+B"));
     formatMenu->AppendCheckItem(ID_FORMAT_ITALIC, _("&Italic\tCtrl+I"));
@@ -152,21 +154,14 @@ MainFrame::MainFrame(const wxString& title,
     formatMenu->AppendCheckItem(ID_FORMAT_ALIGN_RIGHT, _("&Right Align"));
     formatMenu->AppendCheckItem(ID_FORMAT_ALIGN_CENTRE, _("&Centre"));
     formatMenu->AppendSeparator();
-    //formatMenu->AppendCheckItem(ID_FORMAT_STRIKETHROUGH, _("Stri&kethrough"));
-    //formatMenu->AppendCheckItem(ID_FORMAT_SUPERSCRIPT, _("Superscrip&t"));
-    //formatMenu->AppendCheckItem(ID_FORMAT_SUBSCRIPT, _("Subscrip&t"));
-
-    wxMenu* billingMenu = new wxMenu();
-
-    billingMenu->Append(MENU_BillingDoc, wxT("&gather Information"),
-        wxT("Create a new Billing file"));
+  
     //attach the menu items to the frame
-    mainMenu->Append(billingMenu, wxT("Billing"));
     mainMenu->Append(FileMenu, wxT("File"));
-    mainMenu->Append(formatMenu, wxT("format"));
+    mainMenu->Append(EditMenu, wxT("Edit"));
+    mainMenu->Append(formatMenu, wxT("Format"));
     SetMenuBar(mainMenu);
 
-   
+    //the tool bar allows for quick editing of formatting variables
     toolBar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,wxNO_BORDER);
    
     toolBar->AddCheckTool(ID_FORMAT_BOLD, wxEmptyString, wxBitmap(bold_xpm), wxNullBitmap, _("Bold"));
@@ -212,7 +207,7 @@ MainFrame::MainFrame(const wxString& title,
     controls->controlLayout();
 
     //create a choice box so the user can select what set of buttons they want, and a button to create new button sets
-    userSelection = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxSize(100,30), 2, MainFrame::buttonSetNames, 0, wxDefaultValidator, "userCHoice");
+    userSelection = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxSize(100,30), MainFrame::buttonSetNames->size(), MainFrame::buttonSetNames, 0, wxDefaultValidator, "userCHoice");
     wxButton* newUser = new wxButton(this, BUTTON_NewSet, "New Set", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "New Set");
     //new sizer for the wxCHoice and the new set button
     buttonSetSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -226,26 +221,24 @@ MainFrame::MainFrame(const wxString& title,
 
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////text editor/////////////////////////////////
-    mainEditBox = new wxRichTextCtrl(this,TEXT_Main, "", wxDefaultPosition, wxSize(700, 600), 0, wxDefaultValidator, "");
+    mainEditBox = new wxRichTextCtrl(this,TEXT_Main, "", wxDefaultPosition, wxSize(770, 600), 0, wxDefaultValidator, "");
    
     mainEditBox->SetInsertionPoint(0);
     wxFont font(wxFontInfo(12).Family(wxFONTFAMILY_ROMAN));
     mainEditBox->SetFont(font);
     mainEditBox->SetMargins(10, 10);
     
-   
-
+    //handelers help save in other file formats
     wxRichTextBuffer::SetFloatingLayoutMode(false);
     wxRichTextBuffer::AddHandler(new wxRichTextXMLHandler);
     wxRichTextBuffer::AddHandler(new wxRichTextHTMLHandler);
 
-    
-    //mainEditBox->Bind(wxEVT_LEFT_DCLICK, &MainFrame::clickURLinTextCtrl, this);
     //an object to make and handel popups, error messages and questions
     popUpHandeler = new DialogHelper(this);
     functionHelper = new FuncHelper();
     int count =ManualgetDialogCount("Dialogs/0dialogCount.txt");
     DialogCreationHelper = new DialogCreator(this,wxID_ANY,count);
+    
     ///////////////////////////button layout//////////////////////////////
  
     //loades the panels and buttons for the first set
@@ -266,10 +259,11 @@ MainFrame::MainFrame(const wxString& title,
     mainSizer = new wxBoxSizer(wxVERTICAL);
     mainSizer->Add(buttonSetSizer,1, wxALIGN_CENTER);
     mainSizer->Add(controls, 1, wxEXPAND);
-    mainSizer->Add(currentButtonSet->getCurrentPanel(),5, wxEXPAND);
+    mainSizer->Add(currentButtonSet->getCurrentPanel(),3);
     mainSizer->Add(toolBar, 1, wxEXPAND);
-    mainSizer->AddSpacer(10);
+    mainSizer->AddSpacer(5);
     mainSizer->Add(mainEditBox, 5,wxALIGN_CENTER);
+    mainSizer->AddSpacer(5);
 
     //set the sizer object "sizer" as the main sizer and update its layout, finaly centering the objects in the frame.
     mainSizer->Layout();
@@ -296,116 +290,144 @@ void MainFrame::addButton(wxCommandEvent& event)
     wxString buttonText;
     //ask user what type of button they want, text addes text to the document,link adds a link to a new panel
    wxString selection = popUpHandeler->confirmIntentAddButton(this);
-        //promp user for name and text of text button
-   if (selection == "text output.") {
-       if (popUpHandeler->selectPremadeDialog() == "New paragraph") {
-           openDialog();
-           buttonName =
-               wxGetTextFromUser("Enter name for Button ", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
-           buttonText = "Dialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt";
-       }
-       
-       //adds the button
-       if (buttonName!="") {
-           currentButtonSet->getCurrentPanel()->addQLink(buttonName, buttonText);
-           int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
-           currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex + 1);
-
-           std::fstream fileReader("Dialogs/0dialogList.txt",fstream::app);
-           //fileReader.open();
-           fileReader << "\n"+buttonName.ToStdString();
-           fileReader << " \tDialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt\n";
-           fileReader.close();
-           fileReader.open("Dialogs/0dialogCount.txt");
-           fileReader << std::to_string(DialogCreationHelper->getDialogCount());
-
-           
-
-       }
-     //  int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
-       currentButtonSet->getCurrentPanel()->getQLinkList().back()->
-           Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
-      // int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
-       currentButtonSet->getCurrentPanel()->getQLinkList().back()->
-           Bind(wxEVT_BUTTON, &MainFrame::readDialogFile, this);
-
+   selectionInformation premadeSelection;
+   int buttonCount = currentButtonSet->getCurrentPanel()->getQLinkCount();
+   if (buttonCount >= 30) {
+       popUpHandeler->errorMessage("exceding 30 buttons, cannot place");
+       return;
    }
-   else if (selection == "new page.") {
-       if (currentButtonSet->getCurrentPanel()->getLevel() >= 2) {
-           popUpHandeler->errorMessage("max panel depth reached");
-           return;
+   try {
+       //promp user for name and text of text button
+       if (selection == "Text Button.") {
+           premadeSelection = popUpHandeler->selectPremadeDialog();
+           if (premadeSelection.selectionText.find("New Paragraph")!= std::string::npos) {
+               //open the dialog creator to make a new paragraph name the button to name the new paragraph(could be an issue)
+               openDialogCreator();
+               buttonName = wxGetTextFromUser("Enter name for Button & Dialog", "Must have name(errors may occur if unnamed)", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+               buttonText = "Dialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt";
+               //save the button details
+               std::fstream fileReader("Dialogs/0dialogList.txt", fstream::app);
+               if (fileReader.is_open()) {
+                   fileReader <<  buttonName.ToStdString();
+                   fileReader << " \tDialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt\n";
+               }
+               fileReader.close();
+               //save the aditional information, the buttons name and the count of all dialogs
+               fileReader.open("Dialogs/0dialogNames.txt", fstream::app);
+               if (fileReader.is_open())
+                   fileReader << buttonName.ToStdString() + "\n";
+               fileReader.close();
+               fileReader.open("Dialogs/0dialogCount.txt");
+               if (fileReader.is_open())
+                   fileReader << std::to_string(DialogCreationHelper->getDialogCount());
+               fileReader.close();
+           }
+           // if the user chose to cancel this will make sure not to save it
+           else if (premadeSelection.selectionText == "Cancel") {
+               buttonName = "";
+           }
+           //add this!
+           else if (premadeSelection.selectionText != "") {
+               buttonName = premadeSelection.selectionText;
+               buttonText = ("Dialogs/DialogFile" + std::to_string(premadeSelection.selectionIndex-1) + ".txt");
+
+           }
+
+           //adds the button to te page and binds the to the apropirate functions
+           if (buttonName != "") {
+               currentButtonSet->getCurrentPanel()->addQLink(buttonName, buttonText);
+               int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
+               currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex + 1);
+
+               currentButtonSet->getCurrentPanel()->getQLinkList().back()->
+                   Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
+
+               currentButtonSet->getCurrentPanel()->getQLinkList().back()->
+                   Bind(wxEVT_BUTTON, &MainFrame::readDialogFile, this);
+           }
        }
-       wxString ButtonName =
-           wxGetTextFromUser("Enter text for button name", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-       if (ButtonName != "" && currentButtonSet->getCurrentPanel()->getLevel() < 2) {
-           //gets the panel index and adds the new button, also the new panel that the button will link to.
-           int panelCount = currentButtonSet->getCurrentPanel()->getPanelCount();
-           std::string panelCountStr = std::to_string(panelCount);
-           currentButtonSet->getCurrentPanel()->addQLink(ButtonName, panelCountStr);
-           
-           currentButtonSet->getCurrentPanel()->addNewPanel(this, ButtonName, currentButtonSet->getPath());
+       //if the user chose new page then a button will be added that is bound to a function that swaps the page to the clicked one
+       else if (selection == "New Page Button.") {
+           if (currentButtonSet->getCurrentPanel()->getLevel() >= 2) {
+               popUpHandeler->errorMessage("max panel depth reached");
+               return;
+           }
+           wxString ButtonName =
+               wxGetTextFromUser("Enter text for button name", "Must have name(errors may occur if unnamed)", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+           if (ButtonName != "" && currentButtonSet->getCurrentPanel()->getLevel() < 2) {
+               //gets the panel index and adds the new button, also the new panel that the button will link to.
+               int panelCount = currentButtonSet->getCurrentPanel()->getPanelCount();
+               std::string panelCountStr = std::to_string(panelCount);
+               currentButtonSet->getCurrentPanel()->addQLink(ButtonName, panelCountStr);
 
-           //bind the editing function, and update the button index for the panel
-           int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
-           currentButtonSet->getCurrentPanel()->getQLinkList().at(QIndex)->
-               Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
+               currentButtonSet->getCurrentPanel()->addNewPanel(this, ButtonName, currentButtonSet->getPath());
 
-           currentButtonSet->getCurrentPanel()->getQLinkList().at(QIndex)->
-               Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
+               //bind the editing function, and update the button index for the panel
+               int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
+               currentButtonSet->getCurrentPanel()->getQLinkList().at(QIndex)->
+                   Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
+
+               currentButtonSet->getCurrentPanel()->getQLinkList().at(QIndex)->
+                   Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
 
 
-           currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex + 1);
-           
+               currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex + 1);
+
+           }
+           else if (ButtonName == "") {
+             
+           }
+
        }
-       else if (ButtonName == "") {
-           popUpHandeler->errorMessage("no name");
-       }
-       
-   }   
+   }
+   catch (...) { popUpHandeler->errorMessage("an error occured in main.cpp"); }
 }
-/// <summary>////////////////////////////////////////////////
-/// this function makes a button write its texr to the texteditor/
-/// </summary>/////////////////////////////////////////////////
-/// <param name="event"></param>
-//void MainFrame::ButtonWrite(wxCommandEvent& event) {
-//    wxButton* temp = (wxButton*)event.GetEventObject();
-//    if(temp->GetName()!=""&&mainEditBox->IsEditable())
-//        mainEditBox->WriteText(("\n" + temp->GetName() + "\n"));
-//}/////////////////////////////end button write///////////////////
 /// <summary>
 /// adds a Name, and date+time to the file, as a time stamp and signiture --fix function--
 /// </summary>
 /// <param name="WXUNUSED"></param>
 void MainFrame::sign(wxCommandEvent& WXUNUSED(event)) {
-
-    
-    wxBitmap signiture;
-    signiture.LoadFile("bitmaps/fakesig.png", wxBITMAP_TYPE_ANY);
-    
-    mainEditBox->AppendText("\n Electronicly Signed by:"+currentButtonSet->getSetName() +"\n");
-    mainEditBox->WriteText(" Signiture:");
-    mainEditBox->WriteImage(signiture);
-    mainEditBox->AppendText( "\n<"+functionHelper->getDateToSignNoTime()+">");
-
-    
+    try {
+        if (isFileOpen()) {
+            // stop all styling and add a new line
+            mainEditBox->EndAllStyles();
+            mainEditBox->EndURL();
+            mainEditBox->WriteText("\n");
+            wxBitmap signiture;
+            wxString str =currentButtonSet->getSigniturePath();
+            //load a document containing pixels for a signiture
+            signiture.LoadFile(currentButtonSet->getSigniturePath(), wxBITMAP_TYPE_ANY);
+            // arrange descriptive text, and the current date
+            mainEditBox->AppendText("\n Electronicly Signed by:" + currentButtonSet->getSetName() + "\n");
+            mainEditBox->WriteText(" Signiture:");
+            mainEditBox->WriteImage(signiture);
+            mainEditBox->AppendText("\n Latest Date of Visit{" + functionHelper->getDateToSignNoTime() + "}");
+        }
+        else {
+            popUpHandeler->errorMessage("There is no file open.\n Please open a file to write.");
+        }
+    }
+    catch (...) { popUpHandeler->errorMessage("an error occured in main.cpp"); }
 }
 /// <summary>
 /// this function allows the user to make a right click on a button and offer them 2 choices edit lable or edit text
 /// </summary>
 /// <param name="event"></param>
 void MainFrame::onRightClick(wxMouseEvent& event) {
-
+    //get the selected button
     buttonToEdit = (wxButton*)event.GetEventObject();
     wxMenu menu;
     std::string name =buttonToEdit->GetName().ToStdString();
+    // depending on what type of button it is, all the user to alter it
+    //if its a new page button all the user to edit the name
     if (functionHelper->isNumber(name)) {
-        menu.Append(MENU_EditButtonName, "edit Name of button");
+        menu.Append(MENU_EditButtonName, "rename button");
         
         
     }
+    // if its a text button allow the name to be edited and the button to be removed
     else  if (functionHelper->isText(name)) {
-        menu.Append(MENU_EditButtonName, "edit Name of button");
-        //menu.Append(MENU_EditButtonText, "edit Text of button");
+        menu.Append(MENU_EditButtonName, "rename button");
         menu.Append(MENU_RemoveButton, "remove button");
     }
 
@@ -419,54 +441,67 @@ void MainFrame::onPopUpCLick(wxCommandEvent& event) {
     wxString buttonName;
     wxString buttonText;
     switch (event.GetId()) {
-    case MENU_EditButtonName: {
+        case MENU_EditButtonName: {
         //if the edit name option was chocsen then prompt the user for a new name, as long as it was not empty
         //the new name will replace the old one
-        buttonName =
-            wxGetTextFromUser("Enter text for button name", " ", buttonToEdit->GetLabel(), NULL, wxDefaultCoord, wxDefaultCoord, true);
-        if (!buttonName.IsEmpty()) {
-            MainFrame::setbuttonToEditName(buttonName);
-        }
-
-        break;
-    }
-    case MENU_EditButtonText: {
-        //if the edit text option was chosen then the user will be probpted to enter a new text
-        //the text will be replaced with the new text
-        buttonText =
-            wxGetTextFromUser("Enter text for button Text", " ", buttonToEdit->GetName(), NULL, wxDefaultCoord, wxDefaultCoord, true);
-        if (!buttonText.IsEmpty()) {
-            MainFrame::setbuttonToEditText(buttonText);
-        }
-
-        break;
-    }
-            //make new case to remove button
-    case MENU_RemoveButton: {
-        std::vector<wxButton*> vect = currentButtonSet->getCurrentPanel()->getQLinkList();
-        int x = 0;
-        for (int i = 0; i != (int)vect.size(); i++) {
-            wxString buttonName = currentButtonSet->getCurrentPanel()->getQLinkList().at(i)->GetName();
-            if (buttonName == buttonToEdit->GetName()) {
-                x = i;
+            buttonName =
+                wxGetTextFromUser("Enter text for button name", " ", buttonToEdit->GetLabel(), NULL, wxDefaultCoord, wxDefaultCoord, true);
+            if (!buttonName.IsEmpty()) {
+                std::string oldName = MainFrame::buttonToEdit->GetLabel().ToStdString();
+                oldName= functionHelper->trim(oldName);
+                MainFrame::setbuttonToEditName(buttonName);
+                std::string namestempstr;
+                fstream nameFile;
+                nameFile.open("Dialogs/0DialogList.txt");
+                if (nameFile.is_open()) {
+                    fstream tempFile;
+                    tempFile.open("Dialogs/temp.txt", ios::out);
+                    if (tempFile.is_open()) {
+                        while (getline(nameFile, namestempstr)) {
+                            stringstream ss(namestempstr);
+                            std::string str;
+                            while (getline(ss, str, ' ')) {
+                                if (str != oldName) {
+                                    tempFile << str << " ";
+                                }
+                                if (str == oldName) {
+                                    tempFile << buttonName << " ";
+                                }
+                            }
+                            tempFile << "\n";
+                        }
+                    }
+                tempFile << "hello" << "\n";
+                tempFile.close();
+                nameFile.close();
+                int test = remove("Dialogs/0dialogList.txt");
+                int test2 = rename("Dialogs/temp.txt", "Dialogs/0dialogList.txt");
+                
+                
+                }
             }
-        }
-        vect.erase(vect.begin() + x);
-        int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
-        currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex - 1);
-        MainFrame::removebuttonToEdit();
-        currentButtonSet->getCurrentPanel()->getGridSizer()->Layout();
-        Update();
-        // currentButtonSet->getCurrentPanel()->QlinkList
-        break;
-    }
-    case MENU_chanegDialog: {
-        wxString dialogChoice = popUpHandeler->SingleChoiceDialog("DialogInformation/DialogSelection.txt", "select a popup.");
-       
-        //popupButtonRebind(dialogChoice.ToStdString(),buttonToEdit);
+
             break;
-    }
-    }
+        }
+        //make new case to remove button
+        case MENU_RemoveButton: {
+            std::vector<wxButton*> vect = currentButtonSet->getCurrentPanel()->getQLinkList();
+            int x = 0;
+            for (int i = 0; i != (int)vect.size(); i++) {
+                wxString buttonName = currentButtonSet->getCurrentPanel()->getQLinkList().at(i)->GetName();
+                if (buttonName == buttonToEdit->GetName()) {
+                    x = i;
+                }
+            }
+            vect.erase(vect.begin() + x);
+            int QIndex = currentButtonSet->getCurrentPanel()->getQLinkCount();
+            currentButtonSet->getCurrentPanel()->setQLinkCount(QIndex - 1);
+            MainFrame::removebuttonToEdit();
+            currentButtonSet->getCurrentPanel()->getGridSizer()->Layout();
+            Update();
+            break;
+        }
+    }  
 }
 /// <summary>
 /// swapPanels takes in a ButtonPanel and makes it the active panel
@@ -485,9 +520,9 @@ void MainFrame::swapPanels(ButtonPanel* newPanel) {
         //set the new current panel
         currentButtonSet->setCurrentPanel(newPanel);
         // reattach all sizers and the new panel
-        mainSizer->Prepend(currentButtonSet->getCurrentPanel(), 2, wxEXPAND);
-        mainSizer->Prepend(controls, 0, wxEXPAND);
-        mainSizer->Prepend(buttonSetSizer, 0, wxALIGN_CENTER);
+        mainSizer->Prepend(currentButtonSet->getCurrentPanel(), 5, wxEXPAND);
+        mainSizer->Prepend(controls, 1, wxEXPAND);
+        mainSizer->Prepend(buttonSetSizer, 1, wxALIGN_CENTER);
         currentButtonSet->getCurrentPanel()->Show();
         mainSizer->Layout();
         Update();
@@ -516,7 +551,7 @@ void MainFrame::startSwapHelper(wxCommandEvent& event) {
     swapPanels(currentButtonSet->getPanelAt(PanelIndexToSwapTo));
 }
 /// <summary>
-/// using a wxChoice control, the user can change what button set they are using ----- needs work ----
+/// using a wxChoice control, the user can change what button set they are using 
 /// </summary>
 /// <param name="evt"></param>
 void MainFrame::swapButtonSet(wxCommandEvent& evt)
@@ -553,69 +588,169 @@ void MainFrame::swapButtonSet(wxCommandEvent& evt)
         popUpHandeler->errorMessage("this is the same user");
     }
 }
+void MainFrame::swapButtonSet(int setIndex)
+{
+    
+    // if the Buttonset in question's files exist and it is not the current buttonset then destroy the old panels set the new 
+    //current buttonset and load its panels and buttons
+    if (functionHelper->DoseUserExist(buttonSetNames[setIndex]) && currentButtonSet->getSetName() != buttonSetNames[setIndex]) {
+        //remove the panels from the current set
+        destroyPanels(currentButtonSet->getSetName());
+        //chance the current set
+        currentButtonSet = buttonSetList.at(setIndex);
+        //load panels for the new current set
+        currentButtonSet->loadPanelsAndButtons(currentButtonSet->getSetName());
+        buildNavLinks(currentButtonSet->getCurrentPanel());
+        //detach several sizers and reattach them to update the layout properly
+        mainSizer->Detach(buttonSetSizer);
+        mainSizer->Detach(controls);
+        mainSizer->Detach(currentButtonSet->getCurrentPanel());
+
+        mainSizer->Prepend(currentButtonSet->getCurrentPanel(), 5, wxEXPAND);
+        mainSizer->Prepend(controls, 1, wxEXPAND);
+        mainSizer->Prepend(buttonSetSizer, 0, wxALIGN_CENTER);
+        bindAllButtons();
+
+        mainSizer->Layout();
+    }
+    else if (!functionHelper->DoseUserExist(buttonSetNames[setIndex])) {// if the set dose not exist or if we selected the same user
+        popUpHandeler->errorMessage("set dose not exist");
+    }
+    else if (currentButtonSet->getSetName() == buttonSetNames[setIndex]) {
+        popUpHandeler->errorMessage("this is the same user");
+    }
+}
 /// <summary>
 /// //systematicly destroy all panels and buttons for a given set. ---consider moving this to the buttonset class
 /// </summary>
 /// <param name="set"></param>
 void MainFrame::destroyPanels(wxString set) {
-
+    //loops over the button sets panels, and detaches all panels, then calls the destructor of each panel
     for (int i = 0; i < currentButtonSet->getPanelListSize(); i++) {
         mainSizer->Detach(currentButtonSet->getPanelAtIndex(i));
         currentButtonSet->getPanelAtIndex(i)->~ButtonPanel();
         mainSizer->Layout();
         Update();
     }
+    //clear the list of panels
     currentButtonSet->clearPanelList();
 }
 void MainFrame::newSet(wxCommandEvent& event) {
     //props the user for a name for the new button set, then adds the new set to the set list
     //opens an ofstream and writes a new file for the button set
-    if (setCount <= 9) {
+    try{
+        if (setCount <= 8) {
+            wxString setName =
+                wxGetTextFromUser("Please enter name of new set", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+            if (!setName.empty()) {
+                buttonSetNames[setCount] = setName;
+                //create the filename and pathname for the new users information
+                std::string filename = "panelLayout/panelLayout" + setName.ToStdString() + ".txt";
+                std::string pathname = "panelLayout/panelLayout" + setName.ToStdString();
+                std::string sigPath = getSignitureImage();
+                //create the new set
+                buttonSetList.push_back(new ButtonSet(this, setName.ToStdString(), setCount, pathname, sigPath, 4));
+                //store the information for the set, in directories with text files
+                ofstream newSetStream(filename);
+                int check = mkdir(pathname.c_str());
+                for (int i = 0; i < 4; i++) {
+                    std::string buttonfilename = pathname + "/layout" + (std::to_string(i + 1)) + ".txt";
+                    ofstream basicFileStream(buttonfilename);
+                    std::string buttonPathname = pathname + "/layout" + (std::to_string(i + 1)) + "-panels";
+                    int check = mkdir(buttonPathname.c_str());
+                    for (int j = 0; j < 7; j++) {
+                        buttonfilename = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + ".txt";
+                        ofstream basicFileStream(buttonfilename);
+                        std::string LvL2ButtonPathname = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + "-panels";
+                        int check = mkdir(LvL2ButtonPathname.c_str());
+                        for (int k = 0; k < 7; k++) {
+                            std::string LvL3Buttonfilename = LvL2ButtonPathname + "/LayoutLevel3-" + (std::to_string(k + 1)) + ".txt";
+                            ofstream basicFileStream(LvL3Buttonfilename);
+                        }
+                    }
+                }
+                //set the set selection control
+                size_t size = sizeof(buttonSetNames) / sizeof(buttonSetNames[0]);
+                int count = 0;
+                userSelection->Clear();
+                for (size_t i = 0; i < size; i++) {
+                    if (buttonSetNames[i] != wxT("")) {
+                        userSelection->Append(buttonSetNames[i]);
+                        count++;
+                    }
+                }
+                std::string names[4] = { "Subjective","Objective","Assesment","Plan" };
+                //sets the original set as the first and saves basic set information
+                userSelection->SetSelection(count-1);
+                for (int i = 0; i < 4; i++) {
+                    newSetStream << names[i];
+                    newSetStream << "\n";
+                    newSetStream << (pathname + "/layout" + std::to_string(i + 1) + ".txt");
+                    newSetStream << "\n";
+                }
+                setCount++;
+                newSetStream.close();
+                saveButtonSetInfo("SetInfoAll.txt");
+                swapButtonSet(count-1);
+            }
+        }
+        else {
+            popUpHandeler->errorMessage("max users is 9.");
+        }
+        
+    }
+    catch (...) {
+        popUpHandeler->errorMessage("an error occured in new set");
+    }
+}
+void MainFrame::newSet() {
+    //props the user for a name for the new button set, then adds the new set to the set list
+  //opens an ofstream and writes a new file for the button set
+    if (setCount <= 8) {
         wxString setName =
-            wxGetTextFromUser("Please enter name of new set", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true);
-        buttonSetNames[setCount] = setName;
-        //create the filename and pathname for the new users information
-        std::string filename = "panelLayout/panelLayout" + setName.ToStdString() + ".txt";
-        std::string pathname = "panelLayout/panelLayout" + setName.ToStdString();
-        //create the new set
-        buttonSetList.push_back(new ButtonSet(this, setName.ToStdString(), setCount, pathname, 4));
-        //store the information for the set, in directories with text files
-        ofstream newSetStream(filename);
-        int check = mkdir(pathname.c_str());
-        for (int i = 0; i < 4; i++) {
-            std::string buttonfilename = pathname + "/layout" + (std::to_string(i + 1)) + ".txt";
-            ofstream basicFileStream(buttonfilename);
-            std::string buttonPathname = pathname + "/layout" + (std::to_string(i + 1)) + "-panels";
-            int check = mkdir(buttonPathname.c_str());
-            for (int j = 0; j < 7; j++) {
-                buttonfilename = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + ".txt";
+            wxGetTextFromUser("Please enter name of new User", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+        if (!setName.empty()) {
+            buttonSetNames[setCount] = setName;
+            //create the filename and pathname for the new users information
+            std::string filename = "panelLayout/panelLayout" + setName.ToStdString() + ".txt";
+            std::string pathname = "panelLayout/panelLayout" + setName.ToStdString();
+            std::string sigPath = getSignitureImage();
+            //create the new set
+            buttonSetList.push_back(new ButtonSet(this, setName.ToStdString(), setCount, pathname, sigPath, 4));
+            //store the information for the set, in directories with text files
+            ofstream newSetStream(filename);
+            int check = mkdir(pathname.c_str());
+            for (int i = 0; i < 4; i++) {
+                std::string buttonfilename = pathname + "/layout" + (std::to_string(i + 1)) + ".txt";
                 ofstream basicFileStream(buttonfilename);
-                std::string LvL2ButtonPathname = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + "-panels";
-                int check = mkdir(LvL2ButtonPathname.c_str());
-                for (int k = 0; k < 7; k++) {
-                    std::string LvL3Buttonfilename = LvL2ButtonPathname + "/LayoutLevel3-" + (std::to_string(k + 1)) + ".txt";
-                    ofstream basicFileStream(LvL3Buttonfilename);
+                std::string buttonPathname = pathname + "/layout" + (std::to_string(i + 1)) + "-panels";
+                int check = mkdir(buttonPathname.c_str());
+                for (int j = 0; j < 7; j++) {
+                    buttonfilename = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + ".txt";
+                    ofstream basicFileStream(buttonfilename);
+                    std::string LvL2ButtonPathname = buttonPathname + "/LayoutLevel2-" + (std::to_string(j + 1)) + "-panels";
+                    int check = mkdir(LvL2ButtonPathname.c_str());
+                    for (int k = 0; k < 7; k++) {
+                        std::string LvL3Buttonfilename = LvL2ButtonPathname + "/LayoutLevel3-" + (std::to_string(k + 1)) + ".txt";
+                        ofstream basicFileStream(LvL3Buttonfilename);
+                    }
                 }
             }
-        }
-        //set the set selection control
-        size_t size = sizeof(buttonSetNames) / sizeof(buttonSetNames[0]);
-        userSelection->Clear();
-        for (size_t i = 0; i < size; i++) {
-            if (buttonSetNames[i] != wxT("")) {
-                userSelection->Append(buttonSetNames[i]);
+            //set the set selection control
+            size_t size = sizeof(buttonSetNames) / sizeof(buttonSetNames[0]);
+
+            std::string names[4] = { "Subjective","Objective","Assesment","Plan" };
+            //sets the original set as the first and saves basic set information
+            for (int i = 0; i < 4; i++) {
+                newSetStream << names[i];
+                newSetStream << "\n";
+                newSetStream << (pathname + "/layout" + std::to_string(i + 1) + ".txt");
+                newSetStream << "\n";
             }
+            setCount++;
+            newSetStream.close();
+            saveButtonSetInfo("SetInfoAll.txt");
         }
-        std::string names[4]  = {"Subjective","Objective","Assesment","Plan"};
-        //sets the original set as the first and saves basic set information
-        userSelection->SetSelection(0);
-        for (int i = 0; i < 4; i++) {
-            newSetStream << names[i];
-            newSetStream << "\n";
-            newSetStream << (pathname + "/layout" + std::to_string(i + 1) + ".txt");
-            newSetStream << "\n";
-        }
-        setCount++;
     }
 }
 /// <summary>
@@ -624,51 +759,74 @@ void MainFrame::newSet(wxCommandEvent& event) {
 /// <param name="event"></param>
 void MainFrame::savePanelsAndButtons(wxCommandEvent & event) {
     currentButtonSet->savePanelsAndButtonsNP();
-    saveButtonSetInfo("SetInfoAll.txt");
+    //saveButtonSetInfo("SetInfoAll.txt");
 }
 void MainFrame::saveButtonSetInfo(std::string path) {
-    //work on this one
-    setInfoOut.open(path,std::ofstream::out|std::ofstream::trunc);
-    if (setInfoOut.good()) {
-
-    }
-    if (!setInfoOut.fail()) {
-        for (size_t i = 0; i < buttonSetList.size(); i++) {
-            setInfoOut << buttonSetList.at(i)->getSetName().ToStdString();
-            setInfoOut << "\n";
-            setInfoOut << buttonSetList.at(i)->getPanelCount();
-            setInfoOut << "\n";
-            setInfoOut << buttonSetList.at(i)->getPath();
-            setInfoOut << "\n";
+    //open the fstream used to save the sets data when called on to do so
+    try {
+        setInfoOut.open(path, std::ofstream::out | std::ofstream::trunc);
+        if (setInfoOut.fail()) {
+            popUpHandeler->errorMessage("failed to save layout");
+            setInfoOut.close();
+            return;
+        }
+        // if the file opend properly save all the information to the users file path
+        if (!setInfoOut.fail()) {
+            for (size_t i = 0; i < buttonSetList.size(); i++) {
+                setInfoOut << buttonSetList.at(i)->getSetName().ToStdString() << "\n";
+                setInfoOut << buttonSetList.at(i)->getPanelCount() << "\n";
+                setInfoOut << buttonSetList.at(i)->getPath() << "\n";
+                setInfoOut << buttonSetList.at(i)->getSigniturePath() << "\n";
+                
+            }
+            setInfoOut.close();
         }
     }
+    catch (...) { popUpHandeler->errorMessage("an error occured in main.cpp"); }
+    setInfoOut.close();
 }
 /// <summary>
 /// loads the information for defined button sets
 /// </summary>
 /// <param name="path"></param>
 void MainFrame::loadButtonSetInfo(std::string path) {
-
+    //open the file path containing the setinformation to be loaded
     std::string filepath = path;
     setInfoIn.open(filepath);
     std::string setNo;
     std::string setName;
     std::string setPath;
-    //int i = 0;
-    while (setInfoIn.peek() != EOF) {
-        getline(setInfoIn, setName);
-        getline(setInfoIn, setNo);
-        getline(setInfoIn, setPath);
+    std::string sigPath;
+    
+    //load in and save the information for the newly loaded set
+    if (setInfoIn.is_open()) {
+        if (setInfoIn.peek() != std::ifstream::traits_type::eof()) {
+            while (setInfoIn.peek() != EOF) {
+                getline(setInfoIn, setName);
+                getline(setInfoIn, setNo);
+                getline(setInfoIn, setPath);
+                getline(setInfoIn, sigPath);
 
-        int SetNo = std::stoi(setNo);
-        buttonSetNames[setCount] = setName;
-        buttonSetList.push_back(new ButtonSet(this, setName, setCount, setPath, SetNo));
-        setCount++;
+                int SetNo = std::stoi(setNo);
+                buttonSetNames[setCount] = setName;
+                buttonSetList.push_back(new ButtonSet(this, setName, setCount, setPath, sigPath, SetNo));
+                setCount++;
 
+            }
+        }
+        else {
+            newSet();
+        }
+        //test for errors
+        if (!buttonSetList.empty()) {
+            currentButtonSet = buttonSetList.at(0);
+            setInfoIn.close();
+        }
+
+    }else{ 
+        setInfoIn.close();
+        popUpHandeler->errorMessage("an error occured in main.cpp"); 
     }
-    currentButtonSet = buttonSetList.at(0);
-
-
 }
 /// <summary>
 /// allows the Navlinks to swap panels to thier stores panel 
@@ -680,16 +838,19 @@ void MainFrame::linkNavigation(wxHyperlinkEvent& evt) {
 }
 /// <summary>
 /// binds all the buttons loaded from file to thier appropriate methods
-/// </summary>
+/// </summary> 
 void MainFrame::bindAllButtons() {
+    //loop over all button sets
     for (size_t k = 0; k < buttonSetList.size(); k++) {
         size_t size = buttonSetList.at(k)->getPanelList().size();
+        //loop over all panels in a set
         for (size_t j = 0; j < size; j++) {
             ButtonPanel* tempPanelLevel1 = buttonSetList.at(k)->getPanelList().at(j);
-
+            //loop over all buttons on the panel
             for (size_t i = 0; i < tempPanelLevel1->getQLinkList().size(); i++) {
                 wxButton* button = tempPanelLevel1->getQLinkList().at(i);
                 std::string name = button->GetName().ToStdString();
+                //bind each button to the functions that apply
                 button->Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
                 if (functionHelper->isNumber(name)) {
                     button->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
@@ -698,8 +859,6 @@ void MainFrame::bindAllButtons() {
                 else if (functionHelper->isText(name)) {
                     button->Bind(wxEVT_BUTTON, &MainFrame::readDialogFile, this);
                 }
-                //take sub panels
-
             }
             for (size_t l = 0; l < tempPanelLevel1->getSubPanelList().size(); l++) {
                 ButtonPanel* tempPanelLevel2 = tempPanelLevel1->getSubPanelList().at(l);
@@ -709,12 +868,6 @@ void MainFrame::bindAllButtons() {
                     button2->Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
                     if (functionHelper->isNumber(name)) {
                         button2->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
-                    }
-                    else if (functionHelper->isPopup(name)) {
-                        //popupButtonBind(button2->GetName().ToStdString(), tempPanelLevel2->getQLinkList().at(i));
-                    }
-                    else if (functionHelper->isText(name)) {
-                       // button2->Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
                     }
                 }
                 for (size_t l = 0; l < tempPanelLevel2->getSubPanelList().size(); l++) {
@@ -726,559 +879,314 @@ void MainFrame::bindAllButtons() {
                         if (functionHelper->isNumber(name)) {
                             button3->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
                         }
-                        else if (functionHelper->isPopup(name)) {
-                            //popupButtonBind(button3->GetName().ToStdString(), tempPanelLevel3->getQLinkList().at(i));
-                        }
-                        else if (functionHelper->isText(name)) {
-                        //    button3->Bind(wxEVT_BUTTON, &MainFrame::ButtonWrite, this);
-                        }
                     }
                 }
             }
         }
     }
 }
-/*void MainFrame::popupButtonBind(std::string str, wxButton* btton) {
-    wxButton* button = btton;
-    button->GetName();
-   
-    if (str == "Dialog-ID-Allergies") {
-        
-        button->Bind(wxEVT_BUTTON, &MainFrame::allergies, this);
-    }
-    if (str == "Dialog-ID-Body") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::body, this);
-    }
-    if (str == "Dialog-ID-Cervical-Adjustment") {       
-        button->Bind(wxEVT_BUTTON, &MainFrame::cervicaladjustment, this);
-    }
-    if (str == "Dialog-ID-Complicating-Factors") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::compicatingFactors, this);
-    }
-    if (str == "Dialog-ID-Contraindiction") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::contraindiction, this);
-    }
-    if (str == "Dialog-ID-Nutrition") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::dietNutrition, this);
-    }
-    if (str == "Dialog-ID-Dificulty-Performing") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::dificultyPerforming, this);
-    }
-    if (str == "Dialog-ID-Drugs-Medication") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::drugsMedication, this);
-    }
-    if (str == "Dialog-ID-Exercise") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::exerciseRoutine, this);
-    }
-    if (str == "Dialog-ID-Family-History") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::familyHistory, this);
-    }
-    //freqency of pain
-    if (str == "Dialog-ID-Goals") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::goals, this);
-    }
-    if (str == "Dialog-ID-Pain") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::freqofPain, this);
-    }
-    if (str == "Dialog-ID-Improve/Decline") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::betterorWorse, this);
-    }
-    if (str == "Dialog-ID-Injury") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::injury, this);
-    }
-    if (str == "Dialog-ID-Life-Affected") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::lifeAffected, this);
-    }
-    if (str == "Dialog-ID-Percentorvas") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::percentOrVas, this);
-    }
-    if (str == "Dialog-ID-PosturalChange") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::posturalChange, this);
-    }
-    if (str == "Dialog-ID-QualityofDiscomfort") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::qualityOfDiscomfort, this);
-    }
-    if (str == "Dialog-ID-Improve") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::rateofImprove, this);
-    }
-    if (str == "Dialog-ID-Restrictions") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::restrictions, this);
-    }
-    if (str == "Dialog-ID-ROMregion") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::ROMRegion, this);
-    }
-    if (str == "Dialog-ID-Social") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::socialhabits, this);
-    }
-    if (str == "Dialog-ID-Surgical") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::surgicalHistory, this);
-    }
-    if (str == "Dialog-ID-Muscle") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::specificMuscles, this);
-    }
-    if (str == "Dialog-ID-Side") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::side, this);
-    }
-    if (str == "Dialog-ID-Spine") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::spineDialog, this);
-    }
-    if (str == "Dialog-ID-ToneIntensity") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::toneIntensity, this);
-    }
-    if (str == "Dialog-ID-Work") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::work, this);
-    }
-    if (str == "Dialog-ID-Vas") {
-        button->Bind(wxEVT_BUTTON, &MainFrame::vas, this);
-    }
-}
-/// <summary>
-/// unbinds the specified buttonfor it to be rebound later on. may be unnessary
-/// </summary>
-/// <param name="str"></param>
-/// <param name="btton"></param>
-void MainFrame::unbindPopupButton(wxString str, wxButton* btton) {
-    wxButton* button = btton;
-    if (str == "Diet & Nutrition") {
-        button->addUnbind(wxEVT_BUTTON, &MainFrame::dietNutrition, this);
-    }
-    if (str == "Rate of Improvement") {
-        button->Unbind(wxEVT_BUTTON, &MainFrame::rateofImprove, this);
-    }
-    if (str == "Social habits") {
-        button->Unbind(wxEVT_BUTTON, &MainFrame::socialhabits, this);
-    }
+/// 
+///when the user clicks light blue text the a list of popups will be displayed, 
+///upon selection a new pop up will show and all the user to change the text
+void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
+    int CptOrDx = 0;
 
-    if (str == "Freqency of pain") {
-        button->Unbind(wxEVT_BUTTON, &MainFrame::freqofPain, this);
-    }
-    if (str == "Allergies") {
-        button->Unbind(wxEVT_BUTTON, &MainFrame::allergies, this);
-    }
-    if (str == "Surgical history") {
-        button->Unbind(wxEVT_BUTTON, &MainFrame::surgicalHistory, this);
-    }
-}
-/// <summary>
-/// rebinds a popupbutton, based on the new popup the user wants. this is for customizing buttons
-/// </summary>
-/// <param name="str">new popup selection</param>
-/// <param name="btton">button to rebind</param>
-void MainFrame::popupButtonRebind(std::string str,wxButton* btton) {
-    wxButton* button = btton;
-    button->GetName();
-    if (str == "Allergies") {
-        button->SetLabel("Allergies");
-        button->Bind(wxEVT_BUTTON, &MainFrame::allergies, this);
-    }
-    if (str == "Body") {
-        button->SetLabel("Body");
-        button->Bind(wxEVT_BUTTON, &MainFrame::body, this);
-    }
-    if (str == "Cervical Adjustment") {
-        button->SetLabel("Cervical Adjustment");
-        button->Bind(wxEVT_BUTTON, &MainFrame::cervicaladjustment, this);
-    }
-    if (str == "Compicating Factors") {
-        button->SetLabel("Compicating Factors");
-        button->Bind(wxEVT_BUTTON, &MainFrame::compicatingFactors, this);
-    }
-    if (str == "Contraindiction") {
-        button->SetLabel("Contraindiction");
-        button->Bind(wxEVT_BUTTON, &MainFrame::contraindiction, this);
-    }
-    if (str == "Diet & Nutrition") {
-        button->SetLabel("Nutrition");
-        button->Bind(wxEVT_BUTTON, &MainFrame::dietNutrition, this);
-    }
-    if (str == "Dificulty Performing") {
-        button->SetLabel("Dificulty Performing");
-        button->Bind(wxEVT_BUTTON, &MainFrame::dificultyPerforming, this);
-    }
-    if (str == "Drugs Medication") {
-        button->SetLabel("Drugs Medication");
-        button->Bind(wxEVT_BUTTON, &MainFrame::drugsMedication, this);
-    }
-    if (str == "Exercise Routine") {
-        button->SetLabel("Exercise Routine");
-        button->Bind(wxEVT_BUTTON, &MainFrame::exerciseRoutine, this);
-    }
-    if (str == "Family History") {
-        button->SetLabel("Family History");
-        button->Bind(wxEVT_BUTTON, &MainFrame::familyHistory, this);
-    }
-    if (str == "Freqency of pain") {
-        button->SetLabel("pain Freq");
-        button->Bind(wxEVT_BUTTON, &MainFrame::freqofPain, this);
-    }
-    if (str == "Improve/Decline") {
-        button->SetLabel("Impr/Decl");
-        button->Bind(wxEVT_BUTTON, &MainFrame::betterorWorse, this);
-    }
-    if (str == "Injury") {
-        button->SetLabel("Injury");
-        button->Bind(wxEVT_BUTTON, &MainFrame::injury, this);
-    }
-    if (str == "Life Affected") {
-        button->SetLabel("Life Affected");
-        button->Bind(wxEVT_BUTTON, &MainFrame::lifeAffected, this);
-    }
-    if (str == "Percent or vas") {
-        button->SetLabel("Percent or vas");
-        button->Bind(wxEVT_BUTTON, &MainFrame::percentOrVas, this);
-    }
-    if (str == "Postural Change") {
-        button->SetLabel("Postural Change");
-        button->Bind(wxEVT_BUTTON, &MainFrame::posturalChange, this);
-    }
-    if (str == "Quality of Discomfort") {
-        button->SetLabel("Quality");
-        button->Bind(wxEVT_BUTTON, &MainFrame::qualityOfDiscomfort, this);
-    }
-    if (str == "Rate of Improvement") {
-        button->SetLabel("Improvement");
-        button->Bind(wxEVT_BUTTON, &MainFrame::rateofImprove, this);
-    }
-    if (str == "Restrictions") {
-        button->SetLabel("Restrictions");
-        button->Bind(wxEVT_BUTTON, &MainFrame::restrictions, this);
-    }
-    if (str == "Rate of Improvement") {
-        button->SetLabel("Improvement");
-        button->Bind(wxEVT_BUTTON, &MainFrame::rateofImprove, this);
-    }
-    if (str == "ROM region") {
-        button->SetLabel("ROM region");
-        button->Bind(wxEVT_BUTTON, &MainFrame::ROMRegion, this);
-    }
-    if (str == "Social habits") {
-        button->SetLabel("Social Habits");
-        button->Bind(wxEVT_BUTTON, &MainFrame::socialhabits, this);
-    }
-    if (str == "Surgical history") {
-        button->SetLabel("Surgical history");
-        button->Bind(wxEVT_BUTTON, &MainFrame::surgicalHistory, this);
-    }
-    if (str == "Specific Muscles") {
-        button->SetLabel("Specific Muscles");
-        button->Bind(wxEVT_BUTTON, &MainFrame::specificMuscles, this);
-    }
-    if (str == "Side") {
-        button->SetLabel("Side");
-        button->Bind(wxEVT_BUTTON, &MainFrame::side, this);
-    }
-    if (str == "Spine") {
-        button->SetLabel("Spine");
-        button->Bind(wxEVT_BUTTON, &MainFrame::spineDialog, this);
-    }
-    if (str == "Tone Intensity") {
-        button->SetLabel("Tone");
-        button->Bind(wxEVT_BUTTON, &MainFrame::toneIntensity, this);
-    }
-    if (str == "Work") {
-        button->SetLabel("Work");
-        button->Bind(wxEVT_BUTTON, &MainFrame::work, this);
-    }
-    if (str == "Vas") {
-        button->SetLabel("Vas");
-        button->Bind(wxEVT_BUTTON, &MainFrame::vas, this);
-    }
-}*/
-/// <summary>
-/// lets the user select a popup to attach to the new button being made
-/// </summary>
-/// <returns></returns>
-/*bool MainFrame::dialogButtonHelper() {
-
-    wxString dialogChoice = popUpHandeler->SingleChoiceDialog("DialogInformation/DialogSelection.txt", "select a popup.");
-
+    wxString dialogChoice = popUpHandeler->SingleChoiceDialog("DialogInformation/DialogSelection-2.txt", "select a popup.");
+    wxString result;
     if (dialogChoice == "Allergies") {
-        currentButtonSet->getCurrentPanel()->addQLink("Allergies", "Dialog-ID-Allergies");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::allergies, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "Allergies");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Body") {
-        currentButtonSet->getCurrentPanel()->addQLink("Body", "Dialog-ID-Body");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::body, this);
-        return true;
+        result = popUpHandeler->bodyDialog("Select a location(s)");
+        CptOrDx = 1;
+    } 
+    if (dialogChoice == "Calender") {
+        result = popUpHandeler->Calender();
+        CptOrDx = 1;
     }
     if (dialogChoice == "Cervical Adjustment") {
-        currentButtonSet->getCurrentPanel()->addQLink("Cervical Adjustment", "Dialog-ID-Cervical-adjustment");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::cervicaladjustment, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Cervicaladjustment.txt", "Cervical Adjustment");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Compicating Factors") {
-        currentButtonSet->getCurrentPanel()->addQLink("Compicating Factors", "Dialog-ID-Compicating-Factors");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::compicatingFactors, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/CompicatingFactors.txt", "Compicating Factors");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Contraindiction") {
-        currentButtonSet->getCurrentPanel()->addQLink("Contraindiction", "Dialog-ID-Contraindiction");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::contraindiction, this);
-        return true;
-    }
-    if (dialogChoice == "Dificulty Performing") {
-        currentButtonSet->getCurrentPanel()->addQLink("Dificulty Performing", "Dialog-ID-Dificulty-Performing");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::dificultyPerforming, this);
-        return true;
-    }
-    if (dialogChoice == "Drugs Medication") {
-        currentButtonSet->getCurrentPanel()->addQLink("Drugs Medication", "Dialog-ID-Drugs-Medication");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::drugsMedication, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/contraindication.txt", "contraindication");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Diet & Nutrition") {
-        currentButtonSet->getCurrentPanel()->addQLink("Nutrition", "Dialog-ID-Nutrition");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::dietNutrition, this);
-        return true;
-    }    
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/DietNutrition.txt", "Diet & Nutrition");
+        CptOrDx = 1;
+    }
+    if (dialogChoice == "Dificulty Performing") {
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/dificultyPerforming.txt", "Dificulty Performing");
+        CptOrDx = 1;
+    }
+    if (dialogChoice == "Drugs Medication") {
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "Drugs Medication");
+        CptOrDx = 1;
+    }
     if (dialogChoice == "Exercise Routine") {
-        currentButtonSet->getCurrentPanel()->addQLink("Exercise", "Dialog-ID-Exercise");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::exerciseRoutine, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise Routine");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Family History") {
-        currentButtonSet->getCurrentPanel()->addQLink("Family History", "Dialog-ID-Family-History");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::familyHistory, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/familyHistory.txt", "family History");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Freqency of pain") {
-        currentButtonSet->getCurrentPanel()->addQLink("Pain Freq", "Dialog-ID-Pain");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::freqofPain, this);
-        return true;
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Freqency of pain");
+        CptOrDx = 1;
     }
-        if (dialogChoice == "Goals") {
-        currentButtonSet->getCurrentPanel()->addQLink("Goals", "Dialog-ID-Goals");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::goals, this);
-        return true;
+    if (dialogChoice == "Goals") {
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/goals.txt", "Goals");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Improve/Decline") {
-        currentButtonSet->getCurrentPanel()->addQLink("Impr/Decl", "Dialog-ID-Improve/Decline");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::betterorWorse, this);
-        return true;
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/BetterorWorse.txt", "Improve/Decline");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Injury") {
-        currentButtonSet->getCurrentPanel()->addQLink("Injury", "Dialog-ID-Injury");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::injury, this);
-        return true;
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/Injury.txt", "Injury");
+        CptOrDx = 1;
+    }
+    if (dialogChoice == "Insurance") {
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/InsuranceAll.txt", "Insurance");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Life Affected") {
-        currentButtonSet->getCurrentPanel()->addQLink("Life Affected", "Dialog-ID-Life-Affected");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::lifeAffected, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/LifeAffected.txt", "Life Affected");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Percent or vas") {
-        currentButtonSet->getCurrentPanel()->addQLink("Percent or vas", "Dialog-ID-Percentorvas");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::percentOrVas, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/percentorvas.txt", "Percent or vas");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Postural Change") {
-        currentButtonSet->getCurrentPanel()->addQLink("Postural Change", "Dialog-ID-PosturalChange");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::posturalChange, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/posturalChange.txt", "Postural Change");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Quality of Discomfort") {
-        currentButtonSet->getCurrentPanel()->addQLink("Quality of Discomfort", "Dialog-ID-QualityofDiscomfort");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::qualityOfDiscomfort, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "Quality of Discomfort");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Rate of Improvement") {
-        currentButtonSet->getCurrentPanel()->addQLink("Improve/decline", "Dialog-ID-Improve");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::rateofImprove, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/rateofImprove.txt", "rateofImprove");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Restrictions") {
-        currentButtonSet->getCurrentPanel()->addQLink("Restrictions", "Dialog-ID-Restrictions");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::restrictions, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/restrictions.txt", "Restrictions");
+        CptOrDx = 1;
     }
+
     if (dialogChoice == "ROM region") {
-        currentButtonSet->getCurrentPanel()->addQLink("ROM region", "Dialog-ID-ROMregion");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::ROMRegion, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ROMregion.txt", "ROM region");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Social habits") {
-        currentButtonSet->getCurrentPanel()->addQLink("Social habits", "Dialog-ID-Social");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::socialhabits, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/socialhabits.txt", "Social habits");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Surgical history") {
-        currentButtonSet->getCurrentPanel()->addQLink("Surgical", "Dialog-ID-Surgical");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::surgicalHistory, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "Surgical history");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Specific Muscles") {
-        currentButtonSet->getCurrentPanel()->addQLink("Specific Muscles", "Dialog-ID-Muscle");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::specificMuscles, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/SpecificMuseles.txt", "Specific Muscles");
+        CptOrDx = 1;
     }
-
     if (dialogChoice == "Side") {
-        currentButtonSet->getCurrentPanel()->addQLink("Side", "Dialog-ID-Side");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::side, this);
-        return true;
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/side.txt", "Side");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Spine") {
-        currentButtonSet->getCurrentPanel()->addQLink("Spine", "Dialog-ID-Spine");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::spineDialog, this);
-        return true;
-    }
-    if (dialogChoice == "TautandTender") {
-        currentButtonSet->getCurrentPanel()->addQLink("Taut and Tender", "Dialog-ID-Tender");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::tautTender, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/spineSegmentsL-R.txt", "Spine");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Tone Intensity") {
-        currentButtonSet->getCurrentPanel()->addQLink("Tone Intensity", "Dialog-ID-ToneIntensity");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::toneIntensity, this);
-        return true;
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/ToneIntensity.txt", "Tone Intensity");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Work") {
-        currentButtonSet->getCurrentPanel()->addQLink("Work", "Dialog-ID-Work");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::work, this);
-        return true;
+        result = popUpHandeler->MultipleChoiceDialog("DialogInformation/work.txt", "Work");
+        CptOrDx = 1;
     }
     if (dialogChoice == "Vas") {
-        currentButtonSet->getCurrentPanel()->addQLink("Vas", "Dialog-ID-Vas");
-        currentButtonSet->getCurrentPanel()->getQLinkList().back()->Bind(wxEVT_BUTTON, &MainFrame::vas, this);
-        return true;
+        result = popUpHandeler->SingleChoiceDialog("DialogInformation/Vas.txt", "VAS");
+        CptOrDx = 1;
     }
-    return false;
-    
-}*/
-///calls the popup originaly used to create the text, 
-///when the user clicks light blue text the original popup is called to replace content
-/*void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
-
-        wxString dialogChoice = popUpHandeler->SingleChoiceDialog("DialogInformation/DialogSelection-2.txt", "select a popup.");
-        wxString result;
-        if (dialogChoice == "Allergies") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "Allergies");
-        }
-        if (dialogChoice == "Body") {
-            result = popUpHandeler->bodyDialog("Select a location(s)");
-        }
-        if (dialogChoice == "Cervical Adjustment") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Cervicaladjustment.txt", "Cervical Adjustment");
-        }
-        if (dialogChoice == "Compicating Factors") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/CompicatingFactors.txt", "Compicating Factors");
-        }
-        if (dialogChoice == "Contraindiction") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/contraindication.txt", "contraindication");
-        }
-        if (dialogChoice == "Diet & Nutrition") {
-           result = popUpHandeler->MultipleChoiceDialog("DialogInformation/DietNutrition.txt", "Diet & Nutrition");
-        }
-        if (dialogChoice == "Dificulty Performing") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/dificultyPerforming.txt", "Dificulty Performing");
-        }
-        if (dialogChoice == "Drugs Medication") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "Drugs Medication");
-        }
-        if (dialogChoice == "Exercise Routine") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise Routine");
-        }
-        if (dialogChoice == "Freqency of pain") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/FreqOfPain.txt", "Freqency of pain");
-        }
-        if (dialogChoice == "family History") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/familyHistory.txt", "family History");
-        }
-        if (dialogChoice == "Goals") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/goals.txt", "Goals");
-        }
-        
-        if (dialogChoice == "Improve/Decline") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/BetterorWorse.txt", "Improve/Decline");
-        }
-        if (dialogChoice == "Injury") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Injury.txt", "Injury");
-        }
-        if (dialogChoice == "Life Affected") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/LifeAffected.txt", "Life Affected");
-        }
-        if (dialogChoice == "Percent or vas") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/percentorvas.txt", "Percent or vas");
-        }
-        if (dialogChoice == "Postural Change") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/posturalChange.txt", "Postural Change");
-        }
-        if (dialogChoice == "Quality of Discomfort") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "Quality of Discomfort");
-        }
-        if (dialogChoice == "Rate of Improvement") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/rateofImprove.txt", "rateofImprove");
-        }
-        if (dialogChoice == "Restrictions") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/restrictions.txt", "Restrictions");
-        }
-        
-            if (dialogChoice == "ROM region") {
-                result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ROMregion.txt", "ROM region");
-            }
-        if (dialogChoice == "Social habits") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/socialhabits.txt", "Social habits");
-        }
-        if (dialogChoice == "Surgical history") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "Surgical history");
-        }
-        if (dialogChoice == "Specific Muscles") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/SpecificMuseles.txt", "Specific Muscles");
-        }
-        if (dialogChoice == "Side") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/side.txt", "Side");
-        }
-        if (dialogChoice == "Spine") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/spineSegmentsL-R.txt", "Spine");
-        }
-        if (dialogChoice == "TautandTender") {
-            result = popUpHandeler->bodyDialog("Taut and Tender");
-        }
-        if (dialogChoice == "Tone Intensity") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Tone Intensity.txt", "Tone Intensity");
-        }
-        if (dialogChoice == "Work") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/work.txt", "Work");
-        }
-        if (dialogChoice == "Vas") {
-            result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Vas.txt", "VAS?");
-        }
+    if (dialogChoice == "Ankle") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-ankle.txt", "Dx Ankel");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Cervical Spine") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-cervicalSpine.txt", " DxCervical Spine");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Elbow Forarm") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/ctpcodes-ElbowForearm.txt", "Dx Elbow Forarm");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Foot") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-foot.txt", "Dx Foot");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Hand") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-hand.txt", "Dx Hand");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Head") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-head.txt", "Dx Head");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Hip-Thigh") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-hip_thigh.txt", "Dx Hip-Thigh");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Knee") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/ctpcodes-knee.txt", "Dx Knee");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Lumbosacral Spine") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-LumbosacralSpine.txt", "Dx Lumbosacral Spine");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Shoulder") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-shoulder.txt", "Dx Shoulder");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Thoacic Spine") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-thoacicSpine.txt", "Dx Thoacic Spine");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Wrist") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-Wrist.txt", "Dx Wrist");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Manipulation") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptChiropractic-Manipulation-CPT-Coding.txt", " Manipulation");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Management") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptEvaluation-and-Management-Codes.txt", " Management");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Modifier") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-mods.txt", " Modifier");
+        result = "[" + result + "]";
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Misc") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cpt-misc.txt", "Misc");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Rehabilitation") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcode-Physical-Medicine-Rehabilitation.txt", "Rehabilitation");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Xray") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptext-xray.txt", "Xray");
+        CptOrDx = 2;
+    }
+    if (dialogChoice == "Place of Service") {
+        result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cpt-placeofService.txt", "Place of Service");
+        CptOrDx = 2;
+    }
+    if (dialogChoice != "OTHER") {
         int urlS = evt.GetURLStart();
         int urlE = evt.GetURLEnd() + 1;
         mainEditBox->Remove(urlS, urlE);
-        mainEditBox->WriteText(result);
+        if (CptOrDx==1) {
+            mainEditBox->WriteText("{" + result + "}");
+        }
+        else if (CptOrDx == 2) {
+            mainEditBox->WriteText("{{" + result + "}}");
+        }
 
-    }*/
+        
+        mainEditBox->EndURL();
+        mainEditBox->EndAllStyles();
+    }
+
+}
 /// <summary>
-/// calles several popups in sucsession to collect data and print it to the screen.
+/// opens the dialog creation dialog
 /// </summary>
-/// <param name="WXUNUSED"></param>
+void MainFrame::openDialogCreator() {
+    if (DialogCreationHelper->ShowModal() == wxID_OK) {    
+    }
+}
+void MainFrame::openCPT_DxEditor(wxCommandEvent& WXUNUSED(event)) {
+    //present a selection of cpt-dx code files, when selected a dialog editor will open with the apropriate file information
+    wxString str = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/names.txt", "select a code catagory to edit.");
+    std::string name = str.ToStdString();
+    if (str != "OTHER" && !str.empty()) {
+        DialogEditingHelper = new DialogEditor(this, wxID_ANY, name);
+        DialogEditingHelper->openCodeFile();
+        if (DialogEditingHelper->ShowModal() == wxID_OK) {
 
-void MainFrame::openDialog() {
-    if (DialogCreationHelper->ShowModal() == wxID_OK) {
+
+        }
+        delete DialogEditingHelper;
+    }
+
+}
+void MainFrame::openGenDialogEditor(wxCommandEvent& WXUNUSED(event)) {
+    //present a selection of paragraph files, when selected a dialog editor will open with the apropriate file information
+    int index = popUpHandeler->SingleChoiceDialogIndex("Dialogs/0DialogNames.txt", "select a Dialog to edit.");
+    if (index != -1) {
+        index += 1;
+        std::string name = "Dialogs/DialogFile"+ std::to_string(index)+".txt";
+    
+        DialogEditingHelper = new DialogEditor(this, wxID_ANY, name);
+        DialogEditingHelper->openGenFile(name);
+        if (DialogEditingHelper->ShowModal() == wxID_OK) {
+
+
+        }
+        delete DialogEditingHelper;
     }
 }
 void MainFrame::readDialogFile(wxCommandEvent& event) {
-    wxButton* buttn = (wxButton*)event.GetEventObject();
-    std::string file = buttn->GetName().ToStdString();
-    std::ifstream fileReader(file);
-    std::vector<std::string> fileLines;
-    int i = 0;
-    std::string line;
-    while (getline(fileReader, line, '~')) {
-        if (line != "") {
-            fileLines.push_back(line);
+    if (isFileOpen()) {
+        //reads the information associated with the button from file
+        wxButton* buttn = (wxButton*)event.GetEventObject();
+        std::string file = buttn->GetName().ToStdString();
+        std::ifstream fileReader(file);
+        std::vector<std::string> fileLines;
+        int i = 0;
+        std::string line;
+        if (fileReader.is_open()) {
+            while (getline(fileReader, line, '~')) {
+                if (line != "") {
+                    fileLines.push_back(line);
+                }
+            }
         }
+        //writes the information to the screen
+        DialogWriter(fileLines);
+        fileReader.close();
     }
-    DialogWriter(fileLines);
+    else {
+        popUpHandeler->errorMessage("There is no file open.\n Please open a file to write.");
+    }
 }
+/// <summary>
+/// dialog writer takes in a set of lines, and deturmines what dialog or what formmating to use and 
+/// writes it to the rich text control
+/// </summary>
+/// <param name="lines"></param>
 void MainFrame::DialogWriter(std::vector<std::string> lines) {
     size_t i = 0;
+    mainEditBox->EndURL();
+    mainEditBox->EndTextColour();
     while (i < lines.size()) {
         wxString result;
-        int linkInd = lines.at(i).find("<");
-        if (lines.at(i).find("<") != std::string::npos) {
+        int linkInd = lines.at(i).find("{");
+        if (lines.at(i).find("{") != std::string::npos) {
             std::string str = lines.at(i);
 
             for (int i = 0; i < 3; i++) {
@@ -1304,420 +1212,511 @@ void MainFrame::DialogWriter(std::vector<std::string> lines) {
 
             if (str == "Dialog-ID-Allergies") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "Allergies");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Body") {
                 result = popUpHandeler->bodyDialog("body");
-                //result = MultipleChoiceDialog("Allergies.txt", "Allergies");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Calender") {
                 result = popUpHandeler->Calender();
-                //result = MultipleChoiceDialog("Allergies.txt", "Allergies");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Cervical-Adjustment") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Cervicaladjustment.txt", "Cervical Adjustment");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Complicating-Factors") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/CompicatingFactors.txt", "Compicating Factors");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Contraindiction") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/contraindication.txt", "Contraindication");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Nutrition") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/DietNutrition.txt", "Diet and Nutrition");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Dificulty-Performing") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/dificultyPerforming.txt", "Dificulty Performing Tasks");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Drugs-Medication") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "Drugs and Medication");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Exercise") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise Routine");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Family-History") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/familyHistory.txt", "Family History");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Pain") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Frequency of Pain");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Goals") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/goals.txt", "Goals");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Improve/Decline") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/BetterorWorse.txt", "Improve/Decline");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Injury") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/Injury.txt", "Injury");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
+            }
+            if (str == "Dialog-ID-Insurance") {
+                result = popUpHandeler->SingleChoiceDialog("DialogInformation/InsuranceAll.txt", "Insurance");
+                mainEditBox->WriteText("  ");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Life-Affected") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/LifeAffected.txt", "Life Affected");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Percentorvas") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/percentorvas.txt", "Percent or Vas");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-PosturalChange") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/posturalChange.txt", "Postural Change");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-QualityofDiscomfort") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "Quality of Discomfort");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Improve") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/rateofImprove.txt", "Rate of Improvement");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Restrictions") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/restrictions.txt", "Restrictions");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-ROMregion") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ROMregion.txt", "ROM Region");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Social") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/socialhabits.txt", "Social Habits");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Surgical") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "Surgical History");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Muscle") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/SpecificMuseles.txt", "Specific Museles");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Side") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/side.txt", "Side");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
 
             }
             if (str == "Dialog-ID-Spine") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/spineSegmentsL-R.txt", "Spine SegmentsL-R");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
 
             }
             if (str == "Dialog-ID-ToneIntensity") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/ToneIntensity.txt", "Tone Intensity");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Work") {
                 result = popUpHandeler->MultipleChoiceDialog("DialogInformation/work.txt", "Work");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "Dialog-ID-Vas") {
                 result = popUpHandeler->SingleChoiceDialog("DialogInformation/Vas.txt", "Vas");
+                mainEditBox->WriteText("  ");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText(".");
             }
             if (str == "CPT-ID-Ankle") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-ankle.txt", "Ankle-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-CervicalSpine") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-cervicalSpine.txt", "Cervical-Spine-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-ElbowForarm") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/ctpcodes-ElbowForearm.txt", "Elbow-Forarm-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-Foot") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-foot.txt", "Foot-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-Hand") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-hand.txt", "Hand-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-Head") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-head.txt", "Head-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-Hip-Thigh") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-hip_thigh.txt", "Hip-Thigh-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-Knee") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/ctpcodes-knee.txt", "Knee-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-Lumbosacral-Spine") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-LumbosacralSpine.txt", "Lumbosacral-Spine-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-Shoulder") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-shoulder.txt", "Shoulder-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-ThoacicSpine") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-thoacicSpine.txt", "Thoacic-Spine-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-Wrist") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-Wrist.txt", "Wrist");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-Manipulation") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptChiropractic-Manipulation-CPT-Coding.txt", "Manipulation-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-Management") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptEvaluation-and-Management-Codes.txt", "Management-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-Misc") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cpt-misc.txt", "Misc-CPT");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
+            }
+            if (str == "CPT-ID-Mod") {
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-mods.txt", "Misc-CPT");
+                mainEditBox->WriteText("[");
+                mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+                mainEditBox->BeginURL(result);
+                mainEditBox->WriteText(result);
+                mainEditBox->EndURL();
+                mainEditBox->EndTextColour();
+                mainEditBox->WriteText("]");
             }
             if (str == "CPT-ID-Rehabilitation") {
                 result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcode-Physical-Medicine-Rehabilitation.txt", "Rehabilitation");
-                result = "<<" + result + ">>";
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-Xray") {
-                result = popUpHandeler->SingleChoiceDialog("DialogInformation/cptext-xray.txt", "Xray-CPT");
-                result = "<<" + result + ">>";
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptext-xray.txt", "Xray-CPT");
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
             if (str == "CPT-ID-PlaceofService") {
 
-                result = popUpHandeler->SingleChoiceDialog("DialogInformation/cpt-placeofService.txt", "Place of Service-CPT");
-                result = "<<" + result + ">>";
+                result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cpt-placeofService.txt", "Place of Service-CPT");
+                mainEditBox->WriteText("{{");
                 mainEditBox->BeginTextColour(wxColour(52, 128, 235));
                 mainEditBox->BeginURL(result);
                 mainEditBox->WriteText(result);
                 mainEditBox->EndURL();
                 mainEditBox->EndTextColour();
+                mainEditBox->WriteText("}}");
             }
-
-
         }
         else {
             mainEditBox->WriteText(lines.at(i));
-
-
         }
         i++;
     }
 }
-

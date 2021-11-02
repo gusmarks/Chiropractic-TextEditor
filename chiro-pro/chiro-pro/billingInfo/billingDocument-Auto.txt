@@ -1,0 +1,3 @@
+Auto Inssurance  
+--------------------------------------------------------------------------------------------------------------------------------
+Patient				Insurance 				Date of Service		Initial Date of Tx	Days	CPT Code [Modifier]	Dx Codes

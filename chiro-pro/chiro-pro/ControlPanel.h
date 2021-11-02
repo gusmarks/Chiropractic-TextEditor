@@ -6,6 +6,7 @@ class controlPanel : public wxPanel {
 private:
 	//a box sizer to hold all elements
 	wxBoxSizer* controlSizer;
+	DialogHelper* popUpHandeler;
 
 public:
 	//constructors
@@ -22,18 +23,33 @@ public:
 	}
 	//adds elements to the boxsizer, and calls the layout function to re order the panel
 	void addToControlSizer(wxButton* button) {
-		controlSizer->Add(button, wxALIGN_CENTER);
-		controlSizer->Layout();
+		try {
+			controlSizer->Add(button, wxALIGN_CENTER);
+			controlSizer->Layout();
+		}
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in controlPanel");
+		}
 	}
 	//a second adding function, this one adds the link panel, with a specified alignment
 	void addToControlSizer(linkPanel* pan,wxAlignment align) {
-		controlSizer->Add(pan, align);
-		controlSizer->Layout();
+		try {
+			controlSizer->Add(pan, align);
+			controlSizer->Layout();
+		}
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in controlPanel");
+		}
 	}
 	//fully empties the control sizer, rarly used
 	void clearControlSizer() {
-		controlSizer->Clear();
-		controlSizer->Layout();
+		try {
+			controlSizer->Clear();
+			controlSizer->Layout();
+		}
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in controlPanel");
+		}
 	}
 	//calls layout on the sizer
 	void controlLayout() {
@@ -41,7 +57,12 @@ public:
 	}
 	//adds a specified amount of blank space in the sizer
 	void controlAddSpace(int x, int y) {
-		controlSizer->Add(x, y);
-		controlSizer->Layout();
+		try {
+			controlSizer->Add(x, y);
+			controlSizer->Layout();
+		}
+		catch (...) {
+			popUpHandeler->errorMessage("an error occured in controlPanel");
+		}
 	}
 };

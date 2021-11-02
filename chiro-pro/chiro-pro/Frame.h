@@ -7,16 +7,18 @@
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include <wx/richtext/richtextctrl.h>
+#include <wx/richtext/richtextbuffer.h>
 #include <wx/hyperlink.h>
 #include <ctime>
 #include <wx/wfstream.h>
 //custome includes
 #include "DialogHelper.h"
 #include "DialogCreator.h"
+#include "DialogEditor.h"
 #include "ButtonPanel.h"
 #include "FunctionHelper.h"
 #include "ButtonSet.h"
-#include "buttonPanel.h"
+
 #include "NavLink.h"
 #include "LinkPanel.h"
 #include "ControlPanel.h"
@@ -47,6 +49,8 @@ enum
 	MENU_SaveButtons,
 	MENU_chanegDialog,
 	MENU_BillingDoc,
+	MENU_EditCodes,
+	MENU_EditGenDialog,
 	LINK_NAVIGATE,
 	ID_FORMAT_BOLD,
 	ID_FORMAT_ITALIC,
@@ -98,10 +102,11 @@ private:
 	//dialogcreation helper, opens and controls the dialog creator allowing the user to make all buttons and popups 
 	//easy to customize and make.
 	DialogCreator* DialogCreationHelper;
+	DialogEditor* DialogEditingHelper;
 	// check to see if the document has been signed or not
 	bool Signed = false;
 	//check if somthing is bold?
-	bool isBold=false;
+	bool isBold=false,isItalic=false,isunderline=false;
 	// input and output streams to read txt files that store information about the user set
 	std::ifstream setInfoIn;
 	std::ofstream setInfoOut;
@@ -118,56 +123,72 @@ public:
 /// <param name="WXUNUSED"></param>
 	void openFile(wxCommandEvent& WXUNUSED(event))
 	{
-		if (popUpHandeler->confirmIntent("are you sure you want to open a new file and close this one?")) {
-			wxFileDialog
-				openFileDialog(this, _("Open Xml file"), "", "",
-					"Xml files (*.xml)|*.xml", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-			if (openFileDialog.ShowModal() == wxID_CANCEL)
-				return;     // the user changed idea...
+		try {
+			if (fileName == "" || popUpHandeler->confirmIntent("are you sure you want to open a new file and close this one?")) {
+				wxFileDialog
+					openFileDialog(this, _("Open Xml file"), "", "",
+						"Xml files (*.xml)|*.xml", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+				if (openFileDialog.ShowModal() == wxID_CANCEL)
+					return;     // the user changed idea...
 
-			// proceed loading the file chosen by the user;
-			// this can be done with e.g. wxWidgets input streams:
-			wxFileInputStream input_stream(openFileDialog.GetPath());
+				// proceed loading the file chosen by the user;
+				// this can be done with e.g. wxWidgets input streams:
+				wxFileInputStream input_stream(openFileDialog.GetPath());
+				wxString filename = openFileDialog.GetFilename();
+				filename.erase(filename.Length() - 4, 4);
+				fileName = filename;
+				if (!input_stream.IsOk())
+				{
+					wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
+					return;
+				}
+				wxString file = openFileDialog.GetPath();
 
-			if (!input_stream.IsOk())
-			{
-				wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
-				return;
+				mainEditBox->Enable();
+				mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
+				mainEditBox->SetEditable(true);
+
+				mainEditBox->LoadFile(file);
 			}
-			wxString file = openFileDialog.GetPath();
-
-			mainEditBox->Enable();
-			mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
-			mainEditBox->SetEditable(true);
-
-			mainEditBox->LoadFile(file);
-
 		}
+		catch (...) { popUpHandeler->errorMessage("an error occured in frame.h"); }
+		
+	}
+	std::string getSignitureImage() {
+		wxFileDialog
+			openFileDialog(this, _("Open png file"), "", "",
+				"png files (*.png)|*.png", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+		if (openFileDialog.ShowModal() == wxID_CANCEL) 
+			return "";     // the user changed idea...
+		
+		wxFileInputStream input_stream(openFileDialog.GetPath());
+		if (!input_stream.IsOk())
+		{
+			wxLogError("Cannot open file '%s'.", openFileDialog.GetPath());
+			return"";
+		}
+		wxString path = openFileDialog.GetPath();
+		return path.ToStdString();
 	}
 	/// <summary>
 /// if filename variable is empty prompt the user to enter a name then add .doc to the end
 /// if there is already a name save under the name.
 /// </summary>
 /// <param name="WXUNUSED"></param>
+
 	void saveFile(wxCommandEvent& WXUNUSED(event))
 	{
-		if (MainFrame::getFilename().empty()) {
-			MainFrame::setFilename(
-				wxGetTextFromUser("Enter Name of File.do not include file extension", " ", "enter here", NULL, wxDefaultCoord, wxDefaultCoord, true));
-			//MainFrame::appendFilename(".doc");
-			wxString xmlName = MainFrame::getFilename() + ".xml", docName = MainFrame::getFilename() + ".doc";
-			mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
-			//mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".docx");
-			mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
-			mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
+		try {
+			if (!MainFrame::getFilename().empty()) {
 
+				mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
+				mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
+				mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
+
+				popUpHandeler->Message("save successful");
+			}
 		}
-		else {
-			mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
-			//mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".docx",wxRICHTEXT_TYPE_ANY);
-			mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
-			mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
-		}
+		catch (...) { popUpHandeler->errorMessage("an error occured in frame.h"); }
 	}
 	/// <summary>
 	///this method opens a dialog box that lets the user search thier file system and 
@@ -188,6 +209,7 @@ public:
 		// this can be done with e.g. wxWidgets output streams:
 		wxFileOutputStream output_stream(saveFileDialog.GetPath());
 		setFilename(saveFileDialog.GetFilename());
+		popUpHandeler->Message("save successful");
 		if (!output_stream.IsOk())
 		{
 			wxLogError("Cannot save current contents in file '%s'.", saveFileDialog.GetPath());
@@ -228,8 +250,10 @@ public:
 	void startSwapHelper(wxCommandEvent& event);
 	// swaps the user set to the selected one
 	void swapButtonSet(wxCommandEvent& evt);
+	void swapButtonSet(int setIndex);
 	//makes a new user set, with the appropriate files and directories
 	void newSet(wxCommandEvent& event);
+	void newSet();
 	//signs the document, adds some descriptive text, and an image signiture
 	void sign(wxCommandEvent& WXUNUSED(event));
 	//on right click brings up a menu when right clicking some componants, this allows the user to edit certain componants
@@ -239,7 +263,9 @@ public:
 	//the linknavigation lets the user navigate panels of buttons
 	void linkNavigation(wxHyperlinkEvent& evt);
 	//openDialog opens the dialogcreator, consider renaming
-	void openDialog();
+	void openDialogCreator();
+	void openCPT_DxEditor(wxCommandEvent& WXUNUSED(event));
+	void openGenDialogEditor(wxCommandEvent& WXUNUSED(event));
 	//read dialog file, reads in a file and passes the information to the dialog writer
 	void readDialogFile(wxCommandEvent& event);
 	//dialog writer writes the lines of a file to the text box, it also includes dialogs
@@ -334,11 +360,17 @@ public:
 
 		}
 	}
+	bool isFileOpen() {
+		return mainEditBox->IsEditable();
+	}
+
 	/// <summary>
 	/// distroy panels will systimaticly delete all the the users panels this is used to swap user sets
 	/// </summary>
 	/// <param name="usr"></param>
 	void destroyPanels(wxString usr);
+
+
 	//onbold will make the selected text and future text bold until toggled off
 	void onBold(wxCommandEvent& WXUNUSED(event))
 	{
@@ -351,16 +383,32 @@ public:
 			isBold = false;
 		}
 			
-		//mainEditBox->ApplyBoldToSelection();
+		mainEditBox->ApplyBoldToSelection();
 	}
 	//onItalic will make the selected text and future text italic until toggled off
 	void onItalic(wxCommandEvent& WXUNUSED(event))
 	{
+		if (isItalic == false) {
+			mainEditBox->BeginItalic();
+			isItalic = true;
+		}
+		else if (isItalic == true) {
+			mainEditBox->EndItalic();
+			isBold = isItalic;
+		}
 		mainEditBox->ApplyItalicToSelection();
 	}
 	//onUnderline will male the selected text and future text underlined until toggled off
 	void onUnderline(wxCommandEvent& WXUNUSED(event))
 	{
+		if (isunderline == false) {
+			mainEditBox->BeginUnderline();
+			isunderline = true;
+		}
+		else if (isunderline == true) {
+			mainEditBox->EndUnderline();
+			isunderline = false;
+		}
 		mainEditBox->ApplyUnderlineToSelection();
 	}
 	//onStrikethrough will male the selected text and future text striken through until toggled off
@@ -416,8 +464,10 @@ public:
 		std::string fileCount;
 		getline(fileReader, fileCount);
 		if (fileCount != "") {
+			fileReader.close();
 			return std::stoi(fileCount);
 		}
+		fileReader.close();
 		return 0;
 	}
 	/// //new file method, this method clears the texteditor and filename for saving.
@@ -426,34 +476,54 @@ public:
 	/// <param name="WXUNUSED"> an unused Command event</param>
 	void newFile(wxCommandEvent& WXUNUSED(event))
 	{
-		if (popUpHandeler->confirmIntent("are you sure you want to open a new file?")) {
-			wxString name=wxGetTextFromUser("Enter Patient name", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
-			if (name == "") {
-				return;
+		if (isFileOpen()) {
+			if (popUpHandeler->confirmIntent("are you sure you want to open a new file?")) {
 			}
+			else
+				return;
+		}
 
+			wxString name=wxGetTextFromUser("Enter Patient name", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+			if (name == "") 
+				return;
+			wxString insurance = popUpHandeler->SingleChoiceDialog("DialogInformation/InsuranceAll.txt", "Select A Provider.");
+			if (insurance == "OTHER") 
+				return;
+			mainEditBox->SetInsertionPoint(0);
+			mainEditBox->DiscardEdits();
 			mainEditBox->Clear();
+			mainEditBox->Disable();
 			MainFrame::setFilename(name);
 			mainEditBox->Enable();
 			mainEditBox->BeginBold();
 			mainEditBox->WriteText("Patient Name: ");
 			mainEditBox->EndBold();
-			mainEditBox->WriteText("<"+name+">");
+			mainEditBox->WriteText("{"+name+"}");
 			mainEditBox->WriteText("   ");
 			mainEditBox->BeginBold();
 			mainEditBox->WriteText("Date of First Visit: ");
 			mainEditBox->EndBold();
-			mainEditBox->WriteText("<"+functionHelper->getDateToSignNoTime()+">");
+			mainEditBox->WriteText("{"+functionHelper->getDateToSignNoTime()+"}");
+			mainEditBox->WriteText("   ");
+			mainEditBox->BeginBold();
+			mainEditBox->WriteText("Insurance: ");
+			mainEditBox->EndBold();
+			mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+			mainEditBox->BeginURL(insurance);
+			mainEditBox->WriteText("{"+insurance+"}");
 			mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
+			mainEditBox->EndURL();
+			mainEditBox->EndTextColour();
+			mainEditBox->WriteText(".");
 			mainEditBox->SetEditable(true);
-		}
+		
 	}
 	void startingSate() {
 		mainEditBox->Clear();
 		MainFrame::setFilename("");
 		mainEditBox->Disable();
 		mainEditBox->SetBackgroundColour(wxColour(211, 211, 211));
-		mainEditBox->SetEditable(true);
+		mainEditBox->SetEditable(false);
 	}
 	//getFilename is a getter method for the filename variable used for saving and loading textfiles
 	wxString getFilename() {
@@ -480,6 +550,9 @@ public:
 		this->getbuttonToEdit()->SetName(Text);
 	}
 	void removebuttonToEdit() {
+		wxString text = this->getbuttonToEdit()->GetName();
+		
+		currentButtonSet->getCurrentPanel()->removeButtonWithTextOf(text);
 		this->getbuttonToEdit()->Destroy();
 	}
 	//checks if the file has already been signed
@@ -495,8 +568,8 @@ public:
 
 	void gatherBillingInformation(wxCommandEvent& event) {
 		billingInfoCreator BIC = billingInfoCreator("PatientFileParse", "billingInfo/billingDocument.txt",
-			"billingInfo/billingDocument-Medicare.txt", "billingInfo/billingDocument-Regence.txt",
-			"billingInfo/billingDocument-Other.txt");
+			"billingInfo/billingDocument-Medicare.txt", "billingInfo/billingDocument-Comm.txt",
+			"billingInfo/billingDocument-Auto.txt","billingInfo/billingDocument-Lni.txt");
 		BIC.documentCreation();
 	}
 	/// <summary>
@@ -509,7 +582,10 @@ public:
 		event.Skip();
 		Close(TRUE); // Tells the OS to quit running this process
 	}
-	
+	void quit()
+	{
+		Close(TRUE); // Tells the OS to quit running this process
+	}
 		DECLARE_EVENT_TABLE()
 };
 

@@ -1,0 +1,4 @@
+Commercial Inssurance  
+--------------------------------------------------------------------------------------------------------------------------------
+Patient				Insurance 				Date of Service		Initial Date of Tx	Days	CPT Code [Modifier]	Dx Codes
+jjjj				AMERICAN SPECIALTY HEALTH		Mon Nov  1 2021		Mon Nov  1 2021		0						

@@ -1,0 +1,166 @@
+G57.60	Lesion of plantar nerve unspecified (Morton\'s neuroma, neuralgia or metatarsalgia)
+G57.61	Lesion of plantar nerve right lower limb (Morton\'s neuroma, neuralgia or metatarsalgia)
+G57.62	Lesion of plantar nerve left lower limb (Morton's neuroma, neuralgia or metatarsalgia)
+G57.63	Lesion of plantar nerve, bilateral lower limbs (effective 10-1-2016)
+M21.40	Flat foot [pes planus] (acquired), unspecified foot
+M21.41	Flat foot [pes planus] (acquired), right foot
+M21.42	Flat foot [pes planus] (acquired), left foot
+M21.611	Bunion of right foot (effective 10-1-2016)
+M21.612	Bunion of left foot (effective 10-1-2016)
+M21.619	Bunion of unspecified foot (effective 10-1-2016)
+M21.621	Bunionette of right foot (effective 10-1-2016)
+M21.622	Bunionette of left foot (effective 10-1-2016)
+M21.629	Bunionette of unspecified foot (effective 10-1-2016)
+M24.074	Loose body in right toe joints
+M24.075	Loose body in left toe joints
+M24.076	Loose body in unspecified toe joints
+M25.571	Pain in unspecified ankle and joints of right foot
+M25.572	Pain in unspecified ankle and joints of left foot
+M25.579	Pain in unspecified ankle and joints of unspecified foot
+M25.674	Stiffness of right foot
+M25.675	Stiffness of left foot
+M25.676	Stiffness of foot, unspecified
+M25.774	Osteophyte, right foot
+M25.775	Osteophyte, left foot
+M25.776	Osteophyte, unspecified foot
+M65.871	Other synovitis and tenosynovitis, right ankle and foot
+M65.872	Other synovitis and tenosynovitis, left ankle and foot
+M65.879	Other synovitis and tenosynovitis, unspecified ankle and foot
+M66.174	Rupture of synovium, right foot
+M66.175	Rupture of synovium, left foot
+M66.177	Rupture of synovium, right toe(s)
+M66.178	Rupture of synovium, left toe(s)
+M72.2	Plantar fascial fibromatosis (plantar fasciitis)
+M77.30	Calcaneal (heel) spur, unspecified foot
+M77.31	Calcaneal (heel) spur, right foot
+M77.32	Calcaneal (heel) spur, left foot
+M77.40	Metatarsalgia, unspecified foot
+M77.41	Metatarsalgia, right foot
+M77.42	Metatarsalgia, left foot
+M79.671	Pain in right foot
+M79.672	Pain in left foot
+M79.674	Pain in right toe(s)
+M79.675	Pain in left toe(s)
+M99.06	Segmental and somatic dysfunction of lower extremity (subluxation)
+Q66.30	Other congenital varus deformities of feet, unspecified foot (new 10-1-2019)
+Q66.31	Other congenital varus deformities of feet, right foot (new 10-1-2019)
+Q66.32	Other congenital varus deformities of feet, left foot (new 10-1-2019)
+Q66.50	Congenital pes planus, unspecified foot
+Q66.51	Congenital pes planus, right foot
+Q66.52	Congenital pes planus, left foot
+Q66.6	Other congenital valgus deformities of feet
+Q66.7	Congenital pes cavus (high arch) (deleted 10-1-2019)
+Q66.70	Congenital pes cavus, unspecified foot (new 10-01-2019)
+Q66.71	Congenital pes cavus, right foot (high arch) (new 10-1-2019)
+Q66.72	Congenital pes cavus, left foot (high arch) (new 10-1-2019)
+Q66.9	Congenital deformity of feet, unspecified (deleted 10-1-2019)
+Q66.90	Congenital deformity of feet, unspecified, unspecified foot (new 10-1-2019)
+Q66.91	Congenital deformity of feet, unspecified, right foot (new 10-1-2019)
+Q66.92	Congenital deformity of feet, unspecified, left foot (new 10-1-2019)
+R29.898	Other symptoms referable to joint (ankle and foot). Joint crepitus. Other symptoms and signs involving the musculoskeletal system
+S93.101A	Unspecified subluxation of right toe(s), initial encounter
+S93.102A	Unspecified subluxation of left toe(s), initial encounter
+S93.511A	Sprain of interphalangeal joint of right great toe, initial encounter
+S93.511D	Sprain of interphalangeal joint of right great toe, subsequent encounter
+S93.511S	Sprain of interphalangeal joint of right great toe, sequela
+S93.512A	Sprain of interphalangeal joint of left great toe, initial encounter
+S93.512D	Sprain of interphalangeal joint of left great toe, subsequent encounter
+S93.512S	Sprain of interphalangeal joint of left great toe, sequela
+S93.513A	Sprain of interphalangeal joint of unspecified great toe, initial encounter
+S93.513D	Sprain of interphalangeal joint of unspecified great toe, subsequent encounter
+S93.513S	Sprain of interphalangeal joint of unspecified great toe, sequela
+S93.514A	Sprain of interphalangeal joint of right lesser toes, initial encounter
+S93.514D	Sprain of interphalangeal joint of right lesser toes, subsequent encounter
+S93.514S	Sprain of interphalangeal joint of right lesser toes, sequela
+S93.515A	Sprain of interphalangeal joint of left lesser toes, initial encounter
+S93.515D	Sprain of interphalangeal joint of left lesser toes, subsequent encounter
+S93.515S	Sprain of interphalangeal joint of left lesser toes, sequela
+S93.516A	Sprain of interphalangeal joint of unspecified lesser toes, initial encounter
+S93.516D	Sprain of interphalangeal joint of unspecified lesser toes, subsequent encounter
+S93.516S	Sprain of interphalangeal joint of unspecified lesser toes, sequela
+S93.519A	Sprain of interphalangeal joint of unspecified toe(s), initial encounter
+S93.519D	Sprain of interphalangeal joint of unspecified toe(s),subsequent encounter
+S93.519S	Sprain of interphalangeal joint of unspecified toe(s), sequela
+S93.521A	Sprain of metatarsophalangeal joint of right great toe, initial encounter
+S93.521D	Sprain of metatarsophalangeal joint of right great toe, subsequent encounter
+S93.521S	Sprain of metatarsophalangeal joint of right great toe, sequela
+S93.522A	Sprain of metatarsophalangeal joint of left great toe, initial encounter
+S93.522D	Sprain of metatarsophalangeal joint of left great toe, subsequent encounter
+S93.522S	Sprain of metatarsophalangeal joint of left great toe, sequela
+S93.523A	Sprain of metatarsophalangeal joint of unspecified great toe, initial encounter
+S93.523D	Sprain of metatarsophalangeal joint of unspecified great toe, subsequent encounter
+S93.523S	Sprain of metatarsophalangeal joint of unspecified great toe, sequela
+S93.524A	Sprain of metatarsophalangeal joint of right lesser toes, initial encounter
+S93.524D	Sprain of metatarsophalangeal joint of right lesser toes, subsequent encounter
+S93.524S	Sprain of metatarsophalangeal joint of right lesser toes, sequela
+S93.525A	Sprain of metatarsophalangeal joint of left lesser toes, initial encounter
+S93.525D	Sprain of metatarsophalangeal joint of left lesser toes, subsequent encounter
+S93.525S	Sprain of metatarsophalangeal joint of left lesser toes, sequela
+S93.526A	Sprain of metatarsophalangeal joint of unspecified lesser toes, initial encounter
+S93.526D	Sprain of metatarsophalangeal joint of unspecified lesser toes, subsequent encounter
+S93.526S	Sprain of metatarsophalangeal joint of unspecified lesser toes, sequela
+S93.529A	Sprain of metatarsophalangeal joint of unspecified toe(s), initial encounter
+S93.529D	Sprain of metatarsophalangeal joint of unspecified toe(s), subsequent encounter
+S93.529S	Sprain of metatarsophalangeal joint of unspecified toe(s), sequela
+S93.601A	Unspecified sprain of right foot, initial encounter
+S93.601D	Unspecified sprain of right foot, subsequent encounter
+S93.601S	Unspecified sprain of right foot, sequela
+S93.602A	Unspecified sprain of left foot, initial encounter
+S93.602D	Unspecified sprain of left foot, subsequent encounter
+S93.602S	Unspecified sprain of left foot, sequela
+S93.609A	Unspecified sprain of unspecified foot, initial encounter
+S93.609D	Unspecified sprain of unspecified foot, subsequent encounter
+S93.609S	Unspecified sprain of unspecified foot, sequela
+S93.621A	Sprain of tarsometatarsal ligament of right foot, initial encounter
+S93.621D	Sprain of tarsometatarsal ligament of right foot, subsequent encounter
+S93.621S	Sprain of tarsometatarsal ligament of right foot, sequela
+S93.622A	Sprain of tarsometatarsal ligament of left foot, initial encounter
+S93.622D	Sprain of tarsometatarsal ligament of left foot, subsequent encounter
+S93.622S	Sprain of tarsometatarsal ligament of left foot, sequela
+S93.629A	Sprain of tarsometatarsal ligament of unspecified foot, initial encounter
+S93.629D	Sprain of tarsometatarsal ligament of unspecified foot, subsequent encounter
+S93.629S	Sprain of tarsometatarsal ligament of unspecified foot, sequela
+S93.691A	Other sprain of right foot, initial encounter
+S93.691D	Other sprain of right foot, subsequent encounter
+S93.691S	Other sprain of right foot, sequela
+S93.692A	Other sprain of left foot, initial encounter
+S93.692D	Other sprain of left foot, subsequent encounter
+S93.692S	Other sprain of left foot, sequela
+S93.699A	Other sprain of unspecified foot, initial encounter
+S93.699D	Other sprain of unspecified foot, subsequent encounter
+S93.699S	Other sprain of unspecified foot, sequela
+S96.011A	Strain of muscle and tendon of long flexor muscle of toe at ankle and foot level, right foot, initial encounter
+S96.011D	Strain of muscle and tendon of long flexor muscle of toe at ankle and foot level, right foot, subsequent encounter	
+S96.011S	Strain of muscle and tendon of long flexor muscle of toe at ankle and foot level, right foot, sequela
+S96.012A	Strain of muscle and tendon of long flexor muscle of toe at ankle and foot level, left foot, initial encounter
+S96.012D	Strain of muscle and tendon of long flexor muscle of toe at ankle and foot level, left foot, subsequent encounter	 
+S96.012S	Strain of muscle and tendon of long flexor muscle of toe at ankle and foot level, left foot, sequela
+S96.019A	Strain of muscle and tendon of long flexor muscle of toe at ankle and foot level, unspecified foot, initial encounter
+S96.019D	Strain of muscle and tendon of long flexor muscle of toe at ankle and foot level, unspecified foot, subsequent encounter
+S96.019S	Strain of muscle and tendon of long flexor muscle of toe at ankle and foot level, unspecified foot, sequela
+S96.101A	Unspecified injury of muscle and tendon of long extensor muscle of toe at ankle and foot level, right foot
+	S96.102A	Unspecified injury of muscle and tendon of long extensor muscle of toe at ankle and foot level, left foo initial encounter
+S96.211A	Strain of intrinsic muscle and tendon at ankle and foot level, right foot, initial encountS96.211D	Strain of intrinsic muscle and tendon at ankle and foot level, right foot, subsequent encounterer
+S96.211S	Strain of intrinsic muscle and tendon at ankle and foot level, right foot, sequela
+S96.211S	Strain of intrinsic muscle and tendon at ankle and foot level, left foot, sequela
+S96.212D	Strain of intrinsic muscle and tendon at ankle and foot level, left foot, subsequent encounter
+S96.219A	Strain of intrinsic muscle and tendon at ankle and foot level, unspecified foot, initial encounter
+S96.219D	Strain of intrinsic muscle and tendon at ankle and foot level, unspecified foot, subsequent encounter
+S96.219S	Strain of intrinsic muscle and tendon at ankle and foot level, unspecified foot, sequela
+	S96.911A	Strain of unspecified muscle and tendon at ankle and foot level, right foot, initial encounter
+S96.911A	Strain of unspecified muscle and tendon at ankle and foot level, right foot, initial encounter
+S96.911D	Strain of unspecified muscle and tendon at ankle and foot level, right foot, subsequent encounter
+S96.911D	Strain of unspecified muscle and tendon at ankle and foot level, right foot, sequela
+S96.911D	Strain of unspecified muscle and tendon at ankle and foot level, right foot, subsequent encounter
+S96.911S	Strain of unspecified muscle and tendon at ankle and foot level, right foot, sequela
+S96.912A	Strain of unspecified muscle and tendon at ankle and foot level, left foot, initial encounter
+S96.912A	Strain of unspecified muscle and tendon at ankle and foot level, left foot, initial encounter
+S96.912D	Strain of unspecified muscle and tendon at ankle and foot level, left foot, subsequent encounter
+S96.912D	Strain of unspecified muscle and tendon at ankle and foot level, left foot, sequela
+S96.912D	Strain of unspecified muscle and tendon at ankle and foot level, left foot, subsequent encounter
+S96.912S	Strain of unspecified muscle and tendon at ankle and foot level, left foot, sequela
+S96.919A	Strain of unspecified muscle and tendon at ankle and foot level, unspecified foot, initial encounter
+S96.919A	Strain of unspecified muscle and tendon at ankle and foot level, unspecified foot, initial encounter
+S96.919D	Strain of unspecified muscle and tendon at ankle and foot level, unspecified foot, subsequent encounter
+S96.919D	Strain of unspecified muscle and tendon at ankle and foot level, unspecified foot, subsequent encounter
+S96.919S	Strain of unspecified muscle and tendon at ankle and foot level, unspecified foot, sequela

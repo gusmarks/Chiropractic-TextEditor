@@ -1,9 +1,9 @@
 Allergies
 Body
+Calender
 Cervical Adjustment
 Compicating Factors
 Contraindiction
-Daily Objective
 Diet & Nutrition
 Dificulty Performing
 Drugs Medication
@@ -13,6 +13,7 @@ Freqency of pain
 Goals
 Improve/Decline
 Injury
+Insurance
 Life Affected
 Percent or vas
 Postural Change
@@ -25,7 +26,27 @@ Social habits
 Specific Muscles
 Spine
 Surgical history
-TautandTender
 Tone Intensity
 Work
 Vas
+---------codes----------
+Ankle
+Cervical Spine
+Elbow Forarm
+Foot
+Hand
+Head
+Hip-Thigh
+Knee
+Lumbosacral Spine
+Shoulder
+Thoacic Spine
+Wrist
+----------------
+Manipulation
+Management
+Misc
+Modifier
+Rehabilitation
+Xray
+Place of Service
