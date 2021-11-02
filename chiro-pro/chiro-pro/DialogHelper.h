@@ -268,14 +268,15 @@ public:
 							std::string startStr;
 							std::string endStr;
 							std::getline(dialogList, startStr);
-							for (size_t j = 0; j < startStr.size(); j++) {
-								if (startStr[j] == '\t')
-									break;
-								endStr += (startStr[j]);
+							if (!startStr.empty()) {
+								for (size_t j = 0; j < startStr.size(); j++) {
+									if (startStr[j] == '\t')
+										break;
+									endStr += (startStr[j]);
+								}
+
+								options.Add(endStr);
 							}
-
-							options.Add(endStr);
-
 						}
 						i++;
 					}

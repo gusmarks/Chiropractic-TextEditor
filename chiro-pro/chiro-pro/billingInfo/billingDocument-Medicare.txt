@@ -1,9 +1,3 @@
 Medicare Inssurance  
 --------------------------------------------------------------------------------------------------------------------------------
 Patient				Insurance 				Date of Service		Initial Date of Tx	Days	CPT Code [Modifier]	Dx Codes
-billy bumper dumb		REGENCE (MED ADVANTAGE)			Thu Oct 14 2021		Thu Oct 14 2021		0	98941,			M12.411,M12.312.
-glum terry			MEDICARE WA				Thu Oct 14 2021		Thu Oct 14 2021		0	98941[32],98941[32],	M12.411,M12.312,
-																98941[32],98941[32],	M12.311
-																98941[32],				
-timtom tammerino		AARP					Tue Oct 12 2021		Tue Oct 12 2021		0	98943[XS],		G57.02,G57.02,
-																			G57.02

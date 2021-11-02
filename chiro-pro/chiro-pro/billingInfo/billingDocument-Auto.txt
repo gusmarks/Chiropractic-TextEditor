@@ -1,24 +1,3 @@
 Auto Inssurance  
 --------------------------------------------------------------------------------------------------------------------------------
 Patient				Insurance 				Date of Service		Initial Date of Tx	Days	CPT Code [Modifier]	Dx Codes
-billy bob			NATIONWIDE INSURANCE			Tue Oct 12 2021		Tue Oct 12 2021		0						
-patient 12			ALLSTATE				Thu Oct 14 2021		Thu Oct 14 2021		0	98943,			M12.211,M12.212,
-																			M12.311
-patient 13			FARMERS INSURANCE			Thu Oct 14 2021		Thu Oct 14 2021		0	98943,			M12.211,M12.212,
-																			M12.311
-patient 14			GEICO					Thu Oct 14 2021		Thu Oct 14 2021		0	98943,			M12.211,M12.212,
-																			M12.311
-patient 15			LIBERTY MUTUAL				Thu Oct 14 2021		Thu Oct 14 2021		0	98943,			M12.211,M12.212,
-																			M12.311
-patient 16			PEMCO					Thu Oct 14 2021		Thu Oct 14 2021		0	98943,			M12.211,M12.212,
-																			M12.311
-patient 17			STATE FARM				Thu Oct 14 2021		Thu Oct 14 2021		0	98943,			M12.211,M12.212,
-																			M12.311
-patient 18			PROGRESSIVE				Thu Oct 14 2021		Thu Oct 14 2021		0	98943,			M12.211,M12.212,
-																			M12.311
-patient 19			SAFECO					Thu Oct 14 2021		Thu Oct 14 2021		0	98943,			M12.211,M12.212,
-																			M12.311
-patient 20			THE HARTFORD				Thu Oct 14 2021		Thu Oct 14 2021		0	98943,			M12.211,M12.212,
-																			M12.311
-patient 21			USAA					Thu Oct 14 2021		Thu Oct 14 2021		0	98943,			M12.211,M12.212,
-																			M12.311

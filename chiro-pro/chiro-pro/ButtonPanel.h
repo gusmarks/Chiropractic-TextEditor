@@ -43,7 +43,7 @@ private:
 public:
 	//constructor & destructor definitions
 	ButtonPanel(wxWindow* parent,wxString name,std::string layoutName,int ind):wxPanel(parent,wxID_ANY,wxDefaultPosition,
-		wxSize(600,69),wxTAB_TRAVERSAL,name) {
+		wxSize(10000,69),wxTAB_TRAVERSAL,name) {
 		try {
 			//keep track of the parent
 			this->parent = parent;
@@ -178,7 +178,8 @@ public:
 					newButton->SetForegroundColour(*wxBLUE);
 					qLinkList.push_back(newButton);
 					//add the button to the button sizer
-					buttonSizer->Add(qLinkList.back(), wxLeft);
+
+					buttonSizer->Add(qLinkList.back(), wxSizerFlags().Proportion(9).Left().Align(1));
 					//update layout of page and button index
 					buttonSizer->Layout();
 				}

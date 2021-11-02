@@ -7,6 +7,7 @@
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include <wx/richtext/richtextctrl.h>
+#include <wx/richtext/richtextbuffer.h>
 #include <wx/hyperlink.h>
 #include <ctime>
 #include <wx/wfstream.h>
@@ -497,19 +498,19 @@ public:
 			mainEditBox->BeginBold();
 			mainEditBox->WriteText("Patient Name: ");
 			mainEditBox->EndBold();
-			mainEditBox->WriteText("<"+name+">");
+			mainEditBox->WriteText("{"+name+"}");
 			mainEditBox->WriteText("   ");
 			mainEditBox->BeginBold();
 			mainEditBox->WriteText("Date of First Visit: ");
 			mainEditBox->EndBold();
-			mainEditBox->WriteText("<"+functionHelper->getDateToSignNoTime()+">");
+			mainEditBox->WriteText("{"+functionHelper->getDateToSignNoTime()+"}");
 			mainEditBox->WriteText("   ");
 			mainEditBox->BeginBold();
 			mainEditBox->WriteText("Insurance: ");
 			mainEditBox->EndBold();
 			mainEditBox->BeginTextColour(wxColour(52, 128, 235));
 			mainEditBox->BeginURL(insurance);
-			mainEditBox->WriteText("<"+insurance+">");
+			mainEditBox->WriteText("{"+insurance+"}");
 			mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
 			mainEditBox->EndURL();
 			mainEditBox->EndTextColour();

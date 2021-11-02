@@ -3,6 +3,10 @@
 #include <iostream>
 #include <fstream>
 #include "dialogHelper.h"
+#include <fileSystem>
+namespace fileSys = std::filesystem;
+using std::filesystem::exists;
+using std::filesystem::create_directory;
 class FuncHelper {
 private:
     DialogHelper* popupHandeler;
@@ -17,7 +21,50 @@ public:
     bool isText(const std::string& str) {
         return !(str.find("Dialog-ID") != std::string::npos)&&!str.empty();
     }
-
+    void createMissingFiles() {
+        std::vector<std::string> filesToCheck = {"PatientFileView","PatientFileLoad","PatientFileParse",
+            "panelLayout","Dialogs","billingInfo","bitmaps","DialogInformation","SetInfoAll.txt"};
+        std::vector<bool> filesChecked;
+        for (size_t i=0; i < filesToCheck.size(); i++) {
+            if (!exists(filesToCheck.at(i)) && i == 0) {
+                fileSys::create_directory(filesToCheck.at(i));
+            }
+            if (!exists(filesToCheck.at(i)) && i == 1) {
+                fileSys::create_directory(filesToCheck.at(i));
+            }
+            if (!exists(filesToCheck.at(i)) && i == 2) {
+                fileSys::create_directory(filesToCheck.at(i));
+            }
+            if (!exists(filesToCheck.at(i)) && i == 3) {
+                fileSys::create_directory(filesToCheck.at(i));
+            }
+            if (!exists(filesToCheck.at(i)) && i == 4) {
+                fileSys::create_directory(filesToCheck.at(i));
+                std::ofstream dialogInfo(filesToCheck.at(i)+"0dialogCount.txt");
+                dialogInfo << 0;
+                dialogInfo.close();
+                std::ofstream dialogInfo2(filesToCheck.at(i) + "0dialogList.txt");
+                dialogInfo2 << "New Paragraph \n----------------------- ";
+                dialogInfo.close();
+                std::ofstream dialogInfo3(filesToCheck.at(i) + "0DialogNames.txt");
+                dialogInfo3.close();
+            }
+            if (!exists(filesToCheck.at(i)) && i == 5) {
+                fileSys::create_directory(filesToCheck.at(i));
+            }
+            if (!exists(filesToCheck.at(i)) && i == 6) {
+                fileSys::create_directory(filesToCheck.at(i));
+            }
+            if (!exists(filesToCheck.at(i)) && i == 7) {
+                fileSys::create_directory(filesToCheck.at(i));
+            }
+            if (!exists(filesToCheck.at(i)) && i == 7) {
+                std::ofstream setInfo(filesToCheck.at(i), std::ios::out);
+                setInfo.close();
+            }
+            
+        }
+    }
     long getLineNo(std::string& str, std::string delim) {
         try {
             std::vector<std::string> stringsNoBlankLines;

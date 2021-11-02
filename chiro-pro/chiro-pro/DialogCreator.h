@@ -17,7 +17,7 @@ public:
 	/// <param name="id">id is not specific but automaticly allocated</param>
 	/// <param name="dialogCount">dialog count shows how many there currently are, added here to help wuth loading information</param>
 	DialogCreator(wxWindow* parent, wxWindowID id, int dialogCount)
-		:wxDialog(parent, id, "Dialog Creator", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "") {
+		:wxDialog(parent, id, "Dialog Creator", wxDefaultPosition, wxSize(500,500), wxDEFAULT_DIALOG_STYLE, "") {
 
 		//dialog helper to provide auxilery functions
 		popupHandeler = new DialogHelper(this);
@@ -36,12 +36,17 @@ public:
 		bold->Show();
 		underline->Show();
 		italic->Show();
+		hSizer->AddSpacer(20);
 		hSizer->Add(save);
-		hSizer->Add(addDialog);
-		hSizer->Add(bold);
-		hSizer->Add(underline);
-		hSizer->Add(italic);
-		vSizer->Add(MainDisplayBox);
+		hSizer->AddSpacer(20);
+		hSizer->Add(addDialog,wxCenter);
+		hSizer->AddSpacer(20);
+		hSizer->Add(bold, wxCenter);
+		hSizer->AddSpacer(20);
+		hSizer->Add(underline, wxCenter);
+		hSizer->AddSpacer(20);
+		hSizer->Add(italic, wxCenter);
+		vSizer->Add(MainDisplayBox, wxCenter);
 		vSizer->Add(hSizer);
 		hSizer->Layout();
 		//set the sizer
@@ -64,9 +69,9 @@ public:
 			wxString dialogChoice = popupHandeler->SingleChoiceDialog("DialogInformation/DialogSelection-2.txt", "select a popup.");
 			dialogChoice = TranslateDialogNames(dialogChoice);
 			if (dialogChoice != "OTHER") {
-				MainDisplayBox->WriteText("~<H>");
+				MainDisplayBox->WriteText("~{H}");
 				MainDisplayBox->WriteText(dialogChoice);
-				MainDisplayBox->WriteText("<H>~");
+				MainDisplayBox->WriteText("{H}~");
 			}
 		}
 		catch (...) {
@@ -99,18 +104,18 @@ public:
 	}
 	//adds a bold line to the text
 	void addBoldtoText(wxCommandEvent& event) {
-		MainDisplayBox->WriteText("~<b>");
-		MainDisplayBox->WriteText("<b>~");
+		MainDisplayBox->WriteText("~{b}");
+		MainDisplayBox->WriteText("{b}~");
 	}
 	//adds an underline to the text
 	void addUnderlinetoText(wxCommandEvent& event) {
-		MainDisplayBox->WriteText("~<u>");
-		MainDisplayBox->WriteText("<u>~");
+		MainDisplayBox->WriteText("~{u}");
+		MainDisplayBox->WriteText("{u}~");
 	}
 	//adds italic to the text
 	void addItalictoText(wxCommandEvent& event) {
-		MainDisplayBox->WriteText("~<i>");
-		MainDisplayBox->WriteText("<i>~");
+		MainDisplayBox->WriteText("~{i}");
+		MainDisplayBox->WriteText("{i}~");
 	}
 	//this takes a word and makes it into the "code" for it, this " code" 
 	//is understood by the reading end to produce the right output
@@ -267,7 +272,7 @@ public:
 			return "CPT-ID-PlaceofService";
 		}
 		if (name == "OTHER") {
-			popupHandeler->errorMessage("value not accepted");
+			
 		}
 
 		return "OTHER";

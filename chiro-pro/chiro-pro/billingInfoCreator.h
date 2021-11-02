@@ -17,7 +17,7 @@ class billingInfoCreator {
 	//streams for the input and output of files, and strings to represent the paths for each section
 private:
 	std::fstream in_out;
-	std::ofstream outMed;
+	std::fstream outMed;
 	std::fstream outCom;
 	std::fstream outAuto;
 	std::fstream outLni;
@@ -71,7 +71,7 @@ public:
 				while (!inout.eof()) {
 					std::getline(inout, infoline);
 					std::stringstream LineStream(infoline);
-					while (getline(LineStream, templine, '>')) {
+					while (getline(LineStream, templine, '}')) {
 						std::string token;
 						std::stringstream TokenStream(templine);
 						int i = 0;
@@ -91,7 +91,7 @@ public:
 								information.at(5).push_back(token);
 							}
 							
-							if (line.find("<<") != std::string::npos) {
+							if (line.find("{{") != std::string::npos) {
 								information.at(4).push_back(token);
 							}
 							if (i % 2 == 0) { i++; }
@@ -199,9 +199,12 @@ public:
 				if (in_out.is_open()) {
 					gatherInfo(in_out);
 				}
+				if (information.at(2).empty()) {
+					continue;
+				}
 				GatherInsurance();
 				in_out.close();
-				size_t position = information.at(5).at(0).find('<');
+				size_t position = information.at(5).at(0).find('{');
 				if (position !=std::string::npos) {
 					information.at(5).at(0) = information.at(5).at(0).erase(0, position+1);
 				}
@@ -504,16 +507,16 @@ public:
 		try {
 			for (size_t i = 0; i < information.size(); i++) {
 				for (size_t j = 0; j < information.at(i).size(); j++) {
-					if ((information.at(i).at(j).find("<<")) != std::string::npos) {
+					if ((information.at(i).at(j).find("{{")) != std::string::npos) {
 						std::stringstream ss(information.at(i).at(j));
 						information.at(i).at(j) = "";
-						while (getline(ss, templine, '<')) {
+						while (getline(ss, templine, '{')) {
 							if (templine != "") {
 								information.at(i).at(j) += templine;
 							}
 						}
 					}
-					if ((position = information.at(i).at(j).find('<')) != std::string::npos) {
+					if ((position = information.at(i).at(j).find('{')) != std::string::npos) {
 						information.at(i).at(j) = information.at(i).at(j).substr(position + 1, information.at(i).at(j).size());
 					}
 				}
@@ -593,55 +596,50 @@ public:
 			popupHandeler->errorMessage("an error occured in the document creator-seperator");
 		}
 	}
-	/*void printDxCodes(std::fstream out) {
-		try {
-			std::stringstream ss(information[4]);
-			std::string templine;
-			int Dxcount = 0, iterationCount = 0;
-			while (getline(ss, templine, ',')) {
-				Dxcount++;
-			}
-			if (Dxcount == 1) {
-				out << information[4] << "\t\t\t";
-			}
-			if (Dxcount == 2) {
-				out << information[4] << "\t\t";
-			}
-			if (Dxcount > 2) {
-				while (getline(ss, templine, ',')) {
-
-					if ((iterationCount % 3) == 0) {
-						out << templine << "\n";
-					}
-					else {
-						out << templine;
-					}
-					iterationCount++;
-				}
-			}
-		}
-		catch (...) {
-			popupHandeler->errorMessage("an error occured in the document creator-print method");
-		}
-		
-	}*/
 	void appendFiles() {
 		try {
-			in_out.open(billingfile);
-			std::ifstream Medicare;
-			std::ifstream Comercial;
-			std::ifstream Auto;
-			std::ifstream LnI;
-			Medicare.open(billingfileMed);
-			Comercial.open(billingfileComm);
-			Auto.open(billingfileAuto);
-			LnI.open(billingfileLnI);
-			in_out << Medicare.rdbuf() << "\n" << Comercial.rdbuf()<<"\n"<<Auto.rdbuf()<<"\n"<<LnI.rdbuf();
-			Medicare.close();
-			Comercial.close();
-			Auto.close();
-			LnI.close();
-			in_out.close();
+			std::ofstream mainBillingFile;
+			mainBillingFile.open(billingfile);
+			if (in_out.is_open()) {
+				std::fstream Medicare;
+				std::fstream Comercial;
+				std::fstream Auto;
+				std::fstream LnI;
+				std::string tempstr;
+				Medicare.open(billingfileMed, std::ios::in);
+				Comercial.open(billingfileComm, std::ios::in);
+				Auto.open(billingfileAuto, std::ios::in);
+				LnI.open(billingfileLnI, std::ios::in);
+				if (Medicare.is_open() && Comercial.is_open() && Auto.is_open() && LnI.is_open()) {
+					while (getline(Medicare, tempstr)) {
+						mainBillingFile << tempstr;
+						mainBillingFile << "\n";
+					}
+					mainBillingFile << "\n";
+					while (getline(Comercial, tempstr)) {
+						mainBillingFile << tempstr;
+						mainBillingFile << "\n";
+					}
+					mainBillingFile << "\n";
+					while (getline(Auto, tempstr)) {
+						mainBillingFile << tempstr;
+						mainBillingFile << "\n";
+					}
+					mainBillingFile << "\n";
+					while (getline(LnI, tempstr)) {
+						mainBillingFile << tempstr;
+						mainBillingFile << "\n";
+					}
+					
+					
+					//in_out << Medicare.rdbuf() << "\n" << Comercial.rdbuf() << "\n" << Auto.rdbuf() << "\n" << LnI.rdbuf();
+					Medicare.close();
+					Comercial.close();
+					Auto.close();
+					LnI.close();
+					in_out.close();
+				}
+			}
 		}
 		catch (...) {
 			popupHandeler->errorMessage("an error occured in the document creator-append method");
