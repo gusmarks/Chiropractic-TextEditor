@@ -9,7 +9,6 @@
 #include <string>
 #include <iostream>
 #include <filesystem>
-
 struct selectionInformation {
 	std::string selectionText;
 	int selectionIndex;
@@ -19,14 +18,11 @@ private:
 	//body image, calender and parent are all stored for later use,
 	//parent is used in various dialogs to ensure they are on the main frame
 	bodyImageDialog* bodyDialogObj;
-
 	CalenderDialog* cal;
 	wxWindow* parent;
 public:
 	//constructor definition
-	DialogHelper(wxWindow* parent) {
-		this->parent = parent;
-	}
+	DialogHelper(wxWindow* parent) {this->parent = parent;}
 	/// <summary>
 /// the function confirmIntent accepts a string with a question,
 /// and produces a popupbox to ask this question. then waits on a yes or no responce, and acts acordingly
@@ -225,8 +221,6 @@ public:
 		}
 		return -1;
 	}
-	/// <summary>
-
 /// this fucntion opens a Dialog to allow the user to select a date, upto todays date
 /// 	and returns the date in string form.
 /// </summary>
@@ -253,8 +247,6 @@ public:
 		delete bodyDialogObj;
 		return "OTHER";
 	}
-
-
 	selectionInformation selectPremadeDialog() {
 		wxArrayString options;
 		try {

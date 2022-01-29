@@ -18,11 +18,11 @@
 #include "ButtonPanel.h"
 #include "FunctionHelper.h"
 #include "ButtonSet.h"
-
 #include "NavLink.h"
 #include "LinkPanel.h"
 #include "ControlPanel.h"
 #include "billingInfoCreator.h"
+#include "ArchiveManager.h"
 enum
 {
 	TEXT_Main,
@@ -49,9 +49,11 @@ enum
 	MENU_SaveButtons,
 	MENU_chanegDialog,
 	MENU_BillingDoc,
+	MENU_Archive,// use this to access the archive manager. 
 	MENU_EditCodes,
 	MENU_EditGenDialog,
 	LINK_NAVIGATE,
+	
 	ID_FORMAT_BOLD,
 	ID_FORMAT_ITALIC,
 	ID_FORMAT_UNDERLINE,
@@ -103,6 +105,7 @@ private:
 	//easy to customize and make.
 	DialogCreator* DialogCreationHelper;
 	DialogEditor* DialogEditingHelper;
+	ArchiveManager* archiveManager;
 	// check to see if the document has been signed or not
 	bool Signed = false;
 	//check if somthing is bold?
@@ -154,6 +157,10 @@ public:
 		catch (...) { popUpHandeler->errorMessage("an error occured in frame.h"); }
 		
 	}
+	/// <summary>
+	/// let t heuser search thier folders for an image recomended size is 180px/75px
+	/// </summary>
+	/// <returns>returns the path of the file</returns>
 	std::string getSignitureImage() {
 		wxFileDialog
 			openFileDialog(this, _("Open png file"), "", "",
@@ -175,16 +182,15 @@ public:
 /// if there is already a name save under the name.
 /// </summary>
 /// <param name="WXUNUSED"></param>
-
 	void saveFile(wxCommandEvent& WXUNUSED(event))
 	{
 		try {
-			if (!MainFrame::getFilename().empty()) {
 
-				mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
+			if (!MainFrame::getFilename().empty()) {
+				//save as txt, for parsing, xml for loading, and html for viewing
+				mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename()+ ".txt");
 				mainEditBox->SaveFile("PatientFileLoad/" + MainFrame::getFilename() + ".xml");
 				mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
-
 				popUpHandeler->Message("save successful");
 			}
 		}
@@ -209,6 +215,8 @@ public:
 		// this can be done with e.g. wxWidgets output streams:
 		wxFileOutputStream output_stream(saveFileDialog.GetPath());
 		setFilename(saveFileDialog.GetFilename());
+		mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
+		mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".html");
 		popUpHandeler->Message("save successful");
 		if (!output_stream.IsOk())
 		{
@@ -218,7 +226,7 @@ public:
 	}
 	/// <summary>
 /// this is esentualy the same as new file. clearing the text editor and the filename
-/// too let the user have a blank file
+/// however it also disables the editor and grays the background color.
 /// </summary>
 /// <param name="WXUNUSED"></param>
 	void closeFile(wxCommandEvent& WXUNUSED(event))
@@ -232,7 +240,6 @@ public:
 			MainFrame::setFilename("");
 		}
 	}
-
 	//saves the information about the current button set to file
 	void saveButtonSetInfo(std::string path);
 	//loads the information about the selected set from file
@@ -266,11 +273,28 @@ public:
 	void openDialogCreator();
 	void openCPT_DxEditor(wxCommandEvent& WXUNUSED(event));
 	void openGenDialogEditor(wxCommandEvent& WXUNUSED(event));
+	void openArchiveManager(wxCommandEvent& WXUNUSED(event));
 	//read dialog file, reads in a file and passes the information to the dialog writer
 	void readDialogFile(wxCommandEvent& event);
 	//dialog writer writes the lines of a file to the text box, it also includes dialogs
 	void DialogWriter(std::vector<std::string>);
-
+	/// <summary>
+	/// distroy panels will systimaticly delete all the the users panels this is used to swap user sets
+	/// </summary>
+	/// <param name="usr"></param>
+	void destroyPanels(wxString usr);
+	//this bids all buttons the the appropriate functions, needs work
+	void bindAllButtons();
+	//this will re do the results of a dialog
+	bool dialogButtonHelper();
+	//this directs the url click to the dialog button helper function
+	void dialogURLHelper(wxTextUrlEvent& evt);
+	//this binds all pup up buttons, consider removing
+	void popupButtonBind(std::string str, wxButton* btton);
+	//this rebinds all pop up buttons, consider removing
+	void popupButtonRebind(std::string str, wxButton* btton);
+	// undbind buttons called between rebinding
+	void unbindPopupButton(wxString str, wxButton* btton);
 	/// <summary>
 /// builds the navlinks based on the currentpanel and how many previous elements thier are
 /// </summary>
@@ -363,17 +387,10 @@ public:
 	bool isFileOpen() {
 		return mainEditBox->IsEditable();
 	}
-
-	/// <summary>
-	/// distroy panels will systimaticly delete all the the users panels this is used to swap user sets
-	/// </summary>
-	/// <param name="usr"></param>
-	void destroyPanels(wxString usr);
-
-
 	//onbold will make the selected text and future text bold until toggled off
 	void onBold(wxCommandEvent& WXUNUSED(event))
 	{
+		//toggle bold
 		if (isBold == false) {
 			mainEditBox->BeginBold();
 			isBold = true;
@@ -382,12 +399,13 @@ public:
 			mainEditBox->EndBold();
 			isBold = false;
 		}
-			
+		//apply bold
 		mainEditBox->ApplyBoldToSelection();
 	}
 	//onItalic will make the selected text and future text italic until toggled off
 	void onItalic(wxCommandEvent& WXUNUSED(event))
 	{
+		//toggle italics
 		if (isItalic == false) {
 			mainEditBox->BeginItalic();
 			isItalic = true;
@@ -396,11 +414,13 @@ public:
 			mainEditBox->EndItalic();
 			isBold = isItalic;
 		}
+		//apply bold
 		mainEditBox->ApplyItalicToSelection();
 	}
 	//onUnderline will male the selected text and future text underlined until toggled off
 	void onUnderline(wxCommandEvent& WXUNUSED(event))
 	{
+		//toggle underline
 		if (isunderline == false) {
 			mainEditBox->BeginUnderline();
 			isunderline = true;
@@ -409,51 +429,22 @@ public:
 			mainEditBox->EndUnderline();
 			isunderline = false;
 		}
+		//apply underline
 		mainEditBox->ApplyUnderlineToSelection();
 	}
 	//onStrikethrough will male the selected text and future text striken through until toggled off
-	void onStrikethrough(wxCommandEvent& WXUNUSED(event))
-	{
-		mainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_STRIKETHROUGH);
-	}
+	void onStrikethrough(wxCommandEvent& WXUNUSED(event)){mainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_STRIKETHROUGH);}
 	//onSuperscript will male the selected text and future text superscript until toggled off
-	void onSuperscript(wxCommandEvent& WXUNUSED(event))
-	{
-		mainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUPERSCRIPT);
-	}
+	void onSuperscript(wxCommandEvent& WXUNUSED(event)){mainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUPERSCRIPT);}
 	//onSubscript will male the selected text and future text subscript until toggled off
-	void onSubscript(wxCommandEvent& WXUNUSED(event))
-	{
-		mainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUBSCRIPT);
-	}
+	void onSubscript(wxCommandEvent& WXUNUSED(event)){mainEditBox->ApplyTextEffectToSelection(wxTEXT_ATTR_EFFECT_SUBSCRIPT);}
 	//onAlignLeft will male the selected text and future text alighned left until toggled off
-	void onAlignLeft(wxCommandEvent& WXUNUSED(event))
-	{
-		mainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_LEFT);
-	}
+	void onAlignLeft(wxCommandEvent& WXUNUSED(event)){mainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_LEFT);}
 	//onAlignCentre will male the selected text and future text aligned center until toggled off
-	void onAlignCentre(wxCommandEvent& WXUNUSED(event))
-	{
-		mainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_CENTRE);
-	}
+	void onAlignCentre(wxCommandEvent& WXUNUSED(event)){mainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_CENTRE);}
 	//onAlignRight will male the selected text and future text aligned right until toggled off
-	void onAlignRight(wxCommandEvent& WXUNUSED(event))
-	{
-		mainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_RIGHT);
-	}
-
-	//this bids all buttons the the appropriate functions, needs work
-	void bindAllButtons();
-	//this will re do the results of a dialog
-	bool dialogButtonHelper();
-	//this directs the url click to the dialog button helper function
-	void dialogURLHelper(wxTextUrlEvent& evt);
-	//this binds all pup up buttons, consider removing
-	void popupButtonBind(std::string str, wxButton* btton);
-	//this rebinds all pop up buttons, consider removing
-	void popupButtonRebind(std::string str,wxButton* btton);
-	// undbind buttons called between rebinding
-	void unbindPopupButton(wxString str, wxButton* btton);
+	void onAlignRight(wxCommandEvent& WXUNUSED(event)){mainEditBox->ApplyAlignmentToSelection(wxTEXT_ALIGNMENT_RIGHT);}
+	
 
 	/// <summary>
 	/// this function opens the dialog count file and reads in the previos dialog count
@@ -474,50 +465,83 @@ public:
 	///allowing people to make and save new files
 	/// </summary>
 	/// <param name="WXUNUSED"> an unused Command event</param>
-	void newFile(wxCommandEvent& WXUNUSED(event))
+	void newFile(wxCommandEvent& WXUNUSED(event))   
 	{
+
+		std::string date = functionHelper->getDateToSignNoTime().substr(3);
+		std::vector<std::string> tempVec;
+		
+		//if a file is open ask the user if they want to open a new one, if not return, if yes continue on
 		if (isFileOpen()) {
-			if (popUpHandeler->confirmIntent("are you sure you want to open a new file?")) {
-			}
+			if (popUpHandeler->confirmIntent("are you sure you want to open a new file?")) {}
 			else
 				return;
 		}
-
+		//collect patient information
 			wxString name=wxGetTextFromUser("Enter Patient name", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
 			if (name == "") 
 				return;
-			wxString insurance = popUpHandeler->SingleChoiceDialog("DialogInformation/InsuranceAll.txt", "Select A Provider.");
-			if (insurance == "OTHER") 
-				return;
-			mainEditBox->SetInsertionPoint(0);
-			mainEditBox->DiscardEdits();
-			mainEditBox->Clear();
-			mainEditBox->Disable();
-			MainFrame::setFilename(name);
-			mainEditBox->Enable();
-			mainEditBox->BeginBold();
-			mainEditBox->WriteText("Patient Name: ");
-			mainEditBox->EndBold();
-			mainEditBox->WriteText("{"+name+"}");
-			mainEditBox->WriteText("   ");
-			mainEditBox->BeginBold();
-			mainEditBox->WriteText("Date of First Visit: ");
-			mainEditBox->EndBold();
-			mainEditBox->WriteText("{"+functionHelper->getDateToSignNoTime()+"}");
-			mainEditBox->WriteText("   ");
-			mainEditBox->BeginBold();
-			mainEditBox->WriteText("Insurance: ");
-			mainEditBox->EndBold();
-			mainEditBox->BeginTextColour(wxColour(52, 128, 235));
-			mainEditBox->BeginURL(insurance);
-			mainEditBox->WriteText("{"+insurance+"}");
-			mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
-			mainEditBox->EndURL();
-			mainEditBox->EndTextColour();
-			mainEditBox->WriteText(".");
-			mainEditBox->SetEditable(true);
+			std::string fileName = name.ToStdString() + "_" + date +"-0-0";
+			std::string PriviousPatient = "";
+
+			std::vector<std::string>latestFileNameInput = functionHelper->checkForFileNameMatches(name.ToStdString(), tempVec);
+			
+			if (!latestFileNameInput.empty()) {
+				if (latestFileNameInput.back() == "Archive") {
+					latestFileNameInput.pop_back();
+					PriviousPatient = functionHelper->findLatestFileName(latestFileNameInput);
+					PriviousPatient = PriviousPatient + ".xml";
+					int pos = PriviousPatient.find("_");
+					std::string patientNameOnly = PriviousPatient.substr( 0, pos);
+					std::string fileNameAndPath = "PatientFileLoad/Archive/" + patientNameOnly + "/" + PriviousPatient;
+					mainEditBox->LoadFile(fileNameAndPath);
+				}
+				else {
+
+					PriviousPatient = functionHelper->findLatestFileName(latestFileNameInput);
+					PriviousPatient = PriviousPatient + ".xml";
+					mainEditBox->LoadFile("PatientFileLoad/" + PriviousPatient);
+				}
+				MainFrame::setFilename(fileName);
+				mainEditBox->Enable();
+				mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
+
+			}
+			else {
+				wxString insurance = popUpHandeler->SingleChoiceDialog("DialogInformation/InsuranceAll.txt", "Select A Provider.");
+
+				//write patient information
+				mainEditBox->SetInsertionPoint(0);
+				mainEditBox->DiscardEdits();
+				mainEditBox->Clear();
+				mainEditBox->Disable();
+				MainFrame::setFilename(fileName);
+				mainEditBox->Enable();
+				mainEditBox->BeginBold();
+				mainEditBox->WriteText("Patient Name: ");
+				mainEditBox->EndBold();
+				mainEditBox->WriteText("{" + name + "}");
+				mainEditBox->WriteText("   ");
+				mainEditBox->BeginBold();
+				mainEditBox->WriteText("Date of First Visit: ");
+				mainEditBox->EndBold();
+				mainEditBox->WriteText("{" + functionHelper->getDateToSignNoTime() + "}");
+				mainEditBox->WriteText("   ");
+				mainEditBox->BeginBold();
+				mainEditBox->WriteText("Insurance: ");
+				mainEditBox->EndBold();
+				mainEditBox->BeginTextColour(wxColour(52, 128, 235));
+				mainEditBox->BeginURL(insurance);
+				mainEditBox->WriteText("{" + insurance + "}");
+				mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
+				mainEditBox->EndURL();
+				mainEditBox->EndTextColour();
+				mainEditBox->WriteText(".");
+				mainEditBox->SetEditable(true);
+			}
 		
 	}
+	//set the starting state, file name clear, edit box empty,gray, and disabled
 	void startingSate() {
 		mainEditBox->Clear();
 		MainFrame::setFilename("");
@@ -526,47 +550,29 @@ public:
 		mainEditBox->SetEditable(false);
 	}
 	//getFilename is a getter method for the filename variable used for saving and loading textfiles
-	wxString getFilename() {
-		return this->fileName;
-	}
+	wxString getFilename() {return this->fileName;}
 	//setFIlename is a settermethod for the filename variable used for saving and loading textfiles
-	void setFilename(wxString name) {
-		this->fileName = name;
-	}
+	void setFilename(wxString name) {this->fileName = name;}
 	//appendDilename is a function to add somthing to the filename, typicaly an extention
-	void appendFilename(wxString app) {
-		this->fileName += app;
-	}
+	void appendFilename(wxString app) {this->fileName += app;}
 	//getbuttonToEdit returns the referance to a button, used to edit said button
-	wxButton* getbuttonToEdit() {
-		return buttonToEdit;
-	}
+	wxButton* getbuttonToEdit() {return buttonToEdit;}
 	//setbuttonToEditName changes the name of the button the user is editing
-	void setbuttonToEditName(wxString Name) {
-		this->getbuttonToEdit()->SetLabel(Name);
-	}
+	void setbuttonToEditName(wxString Name) {this->getbuttonToEdit()->SetLabel(Name);}
 	//setbuttonToEditText chaned the text of the button the user is editing
-	void setbuttonToEditText(wxString Text) {
-		this->getbuttonToEdit()->SetName(Text);
-	}
+	void setbuttonToEditText(wxString Text) {this->getbuttonToEdit()->SetName(Text);}
 	void removebuttonToEdit() {
 		wxString text = this->getbuttonToEdit()->GetName();
-		
 		currentButtonSet->getCurrentPanel()->removeButtonWithTextOf(text);
 		this->getbuttonToEdit()->Destroy();
 	}
 	//checks if the file has already been signed
-	bool isSigned() {
-		return this->Signed;
-	}
+	bool isSigned() {return this->Signed;}
 	//tells the object weather or not the document has been singed.
-	void setSigned(bool Sign) {
-		this->Signed = Sign;
-	}
-
-
-
+	void setSigned(bool Sign) {this->Signed = Sign;}
+	//call the gather info function for the billing document
 	void gatherBillingInformation(wxCommandEvent& event) {
+
 		billingInfoCreator BIC = billingInfoCreator("PatientFileParse", "billingInfo/billingDocument.txt",
 			"billingInfo/billingDocument-Medicare.txt", "billingInfo/billingDocument-Comm.txt",
 			"billingInfo/billingDocument-Auto.txt","billingInfo/billingDocument-Lni.txt");
@@ -588,5 +594,4 @@ public:
 	}
 		DECLARE_EVENT_TABLE()
 };
-
 #endif

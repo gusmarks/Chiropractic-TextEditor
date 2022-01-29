@@ -3,8 +3,6 @@
 #include <wx/dialog.h>
 #include <iostream>
 #include <fstream>
-
-
 class ImageButton : public wxBitmapButton {
 public:
 	/// <summary>
@@ -23,12 +21,8 @@ public:
 		this->setPartName(str);
 	}
 	void toggleSelected() {
-		if (isSelected == false) {
-			isSelected = true;
-		}
-		else {
-			isSelected = false;
-		}
+		if (isSelected == false) {isSelected = true;}
+		else {isSelected = false;}
 	}
 	void setSelected(bool S) { isSelected = S; }
 	bool getSelected() { return isSelected; }
@@ -83,7 +77,6 @@ public:
 			LocationXY.close();
 	}
 	void render(wxDC& dc);
-
 	std::string collectValues() {
 		
 			int size = sizeof(ClickCircles) / sizeof(ClickCircles[0]);
@@ -102,20 +95,16 @@ private:
 	wxBitmap circle;
 	wxBitmap redcircle;
 	ImageButton* ClickCircles[83];
-	
-	
 	wxDECLARE_EVENT_TABLE();
 };
 class bodyImageDialog : public wxDialog {
 public:
-
 	bodyImageDialog(wxWindow* parent, wxWindowID id, wxString name) :
 		wxDialog(parent, id, name, wxDefaultPosition, wxSize(600, 650), wxDEFAULT_DIALOG_STYLE, name) {
-			mainPanel = new myImagePanel(this, wxT("PainLocations.png"), wxBITMAP_TYPE_PNG);
+			mainPanel = new myImagePanel(this, wxT("PainLocations.png"), wxBITMAP_TYPE_ANY);
 			Cancel = new wxButton(this, wxID_CANCEL, "Cancel", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
 			Okay = new wxButton(this, wxID_OK, "Okay", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
 			displayBox = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxSize(600, 100), wxTE_READONLY);
-
 			wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 			wxBoxSizer* buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 			buttonSizer->Add(Okay);
@@ -127,11 +116,8 @@ public:
 			this->Layout();
 			this->SetSizer(sizer);
 			Center(wxBOTH);
-		
 	}
-	std::string getSelections() {
-		return mainPanel->collectValues();
-	}
+	std::string getSelections() {return mainPanel->collectValues();}
 	void updateDisplay() {
 		displayBox->Clear();
 		displayBox->WriteText(mainPanel->collectValues());
@@ -143,17 +129,4 @@ private:
 	wxTextCtrl* displayBox;
 	
 	wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
-};
-class mySpineDialog :public wxDialog {
-private:
-	wxPanel* multiSelectionPanel;
-	wxButton* okay;
-	wxButton* cancel;
-public:
-	mySpineDialog() {}
-	mySpineDialog(wxWindow* parent, wxWindowID id, wxString name) :
-		wxDialog(parent, id, name, wxDefaultPosition, wxSize(600, 650), wxDEFAULT_DIALOG_STYLE, name) {
-		okay = new wxButton(this, wxID_OK, "Okay", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
-		cancel = new wxButton(this, wxID_CANCEL, "Cancel", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
-	}
 };

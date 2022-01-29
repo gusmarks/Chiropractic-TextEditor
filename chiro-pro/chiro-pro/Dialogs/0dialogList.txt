@@ -1,2 +1,5 @@
 New Paragraph 
 ----------------------- 
+Allergies 	Dialogs/DialogFile1.txt
+manip 	Dialogs/DialogFile2.txt
+hand 	Dialogs/DialogFile3.txt

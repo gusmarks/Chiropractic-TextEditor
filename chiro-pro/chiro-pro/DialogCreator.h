@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <wx/wx.h>
 #include <wx/richtext/richtextctrl.h>
 #include "DialogHelper.h"
@@ -18,7 +17,6 @@ public:
 	/// <param name="dialogCount">dialog count shows how many there currently are, added here to help wuth loading information</param>
 	DialogCreator(wxWindow* parent, wxWindowID id, int dialogCount)
 		:wxDialog(parent, id, "Dialog Creator", wxDefaultPosition, wxSize(500,500), wxDEFAULT_DIALOG_STYLE, "") {
-
 		//dialog helper to provide auxilery functions
 		popupHandeler = new DialogHelper(this);
 		//create the buttons that will interface with the creator
@@ -58,11 +56,8 @@ public:
 		bold->Bind(wxEVT_BUTTON, &DialogCreator::addBoldtoText, this);
 		underline->Bind(wxEVT_BUTTON, &DialogCreator::addUnderlinetoText, this);
 		italic->Bind(wxEVT_BUTTON, &DialogCreator::addItalictoText, this);
-
 	}
-	~DialogCreator() {
-		delete popupHandeler;
-	}
+	~DialogCreator() {delete popupHandeler;}
 	//adds a dialog from a predefined list to the text box
 	void AddDialogToText(wxCommandEvent& event) {
 		try {
@@ -83,8 +78,6 @@ public:
 		try {
 			std::string DialogFileName = ("Dialogs/DialogFile" + std::to_string(DialogCount + 1) + ".txt");
 			if (MainDisplayBox->SaveFile(DialogFileName, wxRICHTEXT_TYPE_ANY)) {
-
-
 				wxMessageDialog dialog(NULL, wxT("The file saved successfuly"), wxT("save file"), wxOK);
 				if (dialog.ShowModal() == wxID_OK) {
 					MainDisplayBox->Clear();

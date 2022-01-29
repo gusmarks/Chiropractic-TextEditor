@@ -18,9 +18,7 @@ public:
 		this->SetSizer(controlSizer);
 	}
 	//returns a referance to the boxsizer
-	wxBoxSizer* getControlSizer() {
-		return controlSizer;
-	}
+	wxBoxSizer* getControlSizer() {return controlSizer;}
 	//adds elements to the boxsizer, and calls the layout function to re order the panel
 	void addToControlSizer(wxButton* button) {
 		try {
@@ -52,9 +50,7 @@ public:
 		}
 	}
 	//calls layout on the sizer
-	void controlLayout() {
-		controlSizer->Layout();
-	}
+	void controlLayout() {controlSizer->Layout();}
 	//adds a specified amount of blank space in the sizer
 	void controlAddSpace(int x, int y) {
 		try {

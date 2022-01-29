@@ -1,6 +1,5 @@
 #include "BodyImageDialog.h"
 #include <iostream>
-//#include <fstream>
 #include <wx/wx.h>
 BEGIN_EVENT_TABLE(myImagePanel, wxPanel)
 EVT_PAINT(myImagePanel::paintEvent)
@@ -11,10 +10,7 @@ void myImagePanel::paintEvent(wxPaintEvent& evt)
     wxPaintDC dc(this);
     render(dc);
 }
-void myImagePanel::render(wxDC& dc)
-{
-    dc.DrawBitmap(MainImage, 0, 0, false);
-}
+void myImagePanel::render(wxDC& dc){dc.DrawBitmap(MainImage, 0, 0, false);}
 void myImagePanel::swapImages(wxCommandEvent& evt) {
     ImageButton* temp = (ImageButton*)evt.GetEventObject();
     int ind = temp->getIndex();

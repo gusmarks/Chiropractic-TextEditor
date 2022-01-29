@@ -8,31 +8,17 @@
 #include <sstream>
 #include <algorithm> 
 namespace filesystem = std::filesystem;
-
 //a struct to hold the information of a date in time, D,M,Y
-struct date {
-	int d, m, y;
-};
+
 class billingInfoCreator {
 	//streams for the input and output of files, and strings to represent the paths for each section
 private:
-	std::fstream in_out;
-	std::fstream outMed;
-	std::fstream outCom;
-	std::fstream outAuto;
-	std::fstream outLni;
-	std::fstream insuranceMedicareStream;
-	std::fstream insuranceCommStream;
-	std::fstream insuranceAutoStream;
-	std::fstream insuranceLnIStream;
-	std::vector<std::string>insuranceMedicare;
-	std::vector<std::string>insuranceComm;
-	std::vector<std::string>insuranceAuto;
-	std::vector<std::string>insuranceLnI;
+	std::fstream in_out, outMed, outCom, outAuto, outLni;
+	std::fstream insuranceMedicareStream, insuranceCommStream, insuranceAutoStream, insuranceLnIStream;
+	std::vector<std::string>insuranceMedicare, insuranceComm, insuranceAuto, insuranceLnI;
 	std::string path;
 	std::string billingfile, billingfileMed, billingfileComm, billingfileAuto, billingfileLnI;
 	std::vector<std::vector<std::string>> information;
-	const int months[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
 	DialogHelper* popupHandeler;
 	FuncHelper* funcHelp;
 public:
@@ -60,11 +46,7 @@ public:
 				std::vector<std::string> temp;
 				information.push_back(temp);
 			}
-			for (size_t i = 0; i < information.size(); i++) {
-				information[i].clear();
-			}
-			//information->clear();
-			
+			for (size_t i = 0; i < information.size(); i++) { information[i].clear(); }
 			std::string infoline;
 			std::string templine;
 			if (inout.is_open()) {
@@ -90,12 +72,12 @@ public:
 							if (line.find("INSURANCE") != std::string::npos) {
 								information.at(5).push_back(token);
 							}
-							
-							if (line.find("{{") != std::string::npos) {
-								information.at(4).push_back(token);
+							size_t position = 0;
+							if (( position = line.find("{{")) != std::string::npos) {
+
+								information.at(4).push_back(token.substr(position +2,token.size()));
 							}
 							if (i % 2 == 0) { i++; }
-							
 						}
 					}
 				}
@@ -108,7 +90,6 @@ public:
 		}
 		catch (...) {
 			popupHandeler->errorMessage("an error occured in cathering patient information.");
-			
 		}
 		return information;
 	}
@@ -231,7 +212,7 @@ public:
 								outMed << information.at(5).at(0);
 								outMed << information.at(1).at(0) << "\t\t";
 								outMed << information.at(2).at(0) << "\t\t";
-								int days = getDayDifferance(intdateformater(information.at(1).at(0)), intdateformater(information.at(2).at(0)));
+								int days = funcHelp->getDayDifferance(funcHelp->intdateformater(information.at(1).at(0)), funcHelp->intdateformater(information.at(2).at(0)));
 								outMed << days << "\t";
 							}
 							else {
@@ -285,7 +266,7 @@ public:
 								outCom << information.at(5).at(0);
 								outCom << information.at(1).at(0) << "\t\t";
 								outCom << information.at(2).at(0) << "\t\t";
-								int days = getDayDifferance(intdateformater(information.at(1).at(0)), intdateformater(information.at(2).at(0)));
+								int days = funcHelp->getDayDifferance(funcHelp->intdateformater(information.at(1).at(0)), funcHelp->intdateformater(information.at(2).at(0)));
 								outCom << days << "\t";
 							}
 							else {
@@ -339,7 +320,7 @@ public:
 								outAuto << information.at(5).at(0);
 								outAuto << information.at(1).at(0) << "\t\t";
 								outAuto << information.at(2).at(0) << "\t\t";
-								int days = getDayDifferance(intdateformater(information.at(1).at(0)), intdateformater(information.at(2).at(0)));
+								int days = funcHelp->getDayDifferance(funcHelp->intdateformater(information.at(1).at(0)), funcHelp->intdateformater(information.at(2).at(0)));
 								outAuto << days << "\t";
 								
 							}
@@ -394,7 +375,7 @@ public:
 								outLni << information.at(5).at(0);
 								outLni << information.at(1).at(0) << "\t\t";
 								outLni << information.at(2).at(0) << "\t\t";
-								int days = getDayDifferance(intdateformater(information.at(1).at(0)), intdateformater(information.at(2).at(0)));
+								int days = funcHelp->getDayDifferance(funcHelp->intdateformater(information.at(1).at(0)), funcHelp->intdateformater(information.at(2).at(0)));
 								outLni << days << "\t";
 								
 							}
@@ -436,69 +417,6 @@ public:
 		catch (...) {
 			popupHandeler->errorMessage("an error occured in the document creator");
 		}
-	}
-	date intdateformater(std::string dt) {
-		try {
-			size_t position = 0;
-			int i = 0;
-			std::string tokens[4];
-			while ((position = dt.find(" ")) != std::string::npos) {
-				if (i == 2) { 
-					dt.erase(dt.begin());
-					position = dt.find(" ");
-				}
-				tokens[i] = dt.substr(0, position);
-				dt = dt.substr(position + 1, dt.size());
-				i++;
-			}
-			tokens[3] = dt;
-			int mon = 0;
-			std::transform(tokens[1].begin(), tokens[1].end(), tokens[1].begin(), [](unsigned char c) {return std::tolower(c); });
-			if (tokens[1] == "jan") {
-				mon = 1;
-			}
-			if (tokens[1] == "feb") {
-				mon = 2;
-			}
-			if (tokens[1] == "mar") {
-				mon = 3;
-			}
-			if (tokens[1] == "apr") {
-				mon = 4;
-			}
-			if (tokens[1] == "may") {
-				mon = 5;
-			}
-			if (tokens[1] == "jun") {
-				mon = 6;
-			}
-			if (tokens[1] == "jul") {
-				mon = 7;
-			}
-			if (tokens[1] == "aug") {
-				mon = 8;
-			}
-			if (tokens[1] == "sep") {
-				mon = 9;
-			}
-			if (tokens[1] == "oct") {
-				mon = 10;
-			}
-			if (tokens[1] == "nov") {
-				mon = 11;
-			}
-			if (tokens[1] == "dec") {
-				mon = 12;
-			}
-			int day = stoi(tokens[2]);
-			int year = stoi(tokens[3]);
-			return { day,mon,year };
-		}
-		catch (...) {
-			popupHandeler->errorMessage("an error occured in the document creator-date formatter");
-			
-		}
-		return { 0,0,0 };
 	}
 	void cleanLines() {
 		size_t position = 0;
@@ -543,40 +461,6 @@ public:
 		}
 		return false;
 	}
-	int getDayDifferance(date init,date last) {
-		try {
-			long int n1 = init.y * 365 + init.d;
-
-			for (int i = 0; i < init.m - 1; i++) {
-				n1 += months[i];
-			}
-			n1 += countLeapYears(init);
-
-			long int n2 = last.y * 365 + last.d;
-			for (int i = 0; i < last.m - 1; i++) {
-				n2 += months[i];
-			}
-			n2 += countLeapYears(last);
-			return n2 - n1;
-		}
-		catch (...) {
-			popupHandeler->errorMessage("an error occured in the document creator-day Method");
-			
-		}
-		return -1;
-	}
-	int countLeapYears(date dt) {
-		try {
-			int years = dt.y;
-			if (dt.m <= 2) {
-				years--;
-			}
-			return (years / 4) - (years / 100) + (years / 400);
-		}
-		catch (...) {
-			popupHandeler->errorMessage("an error occured in the document creator-years");
-		}
-	}
 	void seperateCptCodes(std::vector<std::string> vec) {
 		try {
 			int count = 0;
@@ -600,7 +484,7 @@ public:
 		try {
 			std::ofstream mainBillingFile;
 			mainBillingFile.open(billingfile);
-			if (in_out.is_open()) {
+			if (mainBillingFile.is_open()) {
 				std::fstream Medicare;
 				std::fstream Comercial;
 				std::fstream Auto;
@@ -639,6 +523,10 @@ public:
 					LnI.close();
 					in_out.close();
 				}
+			}
+			else {
+				popupHandeler->errorMessage("billingDocument.txt failed to open.");
+					
 			}
 		}
 		catch (...) {
@@ -711,4 +599,3 @@ public:
 		
 	}	
 };
-

@@ -28,28 +28,16 @@ public://an ofstream to save configurations
 		panelCount = panelNo;
 		signiturepath = signiture;
 	}
-	~ButtonSet() {
-		delete popUpHandeler;
-	}
+	~ButtonSet() {delete popUpHandeler;}
 	//getter function for the panel count variable
-	std::string getSigniturePath() {
-		return signiturepath;
-	}
-	int getPanelCount() {
-		return panelCount;
-	}
+	std::string getSigniturePath() {return signiturepath;}
+	int getPanelCount() {return panelCount;}
 	//setter function for the panel count variable 
-	void setPanelCount(int ind) {
-		panelCount = ind;
-	}
+	void setPanelCount(int ind) {panelCount = ind;}
 	// adds the passed panel to the the local panel list
-	void addToPanelList(ButtonPanel* newPanel) {
-		panelList.push_back(newPanel);
-	}
+	void addToPanelList(ButtonPanel* newPanel) {panelList.push_back(newPanel);}
 	//getter for the panel list variable, gets the item at the passed index
-	ButtonPanel* getPanelAtIndex(int Ind) {
-		return panelList.at(Ind);
-	}
+	ButtonPanel* getPanelAtIndex(int Ind) {return panelList.at(Ind);}
 	//return the size of the fector as an integer 
 	int getPanelListSize() {
 		return (int)panelList.size();

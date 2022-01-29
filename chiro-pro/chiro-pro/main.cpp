@@ -1,8 +1,6 @@
-
 // wxprec is requierd for the wx widgets files to be found
 // app.h, Buttons.h  and frame.h are included files that define methods used in this file
 // fstream allow us to open and close certain files
-
 //include bitmaps to add images to controls
 #include "bitmaps/bold.xpm"
 #include "bitmaps/italic.xpm"
@@ -21,7 +19,7 @@
 #include "FunctionHelper.h"
 #include "LinkPanel.h"
 #include "DialogCreator.h"
-
+#include "ArchiveManager.h"
 //include general functionaly and wx specific functions
 #include <wx/wfstream.h>
 #include <wx/wxprec.h>
@@ -59,6 +57,7 @@ EVT_MENU(MENU_EditButtonName, MainFrame::onPopUpCLick)
 EVT_MENU(MENU_RemoveButton,MainFrame::onPopUpCLick)
 EVT_MENU(MENU_SaveButtons, MainFrame::savePanelsAndButtons)
 EVT_MENU(MENU_BillingDoc, MainFrame::gatherBillingInformation)
+EVT_MENU(MENU_Archive, MainFrame::openArchiveManager)
 EVT_MENU(MENU_EditCodes, MainFrame::openCPT_DxEditor)
 EVT_MENU(MENU_EditGenDialog, MainFrame::openGenDialogEditor)
 EVT_MENU(ID_FORMAT_BOLD, MainFrame::onBold)
@@ -131,8 +130,7 @@ MainFrame::MainFrame(const wxString& title,
         wxT("Save the current document"));
     FileMenu->Append(MENU_SaveAs, wxT("Save File &As"),
         wxT("Save the current document under a new file name"));
-    FileMenu->Append(MENU_BillingDoc, wxT("&Create Billing Document"),
-        wxT("Create a new Billing file"));
+    
     FileMenu->Append(MENU_SaveButtons, wxT(" &Save the button layout"),
         wxT("Save the button layout"));
     FileMenu->Append(MENU_Quit, wxT(" &Quit"),
@@ -143,6 +141,12 @@ MainFrame::MainFrame(const wxString& title,
         wxT("Edit Dx/CPT Codes."));
     EditMenu->Append(MENU_EditGenDialog, wxT("&Edit General Dialogs"),
         wxT("Edit Dx/CPT Codes."));
+
+    wxMenu* billingMenu = new wxMenu();
+    billingMenu->Append(MENU_BillingDoc, wxT("&Create Billing Document"),
+        wxT("Create a new Billing file"));
+    billingMenu->Append(MENU_Archive,wxT("Open Archive Manager"),
+        wxT("Archive Manager"));
 
     //formatting drop down
     wxMenu* formatMenu = new wxMenu;
@@ -159,6 +163,7 @@ MainFrame::MainFrame(const wxString& title,
     mainMenu->Append(FileMenu, wxT("File"));
     mainMenu->Append(EditMenu, wxT("Edit"));
     mainMenu->Append(formatMenu, wxT("Format"));
+    mainMenu->Append(billingMenu, wxT("Billing"));
     SetMenuBar(mainMenu);
 
     //the tool bar allows for quick editing of formatting variables
@@ -238,24 +243,16 @@ MainFrame::MainFrame(const wxString& title,
     functionHelper = new FuncHelper();
     int count =ManualgetDialogCount("Dialogs/0dialogCount.txt");
     DialogCreationHelper = new DialogCreator(this,wxID_ANY,count);
-    
+    archiveManager = new ArchiveManager(this, wxID_ANY);
     ///////////////////////////button layout//////////////////////////////
- 
     //loades the panels and buttons for the first set
     currentButtonSet->loadPanelsAndButtons(currentButtonSet->getSetName());
-
-    //builds the first navlink, this mostly shows were the user currently is. as clicking it would bring you to the same panel
- 
+    //builds the first navlink, this mostly shows were the user currently is. as clicking it would bring you to the same panel 
     buildNavLinks(currentButtonSet->getCurrentPanel());
-  
-
-
     // set the current panel object to be the first panel, and tell it to show.
     currentButtonSet->getCurrentPanel()->Show();
-   
     /////////////////////////////////////////////////////////////////
     ///////////////////////// arange sizers//////////////////////////
-
     mainSizer = new wxBoxSizer(wxVERTICAL);
     mainSizer->Add(buttonSetSizer,1, wxALIGN_CENTER);
     mainSizer->Add(controls, 1, wxEXPAND);
@@ -293,7 +290,7 @@ void MainFrame::addButton(wxCommandEvent& event)
    selectionInformation premadeSelection;
    int buttonCount = currentButtonSet->getCurrentPanel()->getQLinkCount();
    if (buttonCount >= 30) {
-       popUpHandeler->errorMessage("exceding 30 buttons, cannot place");
+       popUpHandeler->errorMessage("exceding 27 buttons, cannot place");
        return;
    }
    try {
@@ -422,15 +419,12 @@ void MainFrame::onRightClick(wxMouseEvent& event) {
     //if its a new page button all the user to edit the name
     if (functionHelper->isNumber(name)) {
         menu.Append(MENU_EditButtonName, "rename button");
-        
-        
     }
     // if its a text button allow the name to be edited and the button to be removed
     else  if (functionHelper->isText(name)) {
         menu.Append(MENU_EditButtonName, "rename button");
         menu.Append(MENU_RemoveButton, "remove button");
     }
-
     PopupMenu(&menu);
 }
 /// <summary>
@@ -471,7 +465,6 @@ void MainFrame::onPopUpCLick(wxCommandEvent& event) {
                             tempFile << "\n";
                         }
                     }
-                tempFile << "hello" << "\n";
                 tempFile.close();
                 nameFile.close();
                 int test = remove("Dialogs/0dialogList.txt");
@@ -589,8 +582,7 @@ void MainFrame::swapButtonSet(wxCommandEvent& evt)
     }
 }
 void MainFrame::swapButtonSet(int setIndex)
-{
-    
+{  
     // if the Buttonset in question's files exist and it is not the current buttonset then destroy the old panels set the new 
     //current buttonset and load its panels and buttons
     if (functionHelper->DoseUserExist(buttonSetNames[setIndex]) && currentButtonSet->getSetName() != buttonSetNames[setIndex]) {
@@ -757,10 +749,7 @@ void MainFrame::newSet() {
 /// saves the panels and buttons for the current button set
 /// </summary>
 /// <param name="event"></param>
-void MainFrame::savePanelsAndButtons(wxCommandEvent & event) {
-    currentButtonSet->savePanelsAndButtonsNP();
-    //saveButtonSetInfo("SetInfoAll.txt");
-}
+void MainFrame::savePanelsAndButtons(wxCommandEvent & event) {currentButtonSet->savePanelsAndButtonsNP();}
 void MainFrame::saveButtonSetInfo(std::string path) {
     //open the fstream used to save the sets data when called on to do so
     try {
@@ -895,176 +884,176 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
     wxString result;
     if (dialogChoice == "Allergies") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Allergies.txt", "Allergies");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Body") {
         result = popUpHandeler->bodyDialog("Select a location(s)");
-        CptOrDx = 1;
+        CptOrDx = 0;
     } 
     if (dialogChoice == "Calender") {
         result = popUpHandeler->Calender();
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Cervical Adjustment") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/Cervicaladjustment.txt", "Cervical Adjustment");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Compicating Factors") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/CompicatingFactors.txt", "Compicating Factors");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Contraindiction") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/contraindication.txt", "contraindication");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Diet & Nutrition") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/DietNutrition.txt", "Diet & Nutrition");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Dificulty Performing") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/dificultyPerforming.txt", "Dificulty Performing");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Drugs Medication") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/drugsMedication.txt", "Drugs Medication");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Exercise Routine") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ExerciseRoutine.txt", "Exercise Routine");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Family History") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/familyHistory.txt", "family History");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Freqency of pain") {
         result = popUpHandeler->SingleChoiceDialog("DialogInformation/FreqOfPain.txt", "Freqency of pain");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Goals") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/goals.txt", "Goals");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Improve/Decline") {
         result = popUpHandeler->SingleChoiceDialog("DialogInformation/BetterorWorse.txt", "Improve/Decline");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Injury") {
         result = popUpHandeler->SingleChoiceDialog("DialogInformation/Injury.txt", "Injury");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Insurance") {
         result = popUpHandeler->SingleChoiceDialog("DialogInformation/InsuranceAll.txt", "Insurance");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Life Affected") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/LifeAffected.txt", "Life Affected");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Percent or vas") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/percentorvas.txt", "Percent or vas");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Postural Change") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/posturalChange.txt", "Postural Change");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Quality of Discomfort") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/QualityOfDiscomfort.txt", "Quality of Discomfort");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Rate of Improvement") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/rateofImprove.txt", "rateofImprove");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Restrictions") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/restrictions.txt", "Restrictions");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
 
     if (dialogChoice == "ROM region") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/ROMregion.txt", "ROM region");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Social habits") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/socialhabits.txt", "Social habits");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Surgical history") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/surgicalHistory.txt", "Surgical history");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Specific Muscles") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/SpecificMuseles.txt", "Specific Muscles");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Side") {
         result = popUpHandeler->SingleChoiceDialog("DialogInformation/side.txt", "Side");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Spine") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/spineSegmentsL-R.txt", "Spine");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Tone Intensity") {
         result = popUpHandeler->SingleChoiceDialog("DialogInformation/ToneIntensity.txt", "Tone Intensity");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Work") {
         result = popUpHandeler->MultipleChoiceDialog("DialogInformation/work.txt", "Work");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Vas") {
         result = popUpHandeler->SingleChoiceDialog("DialogInformation/Vas.txt", "VAS");
-        CptOrDx = 1;
+        CptOrDx = 0;
     }
     if (dialogChoice == "Ankle") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-ankle.txt", "Dx Ankel");
-        CptOrDx = 2;
+        CptOrDx = 1;
     }
     if (dialogChoice == "Cervical Spine") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-cervicalSpine.txt", " DxCervical Spine");
-        CptOrDx = 2;
+        CptOrDx = 1;
     }
     if (dialogChoice == "Elbow Forarm") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/ctpcodes-ElbowForearm.txt", "Dx Elbow Forarm");
-        CptOrDx = 2;
+        CptOrDx = 1;
     }
     if (dialogChoice == "Foot") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-foot.txt", "Dx Foot");
-        CptOrDx = 2;
+        CptOrDx = 1;
     }
     if (dialogChoice == "Hand") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-hand.txt", "Dx Hand");
-        CptOrDx = 2;
+        CptOrDx = 1;
     }
     if (dialogChoice == "Head") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-head.txt", "Dx Head");
-        CptOrDx = 2;
+        CptOrDx = 1;
     }
     if (dialogChoice == "Hip-Thigh") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-hip_thigh.txt", "Dx Hip-Thigh");
-        CptOrDx = 2;
+        CptOrDx = 1;
     }
     if (dialogChoice == "Knee") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/ctpcodes-knee.txt", "Dx Knee");
-        CptOrDx = 2;
+        CptOrDx = 1;
     }
     if (dialogChoice == "Lumbosacral Spine") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-LumbosacralSpine.txt", "Dx Lumbosacral Spine");
-        CptOrDx = 2;
+        CptOrDx = 1;
     }
     if (dialogChoice == "Shoulder") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-shoulder.txt", "Dx Shoulder");
-        CptOrDx = 2;
+        CptOrDx = 1;
     }
     if (dialogChoice == "Thoacic Spine") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-thoacicSpine.txt", "Dx Thoacic Spine");
-        CptOrDx = 2;
+        CptOrDx = 1;
     }
     if (dialogChoice == "Wrist") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptcodes-Wrist.txt", "Dx Wrist");
-        CptOrDx = 2;
+        CptOrDx = 1;
     }
     if (dialogChoice == "Manipulation") {
         result = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/cptChiropractic-Manipulation-CPT-Coding.txt", " Manipulation");
@@ -1099,6 +1088,9 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
         int urlS = evt.GetURLStart();
         int urlE = evt.GetURLEnd() + 1;
         mainEditBox->Remove(urlS, urlE);
+        if (CptOrDx == 0) {
+            mainEditBox->WriteText( result);
+        }
         if (CptOrDx==1) {
             mainEditBox->WriteText("{" + result + "}");
         }
@@ -1115,10 +1107,7 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
 /// <summary>
 /// opens the dialog creation dialog
 /// </summary>
-void MainFrame::openDialogCreator() {
-    if (DialogCreationHelper->ShowModal() == wxID_OK) {    
-    }
-}
+void MainFrame::openDialogCreator() {if (DialogCreationHelper->ShowModal() == wxID_OK) {}}
 void MainFrame::openCPT_DxEditor(wxCommandEvent& WXUNUSED(event)) {
     //present a selection of cpt-dx code files, when selected a dialog editor will open with the apropriate file information
     wxString str = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/names.txt", "select a code catagory to edit.");
@@ -1126,13 +1115,9 @@ void MainFrame::openCPT_DxEditor(wxCommandEvent& WXUNUSED(event)) {
     if (str != "OTHER" && !str.empty()) {
         DialogEditingHelper = new DialogEditor(this, wxID_ANY, name);
         DialogEditingHelper->openCodeFile();
-        if (DialogEditingHelper->ShowModal() == wxID_OK) {
-
-
-        }
+        if (DialogEditingHelper->ShowModal() == wxID_OK) {}
         delete DialogEditingHelper;
     }
-
 }
 void MainFrame::openGenDialogEditor(wxCommandEvent& WXUNUSED(event)) {
     //present a selection of paragraph files, when selected a dialog editor will open with the apropriate file information
@@ -1140,13 +1125,9 @@ void MainFrame::openGenDialogEditor(wxCommandEvent& WXUNUSED(event)) {
     if (index != -1) {
         index += 1;
         std::string name = "Dialogs/DialogFile"+ std::to_string(index)+".txt";
-    
         DialogEditingHelper = new DialogEditor(this, wxID_ANY, name);
         DialogEditingHelper->openGenFile(name);
-        if (DialogEditingHelper->ShowModal() == wxID_OK) {
-
-
-        }
+        if (DialogEditingHelper->ShowModal() == wxID_OK) {}
         delete DialogEditingHelper;
     }
 }
@@ -1719,4 +1700,12 @@ void MainFrame::DialogWriter(std::vector<std::string> lines) {
         }
         i++;
     }
+}
+void MainFrame::openArchiveManager(wxCommandEvent& WXUNUSED(event)){
+    archiveManager->setPatientsToArchive(archiveManager->gatherPatients());
+    if (archiveManager->ShowModal() == wxID_OK) {
+        archiveManager->setPatientsToArchive(archiveManager->gatherPatients());
+    } 
+    
+
 }

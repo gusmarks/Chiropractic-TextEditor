@@ -1,0 +1,7 @@
+Patient Name: {Daisy Duck}   Date of First Visit: {Thu Jan 27 2022}   Insurance: {Regence (Med Advantage)}.
+
+
+
+ Electronicly Signed by:Rob
+ Signiture:
+ Latest Date of Visit{Thu Jan 27 2022}

@@ -5,21 +5,17 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-
-
 class DialogEditor : public wxDialog {
 private:
 	wxRichTextCtrl* MainDisplayBox;
 	wxButton* addDialog, * save, * bold, * underline, * italic;
 	std::string name;
-
 	DialogHelper* popupHandeler;
 	wxBoxSizer* vSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* hSizer = new wxBoxSizer(wxHORIZONTAL);
 public:
 	DialogEditor(wxWindow* parent, wxWindowID id,std::string name)
 		:wxDialog(parent, id, "Dx/CPT editor", wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "") {
-
 		addDialog = new wxButton(this, wxID_ANY, "addDialog", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "");
 		save = new wxButton(this, wxID_ANY, "save", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "");
 		bold = new wxButton(this, wxID_ANY, "bold", wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, "");
@@ -50,11 +46,7 @@ public:
 		bold->Bind(wxEVT_BUTTON, &DialogEditor::addBoldtoText, this);
 		underline->Bind(wxEVT_BUTTON, &DialogEditor::addUnderlinetoText, this);
 		italic->Bind(wxEVT_BUTTON, &DialogEditor::addItalictoText, this);
-
 		popupHandeler = new DialogHelper(this);
-		
-
-
 	}
 	void AddDialogToText(wxCommandEvent& event) {
 		try {
@@ -77,10 +69,8 @@ public:
 	try {
 		openFileOfCodes.open(namee, std::ofstream::app);
 		if (openFileOfCodes.is_open()) {
-
 			std::string temp;
 			while (std::getline(openFileOfCodes, temp)) {
-
 				content += temp + "\n";
 			}
 			openFileOfCodes.close();
@@ -94,7 +84,6 @@ public:
 		popupHandeler->errorMessage("an error occured in dialog editor");
 	}
 }
-
 	void openCodeFile() {
 		if (name == "Ankle") {
 			name = "Dialogs/cptcodes/cptcodes-ankle.txt";
@@ -161,10 +150,8 @@ public:
 			std::string content;
 			openFileOfCodes.open(name, std::ofstream::app);
 			if (openFileOfCodes.is_open()) {
-
 				std::string temp;
 				while (std::getline(openFileOfCodes, temp)) {
-
 					content += temp + "\n";
 				}
 				openFileOfCodes.close();
