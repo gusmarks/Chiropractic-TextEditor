@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "ButtonPanel.h"
-//#include "DialogHelper.h"
+#include "functionHelper.h"
 
 class ButtonSet {
 
@@ -15,6 +15,7 @@ private://private variables, the setName, panelCount,panelList, the currentPanel
 	DialogHelper* popUpHandeler;
 	wxFrame* parent;
 	std::string signiturepath;
+	FuncHelper* funcHelp;
 
 public://an ofstream to save configurations
 	std::ofstream PanelLayoutout;
@@ -113,6 +114,9 @@ public://an ofstream to save configurations
 					//get input
 					getline(PanelLayoutin, name);
 					getline(PanelLayoutin, LayoutName);
+					if (!funcHelp->isText(LayoutName)) {
+						getline(PanelLayoutin, LayoutName);
+					}
 
 					panelList.push_back(new ButtonPanel(parent, name, LayoutName, panelCount));
 					panelList.back()->Hide();

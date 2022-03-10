@@ -9,7 +9,7 @@ using std::filesystem::exists;
 using std::filesystem::create_directory;
 class FuncHelper {
 private:
-    struct date { int d, m, y; };
+    struct date { int t, d, m, y; };
     DialogHelper* popupHandeler;
     std::string BlankSpace = " \n\t\r\f\v";
     const int months[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
@@ -19,7 +19,9 @@ public:
     bool isText(const std::string& str) {return !(str.find("Dialog-ID") != std::string::npos)&&!str.empty(); }
     void createMissingFiles() {
         std::vector<std::string> filesToCheck = {"PatientFileView","PatientFileLoad","PatientFileParse",
-            "panelLayout","Dialogs","billingInfo","bitmaps","DialogInformation","SetInfoAll.txt"};
+            "panelLayout","Dialogs","billingInfo","bitmaps","DialogInformation","SetInfoAll.txt",
+            "PatientFileView/Archive","PatientFileLoad/Archive","PatientFileParse/Archive",
+            "BillingArchive"};
         std::vector<bool> filesChecked;
         for (size_t i=0; i < filesToCheck.size(); i++) {
             if (!exists(filesToCheck.at(i)) && i == 0) {
@@ -36,14 +38,8 @@ public:
             }
             if (!exists(filesToCheck.at(i)) && i == 4) {
                 fileSys::create_directory(filesToCheck.at(i));
-                std::ofstream dialogInfo(filesToCheck.at(i)+"0dialogCount.txt");
-                dialogInfo << 0;
-                dialogInfo.close();
-                std::ofstream dialogInfo2(filesToCheck.at(i) + "0dialogList.txt");
-                dialogInfo2 << "New Paragraph \n----------------------- ";
-                dialogInfo.close();
-                std::ofstream dialogInfo3(filesToCheck.at(i) + "0DialogNames.txt");
-                dialogInfo3.close();
+                fileSys::copy("PremadeDialogs/", "Dialogs/", std::filesystem::copy_options::recursive|
+                                                             std::filesystem::copy_options::update_existing);
             }
             if (!exists(filesToCheck.at(i)) && i == 5) {
                 fileSys::create_directory(filesToCheck.at(i));
@@ -54,10 +50,26 @@ public:
             if (!exists(filesToCheck.at(i)) && i == 7) {
                 fileSys::create_directory(filesToCheck.at(i));
             }
-            if (!exists(filesToCheck.at(i)) && i == 7) {
+            if (!exists(filesToCheck.at(i)) && i == 8) {
                 std::ofstream setInfo(filesToCheck.at(i), std::ios::out);
                 setInfo.close();
             }
+            if (!exists(filesToCheck.at(i)) && i == 9) {
+                fileSys::create_directory(filesToCheck.at(i));
+            }
+            if (!exists(filesToCheck.at(i)) && i == 10) {
+                fileSys::create_directory(filesToCheck.at(i));
+            }
+            if (!exists(filesToCheck.at(i)) && i == 11) {
+                fileSys::create_directory(filesToCheck.at(i));
+            }
+            if (!exists(filesToCheck.at(i)) && i == 11) {
+                fileSys::create_directory(filesToCheck.at(i));
+            }
+            if (!exists(filesToCheck.at(i)) && i == 12) {
+                fileSys::create_directory(filesToCheck.at(i));   
+            }
+          
         }
     }
     long getLineNo(std::string& str, std::string delim) {
@@ -142,84 +154,131 @@ public:
     std::string trim(std::string strFinal) {
         return leftTrim(rightTrim(strFinal));
     }
+
     std::vector<std::string> checkForFileNameMatches(std::string fileName,std::vector<std::string> matches) {
-        std::string path = "PatientFileParse/";
-        std::string archivePath = "PatientFileParse/Archive/";
-        std::string listFileName = "";
-        std::string tempFileName = "";
-        transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
-        for (const auto& entry : fileSys::directory_iterator(path)) {
-            listFileName = entry.path().stem().string();
-            int pos = listFileName.find('_');
-            tempFileName = listFileName;
-            if (pos >= 0) {
-                tempFileName.erase(tempFileName.begin() + pos, tempFileName.end());
-            }
-            std::string tempFileName2 = "";
-            for (size_t i = 0; i < tempFileName.length(); i++) {
-                if (tempFileName[i] >= 'A' && tempFileName[i] <= 'Z') {
-                    tempFileName[i] = (char)(97 + (int)(tempFileName[i] - 'A'));
+        try {
+            std::string path = "PatientFileParse/";
+            std::string archivePath = "PatientFileParse/Archive/";
+            std::string listFileName = "";
+            std::string tempFileName = "";
+            transform(fileName.begin(), fileName.end(), fileName.begin(), ::tolower);
+            for (const auto& entry : fileSys::directory_iterator(path)) {
+                listFileName = entry.path().stem().string();
+                int pos = listFileName.find('_');
+                tempFileName = listFileName;
+                if (pos >= 0) {
+                    tempFileName.erase(tempFileName.begin() + pos, tempFileName.end());
                 }
-                
+                std::string tempFileName2 = "";
+                for (size_t i = 0; i < tempFileName.length(); i++) {
+                    if (tempFileName[i] >= 'A' && tempFileName[i] <= 'Z') {
+                        tempFileName[i] = (char)(97 + (int)(tempFileName[i] - 'A'));
+                    }
+
+                }
+                tempFileName2 = tempFileName;
+                if (tempFileName2.compare(fileName) == 0) {
+                    matches.push_back(listFileName);
+                }
             }
-            tempFileName2 = tempFileName;
-            if (tempFileName2.compare(fileName)==0) {
-                matches.push_back(listFileName);
-            }
-        }
-        if (matches.empty()) {
-            for (const auto& entry : fileSys::directory_iterator( archivePath )) {
-                std::string listFolderName = entry.path().stem().string();
-                std::string tempFolderName = listFolderName;
-                std::vector<std::string> patientByDates;
-                std::transform(tempFolderName.begin(), tempFolderName.end(), tempFolderName.begin(), ::tolower);
-                if (fileName == tempFolderName) {
-                    std::string archivePatientPath = archivePath + listFolderName + '/';
-                    for (const auto& entry2 : fileSys::directory_iterator(archivePatientPath)) {
-                        listFileName = entry2.path().stem().string();
+            if (matches.empty()) {
+                for (const auto& entry : fileSys::directory_iterator(archivePath)) {
+                    std::string listFolderName = entry.path().stem().string();
+                    std::string tempFolderName = listFolderName;
+                    std::vector<std::string> patientByDates;
+                    std::transform(tempFolderName.begin(), tempFolderName.end(), tempFolderName.begin(), ::tolower);
+                    if (fileName == tempFolderName) {
+                        std::string archivePatientPath = archivePath + listFolderName + '/';
+                        for (const auto& entry2 : fileSys::directory_iterator(archivePatientPath)) {
+                            listFileName = entry2.path().stem().string();
 
                             matches.push_back(listFileName);
+                        }
+                        matches.push_back(listFolderName);
+                        matches.push_back("Archive");
                     }
-                    matches.push_back("Archive");
                 }
             }
+            return matches;
         }
-        return matches;
+        catch (...) {
+            popupHandeler->errorMessage("Error checking file names for matches");
+        }
     }
     std::vector<std::string> gatherPatientFolders() {
-        std::string listFileName = "";
-        std::string tempFileName = "";
-        std::vector<std::string> results;
-        for (const auto& entry : fileSys::directory_iterator("PatientFileParse/Archive/")) {
-            if (fileSys::is_directory(entry)) {
-                listFileName = entry.path().stem().string();
-                results.push_back(listFileName);
-            }
+        try {
+            std::string listFileName = "";
+            std::string tempFileName = "";
+            std::vector<std::string> results;
+            for (const auto& entry : fileSys::directory_iterator("PatientFileParse/Archive/")) {
+                if (fileSys::is_directory(entry)) {
+                    listFileName = entry.path().stem().string();
+                    results.push_back(listFileName);
+                }
 
+            }
+            if (!results.empty()) {
+                return results;
+            }
+            else {
+                results.push_back("empty");
+                return results;
+            }
         }
-        if (!results.empty()) {
-            return results;
-        }
-        else {
-            results.push_back("empty");
-            return results;
+        catch (...) {
+            popupHandeler->errorMessage("Error gathering folders");
         }
     }
+
     std::string findLatestFileName(std::vector<std::string> Patients) {
-        std::string currentDate = getDateToSignNoTime();
-        currentDate.erase(currentDate.begin(), currentDate.begin()+4);
-        std::vector<int> dayDiferances;
-        int pos=0;
-        for (size_t i = 0; i < Patients.size(); i++) {
-            std::string tempPatient = Patients.at(i);
-            pos = tempPatient.find('_');
-            tempPatient.erase(tempPatient.begin(), tempPatient.begin()+pos+1);
-            tempPatient.erase(tempPatient.end()-4, tempPatient.end());
-            dayDiferances.push_back(getDayDifferance(intdateformater(tempPatient), intdateformater(currentDate)));
+        try {
+            std::string currentDate = getDateToSign();
+            currentDate.erase(currentDate.begin(), currentDate.begin() + 4);
+            int timePos = currentDate.find(':');
+            currentDate.erase(currentDate.begin() + timePos, currentDate.begin() + timePos + 6);
+            currentDate.pop_back();
+            std::vector<int> dayDiferances;
+            int pos = 0;
+            for (size_t i = 0; i < Patients.size(); i++) {
+                std::string tempPatient = Patients.at(i);
+                pos = tempPatient.find('_');
+                tempPatient.erase(tempPatient.begin(), tempPatient.begin() + pos + 1);
+                tempPatient.erase(tempPatient.end() - 4, tempPatient.end());
+                dayDiferances.push_back(getDayDifferance(intdateformater(tempPatient), intdateformater(currentDate)));
+                tempPatient.erase(tempPatient.begin(), tempPatient.end());
+            }
+            int index = 0;
+            index = std::distance(std::begin(dayDiferances), std::min_element(std::begin(dayDiferances), std::end(dayDiferances)));
+            return Patients.at(index);
         }
-        int index= std::distance(std::begin(dayDiferances),std::min_element(std::begin(dayDiferances),std::end(dayDiferances)));
-        return Patients.at(index);
+        catch (...) {
+            popupHandeler->errorMessage("Error finding latest file");
+        }
     }
+    /*int findMatchingNameAndDate(std::vector<std::string> vec, std::string name) {
+        int pos = name.find('_');
+        name.erase(name.begin(), name.begin() + pos + 1);
+        name.erase(name.end() - 4, name.end());
+        //std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+        int count=0;
+        std::string temp;
+        for (size_t i=0; i < vec.size(); i++) {
+            temp = vec[i];
+
+            int pos2 = temp.find('_');
+            temp.erase(temp.begin(), temp.begin() + pos2 + 1);
+            temp.erase(temp.end() - 4, temp.end());
+            //std::transform(temp.begin(), temp.end(), temp.begin(), ::tolower);
+            int dif = getDayDifferance(intdateformater(name), intdateformater(temp));
+
+            if (dif==0) {
+                count++;
+            }
+            
+        }
+        return count;
+    }
+    */
     int getDayDifferance(date init, date last) {
         try {
             long int n1 = init.y * 365 + init.d;
@@ -234,7 +293,9 @@ public:
                 n2 += months[i];
             }
             n2 += countLeapYears(last);
-            return n2 - n1;
+            int result = 0;
+            result = n2 - n1;
+            return result;
         }
         catch (...) {
             popupHandeler->errorMessage("an error occured in the document creator-day Method");
@@ -246,58 +307,19 @@ public:
         try {
             size_t position = 0;
             int i = 0;
+            std::string temptoken;
             std::vector<std::string> tokens;
             while ((position = dt.find(" ")) != std::string::npos) {
-                
-                tokens.push_back(dt.substr(0, position));
+                temptoken = dt.substr(0, position);
+                if (!temptoken.empty()) {
+                    tokens.push_back(temptoken);
+                }
                 dt = dt.substr(position + 1, dt.size());
-                i++;
+
             }
             tokens.push_back(dt);
-            if (tokens.size()==4) {
-                int mon = 0;
-                std::transform(tokens[1].begin(), tokens[1].end(), tokens[1].begin(), [](unsigned char c) {return std::tolower(c); });
-                if (tokens[1] == "jan") {
-                    mon = 1;
-                }
-                if (tokens[1] == "feb") {
-                    mon = 2;
-                }
-                if (tokens[1] == "mar") {
-                    mon = 3;
-                }
-                if (tokens[1] == "apr") {
-                    mon = 4;
-                }
-                if (tokens[1] == "may") {
-                    mon = 5;
-                }
-                if (tokens[1] == "jun") {
-                    mon = 6;
-                }
-                if (tokens[1] == "jul") {
-                    mon = 7;
-                }
-                if (tokens[1] == "aug") {
-                    mon = 8;
-                }
-                if (tokens[1] == "sep") {
-                    mon = 9;
-                }
-                if (tokens[1] == "oct") {
-                    mon = 10;
-                }
-                if (tokens[1] == "nov") {
-                    mon = 11;
-                }
-                if (tokens[1] == "dec") {
-                    mon = 12;
-                }
-                int day = stoi(tokens[2]);
-                int year = stoi(tokens[3]);
-                return { day,mon,year };
-            }
-            else if(tokens.size() == 3){
+         
+            if(tokens.size() == 4){
                 int mon = 0;
                 std::transform(tokens[0].begin(), tokens[0].end(), tokens[0].begin(), [](unsigned char c) {return std::tolower(c); });
                 if (tokens[0] == "jan") {
@@ -337,15 +359,16 @@ public:
                     mon = 12;
                 }
                 int day = stoi(tokens[1]);
-                int year = stoi(tokens[2]);
-                return { day,mon,year };
+                int hour = stoi(tokens[2]);
+                int year = stoi(tokens[3]);
+                return { hour,day,mon,year };
             }
         }
         catch (...) {
-            popupHandeler->errorMessage("an error occured in the document creator-date formatter");
+            popupHandeler->errorMessage("an error occured in the function helper-date formatter");
 
         }
-        return { 0,0,0 };
+        return { 0,0,0,0 };
     }
     int countLeapYears(date dt) {
         try {

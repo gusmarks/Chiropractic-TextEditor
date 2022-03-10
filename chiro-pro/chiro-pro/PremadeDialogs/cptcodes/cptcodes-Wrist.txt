@@ -1,0 +1,114 @@
+G56.00	Carpal tunnel syndrome, unspecified
+G56.01	Carpal tunnel syndrome, right upper limb
+G56.02	Carpal tunnel syndrome, left upper limb
+G56.03	Carpal tunnel syndrome, bilateral upper limbs (effective 10-1-2016)
+G56.10	Median nerve neuritis (lesion), unspecified
+G56.11	Median nerve neuritis (lesion), right upper limb
+G56.12	Median nerve neuritis (lesion), left upper limb
+G56.13	Other lesions of median nerve, bilateral upper limbs (effective 10-1-2016)
+G56.30	Lesion of radial nerve, unspecified
+G56.31	Lesion of radial nerve, right upper limb
+G56.32	Lesion of radial nerve, left upper limb
+G56.33	Lesion of radial nerve, bilateral upper limbs (effective 10-1-2016)
+M19.031	Osteoarthrosis (osteoarthritis), localized, primary, right wrist
+M19.032	Osteoarthrosis (osteoarthritis), localized, primary, left wrist
+M19.039	Osteoarthrosis (osteoarthritis), localized, primary, forearm wrist unspecified side
+M25.531	Pain in right wrist
+M25.532	Pain in left wrist
+M25.539	Pain in unspecified wrist
+M25.631	Stiffness of right forearm (wrist)
+M25.632	Stiffness of left forearm (wrist)
+M25.639	Stiffness of forearm (wrist) unspecified
+M66.131	Rupture of synovium, right wrist
+M66.132	Rupture of synovium, left wrist
+M67.431	Ganglion, right wrist
+M67.432	Ganglion, left wrist
+M67.833	Other specified disorders of tendon, right wrist
+M67.834	Other specified disorders of tendon, left wrist
+M67.839	Other specified disorders of synovium and tendon, unspecified wrist (updated 10-1-2019)
+M70.031	Crepitant synovitis (acute) (chronic), right wrist
+M70.032	Crepitant synovitis (acute) (chronic), left wrist
+M77.20	Periarthritis of wrist
+M77.21	Periarthritis of right wrist
+M77.22	Periarthritis of left wrist
+M99.07	Segmental and somatic dysfunction of upper extremity (subluxation)
+S63.501A	Unspecified sprain of right wrist, initial encounter
+S63.501D	Unspecified sprain of right wrist, subsequent encounter
+S63.501S	Unspecified sprain of right wrist, sequela
+S63.502A	Unspecified sprain of left wrist, initial encounter
+S63.502D	Unspecified sprain of left wrist, subsequent encounter
+S63.502S	Unspecified sprain of left wrist, sequela
+S63.509A	Unspecified sprain of unspecified wrist, initial encounter
+S63.509D	Unspecified sprain of unspecified wrist, subsequent encounter	 	Wrist	 	
+S63.509S	Unspecified sprain of unspecified wrist, sequela
+S63.511A	Sprain of carpal joint right wrist, initial encounter
+S63.511D	Sprain of carpal joint right wrist, subsequent encounter
+S63.511S	Sprain of carpal joint right wrist, sequela
+S63.512A	Sprain of carpal joint left wrist, initial encounter
+S63.512D	Sprain of carpal joint left wrist, subsequent encounter
+S63.512S	Sprain of carpal joint left wrist, sequela
+S63.519A	Sprain of carpal joint, initial encounter
+S63.519D	Sprain of carpal joint, subsequent encounter
+S63.519S	Sprain of carpal joint, sequela
+S63.521A	Sprain of radiocarpal joint right wrist, initial encounter
+S63.521D	Sprain of radiocarpal joint right wrist, subsequent encounter
+S63.521S	Sprain of radiocarpal joint right wrist, sequela
+S63.522A	Sprain of radiocarpal joint left wrist, initial encounter
+S63.522D	Sprain of radiocarpal joint left wrist, subsequent encounter
+S63.522S	Sprain of radiocarpal joint left wrist, sequela
+S63.529A	Sprain of radiocarpal joint, initial encounter
+S63.529D	Sprain of radiocarpal joint, subsequent encounter
+S63.529S	Sprain of radiocarpal joint, sequela
+S63.591A	Other sprain of right wrist, initial encounter
+S63.591D	Other sprain of right wrist, subsequent encounter
+S63.591S	Other sprain of right wrist, sequela
+S63.592A	Other sprain of left wrist, initial encounter
+S63.592D	Other sprain of left wrist, subsequent encounter
+S63.592S	Other sprain of left wrist, sequela
+S63.599A	Other sprain of unspecified wrist, initial encounter
+S63.599D	Other sprain of unspecified wrist, subsequent encounter
+S63.599S	Other sprain of unspecified wrist, sequela
+S66.011A	Strain of long flexor muscle, fascia and tendon of right thumb at wrist and hand level, initial encounter
+S66.012A	Strain of long flexor muscle, fascia and tendon of left thumb at wrist and hand level, initial encounter
+S66.110A	Strain of flexor muscle, fascia and tendon of right index finger at wrist and hand level, initial encounter
+S66.111A	Strain of flexor muscle, fascia and tendon of left index finger at wrist and hand level, initial encounter	
+S66.112A	Strain of flexor muscle, fascia and tendon of right middle finger at wrist and hand level, initial encounter
+S66.113A	Strain of flexor muscle, fascia and tendon of left middle finger at wrist and hand level, initial encounter
+S66.114A	Strain of flexor muscle, fascia and tendon of right ring finger at wrist and hand level, initial encounter
+S66.115A	Strain of flexor muscle, fascia and tendon of left ring finger at wrist and hand level, initial encounter
+S66.116A	Strain of flexor muscle, fascia and tendon of right little finger at wrist and hand level, initial encounter
+S66.117A	Strain of flexor muscle, fascia and tendon of left little finger at wrist and hand level, initial encounter
+S66.118A	Strain of flexor muscle, fascia and tendon of other finger at wrist and hand level, initial encounter
+S66.211A	Strain of extensor muscle, fascia and tendon of right thumb at wrist and hand level, initial encounter
+S66.212A	Strain of extensor muscle, fascia and tendon of left thumb at wrist and hand level, initial encounte
+S66.310A	Strain of extensor muscle, fascia and tendon of right index finger at wrist and hand level, initial encounter
+S66.311A	Strain of extensor muscle, fascia and tendon of left index finger at wrist and hand level, initial encounter
+S66.312A	Strain of extensor muscle, fascia and tendon of right middle finger at wrist and hand level, initial encounte
+S66.313A	Strain of extensor muscle, fascia and tendon of left middle finger at wrist and hand level, initial encounter
+S66.314A	Strain of extensor muscle, fascia and tendon of right ring finger at wrist and hand level, initial encounte
+S66.315A	Strain of extensor muscle, fascia and tendon of left ring finger at wrist and hand level, initial encounter
+S66.316A	Strain of extensor muscle, fascia and tendon of right little finger at wrist and hand level, initial encounter
+S66.317A	Strain of extensor muscle, fascia and tendon of left little finger at wrist and hand level, initial encounter
+S66.318A	Strain of extensor muscle, fascia and tendon of other finger at wrist and hand level, initial encounter
+S66.411A	Strain of intrinsic muscle, fascia and tendon of right thumb at wrist and hand level, initial encounter
+S66.412A	Strain of intrinsic muscle, fascia and tendon of left thumb at wrist and hand level, initial encounter
+S66.510A	Strain of intrinsic muscle, fascia and tendon of right index finger at wrist and hand level, initial encounter
+S66.511A	Strain of intrinsic muscle, fascia and tendon of left index finger at wrist and hand level, initial encounter
+S66.512A	Strain of intrinsic muscle, fascia and tendon of right middle finger at wrist and hand level, initial encounte
+S66.513A	Strain of intrinsic muscle, fascia and tendon of left middle finger at wrist and hand level, initial encounter
+S66.514A	Strain of intrinsic muscle, fascia and tendon of right ring finger at wrist and hand level, initial encounter
+S66.515A	Strain of intrinsic muscle, fascia and tendon of left ring finger at wrist and hand level, initial encounter
+S66.516A	Strain of intrinsic muscle, fascia and tendon of right little finger at wrist and hand level, initial encounter
+S66.517A	Strain of intrinsic muscle, fascia and tendon of left little finger at wrist and hand level, initial encounte
+S66.518A	Strain of intrinsic muscle, fascia and tendon of other finger at wrist and hand level, initial encounter
+S66.811A	Strain of other specified muscles, fascia and tendons at wrist and hand level, right hand, initial encounter
+S66.812A	Strain of other specified muscles, fascia and tendons at wrist and hand level, left hand, initial encounter
+S66.911A	Strain of unspecified muscles, fascia and tendons at wrist and hand level, right arm, initial encounter
+S66.911D	Strain of unspecified muscles, fascia and tendons at wrist and hand level, right arm, subsequent encounter
+S66.911S	Strain of unspecified muscles, fascia and tendons at wrist and hand level, right arm, sequela
+S66.912A	Strain of unspecified muscles, fascia and tendons at wrist and hand level, left arm, initial encounter
+S66.912D	Strain of unspecified muscles, fascia and tendons at wrist and handlevel, left arm, subsequent encounter
+S66.912S	Strain of unspecified muscles, fascia and tendons at wrist and hand level, left arm, sequela
+S66.919A	Strain of unspecified muscles, fascia and tendons at wrist and hand level, unspecified arm, initial encounter
+S66.919D	Strain of unspecified muscles, fascia and tendons at wrist and hand level, unspecified arm, subsequent encounter
+S66.919S	Strain of unspecified muscles, fascia and tendons at wrist and hand level, unspecified arm, sequela

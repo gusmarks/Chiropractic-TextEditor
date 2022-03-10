@@ -1,3 +1,5 @@
 Commercial Inssurance  
 --------------------------------------------------------------------------------------------------------------------------------
 Patient				Insurance 				Date of Service		Initial Date of Tx	Days	CPT Code [Modifier]	Dx Codes
+jilly willy			ASURIS NORTHWEST HEALTH			 Feb 16 13 2022		 Feb 16 14 2022		0							gus
+lummpy grumpy			FIRST CHOICE HEALTH			 Feb 16 14 2022		 Feb 16 14 2022		0							gus

@@ -299,25 +299,26 @@ void MainFrame::addButton(wxCommandEvent& event)
            premadeSelection = popUpHandeler->selectPremadeDialog();
            if (premadeSelection.selectionText.find("New Paragraph")!= std::string::npos) {
                //open the dialog creator to make a new paragraph name the button to name the new paragraph(could be an issue)
-               openDialogCreator();
-               buttonName = wxGetTextFromUser("Enter name for Button & Dialog", "Must have name(errors may occur if unnamed)", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
-               buttonText = "Dialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt";
-               //save the button details
-               std::fstream fileReader("Dialogs/0dialogList.txt", fstream::app);
-               if (fileReader.is_open()) {
-                   fileReader <<  buttonName.ToStdString();
-                   fileReader << " \tDialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt\n";
+               if (openDialogCreator()) {
+                   buttonName = wxGetTextFromUser("Enter name for Button & Dialog", "Must have name(errors may occur if unnamed)", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
+                   buttonText = "Dialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt";
+                   //save the button details
+                   std::fstream fileReader("Dialogs/0dialogList.txt", fstream::app);
+                   if (fileReader.is_open()) {
+                       fileReader << buttonName.ToStdString();
+                       fileReader << " \tDialogs/DialogFile" + std::to_string(DialogCreationHelper->getDialogCount()) + ".txt\n";
+                   }
+                   fileReader.close();
+                   //save the aditional information, the buttons name and the count of all dialogs
+                   fileReader.open("Dialogs/0dialogNames.txt", fstream::app);
+                   if (fileReader.is_open())
+                       fileReader << buttonName.ToStdString() + "\n";
+                   fileReader.close();
+                   fileReader.open("Dialogs/0dialogCount.txt");
+                   if (fileReader.is_open())
+                       fileReader << std::to_string(DialogCreationHelper->getDialogCount());
+                   fileReader.close();
                }
-               fileReader.close();
-               //save the aditional information, the buttons name and the count of all dialogs
-               fileReader.open("Dialogs/0dialogNames.txt", fstream::app);
-               if (fileReader.is_open())
-                   fileReader << buttonName.ToStdString() + "\n";
-               fileReader.close();
-               fileReader.open("Dialogs/0dialogCount.txt");
-               if (fileReader.is_open())
-                   fileReader << std::to_string(DialogCreationHelper->getDialogCount());
-               fileReader.close();
            }
            // if the user chose to cancel this will make sure not to save it
            else if (premadeSelection.selectionText == "Cancel") {
@@ -836,6 +837,7 @@ void MainFrame::bindAllButtons() {
         for (size_t j = 0; j < size; j++) {
             ButtonPanel* tempPanelLevel1 = buttonSetList.at(k)->getPanelList().at(j);
             //loop over all buttons on the panel
+           std::vector<ButtonPanel*>subList= buttonSetList.at(k)->getPanelList().at(j)->getSubPanelList();
             for (size_t i = 0; i < tempPanelLevel1->getQLinkList().size(); i++) {
                 wxButton* button = tempPanelLevel1->getQLinkList().at(i);
                 std::string name = button->GetName().ToStdString();
@@ -858,6 +860,9 @@ void MainFrame::bindAllButtons() {
                     if (functionHelper->isNumber(name)) {
                         button2->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
                     }
+                    if (functionHelper->isText(name)) {
+                        button2->Bind(wxEVT_BUTTON, &MainFrame::readDialogFile, this);
+                    }
                 }
                 for (size_t l = 0; l < tempPanelLevel2->getSubPanelList().size(); l++) {
                     ButtonPanel* tempPanelLevel3 = tempPanelLevel2->getSubPanelList().at(l);
@@ -867,6 +872,9 @@ void MainFrame::bindAllButtons() {
                         button3->Bind(wxEVT_RIGHT_DOWN, &MainFrame::onRightClick, this);
                         if (functionHelper->isNumber(name)) {
                             button3->Bind(wxEVT_BUTTON, &MainFrame::swapHelper, this);
+                        }
+                        if (functionHelper->isText(name)) {
+                            button3->Bind(wxEVT_BUTTON, &MainFrame::readDialogFile, this);
                         }
                     }
                 }
@@ -1107,7 +1115,14 @@ void MainFrame::dialogURLHelper(wxTextUrlEvent& evt) {
 /// <summary>
 /// opens the dialog creation dialog
 /// </summary>
-void MainFrame::openDialogCreator() {if (DialogCreationHelper->ShowModal() == wxID_OK) {}}
+bool MainFrame::openDialogCreator() {
+    if (DialogCreationHelper->ShowModal() == wxID_OK) {
+        return true;
+    }
+    else  {
+        return false;
+    }
+}
 void MainFrame::openCPT_DxEditor(wxCommandEvent& WXUNUSED(event)) {
     //present a selection of cpt-dx code files, when selected a dialog editor will open with the apropriate file information
     wxString str = popUpHandeler->SingleChoiceDialog("Dialogs/cptcodes/names.txt", "select a code catagory to edit.");
@@ -1702,10 +1717,15 @@ void MainFrame::DialogWriter(std::vector<std::string> lines) {
     }
 }
 void MainFrame::openArchiveManager(wxCommandEvent& WXUNUSED(event)){
-    archiveManager->setPatientsToArchive(archiveManager->gatherPatients());
-    if (archiveManager->ShowModal() == wxID_OK) {
+    try {
         archiveManager->setPatientsToArchive(archiveManager->gatherPatients());
-    } 
+        if (archiveManager->ShowModal() == wxID_OK) {
+            archiveManager->setPatientsToArchive(archiveManager->gatherPatients());
+        }
+    }
+    catch (...) {
+        popUpHandeler->errorMessage("error oppening archive manager.");
+    }
     
 
 }

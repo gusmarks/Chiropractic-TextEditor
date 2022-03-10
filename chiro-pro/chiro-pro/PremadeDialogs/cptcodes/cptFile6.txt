@@ -1,0 +1,148 @@
+G57.21	Lesion of femoral nerve, right lower limb
+G57.22	Lesion of femoral nerve, left lower limb
+G57.23	Lesion of femoral nerve, bilateral lower limbs (effective 10-1-2016)
+M12.351	Palindromic rheumatism, right hip
+M12.352	Palindromic rheumatism, left hip
+M12.451	Intermittent hydrarthrosis, right hip
+M12.452	Intermittent hydrarthrosis, left hip
+M16.0	Bilateral primary osteoarthritis of hip (Osteoarthrosis, localized, primary, pelvic region and thigh)	 
+M16.10	Osteoarthrosis (osteoarthritis), localized, primary, pelvic region and thigh unspecified side
+M16.11	Unilateral primary osteoarthritis, right hip (Osteoarthrosis, localized, primary, pelvic region and thigh)
+M16.12	Unilateral primary osteoarthritis, left hip (Osteoarthrosis, localized, primary, pelvic region and thigh)
+M25.051	Hemarthrosis, right hip
+M25.052	Hemarthrosis, left hip
+M25.551	Pain in right hip
+M25.552	Pain in left hip
+M25.559	Pain in unspecified hip
+M25.651	Stiffness of right pelvic region and thigh (hip)
+M25.652	Stiffness of left pelvic region and thigh (hip)
+M25.659	Stiffness of pelvic region and thigh (hip) unpecified
+M60.151	Interstitial myositis, right thigh
+M60.152	Interstitial myositis, left thigh
+Other rupture of muscle (nontraumatic), right thigh
+M62.152	Other rupture of muscle (nontraumatic), left thigh
+M70.60	Trochanteric bursitis, unspecified (Trochanteric tendinitis Trochanteric tendonitis)
+M70.61	Trochanteric bursitis, right hip (Trochanteric tendinitis Trochanteric tendonitis)
+M70.62	Trochanteric bursitis, left hip (Trochanteric tendinitis Trochanteric tendonitis)
+M70.851	Other soft tissue disorders related to use, overuse and pressure, right thigh
+M70.852	Other soft tissue disorders related to use, overuse and pressure, left thigh
+M70.951	Unspecified soft tissue disorder related to use, overuse and pressure, right thigh
+M70.952	Unspecified soft tissue disorder related to use, overuse and pressure, left thigh
+M76.00	Gluteal tendinitis, unspecified hip (Enthesopathies, lower limb)
+M76.01	Gluteal tendinitis, right hip (Enthesopathies, lower limb)
+M76.02	Gluteal tendinitis, left hip (Enthesopathies, lower limb)
+M76.10	Psoas tendinitis, unspecified hip (Enthesopathies, lower limb)
+M76.11	Psoas tendinitis, right hip (Enthesopathies, lower limb)
+M76.12	Psoas tendinitis, left hip (Enthesopathies, lower limb)
+M76.20	Iliac crest spur, unspecified hip (Enthesopathies, lower limb)
+M76.21	Iliac crest spur, right hip (Enthesopathies, lower limb)
+M76.22	Iliac crest spur, left hip (Enthesopathies, lower limb)
+M76.30	Iliotibial band syndrome, unspecified leg (Enthesopathies, lower limb)
+M76.31	Iliotibial band syndrome, right leg (Enthesopathies, lower limb)
+M76.32	Iliotibial band syndrome, left leg (Enthesopathies, lower limb)
+M79.651	Pain in right thigh
+M79.652	Pain in left thigh
+M79.A21	Nontraumatic compartment syndrome of right lower extremity
+M79.A22	Nontraumatic compartment syndrome of left lower extremity
+M94.251	Chondromalacia, right hip
+M94.252	Chondromalacia, left hip
+M99.06	Segmental and somatic dysfunction of lower extremity (subluxation)
+R29.4	Clicking hip
+R29.898	Other symptoms referable to joint (pelvic region and thigh). Joint crepitus. Other symptoms and signs involving the musculoskeletal system
+S33.8XXA	Sprain of other parts of lumbar spine and pelvis, initial encounter (active treatment)
+S70.01XA	Contusion of right hip, initial encounter (active treatment)
+S70.01XD	Contusion of right hip, subsequent encounter
+S70.01XS	Contusion of right hip, sequelae
+S70.02XA	Contusion of left hip, initial encounter (active treatment)
+S70.02XD	Contusion of left hip, subsequent encounter
+S70.02XS	Contusion of left hip, sequelae
+S70.11XA	Contusion of right thigh, initial encounter (active treatment)
+S70.11XD	Contusion of right thigh, subsequent encounter
+S70.11XS	Contusion of right thigh, sequelae
+S70.12XA	Contusion of left thigh, initial encounter (active treatment)
+S70.12XD	Contusion of left thigh, subsequent encounter
+S70.12XS	Contusion of left thigh, sequelae
+S73.101A	Unspecified sprain of right hip, initial encounter
+S73.101D	Unspecified sprain of right hip, subsequent encounter
+S73.101S	Unspecified sprain of right hip, sequela
+S73.102A	Unspecified sprain of left hip, initial encounter
+S73.102D	Unspecified sprain of left hip, subsequent encounter
+S73.102S	Unspecified sprain of left hip, sequela
+S73.109A	Unspecified sprain of unspecified hip, initial encounter
+S73.109D	Unspecified sprain of unspecified hip, subsequent encounter
+S73.109S	Unspecified sprain of unspecified hip, sequela
+S73.111A	Iliofemoral ligament sprain of right hip, initial encounter
+S73.111D	Iliofemoral ligament sprain of right hip, subsequent encounter
+S73.111S	Iliofemoral ligament sprain of right hip, sequela
+S73.112A	Iliofemoral ligament sprain of left hip, initial encounter
+S73.112D	Iliofemoral ligament sprain of left hip, subsequent encounter
+S73.112S	Iliofemoral ligament sprain of left hip, sequela
+S73.119A	Iliofemoral ligament sprain of unspecified hip, initial encounter
+S73.119D	Iliofemoral ligament sprain of unspecified hip, subsequent encounter
+S73.119S	Iliofemoral ligament sprain of unspecified hip, sequela
+S73.121A	Ischiocapsular ligament sprain of right hip, initial encounter
+S73.121D	Ischiocapsular ligament sprain of right hip, subsequent encounter
+S73.121S	Ischiocapsular ligament sprain of right hip, sequela
+S73.122A	Ischiocapsular ligament sprain of left hip, initial encounter
+S73.122D	Ischiocapsular ligament sprain of left hip, subsequent encounter
+S73.122S	Ischiocapsular ligament sprain of left hip, sequela
+S73.129A	Ischiocapsular ligament sprain of unspecified hip, initial encounter
+S73.129D	Ischiocapsular ligament sprain of unspecified hip, subsequent encounter
+S73.129S	Ischiocapsular ligament sprain of unspecified hip, sequela
+S73.191A	Other sprain of right hip, initial encounter
+S73.191D	Other sprain of right hip, subsequent encounter
+S73.191S	Other sprain of right hip, sequela
+S73.192A	Other sprain of left hip, initial encounter
+S73.192D	Other sprain of left hip, subsequent encounter
+S73.192S	Other sprain of left hip, sequela
+S73.199A	Other sprain of unspecified hip, initial encounter
+S73.199D	Other sprain of unspecified hip, subsequent encounter
+S73.199S	Other sprain of unspecified hip, sequela
+S76.011A	Strain of muscle, fascia and tendon of right hip, initial encounter
+S76.011D	Strain of muscle, fascia and tendon of right hip, subsequent encounter
+S76.011S	Strain of muscle, fascia and tendon of right hip, sequela
+S76.012A	Strain of muscle, fascia and tendon of left hip, initial encounter
+S76.012D	Strain of muscle, fascia and tendon of left hip, subsequent encounter
+S76.012S	Strain of muscle, fascia and tendon of left hip, sequela
+S76.019A	Strain of muscle, fascia and tendon of unspecified hip, initial encounter
+S76.019D	Strain of muscle, fascia and tendon of unspecified hip, subsequent encounter
+S76.019S	Strain of muscle, fascia and tendon of unspecified hip, sequela
+S76.111A	Strain of right quadriceps muscle, fascia and tendon, initial encounter
+S76.111D	Strain of right quadriceps muscle, fascia and tendon, subsequent encounter
+S76.111S	Strain of right quadriceps muscle, fascia and tendon, sequela
+S76.112A	Strain of left quadriceps muscle, fascia and tendon, initial encounter
+S76.112D	Strain of left quadriceps muscle, fascia and tendon, subsequent encounter
+S76.112S	Strain of left quadriceps muscle, fascia and tendon, sequela
+S76.211A	Strain of right adductor muscle, fascia and tendon, initial encounter
+S76.211D	Strain of right adductor muscle, fascia and tendon, subsequent encounter
+S76.211S	Strain of right adductor muscle, fascia and tendon, sequela
+S76.212A	Strain of left adductor muscle, fascia and tendon, initial encounter
+S76.212D	Strain of left adductor muscle, fascia and tendon, subsequent encounter
+S76.212S	Strain of left adductor muscle, fascia and tendon, sequela
+S76.219A	Strain of unspecified adductor muscle, fascia and tendon, initial encounter
+S76.219D	Strain of unspecified adductor muscle, fascia and tendon, subsequent encounter
+S76.219S	Strain of unspecified adductor muscle, fascia and tendon, sequela
+S76.311A	Strain of muscle, fascia and tendon of the posterior muscle group (hamstring) at thigh level, right thigh, initial encounter
+S76.311D	Strain of muscle, fascia and tendon of the posterior muscle group (hamstring) at thigh level, right thigh, subsequent encounter
+S76.311S	Strain of muscle, fascia and tendon of the posterior muscle group (hamstring) at thigh level, right thigh, sequela
+S76.312A	Strain of muscle, fascia and tendon of the posterior muscle group (hamstring) at thigh level, left thigh, initial encounter
+S76.312D	Strain of muscle, fascia and tendon of the posterior muscle group (hamstring) at thigh level, left thigh, subsequent encounter
+S76.312S	Strain of muscle, fascia and tendon of the posterior muscle group (hamstring) at thigh level, left thigh, sequela
+S76.811A	Strain of other specified muscles, fascia and tendons at thigh level, right thigh, initial encounter
+S76.811D	Strain of other specified muscles, fascia and tendons at thigh level, right thigh, subsequent encounter
+S76.811S	Strain of other specified muscles, fascia and tendons at thigh level, right thigh, sequela
+S76.812A	Strain of other specified muscles, fascia and tendons at thigh level, left thigh, initial encounter
+S76.812D	Strain of other specified muscles, fascia and tendons at thigh level, left thigh, subsequent encounter
+S76.812S	Strain of other specified muscles, fascia and tendons at thigh level, left thigh, sequela
+S76.819A	Strain of other specified muscles, fascia and tendons at thigh level, unspecified thigh, initial encounter
+S76.819D	Strain of other specified muscles, fascia and tendons at thigh level, subsequent encounter
+S76.819S	Strain of other specified muscles, fascia and tendons at thigh level, unspecified thigh, sequela
+S76.911A	Strain of unspecified muscles, fascia and tendons at thigh level, right thigh, initial encounter
+S76.911D	Strain of unspecified muscles, fascia and tendons at thigh level, right thigh, subsequent encounter
+S76.911S	Strain of unspecified muscles, fascia and tendons at thigh level, right thigh, sequela
+S76.912A	Strain of unspecified muscles, fascia and tendons at thigh level, left thigh, initial encounter
+S76.912D	Strain of unspecified muscles, fascia and tendons at thigh level, left thigh, subsequent encounter
+S76.912S	Strain of unspecified muscles, fascia and tendons at thigh level, left thigh, sequela
+S76.919A	Strain of unspecified muscles, fascia and tendons at thigh level, unspecified thigh, initial encounter
+S76.919D	Strain of unspecified muscles, fascia and tendons at thigh level, unspecified thigh, subsequent encounter
+S76.919S	Strain of unspecified muscles, fascia and tendons at thigh level, unspecified thigh, sequela

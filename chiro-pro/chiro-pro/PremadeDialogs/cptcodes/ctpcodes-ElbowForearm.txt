@@ -1,0 +1,194 @@
+M12.221	Villonodular synovitis (pigmented), right elbow
+M12.222	Villonodular synovitis (pigmented), left elbow
+M12.321	Palindromic rheumatism, right elbow
+M12.322	Palindromic rheumatism, left elbow
+M12.421	Intermittent hydrarthrosis, right elbow
+M12.422	Intermittent hydrarthrosis, left elbow
+M12.521	Traumatic arthropathy, right elbow
+M12.522	Traumatic arthropathy, left elbow
+M12.9	Arthropathy, unspecified
+M12.9	Arthropathy, unspecified
+M19.021	Primary osteoarthritis, right elbow
+M19.022	Primary osteoarthritis, left elbow
+M19.029	Primary osteoarthritis, unspecified upper arm, elbow
+M19.121	Post-traumatic osteoarthritis, right elbow
+M19.122	Post-traumatic osteoarthritis, left elbow
+M19.221	Secondary osteoarthritis, right elbow
+M19.222	Secondary osteoarthritis, left elbow
+M24.021	Loose body in right elbow
+M24.121	Other articular cartilage disorders, right elbow
+M24.122	Other articular cartilage disorders, left elbow
+M24.221	Disorder of ligament, right elbow
+M24.222	Disorder of ligament, left elbow
+M24.321	Pathological dislocation of right elbow, not elsewhere classified
+M24.421	Recurrent dislocation, right elbow	
+M24.422	Recurrent dislocation, left elbow
+M24.521	Contracture, right elbow
+M24.522	Contracture, left elbow
+M24.621	Ankylosis, right elbow
+M24.622	Ankylosis, left elbow
+M24.821	Other specific joint derangements of right elbow, not elsewhere classified
+M24.822	Other specific joint derangements of left elbow, not elsewhere classified
+M25.021	Hemarthrosis, right elbow
+M25.022	Hemarthrosis, left elbow
+M25.421	Effusion, right elbow
+M25.422	Effusion, left elbow
+M25.521	Pain in right elbow
+M25.522	Pain in left elbow
+M25.529	Pain in unspecified elbow
+M25.621	Stiffness of right upper arm (elbow)
+M25.622	Stiffness of left upper arm (elbow)
+M25.629	Stiffness of upper arm (elbow), unspecified
+M25.721	Osteophyte, right elbow
+M25.722	Osteophyte, left elbow
+M25.729	Osteophyte, unspecified elbow
+M25.821	Other specified joint disorders, right elbow
+M25.822	Other specified joint disorders, left elbow
+M60.121	Interstitial myositis, right upper arm
+M60.122	Interstitial myositis, left upper arm
+M60.131	Interstitial myositis, right forearm
+M60.132	Interstitial myositis, left forearm
+M62.121	Other rupture of muscle (nontraumatic), right upper arm
+M62.122	Other rupture of muscle (nontraumatic), left upper arm
+M62.131	Other rupture of muscle (nontraumatic), right forearm
+M62.132	Other rupture of muscle (nontraumatic), left forearm
+M65.231	Calcific tendinitis, right forearm
+M65.232	Calcific tendinitis, left forearm
+M65.831	Other synovitis and tenosynovitis, right forearm
+M65.832	Other synovitis and tenosynovitis, left forearm
+M67.421	Ganglion, right elbow
+M67.422	Ganglion, left elbow
+M70.20	Olecranon bursitis, unspecified
+M70.21	Olecranon bursitis, right elbow
+M70.22	Olecranon bursitis, left elbow
+M70.30	Other bursitis elbow, unspecified
+M70.31	Other bursitis right elbow
+M70.31	Other bursitis of elbow, right elbow
+M70.32	Other bursitis left elbow
+M70.32	Other bursitis of elbow, left elbow
+M70.821	Other soft tissue disorders related to use, overuse and pressure, right upper arm
+M70.822	Other soft tissue disorders related to use, overuse and pressure, left upper arm
+M70.831	Other soft tissue disorders related to use, overuse and pressure, right forearm
+M70.832	Other soft tissue disorders related to use, overuse and pressure, left forearm
+M70.921	Unspecified soft tissue disorder related to use, overuse and pressure, right upper arm
+M70.922	Unspecified soft tissue disorder related to use, overuse and pressure, left upper arm
+M70.931	Unspecified soft tissue disorder related to use, overuse and pressure, right forearm
+M70.932	Unspecified soft tissue disorder related to use, overuse and pressure, left forearm
+M77.00	Medial epicondylitis, unspecified (golfers elbow)
+M77.01	Medial epicondylitis, right elbow (golfers elbow)
+M77.02	Medial epicondylitis, Left elbow (golfers elbow)
+M77.10	Lateral epiocondylits, unspecified (tennis elbow)
+M77.11	Lateral epicondylitis, right elbow (tennis elbow)
+M77.12	Lateral epicondylitis, Left elbow (tennis elbow)
+M79.601	Pain in right arm
+M79.602	Pain in left arm
+M79.631	Pain in right forearm
+M79.632	Pain in left forearm
+M84.331A	Stress fracture, right ulna, initial encounter for fracture
+M84.332A	Stress fracture, left ulna, initial encounter for fracture
+M84.333A	Stress fracture, right radius, initial encounter for fracture
+M84.334A	Stress fracture, left radius, initial encounter for fracture
+M94.221	Chondromalacia, right elbow
+M94.222	Chondromalacia, left elbow
+M94.8X3	Other specified disorders of cartilage, forearm
+M99.07	Segmental and somatic dysfunction of upper extremity (subluxation)
+R29.898	Other symptoms referable to joint. Joint crepitus. Other symptoms and signs involving the musculoskeletal system
+R29.898	Other symptoms referable to joint (forearm wrist). Joint crepitus. Other symptoms and signs involving the musculoskeletal system
+S50.01XA	Contusion of right elbow, initial encounter
+S50.02XA	Contusion of left elbow, initial encounter
+S50.11XA	Contusion of right forearm, initial encounter
+S50.12XA	Contusion of left forearm, initial encounter
+S50.311A	Abrasion of right elbow, initial encounter
+S50.312A	Abrasion of left elbow, initial encounter
+S50.811A	Abrasion of right forearm, initial encounter
+S50.812A	Abrasion of left forearm, initial encounter
+S53.401A	Unspecified sprain , right elbow initial encounter
+S53.401D	Unspecified sprain, right elbow subsequent encounter
+S53.401S	Unspecified sprain, right elbow sequela
+S53.402A	Unspecified sprain, left elbow initial encounter
+S53.402D	Unspecified sprain, left elbow subsequent encounter
+S53.402S	Unspecified sprain, left elbow sequela
+S53.409A	Unspecified sprain of elbow initial encounter
+S53.409D	Unspecified sprain of elbow subsequent encounter
+S53.409S	Unspecified sprain of elbow sequela
+S53.411A	Radial humeral joint sprain, right elbow initial encounter
+S53.411D	Radial humeral joint sprain, right elbow subsequent encounter
+S53.411S	Radial humeral joint sprain, right elbow sequela
+S53.412A	Radial humeral joint sprain, left elbow initial encounter
+S53.412D	Radial humeral joint sprain, left elbow subsequent encounter
+S53.412S	Radial humeral joint sprain, left elbow sequela
+S53.419A	Radial humeral joint sprain, unspecified elbow initial encounter
+S53.419D	Radial humeral joint sprain, unspecified elbow subsequent encounter
+S53.419S	Radial humeral joint sprain, unspecified elbow sequela
+S53.421A	Ulnohumeral joint sprain, right elbow initial encounter
+S53.421D	Ulnohumeral joint sprain, right elbow subsequent encounter
+S53.421S	Ulnohumeral joint sprain, right elbow sequela
+S53.422A	Ulnohumeral joint sprain, left elbow initial encounter
+S53.422D	Ulnohumeral joint sprain, left elbow subsequent encounter
+S53.422S	Ulnohumeral joint sprain, left elbow sequela
+S53.429A	Ulnohumeral joint sprain, unspecified elbow initial encounter
+S53.429D	Ulnohumeral joint sprain, unspecified elbow subsequent encounter
+S53.429S	Ulnohumeral joint sprain, unspecified elbow sequela
+S53.431A	Radial collateral ligament sprain, right elbow initial encounter
+S53.431D	Radial collateral ligament sprain, right elbow subsequent encounter
+S53.431S	Radial collateral ligament sprain, right elbow sequela
+S53.432A	Radial collateral ligament sprain, left elbow initial encounter
+S53.432D	Radial collateral ligament sprain, left elbow subsequent encounter
+S53.432S	Radial collateral ligament sprain, left elbow sequela
+S53.439A	Radial collateral ligament sprain, unspecified elbow initial encounter
+S53.439D	Radial collateral ligament sprain, unspecified elbow subsequent encounter
+S53.439S	Radial collateral ligament sprain, unspecified elbow sequela
+S53.441A	Ulnar collateral ligament sprain, right elbow initial encounter
+S53.441D	Ulnar collateral ligament sprain, right elbow subsequent encounter
+S53.441S	Ulnar collateral ligament sprain, right elbow sequela
+S53.442A	Ulnar collateral ligament sprain, left elbow initial encounter
+S53.442D	Ulnar collateral ligament sprain, left elbow subsequent encounter
+S53.442S	Ulnar collateral ligament sprain, left elbow sequela
+S53.449A	Ulnar collateral ligament sprain, unspecified elbow initial encounter
+S53.449D	Ulnar collateral ligament sprain, unspecified elbow subsequent encounter
+S53.449S	Ulnar collateral ligament sprain, unspecified elbow sequela
+S53.491A	Other sprain, right elbow initial encounter
+S53.491D	Other sprain, right elbow subsequent encounter
+S53.491S	Other sprain, right elbow sequela
+S53.492A	Other sprain, left elbow initial encounter
+S53.492D	Other sprain, left elbow subsequent encounter
+S53.492S	Other sprain, left elbow sequela
+S53.499A	Other sprain, unspecified elbow initial encounter
+S53.499D	Other sprain, unspecified elbow subsequent encounter
+S53.499S	Other sprain, unspecified elbow sequela
+S56.011A	Strain of flexor muscle, fascia and tendon of right thumb at forearm level, initial encounter
+S56.012A	Strain of flexor muscle, fascia and tendon of left thumb at forearm level, initial encounter
+S56.112A	Strain of flexor muscle, fascia and tendon of left index finger at forearm level, initial encounter
+S56.113A	Strain of flexor muscle, fascia and tendon of right middle finger at forearm level, initial encounte
+S56.114A	Strain of flexor muscle, fascia and tendon of left middle finger at forearm level, initial encounter
+S56.115A	Strain of flexor muscle, fascia and tendon of right ring finger at forearm level, initial encounter
+S56.116A	Strain of flexor muscle, fascia and tendon of left ring finger at forearm level, initial encounter
+S56.117A	Strain of flexor muscle, fascia and tendon of right little finger at forearm level, initial encounter
+S56.118A	Strain of flexor muscle, fascia and tendon of left little finger at forearm level, initial encounter
+S56.211A	Strain of other flexor muscle, fascia and tendon at forearm level, right arm, initial encounter
+S56.212A	Strain of other flexor muscle, fascia and tendon at forearm level, left arm, initial encounter
+S56.311A	Strain of extensor or abductor muscles, fascia and tendons of right thumb at forearm level, initial encounter
+S56.312A	Strain of extensor or abductor muscles, fascia and tendons of left thumb at forearm level, initial encounter
+S56.411A	Strain of extensor muscle, fascia and tendon of right index finger at forearm level, initial encounter
+S56.412A	Strain of extensor muscle, fascia and tendon of left index finger at forearm level, initial encounter
+	S56.413A	Strain of extensor muscle, fascia and tendon of right middle finger at forearm level, initial encounter
+S56.414A	Strain of extensor muscle, fascia and tendon of left middle finger at forearm level, initial encounter
+S56.415A	Strain of extensor muscle, fascia and tendon of right ring finger at forearm level, initial encounter
+S56.416A	Strain of extensor muscle, fascia and tendon of left ring finger at forearm level, initial encounter
+S56.417A	Strain of extensor muscle, fascia and tendon of right little finger at forearm level, initial encounter
+S56.418A	Strain of extensor muscle, fascia and tendon of left little finger at forearm level, initial encounter
+S56.511A	Strain of other extensor muscle, fascia and tendon at forearm level, right arm, initial encounter
+S56.512A	Strain of other extensor muscle, fascia and tendon at forearm level, left arm, initial encounter
+S56.811A	Strain of other muscles, fascia and tendons at forearm level, right arm, initial encounter
+S56.812A	Strain of other muscles, fascia and tendons at forearm level, left arm, initial encounter
+S56.911A	Strain of unspecified muscles, fascia and tendons at forearm level, right arm, initial encounter
+S56.911A	Strain of unspecified muscles, fascia and tendons at forearm level, right arm, initial encounter
+S56.911D	Strain of unspecified muscles, fascia and tendons at forearm level, right arm, subsequent encounter
+S56.911S	Strain of unspecified muscles, fascia and tendons at forearm level, right arm, sequela
+S56.912A	Strain of unspecified muscles, fascia and tendons at forearm level, left arm, initial encounter
+S56.912A	Strain of unspecified muscles, fascia and tendons at forearm level, left arm, initial encounter
+S56.912D	Strain of unspecified muscles, fascia and tendons at forearm level, left arm, subsequent encounter
+S56.912S	Strain of unspecified muscles, fascia and tendons at forearm level, left arm, sequela
+S56.919A	Strain of unspecified muscles, fascia and tendons at forearm level, unspecified arm, initial encounter
+S56.919D	Strain of unspecified muscles, fascia and tendons at forearm level, unspecified arm, subsequent encounter
+S56.919S	Strain of unspecified muscles, fascia and tendons at forearm level, unspecified arm, sequela

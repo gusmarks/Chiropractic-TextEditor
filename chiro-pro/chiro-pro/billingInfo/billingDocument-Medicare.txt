@@ -1,5 +1,4 @@
 Medicare Inssurance  
 --------------------------------------------------------------------------------------------------------------------------------
 Patient				Insurance 				Date of Service		Initial Date of Tx	Days	CPT Code [Modifier]	Dx Codes
-Mickey mouse			MEDICARE:				Wed Jan 19 2022		Wed Jan 19 2022		0	98941,			M25.541
-minni mouse			MEDICARE WA				Thu Jan 20 2022		Thu Jan 20 2022		0						
+jummpy bumpy			MEDICARE WA				 Feb 16 14 2022		 Feb 16 14 2022		0							gus

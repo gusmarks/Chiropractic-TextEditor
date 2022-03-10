@@ -11,7 +11,7 @@
 #include <wx/hyperlink.h>
 #include <ctime>
 #include <wx/wfstream.h>
-//custome includes
+//custom includes
 #include "DialogHelper.h"
 #include "DialogCreator.h"
 #include "DialogEditor.h"
@@ -216,7 +216,7 @@ public:
 		wxFileOutputStream output_stream(saveFileDialog.GetPath());
 		setFilename(saveFileDialog.GetFilename());
 		mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".txt");
-		mainEditBox->SaveFile("PatientFileParse/" + MainFrame::getFilename() + ".html");
+		mainEditBox->SaveFile("PatientFileView/" + MainFrame::getFilename() + ".html");
 		popUpHandeler->Message("save successful");
 		if (!output_stream.IsOk())
 		{
@@ -270,7 +270,7 @@ public:
 	//the linknavigation lets the user navigate panels of buttons
 	void linkNavigation(wxHyperlinkEvent& evt);
 	//openDialog opens the dialogcreator, consider renaming
-	void openDialogCreator();
+	bool openDialogCreator();
 	void openCPT_DxEditor(wxCommandEvent& WXUNUSED(event));
 	void openGenDialogEditor(wxCommandEvent& WXUNUSED(event));
 	void openArchiveManager(wxCommandEvent& WXUNUSED(event));
@@ -290,7 +290,7 @@ public:
 	//this directs the url click to the dialog button helper function
 	void dialogURLHelper(wxTextUrlEvent& evt);
 	//this binds all pup up buttons, consider removing
-	void popupButtonBind(std::string str, wxButton* btton);
+	void buttonReBind(std::string str, wxButton* btton);
 	//this rebinds all pop up buttons, consider removing
 	void popupButtonRebind(std::string str, wxButton* btton);
 	// undbind buttons called between rebinding
@@ -468,8 +468,11 @@ public:
 	void newFile(wxCommandEvent& WXUNUSED(event))   
 	{
 
-		std::string date = functionHelper->getDateToSignNoTime().substr(3);
+		std::string date = functionHelper->getDateToSign().substr(3);
 		std::vector<std::string> tempVec;
+		int timePos =date.find(':');
+		date.erase(date.begin()+ timePos,date.begin()+ timePos +6);
+		date.pop_back();
 		
 		//if a file is open ask the user if they want to open a new one, if not return, if yes continue on
 		if (isFileOpen()) {
@@ -481,19 +484,35 @@ public:
 			wxString name=wxGetTextFromUser("Enter Patient name", " ", "", NULL, wxDefaultCoord, wxDefaultCoord, true);
 			if (name == "") 
 				return;
-			std::string fileName = name.ToStdString() + "_" + date +"-0-0";
+
+			std::string fileName = name.ToStdString();
+			//int i = fileName.size();
+			while (fileName.back()== ' ') {
+				fileName.pop_back();
+				name.erase(name.end()-1, name.end());
+			}
+			while (fileName.front() == ' ') {
+				fileName.erase(fileName.begin(), fileName.begin()+1);
+				name.erase(name.begin(), name.begin()+1);
+			}
+
+			fileName += "_" + date +"-0-0";
 			std::string PriviousPatient = "";
+			int pos;
 
 			std::vector<std::string>latestFileNameInput = functionHelper->checkForFileNameMatches(name.ToStdString(), tempVec);
 			
+			
+			
+			std::string folderName="";
 			if (!latestFileNameInput.empty()) {
 				if (latestFileNameInput.back() == "Archive") {
 					latestFileNameInput.pop_back();
+					folderName = latestFileNameInput.back();
+					latestFileNameInput.pop_back();
 					PriviousPatient = functionHelper->findLatestFileName(latestFileNameInput);
 					PriviousPatient = PriviousPatient + ".xml";
-					int pos = PriviousPatient.find("_");
-					std::string patientNameOnly = PriviousPatient.substr( 0, pos);
-					std::string fileNameAndPath = "PatientFileLoad/Archive/" + patientNameOnly + "/" + PriviousPatient;
+					std::string fileNameAndPath = "PatientFileLoad/Archive/" + folderName + "/" + PriviousPatient;
 					mainEditBox->LoadFile(fileNameAndPath);
 				}
 				else {
@@ -504,6 +523,7 @@ public:
 				}
 				MainFrame::setFilename(fileName);
 				mainEditBox->Enable();
+				mainEditBox->SetEditable(true);
 				mainEditBox->SetBackgroundColour(wxColour(255, 255, 255));
 
 			}

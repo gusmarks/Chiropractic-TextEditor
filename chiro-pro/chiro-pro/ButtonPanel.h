@@ -80,6 +80,7 @@ public:
 	std::string getLayoutName() {
 		return layoutName;
 	}
+	
 	//checks to see if there is a previous panel
 	bool hasPrev() {
 		if (this->prev != NULL) {
@@ -305,6 +306,8 @@ public:
 					}
 					else if (functionHelper->isText(maintext)) {
 						this->qLinkList.push_back(new wxButton(this, wxID_ANY, name, wxDefaultPosition, wxSize(150, 23), 0, wxDefaultValidator, maintext));
+						//this->getQLinkList().back()->
+							//Bind(wxEVT_BUTTON, &MainFrame::readDialogFile, this);
 					}
 					//add button to array
 					this->buttonSizer->Add(qLinkList.back(), wxLeft);

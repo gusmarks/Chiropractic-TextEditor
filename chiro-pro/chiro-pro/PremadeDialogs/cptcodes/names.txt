@@ -1,0 +1,21 @@
+Ankle
+Cervical Spine
+Elbow Forarm
+Foot
+Hand
+Head
+Hip-Thigh
+Knee
+Lumbosacral Spine
+Shoulder
+Thoacic Spine
+Wrist
+----------------
+Extentions
+Manipulation
+Management
+Misc
+Mods
+Place of Service
+Rehabilitation
+Xray

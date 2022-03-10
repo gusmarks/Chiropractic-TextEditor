@@ -1,0 +1,271 @@
+M12.211	Villonodular synovitis (pigmented), right shoulder
+M12.212	Villonodular synovitis (pigmented), left shoulder
+M12.311	Palindromic rheumatism, right shoulder
+M12.312	Palindromic rheumatism, left shoulder
+M12.411	Intermittent hydrarthrosis, right shoulder
+M12.412	Intermittent hydrarthrosis, left shoulder
+M12.511	Traumatic arthropathy, right shoulder
+M12.512	Traumatic arthropathy, left shoulder
+M12.9	Arthropathy, unspecified
+M19.011	Osteoarthrosis (osteoarthritis), localized, primary, right shoulder
+M19.012	Osteoarthrosis (osteoarthritis), localized, primary, left shoulder
+M19.012	Osteoarthrosis (osteoarthritis), localized, primary, left shoulder
+M19.111	Post-traumatic osteoarthritis, right shoulder
+M19.112	Post-traumatic osteoarthritis, left shoulder
+M19.211	Secondary osteoarthritis, right shoulder
+M19.212	Secondary osteoarthritis, left shoulder
+M24.011	Loose body in right shoulder
+M24.012	Loose body in left shoulder
+M24.022	Loose body in left elbow
+M24.111	Other articular cartilage disorders, right shoulder
+M24.112	Other articular cartilage disorders, left shoulder
+M24.211	Disorder of ligament, right shoulder
+M24.212	Disorder of ligament, left shoulder
+M24.311	Pathological dislocation of right shoulder, not elsewhere classified
+M24.312	Pathological dislocation of left shoulder, not elsewhere classified
+M24.322	Pathological dislocation of left elbow, not elsewhere classified
+M24.411	Recurrent dislocation, right shoulder
+M24.412	Recurrent dislocation, left shoulder
+M24.511	Contracture, right shoulder
+M24.512	Contracture, left shoulder
+M24.611	Ankylosis, right shoulder
+M24.612	Ankylosis, left shoulder
+M24.811	Other specific joint derangements of right shoulder, not elsewhere classified
+M24.811	Other specific joint derangements of right shoulder, not elsewhere classified
+M24.812	Other specific joint derangements of left shoulder, not elsewhere classified
+M24.812	Other specific joint derangements of left shoulder, not elsewhere classified	 
+M24.819	Other specific joint derangements of unspecified shoulder, not elsewhere classified
+M25.011	Hemarthrosis, right shoulder region
+M25.012	Hemarthrosis, left shoulder region
+M25.211	Flail joint, right shoulder
+M25.212	Flail joint, left shoulder
+M25.311	Other instability, right shoulder
+M25.312	Other instability, left shoulder
+M25.411	Effusion, right shoulder
+M25.412	Effusion, left shoulder
+M25.511	Pain in right shoulder
+M25.512	Pain in left shoulder
+M25.611	Stiffness of right shoulder
+M25.612	Stiffness of left shoulder
+M25.711	Osteophyte, right shoulder
+M25.712	Osteophyte, left shoulder
+M25.811	Other specified joint disorders, right shoulder
+M25.812	Other specified joint disorders, left shoulder
+M60.111	Interstitial myositis, right shoulder
+M60.112	Interstitial myositis, left shoulder
+M62.111	Other rupture of muscle (nontraumatic), right shoulder
+M62.112	Other rupture of muscle (nontraumatic), left shoulder
+M65.221	Calcific tendinitis, right upper arm
+M65.222	Calcific tendinitis, left upper arm
+M66.111	Rupture of synovium, right shoulder
+M66.112	Rupture of synovium, left shoulder
+M67.411	Ganglion, right shoulder
+M67.411	Ganglion, right shoulder
+M67.412	Ganglion, left shoulder
+M67.412	Ganglion, left shoulder
+M70.811	Other soft tissue disorders related to use, overuse and pressure, right shoulder
+M70.812	Other soft tissue disorders related to use, overuse and pressure, left shoulder
+M70.911	Unspecified soft tissue disorder related to use, overuse and pressure, right shoulder
+M70.912	Unspecified soft tissue disorder related to use, overuse and pressure, left shoulder
+M75.00	Adhesive capsulitis of the shoulder (Frozen shoulder, Periarthritis of shoulder)
+M75.01	Adhesive capsulitis of the right shoulder (Frozen shoulder, Periarthritis of shoulder)
+M75.02	Adhesive capsulitis of the left shoulder (Frozen shoulder, Periarthritis of shoulderr)
+M75.100	Unspecified rotator cuff tear or rupture, not specified as traumatic (Applicable To Rotator cuff syndrome Supraspinatus tear or rupture, not specified as traumatic Supraspinatus syndrome)
+M75.101	Unspecified rotator cuff tear or rupture of right shoulder , not specified as traumatic (Applicable To Rotator cuff syndrome Supraspinatus tear or rupture, not specified as traumatic Supraspinatus syndrome)
+M75.102	Unspecified rotator cuff tear or rupture of left shoulder , not specified as traumatic (Applicable To Rotator cuff syndrome Supraspinatus tear or rupture, not specified as traumatic Supraspinatus syndrome)
+M75.110	Incomplete rotator cuff tear or rupture not specified as traumatic (Applicable To Rotator cuff syndrome Supraspinatus tear or rupture, not specified as traumatic Supraspinatus syndrome)
+M75.111	Incomplete rotator cuff tear or ruptureof right shoulder not specified as traumatic (Applicable To Rotator cuff syndrome Supraspinatus tear or rupture, not specified as traumatic Supraspinatus syndrome)
+M75.112	Incomplete rotator cuff tear or rupture of left shoulder not specified as traumatic (Applicable To Rotator cuff syndrome Supraspinatus tear or rupture, not specified as traumatic Supraspinatus syndrome)
+M75.120	Complete rotator cuff tear or rupture not specified as traumatic (Applicable To Rotator cuff syndrome Supraspinatus tear or rupture, not specified as traumatic Supraspinatus syndrome)
+M75.121	Complete rotator cuff tear or rupture of right shoulder not specified as traumatic (Applicable To Rotator cuff syndrome Supraspinatus tear or rupture, not specified as traumatic Supraspinatus syndrome)
+M75.122	Complete rotator cuff tear or rupture of left shoulder not specified as traumatic (Applicable To Rotator cuff syndrome Supraspinatus tear or rupture, not specified as traumatic Supraspinatus syndrome)
+M75.20	Bicipital tenosynovitis (bicep tendonitis)
+M75.21	Bicipital tenosynovitis right shoulder (bicep tendonitis)
+M75.30	Calcifying tendinitis of shoulder
+M75.31	Calcifying tendinitis of right shoulder
+M75.32	Calcifying tendinitis of left shoulder
+M75.40	Impingement syndrome of shoulder
+M75.41	Impingement syndrome of right shoulder
+M75.42	Impingement syndrome of left shoulder
+M75.51	Bursitis of right shoulder
+M75.52	Bursitis of left shoulder
+M75.80	Other shoulder lesions, unspecified (Approximate Synonyms Painful arc syndrome Shoulder tendinitis Supraspinatus tendinitis Tendonitis of shoulder Tendonitis of supraspinatus
+M75.81	Other shoulder lesions, right shoulder (Approximate Synonyms Painful arc syndrome Shoulder tendinitis Supraspinatus tendinitis Tendonitis of shoulder Tendonitis of supraspinatus
+M75.82	Other shoulder lesions, left shoulder (Approximate Synonyms Painful arc syndrome Shoulder tendinitis Supraspinatus tendinitis Tendonitis of shoulder Tendonitis of supraspinatus
+M75.91	Shoulder lesion, unspecified, right shoulder
+M75.92	Shoulder lesion, unspecified, left shoulder
+M79.621	Pain in right upper arm
+M79.622	Pain in left upper arm
+M79.A11	Nontraumatic compartment syndrome of right upper extremity
+M79.A12	Nontraumatic compartment syndrome of left upper extremity
+M84.311A	Stress fracture, right shoulder, initial encounter for fracture
+M84.312A	Stress fracture, left shoulder, initial encounter for fracture
+M84.321A	Stress fracture, right humerus, initial encounter for fracture
+M84.322A	Stress fracture, left humerus, initial encounter for fracture
+M94.211	Chondromalacia, right shoulder
+M94.212	Chondromalacia, left shoulder
+M94.8X1	Other specified disorders of cartilage, shoulder
+M94.8X2	Other specified disorders of cartilage, upper arm
+M99.07	Segmental and somatic dysfunction of upper extremity (subluxation)
+R29.898	Other symptoms referable to joint. Joint crepitus. Other symptoms and signs involving the musculoskeletal system	
+S40.011A	Contusion of right shoulder region, initial encounter (active treatment)
+S40.011D	Contusion of right shoulder region, subseqent encounter
+S40.011S	Contusion of right shoulder region, sequelae
+S40.012A	Contusion of left shoulder region, initial encounter (active treatment)
+S40.012D	Contusion of left shoulder region, subsequent encounter
+S40.012S	Contusion of left shoulder region, sequelae
+S40.021A	Contusion of right upper arm, initial encounter (active treatment)
+S40.021D	Contusion of right upper arm, subsequent encounter
+S40.021S	Contusion of right upper arm, sequelae
+S40.022A	Contusion of left upper arm, initial encounter (active treatment)
+S40.022D	Contusion of left upper arm, subseuqent encounter
+S40.022S	Contusion of left upper arm, sequelae
+S40.211A	Abrasion of right shoulder, initial encounte
+S40.212A	Abrasion of left shoulder, initial encounte
+S40.811A	Abrasion of right upper arm, initial encounter
+S40.812A	Abrasion of left upper arm, initial encounter
+S43.001A	Unspecified subluxation of right shoulder joint, initial encounter
+S43.002A	Unspecified subluxation of left shoulder joint, initial encounter
+S43.004A	Unspecified dislocation of right shoulder joint, initial encounter
+S43.005A	Unspecified dislocation of left shoulder joint, initial encounter
+S43.014A	Anterior dislocation of right humerus, initial encounter
+S43.015A	Anterior dislocation of left humerus, initial encounter
+S43.021A	Posterior subluxation of right humerus, initial encounter
+S43.022A	Posterior subluxation of Left humerus, initial encounter
+S43.024A	Posterior dislocation of right humerus, initial encounter
+S43.025A	Posterior dislocation of left humerus, initial encounter
+S43.034A	Inferior dislocation of right humerus, initial encounter
+S43.035A	Inferior dislocation of left humerus, initial encounter
+S43.084A	Other dislocation of right shoulder joint, initial encounter
+S43.085A	Other dislocation of left shoulder joint, initial encounter
+S43.101A	Unspecified dislocation of right acromioclavicular joint, initial encounter
+S43.102A	Unspecified dislocation of left acromioclavicular joint, initial encounter
+S43.121A	Dislocation of right acromioclavicular joint, 100%-200% displacement, initial encounter
+S43.122A	Dislocation of left acromioclavicular joint, 100%-200% displacement, initial encounte
+S43.131A	Dislocation of right acromioclavicular joint, greater than 200% displacement, initial encounter
+S43.132A	Dislocation of left acromioclavicular joint, greater than 200% displacement, initial encounter
+S43.141A	Inferior dislocation of right acromioclavicular joint, initial encounter
+S43.142A	Inferior dislocation of left acromioclavicular joint, initial encounter
+S43.151A	Posterior dislocation of right acromioclavicular joint, initial encounter
+S43.152A	Posterior dislocation of left acromioclavicular joint, initial encounte
+S43.211A	Anterior subluxation of right sternoclavicular joint, initial encounter
+S43.212A	Anterior subluxation of left sternoclavicular joint, initial encounter
+S43.214A	Anterior dislocation of right sternoclavicular joint, initial encounter
+S43.215A	Anterior dislocation of left sternoclavicular joint, initial encounter
+S43.224A	Posterior dislocation of right sternoclavicular joint, initial encounter
+S43.225A	Posterior dislocation of left sternoclavicular joint, initial encounter
+S43.304A	Dislocation of unspecified parts of right shoulder girdle, initial encounter
+S43.305A	Dislocation of unspecified parts of left shoulder girdle, initial encounter
+S43.314A	Dislocation of right scapula, initial encounte
+S43.315A	Dislocation of left scapula, initial encount
+S43.394A	Dislocation of other parts of right shoulder girdle, initial encounter
+S43.395A	Dislocation of other parts of left shoulder girdle, initial encounter
+S43.401A	Unspecified sprain of right shoulder joint, initial encounter (active treatment)
+S43.401D	Unspecified sprain of right shoulder joint, subsequent encounter
+S43.401S	Unspecified sprain of right shoulder joint, sequela
+S43.402A	Unspecified sprain of left shoulder joint, initial encounter
+S43.402D	Unspecified sprain of left shoulder joint, subsequent encounter
+S43.402S	Unspecified sprain of left shoulder joint, sequela
+S43.409A	Unspecified sprain of unspecified shoulder joint, initial encounter
+S43.409D	Unspecified sprain of unspecified shoulder joint, subsequent encounter
+S43.409S	Unspecified sprain of unspecified shoulder joint, sequela
+S43.411A	Sprain of right coracohumeral (ligament) Initial encounter
+S43.411D	Sprain of right coracohumeral (ligament) subsequent encounter
+S43.411S	Sprain of right coracohumeral (ligament) sequela
+S43.412A	Sprain of left coracohumeral (ligament) intitial encounter
+S43.412D	Sprain of left coracohumeral (ligament) subsequent encounter
+S43.412S	Sprain of left coracohumeral (ligament) sequela
+S43.419A	Sprain of unspecified coracohumeral (ligament) initial encounter
+S43.419D	Sprain of unspecified coracohumeral (ligament) subsequent encounter
+S43.419S	Sprain of unspecified coracohumeral (ligament) sequela
+S43.421A	Sprain of right rotator cuff capsule initial encounter (active treatment)
+S43.421D	Sprain of right rotator cuff capsule subsequent encounter
+S43.421S	Sprain of right rotator cuff capsule sequela
+S43.422A	Sprain of left rotator cuff capsule initial encounter
+S43.422D	Sprain of left rotator cuff capsule subsequent encounter
+S43.422S	Sprain of left rotator cuff capsule sequela
+S43.429A	Sprain of unspecified rotator cuff capsule, initial encounter (active care)
+S43.429D	Sprain of unspecified rotator cuff capsule, subsequent encounter
+S43.429S	Sprain of unspecified rotator cuff capsule, sequela
+S43.431A	Superior glenoid labrum lesion of right shoulder, initial encounter
+S43.431D	Superior glenoid labrum lesion of right shoulder, subsequent encounter	
+S43.431S	Superior glenoid labrum lesion of right shoulder, sequela
+S43.432A	Superior glenoid labrum lesion of left shoulder,initial encounter
+S43.432D	Superior glenoid labrum lesion of left shoulder, subsequent encounter
+S43.432S	Superior glenoid labrum lesion of left shoulder, sequela
+S43.439A	Superior glenoid labrum lesion of unspecified shoulder, initial encounter
+S43.439D	Superior glenoid labrum lesion of unspecified shoulder, subsequent encounter
+S43.439S	Superior glenoid labrum lesion of unspecified shoulder, sequela
+S43.491A	Other sprain of right shoulder joint, initial encounter
+S43.491D	Other sprain of right shoulder joint, subseaquent encounter
+S43.491S	Other sprain of right shoulder joint, sequela
+S43.492A	Other sprain of left shoulder joint, initial encounter
+S43.492D	Other sprain of left shoulder joint, subsequent encounter
+S43.492S	Other sprain of left shoulder joint, sequela
+S43.499A	Other sprain of unspecified shoulder joint, initial encounter
+S43.499D	Other sprain of unspecified shoulder joint, subsequent encounter
+S43.499S	Other sprain of unspecified shoulder joint, sequela
+S43.50XA	Sprain of unspecified acromioclavicular joint, initial encounter
+S43.50XD	Sprain of unspecified acromioclavicular joint,m subsequent encounter
+S43.50XS	Sprain of unspecified acromioclavicular joint, sequela
+S43.51XA	Sprain of right acromioclavicular joint initial encounter
+S43.51XD	Sprain of right acromioclavicular joint subsequent encounter
+S43.51XS	Sprain of right acromioclavicular joint sequela
+S43.52XA	Sprain of left acromioclavicular joint initial encounter
+S43.52XD	Sprain of left acromioclavicular joint subsequent encounter
+S43.52XS	Sprain of left acromioclavicular joint sequela
+S43.61XA	Sprain of right sternoclavicular joint, initial encounter (active care)
+S43.62XA	Sprain of left sternoclavicular joint, initial encounter
+S43.80XA	Sprain of other specified parts of unspecified shoulder girdle initial encounter
+S43.81XA	Sprain of other specified parts of right shoulder girdle initial encounter
+S43.82XA	Sprain of other specified parts of left shoulder girdle initial encounter
+S43.91XA	Sprain of unspecified parts of right shoulder girdle, initial encounter
+S43.92XA	Sprain of unspecified parts of left shoulder girdle, initial encounter
+S46.001A	Unspecified injury of muscle(s) and tendon(s) of the rotator cuff of right shoulder, initial encounter
+S46.002A	Unspecified injury of muscle(s) and tendon(s) of the rotator cuff of left shoulder, initial encounter
+S46.011A	Strain of muscle(s) and tendon(s) of the rotator cuff of right shoulder, initial encounter
+S46.011D	Strain of muscle(s) and tendon(s) of the rotator cuff of right shoulder, subsequent encounter
+	S46.011S	Strain of muscle(s) and tendon(s) of the rotator cuff of right shoulder, sequela
+S46.012A	Strain of muscle(s) and tendon(s) of the rotator cuff of left shoulder, initial encounter
+S46.012D	Strain of muscle(s) and tendon(s) of the rotator cuff of left shoulder, subsequent encounter
+S46.012S	Strain of muscle(s) and tendon(s) of the rotator cuff of left shoulder, sequela
+S46.019A	Strain of muscle(s) and tendon(s) of the rotator cuff of unspecified shoulder, initial encounter
+S46.019D	Strain of muscle(s) and tendon(s) of the rotator cuff of unspecified shoulder, subsequent enconter
+S46.019S	Strain of muscle(s) and tendon(s) of the rotator cuff of unspecified shoulder, sequela
+S46.111A	Strain of muscle, fascia and tendon of long head of biceps, right arm, initial encounter
+S46.112A	Strain of muscle, fascia and tendon of long head of biceps, left arm, initial encounter
+S46.211A
+S46.211A	Strain of muscle, fascia and tendon of other parts of biceps, right arm, initial encounter	Strain of muscle fascia and tendon of biceps, right arm, initial encounter
+S46.211D	Strain of muscle fascia and tendon of biceps, right arm, subsequent encounter
+S46.211S	Strain of muscle fascia and tendon of biceps, right arm, sequela
+S46.212A	Strain of muscle fascia and tendon of biceps, left arm, initial encounter
+S46.212A	Strain of muscle, fascia and tendon of other parts of biceps, left arm, initial encounter
+S46.212D	Strain of muscle fascia and tendon of biceps, left arm, subsequent encounter
+S46.212S	Strain of muscle fascia and tendon of biceps, left arm, sequela
+S46.219A	Strain of muscle fascia and tendon of biceps, unspecified arm, initial encounter
+S46.219D	Strain of muscle fascia and tendon of biceps, unspecified arm, subsequent encounter
+S46.219S	Strain of muscle fascia and tendon of biceps, unspecified arm, sequela
+S46.311A	Strain of muscle fascia and tendon of triceps, right arm, initial encounter
+S46.311A	Strain of muscle, fascia and tendon of triceps, right arm, initial encounter
+S46.311D	Strain of muscle fascia and tendon of triceps, right arm, subsequent encounter
+S46.311S	Strain of muscle fascia and tendon of triceps, right arm, sequela
+S46.312A	Strain of muscle fascia and tendon of triceps, left arm, initial encounter
+S46.312D	Strain of muscle fascia and tendon of triceps, left arm, subsequent encounter
+S46.312S	Strain of muscle fascia and tendon of triceps, left arm, seuela
+S46.319A	Strain of muscle fascia and tendon of triceps, unspecified arm, initial encounter
+S46.319D	Strain of muscle fascia and tendon of triceps, unspecified arm, subsequent encounter
+S46.319S	Strain of muscle fascia and tendon of triceps, unspecified arm, seuela
+S46.811A	Strain of other muscles, fascia and tendons at shoulder and upper arm level right arm, initial encounter
+S46.811A	Strain of other muscles, fascia and tendons at shoulder and upper arm level, right arm, initial encounter (active care)
+S46.811D	Strain of other muscles, fascia and tendons at shoulder and upper arm level right arm, subsequent encounter
+S46.811S	Strain of other muscles, fascia and tendons at shoulder and upper arm level right arm, sequela	
+S46.812A	Strain of other muscles, fascia and tendons at shoulder and upper arm level left arm, initial encounter
+S46.812A	Strain of other muscles, fascia and tendons at shoulder and upper arm level, left arm, initial encounter (active care)	
+S46.812D	Strain of other muscles, fascia and tendons at shoulder and upper arm level left arm, subsequent encounter	 
+S46.812S	Strain of other muscles, fascia and tendons at shoulder and upper arm level left arm, sequela
+S46.819A	Strain of other muscles, fascia and tendons at shoulder and upper arm level unspecified arm, initial encounter
+S46.819D	Strain of other muscles, fascia and tendons at shoulder and upper arm level unspecified arm, subsequent encounter
+S46.819S	Strain of other muscles, fascia and tendons at shoulder and upper arm level unspecified arm, sequela	 
+S46.911A	Strain of unspecified muscle, fascia and tendon at shoulder and upper arm level, right arm, initial encounte
+S46.912A	Strain of unspecified muscle, fascia and tendon at shoulder and upper arm level, left arm, initial encounter
+S46.919A	Strain and unspecified muscle, fascia and tendon at shoulder and upper arm level, unspecified arm, initial encounter

@@ -39,10 +39,12 @@ public:
 		}
 	}
 	//this function gathers the information for the main billing documents from patient files.
-	std::vector <std::vector<std::string>>  gatherInfo(std::fstream& inout) {
+	std::vector <std::vector<std::string>>  gatherInfo(std::fstream& inout,std::string filename) {
 		try {
-
-			for (int j = 0; j < 6; j++) {
+			int pos1 = filename.find("_");
+			filename.erase(filename.begin(),filename.begin() + pos1+1);
+			filename.erase(filename.end()-4, filename.end());
+			for (int j = 0; j < 7; j++) {
 				std::vector<std::string> temp;
 				information.push_back(temp);
 			}
@@ -64,13 +66,23 @@ public:
 								information.at(0).push_back(token);
 							}
 							if (line.find("DATE OF FIRST VISIT") != std::string::npos) {
-								information.at(1).push_back(token);
+								information.at(1).push_back(filename);
 							}
 							if (line.find("LATEST DATE OF VISIT") != std::string::npos) {
-								information.at(2).push_back(token);
+								std::string date = funcHelp->getDateToSign().substr(3);
+								int timePos = date.find(':');
+								date.erase(date.begin() + timePos, date.begin() + timePos + 6);
+								date.pop_back();
+								information.at(2).push_back(date);
 							}
 							if (line.find("INSURANCE") != std::string::npos) {
 								information.at(5).push_back(token);
+							}
+							if (line.find("ELECTRONICLY SIGNED BY:") != std::string::npos) {
+								std::string Doctor = "";
+								int docPos = token.find(':');
+								token.erase(token.begin(),token.begin()+docPos+1);
+								information.at(6).push_back(token);
 							}
 							size_t position = 0;
 							if (( position = line.find("{{")) != std::string::npos) {
@@ -175,10 +187,15 @@ public:
 			outLni.close();
 
 			for (const auto& entry : filesystem::directory_iterator(path)) {
+				
+				if (entry.is_directory()) {
+					continue;
+				}
 				//gather the information
 				in_out.open(entry);
+				
 				if (in_out.is_open()) {
-					gatherInfo(in_out);
+					gatherInfo(in_out, entry.path().stem().string());
 				}
 				if (information.at(2).empty()) {
 					continue;
@@ -234,13 +251,14 @@ public:
 								outMed << "\t\t\t";
 							}
 							if ((size_t)i < information.at(4).size()) {
-								outMed << information.at(4).at(i) + "\n";
+								outMed << information.at(4).at(i);
 							}
 							else {
-								outMed << "\t\t\n";
+								outMed << "\t\t";
 							}
 							i++;
 						} while (i<largersize);
+						outMed << "\t" + information.at(6).at(0)+"\n";
 					}
 
 					outMed.close();
@@ -266,6 +284,7 @@ public:
 								outCom << information.at(5).at(0);
 								outCom << information.at(1).at(0) << "\t\t";
 								outCom << information.at(2).at(0) << "\t\t";
+								
 								int days = funcHelp->getDayDifferance(funcHelp->intdateformater(information.at(1).at(0)), funcHelp->intdateformater(information.at(2).at(0)));
 								outCom << days << "\t";
 							}
@@ -288,13 +307,14 @@ public:
 								outCom << "\t\t\t";
 							}
 							if ((size_t)i < information.at(4).size()) {
-								outCom << information.at(4).at(i) + "\n";
+								outCom << information.at(4).at(i);
 							}
 							else {
-								outCom << "\t\t\n";
+								outCom << "\t\t";
 							}
 							i++;
 						} while (i<largersize);
+						outCom << "\t" + information.at(6).at(0) + "\n";
 					}
 
 					outCom.close();
@@ -343,13 +363,14 @@ public:
 								outAuto << "\t\t\t";
 							}
 							if ((size_t)i < information.at(4).size()) {
-								outAuto << information.at(4).at(i) + "\n";
+								outAuto << information.at(4).at(i);
 							}
 							else {
-								outAuto << "\t\t\n";
+								outAuto << "\t\t";
 							}
 							i++;
 						} while (i < largersize);
+						outAuto << "\t" + information.at(6).at(0) + "\n";
 					}
 					
 					outAuto.close();
@@ -398,13 +419,14 @@ public:
 								outLni << "\t\t\t";
 							}
 							if ((size_t)i < information.at(4).size()) {
-								outLni << information.at(4).at(i)+"\n";
+								outLni << information.at(4).at(i);
 							}
 							else {
-								outLni << "\t\t\n";
+								outLni << "\t\t";
 							}
 							i++;
 						} while (i < largersize);
+						outLni << "\t" + information.at(6).at(0) + "\n";
 					}
 					outLni.close();
 				}
@@ -415,7 +437,7 @@ public:
 			popupHandeler->Message("Billing Document Created. find in files");
 		}
 		catch (...) {
-			popupHandeler->errorMessage("an error occured in the document creator");
+			popupHandeler->errorMessage("an error occured in the document creator-Doc");
 		}
 	}
 	void cleanLines() {
